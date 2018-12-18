@@ -1,0 +1,26 @@
+{
+  "name": "fun-ui",
+  "version": "1.0.0",
+  "description": "使用 Vue.js 写的 UI 框架",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/hehe1111/fun-ui.git"
+  },
+  "keywords": [
+    "vue",
+    "ui"
+  ],
+  "author": "hehe1111",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/hehe1111/fun-ui/issues"
+  },
+  "homepage": "https://github.com/hehe1111/fun-ui#readme",
+  "dependencies": {
+    "vue": "^2.5.21"
+  }
+}
