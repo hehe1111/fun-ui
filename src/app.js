@@ -1,5 +1,5 @@
 import Vue from 'vue'
-import FButton from './f-button.vue'
+import FButton from './FButton.vue'
 
 Vue.component('FButton', FButton)
 
