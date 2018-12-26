@@ -6,6 +6,13 @@
   <meta http-equiv="X-UA-Compatible" content="ie=edge">
   <title>按钮</title>
   <style>
+    .icon {
+       width: 1em; height: 1em;
+       vertical-align: -0.15em;
+       fill: currentColor;
+       overflow: hidden;
+    }
+
     * { padding: 0; margin: 0; box-sizing: border-box; }
     html {
       --button-height: 32px;
@@ -27,8 +34,17 @@
 </head>
 <body>
   <div id="app">
-    <f-button></f-button>
+    <f-button>
+      按钮
+    </f-button>
+    <f-button icon="setting">
+      按钮
+    </f-button>
+    <f-button icon="download" icon-position="right">
+      下载
+    </f-button>
   </div>
   <script src="./src/app.js"></script>
+  <script src="//at.alicdn.com/t/font_984242_efeeee5dcoq.js"></script>
 </body>
 </html>
