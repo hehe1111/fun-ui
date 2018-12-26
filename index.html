@@ -23,34 +23,50 @@
     body {
       font-size: var(--font-size);
     }
+    .row {
+      display: flex;
+      flex-wrap: wrap;
+      padding: 6px 0;
+    }
+    .row > * { margin: 4px; }
   </style>
 </head>
 <body>
   <div id="app">
-    <f-button>
-      按钮
-    </f-button>
-    <f-button icon="download" icon-position="right">
-      下载
-    </f-button>
-    <f-button icon="loading">
-      加载中
-    </f-button>
-    <f-button icon="loading" icon-position="right">
-      加载
-    </f-button>
-    <f-icon name="setting"></f-icon>
-    <f-icon name="download"></f-icon>
-    <f-icon name="up"></f-icon>
-    <f-icon name="down"></f-icon>
-    <f-icon name="left"></f-icon>
-    <f-icon name="right"></f-icon>
-    <f-icon name="loading" class="loading"></f-icon>
-    <f-button-group>
+    <div class="row">
+      <f-icon name="setting"></f-icon>
+      <f-icon name="download"></f-icon>
+      <f-icon name="like"></f-icon>
+      <f-icon name="up"></f-icon>
+      <f-icon name="down"></f-icon>
+      <f-icon name="left"></f-icon>
+      <f-icon name="right"></f-icon>
+      <f-icon name="loading" class="loading"></f-icon>
+    </div>
+    <div class="row">
+      <f-button>按钮</f-button>
+      <f-button icon="setting">设置</f-button>
+      <f-button icon="download">下载</f-button>
+      <f-button icon="like">点赞</f-button>
+      <f-button icon="left">上一页</f-button>
+      <f-button icon="up">向上</f-button>
+      <f-button icon="down">向下</f-button>
+      <f-button icon="loading">加载中</f-button>
+      <f-button-group>
         <f-button icon="left">上一页</f-button>
         <f-button>目录</f-button>
         <f-button icon="right" icon-position="right">下一页</f-button>
-    </f-button-group>
+      </f-button-group>
+    </div>
+    <div class="row">
+      <f-button icon="setting" icon-position="right">设置</f-button>
+      <f-button icon="download" icon-position="right">下载</f-button>
+      <f-button icon="like" icon-position="right">点赞</f-button>
+      <f-button icon="right" icon-position="right">下一页</f-button>
+      <f-button icon="up" icon-position="right">向上</f-button>
+      <f-button icon="down" icon-position="right">向下</f-button>
+      <f-button icon="loading" icon-position="right">加载中</f-button>
+    </div>
   </div>
   <script src="./src/app.js"></script>
   <script src="//at.alicdn.com/t/font_984242_ee1zoupy8pt.js"></script>
