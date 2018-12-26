@@ -1,10 +1,12 @@
 import Vue from 'vue'
 import FButton from './FButton.vue'
 import FIcon from './Icon.vue'
+import FButtonGroup from './FButtonGroup.vue'
 
 // 全局注册
 // Vue.component('FButton', FButton)
 // Vue.component('FIcon', FIcon)
+// Vue.component('FButtonGroup', FButtonGroup)
 
 new Vue({
   el: '#app',
@@ -12,5 +14,6 @@ new Vue({
   components: {
     FButton,
     FIcon,
+    FButtonGroup,
   }
 })
