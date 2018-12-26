@@ -1,23 +1,26 @@
 <template>
   <button class="f-button">
-    <svg class="icon" :class="{[`icon-${iconPosition}`]: true}" aria-hidden="true" v-if="icon">
-      <use :xlink:href="`#icon-${icon}`"></use>
-    </svg>
+    <f-icon v-if="icon" :name="icon" class="icon" :class="{[`icon-${iconPosition}`]: true}"></f-icon>
     <slot></slot>
   </button>
 </template>
 
 <script>
+  import FIcon from './Icon.vue'
+
   export default {
     props: {
       icon: {
         type: String,
       },
-      'iconPosition': {
+      iconPosition: {
         type: String,
         default: 'left',
         validator (value) { return value === 'left' || value === 'right' },
       },
+    },
+    components: {
+      FIcon,
     }
   }
 </script>
@@ -39,6 +42,7 @@
   &:hover { border-color: var(--border-hover-color); }
   &:active { background-color: var(--button-active-bg-color); }
   &:focus { outline: none; }
+
   &>.icon { margin-right: 6px;  }
   // order 默认为 0
   &>.icon-right { margin-left: 6px; margin-right: 0; order: 1; }
