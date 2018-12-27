@@ -1,7 +1,7 @@
 {
   "name": "fun-ui",
   "version": "1.0.0",
-  "description": "使用 Vue.js 写的 UI 框架",
+  "description": "使用 Vue.js 写的 UI 库",
   "main": "index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
