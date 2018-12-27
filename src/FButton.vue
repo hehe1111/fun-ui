@@ -1,6 +1,6 @@
 <template>
   <button class="f-button">
-    <f-icon v-if="icon" :name="icon" class="icon" :class="{[`icon-${iconPosition}`]: true}"></f-icon>
+    <f-icon v-if="icon" :name="icon" :class="{[`icon-${iconPosition}`]: true}"></f-icon>
     <slot></slot>
   </button>
 </template>
@@ -42,9 +42,5 @@
   &:hover { border-color: var(--border-hover-color); }
   &:active { background-color: var(--button-active-bg-color); }
   &:focus { outline: none; }
-
-  &>.icon { margin-right: 6px;  }
-  // order 默认为 0
-  &>.icon-right { margin-left: 6px; margin-right: 0; order: 1; }
 }
 </style>

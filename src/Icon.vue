@@ -23,7 +23,10 @@ export default {
     vertical-align: -0.15em;
     fill: currentColor;
     overflow: hidden;
+    margin-right: 6px;
   }
+  // order 默认为 0
+  .icon-right { margin-left: 6px; margin-right: 0; order: 1; }
   @keyframes spin {
     0% { transform: rotate(0deg); }
     100% { transform: rotate(360deg); }
