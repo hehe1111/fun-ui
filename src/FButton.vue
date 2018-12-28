@@ -6,7 +6,7 @@
 </template>
 
 <script>
-  import FIcon from './Icon.vue'
+  import FIcon from './FIcon.vue'
 
   export default {
     props: {

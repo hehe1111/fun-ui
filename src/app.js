@@ -1,11 +1,7 @@
 import Vue from 'vue'
 import FButton from './FButton.vue'
-import FIcon from './Icon.vue'
+import FIcon from './FIcon.vue'
 import FButtonGroup from './FButtonGroup.vue'
-import chai from 'chai'
-import spies from 'chai-spies'
-const expect = chai.expect
-chai.use(spies)
 
 // 全局注册
 // Vue.component('FButton', FButton)
@@ -19,10 +15,5 @@ new Vue({
     FButton,
     FIcon,
     FButtonGroup,
-  },
-  methods: {
-    log1 () {
-      console.log(1)
-    },
   },
 })

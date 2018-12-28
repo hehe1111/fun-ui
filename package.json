@@ -1,8 +1,8 @@
 {
   "name": "fun-ui",
-  "version": "1.0.0",
+  "version": "0.0.1",
   "description": "使用 Vue.js 写的 UI 库",
-  "main": "index.js",
+  "main": "dist/index.js",
   "scripts": {
     "dev": "./node_modules/.bin/parcel index.html",
     "dev-test": "./node_modules/.bin/parcel watch test/* --no-cache | karma start",
