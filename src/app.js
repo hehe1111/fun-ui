@@ -2,6 +2,7 @@ import Vue from 'vue'
 import FButton from './FButton.vue'
 import FIcon from './FIcon.vue'
 import FButtonGroup from './FButtonGroup.vue'
+import FInput from './FInput.vue'
 
 // 全局注册
 // Vue.component('FButton', FButton)
@@ -15,5 +16,6 @@ new Vue({
     FButton,
     FIcon,
     FButtonGroup,
+    FInput,
   },
 })

@@ -17,17 +17,9 @@
       --border-color: #999;
       --border-hover-color: #666;
     }
-    #app {
-      margin: 20px;
-    }
-    body {
-      font-size: var(--font-size);
-    }
-    .row {
-      display: flex;
-      flex-wrap: wrap;
-      padding: 6px 0;
-    }
+    #app { margin: 20px; }
+    body { font-size: var(--font-size); }
+    .row { display: flex; flex-wrap: wrap; padding: 6px 0; }
     .row > * { margin: 4px; }
   </style>
 </head>
@@ -68,10 +60,13 @@
       <f-button icon="loading" icon-position="right">加载中</f-button>
     </div>
     <div class="row">
-      <f-input></f-input>
+      <f-input value="输入框"></f-input>
+      <f-input value="禁止" disabled></f-input>
+      <f-input value="只读" readonly></f-input>
+      <f-input value="错误" error="这是一条错误提示"></f-input>
     </div>
   </div>
   <script src="./src/app.js"></script>
-  <script src="//at.alicdn.com/t/font_984242_ee1zoupy8pt.js"></script>
+  <script src="//at.alicdn.com/t/font_984242_8p8smoq9tl4.js"></script>
 </body>
 </html>
