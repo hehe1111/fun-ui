@@ -19,7 +19,7 @@
     }
     #app { margin: 20px; }
     body { font-size: var(--font-size); }
-    .row { display: flex; flex-wrap: wrap; padding: 6px 0; }
+    .row { display: flex; align-items: center; flex-wrap: wrap; padding: 6px 0; }
     .row > * { margin: 4px; }
   </style>
 </head>
@@ -64,6 +64,11 @@
       <f-input value="禁止" disabled></f-input>
       <f-input value="只读" readonly></f-input>
       <f-input value="错误" error="这是一条错误提示"></f-input>
+      <f-input value="触发 change 事件" @change="changeHandler"></f-input>
+    </div>
+    <div class="row">
+      <f-input v-model="message"></f-input>
+      <p>{{ message }}</p>
     </div>
   </div>
   <script src="./src/app.js"></script>

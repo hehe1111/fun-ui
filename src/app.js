@@ -9,13 +9,21 @@ import FInput from './FInput.vue'
 // Vue.component('FIcon', FIcon)
 // Vue.component('FButtonGroup', FButtonGroup)
 
-new Vue({
+window.vmm = new Vue({
   el: '#app',
+  data: {
+    message: '数据双向绑定'
+  },
   // 局部注册
   components: {
     FButton,
     FIcon,
     FButtonGroup,
     FInput,
+  },
+  methods: {
+    changeHandler (event) {
+      console.log('xxx', event)
+    },
   },
 })
