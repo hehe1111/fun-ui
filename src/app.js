@@ -27,7 +27,7 @@ window.vmm = new Vue({
       console.log('xxx', event)
     },
     clearText (event) {
-      this.textWillBeCleared = '';
+      this.textWillBeCleared = ''
     },
   },
 })
