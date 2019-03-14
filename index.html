@@ -17,14 +17,16 @@
       --border-color: #999;
       --border-hover-color: #666;
     }
+    [v-cloak] { display: none; }
     #app { margin: 20px; }
     body { font-size: var(--font-size); }
     .row { display: flex; align-items: center; flex-wrap: wrap; padding: 6px 0; }
     .row > * { margin: 4px; }
+    .input-area { flex-direction: column; align-items: flex-start; }
   </style>
 </head>
 <body>
-  <div id="app">
+  <div id="app" v-cloak>
     <div class="row">
       <f-icon name="setting"></f-icon>
       <f-icon name="download"></f-icon>
@@ -59,10 +61,13 @@
       <f-button icon="down" icon-position="right">向下</f-button>
       <f-button icon="loading" icon-position="right">加载中</f-button>
     </div>
-    <div class="row">
+    <div class="row" class="input-area">
       <f-input value="输入框"></f-input>
       <f-input value="禁止" disabled></f-input>
       <f-input value="只读" readonly></f-input>
+      <!-- TODO: 继续完成一个带有清空输入的图标的输入框 -->
+      <!-- 样式问题：如何将一个图标放到输入框的内部右侧 -->
+      <!-- <f-input v-model="textWillBeCleared" clearable @click="clearText"></f-input> -->
       <f-input value="错误" error="这是一条错误提示"></f-input>
       <f-input value="触发 change 事件" @change="changeHandler"></f-input>
     </div>

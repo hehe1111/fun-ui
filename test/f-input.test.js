@@ -66,6 +66,7 @@ describe('FInput 测试', () => {
       it(`支持 ${event} 事件`, () => {
         vm = new Component().$mount()
         const fake = sinon.fake()
+        // event 事件触发后，FInput.vue 中随事件传出的参数，会传给 fake
         vm.$on(event, fake)
         const eventChange = new Event(event)
         Object.defineProperty(eventChange, 'target', { value: { value: 'hi' } })

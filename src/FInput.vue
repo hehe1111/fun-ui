@@ -10,6 +10,7 @@
       @focus="$emit('focus', $event.target.value)"
       @blur="$emit('blur', $event.target.value)"
     >
+    <f-icon name="error" class="clear-text-icon" @click="$emit('click', $event)" v-if="clearable"></f-icon>
     <template v-if="error">
       <f-icon name="error"></f-icon>
       <span>{{ error }}</span>
@@ -36,6 +37,10 @@ export default {
     error: {
       type: String,
     },
+    clearable: {
+      type: Boolean,
+      default: false,
+    },
   },
   components: {
     FIcon,
@@ -44,6 +49,7 @@ export default {
 </script>
 
 <style lang="scss" scoped>
+  $width: 400px;
   $height: 32px;
   $font-size: 14px;
   $border-color: #999;
@@ -53,23 +59,30 @@ export default {
 
   .input-wrapper {
     font-size: $font-size;
+    display: inline-flex;
+    align-items: center;
+    :not(:last-child) { margin-right: 0.5em; };
 
     >input {
+      width: $width;
       height: $height;
       padding: 0 0.5em;
       border: 1px solid $border-color;
       border-radius: $border-radius;
       font-size: inherit;
+      position: relative;
       &:hover { border-color: $border-color-hover; }
       &:focus { box-shadow: inset 0 1px 3px rgba(0, 0, 0, 0.5); outline: none; }
       &[disabled], &[readonly] { color: #bbb; border-color: #bbb; cursor: not-allowed; }
     }
     &.error {
       color: $red;
-      >input { border-color: $red; }
+      >input {
+        border-color: $red;
+        &:focus { box-shadow: inset 0 1px 3px $red; }
+        &:hover { border-color: red; }
+      }
     }
-    >.icon {
-      margin-right: 0;
-    }
+    &.clear-text-icon { position: absolute; top: 50%; right: 0.8em; transform: translateY(-50%); }
   }
 </style>

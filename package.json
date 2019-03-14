@@ -4,7 +4,7 @@
   "description": "使用 Vue.js 写的 UI 库",
   "main": "dist/index.js",
   "scripts": {
-    "dev": "./node_modules/.bin/parcel index.html",
+    "dev": "./node_modules/.bin/parcel index.html --no-cache",
     "dev-test": "./node_modules/.bin/parcel watch test/* --no-cache | karma start",
     "test": "./node_modules/.bin/parcel build test/* --no-cache --no-minify && karma start --single-run"
   },

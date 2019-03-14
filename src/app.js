@@ -12,7 +12,8 @@ import FInput from './FInput.vue'
 window.vmm = new Vue({
   el: '#app',
   data: {
-    message: '数据双向绑定'
+    message: '数据双向绑定',
+    textWillBeCleared: '点击右侧图标清空输入内容',
   },
   // 局部注册
   components: {
@@ -24,6 +25,9 @@ window.vmm = new Vue({
   methods: {
     changeHandler (event) {
       console.log('xxx', event)
+    },
+    clearText (event) {
+      this.textWillBeCleared = '';
     },
   },
 })
