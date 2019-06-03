@@ -1,12 +1,6 @@
 <template>
-  <div
-    class="col"
-    :class="[span && `col-${span}`, offset && `col-offset-${offset}`]"
-    :style="returnGutterStyle"
-  >
-    <div style="min-height: 100px; border: 1px solid green;">
-      <slot></slot>
-    </div>
+  <div class="col" :class="returnColClass" :style="returnGutterStyle">
+    <slot></slot>
   </div>
 </template>
 
@@ -28,6 +22,13 @@ export default {
     }
   },
   computed: {
+    returnColClass() {
+      const { span, offset } = this;
+      return [
+        span && `col-${span}`,
+        offset && `col-offset-${offset}`
+      ]
+    },
     returnGutterStyle() {
       return {
         paddingLeft: this.gutter / 2 + 'px',
