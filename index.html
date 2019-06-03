@@ -20,14 +20,23 @@
     [v-cloak] { display: none; }
     #app { margin: 20px; }
     body { font-size: var(--font-size); }
-    .row { display: flex; align-items: center; flex-wrap: wrap; padding: 6px 0; }
-    .row > * { margin: 4px; }
+    .display-row { display: flex; align-items: center; flex-wrap: wrap; padding: 6px 0; }
+    .display-row > * { margin: 4px; }
     .input-area { flex-direction: column; align-items: flex-start; }
   </style>
 </head>
 <body>
   <div id="app" v-cloak>
-    <div class="row">
+    <f-row>
+      <f-col :span="3"></f-col>
+      <f-col></f-col>
+    </f-row>
+    <f-row>
+      <f-col></f-col>
+      <f-col></f-col>
+    </f-row>
+
+    <div class="display-row">
       <f-icon name="setting"></f-icon>
       <f-icon name="download"></f-icon>
       <f-icon name="like"></f-icon>
@@ -37,7 +46,7 @@
       <f-icon name="right"></f-icon>
       <f-icon name="loading"></f-icon>
     </div>
-    <div class="row">
+    <div class="display-row">
       <f-button>按钮</f-button>
       <f-button icon="setting">设置</f-button>
       <f-button icon="download">下载</f-button>
@@ -52,7 +61,7 @@
         <f-button icon="right" icon-position="right">下一页</f-button>
       </f-button-group>
     </div>
-    <div class="row">
+    <div class="display-row">
       <f-button icon="setting" icon-position="right">设置</f-button>
       <f-button icon="download" icon-position="right">下载</f-button>
       <f-button icon="like" icon-position="right">点赞</f-button>
@@ -61,7 +70,7 @@
       <f-button icon="down" icon-position="right">向下</f-button>
       <f-button icon="loading" icon-position="right">加载中</f-button>
     </div>
-    <div class="row input-area">
+    <div class="display-row input-area">
       <f-input value="输入框"></f-input>
       <f-input value="禁止" disabled></f-input>
       <f-input value="只读" readonly></f-input>
@@ -71,7 +80,7 @@
       <f-input value="错误" error="这是一条错误提示"></f-input>
       <f-input value="触发 change 事件" @change="changeHandler"></f-input>
     </div>
-    <div class="row">
+    <div class="display-row">
       <f-input v-model="message"></f-input>
       <p>{{ message }}</p>
     </div>
