@@ -27,13 +27,9 @@
 </head>
 <body>
   <div id="app" v-cloak>
-    <f-row>
-      <f-col :span="3"></f-col>
-      <f-col></f-col>
-    </f-row>
-    <f-row>
-      <f-col></f-col>
-      <f-col></f-col>
+    <f-row >
+      <f-col style="border: 1px solid red;" span="1" :ipad="{span: 5}" :small_pc="{span: 9}" :pc="{span: 13}" :large_pc="{span: 17}">3</f-col>
+      <f-col style="border: 1px solid red;" span="23" :ipad="{span: 19}" :small_pc="{span: 15}" :pc="{span: 11}" :large_pc="{span: 7}">3</f-col>
     </f-row>
 
     <div class="display-row">
