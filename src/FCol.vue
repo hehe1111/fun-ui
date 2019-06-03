@@ -1,6 +1,12 @@
 <template>
-  <div class="col" :class="[span && `col-${span}`, offset && `col-offset-${offset}`]">
-    <slot></slot>
+  <div
+    class="col"
+    :class="[span && `col-${span}`, offset && `col-offset-${offset}`]"
+    :style="returnGutterStyle"
+  >
+    <div style="min-height: 100px; border: 1px solid green;">
+      <slot></slot>
+    </div>
   </div>
 </template>
 
@@ -9,21 +15,31 @@ export default {
   props: {
     span: {
       type: [Number, String],
-      default: 1,
+      default: 24,
     },
     offset: {
       type: [Number, String],
+      default: 0,
     },
-    default: 0,
+  },
+  data() {
+    return {
+      gutter: 0,
+    }
+  },
+  computed: {
+    returnGutterStyle() {
+      return {
+        paddingLeft: this.gutter / 2 + 'px',
+        paddingRight: this.gutter / 2 + 'px',
+      }
+    },
   },
 }
 </script>
 
 <style lang="scss" scoped>
   .col {
-    min-height: 100px;
-    border: 1px solid green;
-
     $class-prefix: col-;
     @for $n from 1 through 24 {
       &.#{$class-prefix}#{$n} {
