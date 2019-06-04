@@ -10,26 +10,26 @@ export default {
     gutter: {
       type: [Number, String],
       default: 0,
-    }
+    },
   },
   mounted() {
     this.$children.forEach(child => {
-      child.gutter = this.gutter
-    })
+      child.gutter = this.gutter;
+    });
   },
   computed: {
     returnNegativeMargin() {
       return {
-        marginLeft: -this.gutter / 2 + 'px',
-        marginRight: -this.gutter / 2 + 'px',
-      }
-    }
+        marginLeft: -this.gutter / 2 + "px",
+        marginRight: -this.gutter / 2 + "px",
+      };
+    },
   },
-}
+};
 </script>
 
 <style lang="scss" scoped>
-  .row {
-    display: flex;
-  }
+.row {
+  display: flex;
+}
 </style>

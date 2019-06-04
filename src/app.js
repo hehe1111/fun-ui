@@ -1,10 +1,10 @@
-import Vue from 'vue'
-import FButton from './FButton.vue'
-import FIcon from './FIcon.vue'
-import FButtonGroup from './FButtonGroup.vue'
-import FInput from './FInput.vue'
-import FRow from './FRow.vue'
-import FCol from './FCol.vue'
+import Vue from "vue";
+import FButton from "./FButton.vue";
+import FIcon from "./FIcon.vue";
+import FButtonGroup from "./FButtonGroup.vue";
+import FInput from "./FInput.vue";
+import FRow from "./FRow.vue";
+import FCol from "./FCol.vue";
 
 // 全局注册
 // Vue.component('FButton', FButton)
@@ -12,10 +12,10 @@ import FCol from './FCol.vue'
 // Vue.component('FButtonGroup', FButtonGroup)
 
 window.vmm = new Vue({
-  el: '#app',
+  el: "#app",
   data: {
-    message: '数据双向绑定',
-    textWillBeCleared: '点击右侧图标清空输入内容',
+    message: "数据双向绑定",
+    textWillBeCleared: "点击右侧图标清空输入内容",
   },
   // 局部注册
   components: {
@@ -27,11 +27,11 @@ window.vmm = new Vue({
     FCol,
   },
   methods: {
-    changeHandler (event) {
-      console.log('xxx', event)
+    changeHandler(event) {
+      console.log("xxx", event);
     },
-    clearText (event) {
-      this.textWillBeCleared = ''
+    clearText(event) {
+      this.textWillBeCleared = "";
     },
   },
-})
+});

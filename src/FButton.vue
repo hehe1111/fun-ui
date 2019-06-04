@@ -6,23 +6,25 @@
 </template>
 
 <script>
-  import FIcon from './FIcon.vue'
+import FIcon from "./FIcon.vue";
 
-  export default {
-    props: {
-      icon: {
-        type: String,
-      },
-      iconPosition: {
-        type: String,
-        default: 'left',
-        validator (value) { return value === 'left' || value === 'right' },
+export default {
+  props: {
+    icon: {
+      type: String,
+    },
+    iconPosition: {
+      type: String,
+      default: "left",
+      validator(value) {
+        return value === "left" || value === "right";
       },
     },
-    components: {
-      FIcon,
-    }
-  }
+  },
+  components: {
+    FIcon,
+  },
+};
 </script>
 
 <style lang="scss" scoped>
@@ -39,8 +41,14 @@
   // top/middle/bottom/text-top/text-bottom/-webkit-baseline-middle 都可以解决 inline 对不齐的 bug
   vertical-align: middle;
 
-  &:hover { border-color: var(--border-hover-color); }
-  &:active { background-color: var(--button-active-bg-color); }
-  &:focus { outline: none; }
+  &:hover {
+    border-color: var(--border-hover-color);
+  }
+  &:active {
+    background-color: var(--button-active-bg-color);
+  }
+  &:focus {
+    outline: none;
+  }
 }
 </style>

@@ -6,9 +6,7 @@
 </template>
 
 <script>
-export default {
-
-}
+export default {};
 </script>
 
 <style lang="scss" scoped>
@@ -16,14 +14,20 @@ export default {
   display: inline-flex;
   vertical-align: middle;
 
-  > button { margin-left: -1px; border-radius: 0; }
+  > button {
+    margin-left: -1px;
+    border-radius: 0;
+  }
   // 解决 hover 时 margin-left: -1px; 的 bug
-  > button:hover { position: relative; z-index: 1; }
-  >:first-child {
+  > button:hover {
+    position: relative;
+    z-index: 1;
+  }
+  > :first-child {
     border-top-left-radius: var(--border-radius);
     border-bottom-left-radius: var(--border-radius);
   }
-  >:last-child {
+  > :last-child {
     border-top-right-radius: var(--border-radius);
     border-bottom-right-radius: var(--border-radius);
   }

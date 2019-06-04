@@ -1,87 +1,131 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <meta http-equiv="X-UA-Compatible" content="ie=edge">
-  <title>按钮</title>
-  <style>
-    * { padding: 0; margin: 0; box-sizing: border-box; }
-    html {
-      --button-height: 32px;
-      --font-size: 14px;
-      --button-bg-color: white;
-      --button-active-bg-color: #eee;
-      --border-radius: 4px;
-      --color: #333;
-      --border-color: #999;
-      --border-hover-color: #666;
-    }
-    [v-cloak] { display: none; }
-    #app { margin: 20px; }
-    body { font-size: var(--font-size); }
-    .display-row { display: flex; align-items: center; flex-wrap: wrap; padding: 6px 0; }
-    .display-row > * { margin: 4px; }
-    .input-area { flex-direction: column; align-items: flex-start; }
-  </style>
-</head>
-<body>
-  <div id="app" v-cloak>
-    <f-row >
-      <f-col style="border: 1px solid red;" span="1" :ipad="{span: 5}" :small_pc="{span: 9}" :pc="{span: 13}" :large_pc="{span: 17}">3</f-col>
-      <f-col style="border: 1px solid red;" span="23" :ipad="{span: 19}" :small_pc="{span: 15}" :pc="{span: 11}" :large_pc="{span: 7}">3</f-col>
-    </f-row>
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta http-equiv="X-UA-Compatible" content="ie=edge" />
+    <title>按钮</title>
+    <style>
+      * {
+        padding: 0;
+        margin: 0;
+        box-sizing: border-box;
+      }
 
-    <div class="display-row">
-      <f-icon name="setting"></f-icon>
-      <f-icon name="download"></f-icon>
-      <f-icon name="like"></f-icon>
-      <f-icon name="up"></f-icon>
-      <f-icon name="down"></f-icon>
-      <f-icon name="left"></f-icon>
-      <f-icon name="right"></f-icon>
-      <f-icon name="loading"></f-icon>
-    </div>
-    <div class="display-row">
-      <f-button>按钮</f-button>
-      <f-button icon="setting">设置</f-button>
-      <f-button icon="download">下载</f-button>
-      <f-button icon="like">点赞</f-button>
-      <f-button icon="left">上一页</f-button>
-      <f-button icon="up">向上</f-button>
-      <f-button icon="down">向下</f-button>
-      <f-button icon="loading">加载中</f-button>
-      <f-button-group>
+      html {
+        --button-height: 32px;
+        --font-size: 14px;
+        --button-bg-color: white;
+        --button-active-bg-color: #eee;
+        --border-radius: 4px;
+        --color: #333;
+        --border-color: #999;
+        --border-hover-color: #666;
+      }
+
+      [v-cloak] {
+        display: none;
+      }
+
+      #app {
+        margin: 20px;
+      }
+
+      body {
+        font-size: var(--font-size);
+      }
+
+      .display-row {
+        display: flex;
+        align-items: center;
+        flex-wrap: wrap;
+        padding: 6px 0;
+      }
+
+      .display-row > * {
+        margin: 4px;
+      }
+
+      .input-area {
+        flex-direction: column;
+        align-items: flex-start;
+      }
+    </style>
+  </head>
+
+  <body>
+    <div id="app" v-cloak>
+      <f-row>
+        <f-col
+          style="border: 1px solid red;"
+          span="1"
+          :ipad="{span: 5}"
+          :small_pc="{span: 9}"
+          :pc="{span: 13}"
+          :large_pc="{span: 17}"
+          >3</f-col
+        >
+        <f-col
+          style="border: 1px solid red;"
+          span="23"
+          :ipad="{span: 19}"
+          :small_pc="{span: 15}"
+          :pc="{span: 11}"
+          :large_pc="{span: 7}"
+          >3</f-col
+        >
+      </f-row>
+
+      <div class="display-row">
+        <f-icon name="setting"></f-icon>
+        <f-icon name="download"></f-icon>
+        <f-icon name="like"></f-icon>
+        <f-icon name="up"></f-icon>
+        <f-icon name="down"></f-icon>
+        <f-icon name="left"></f-icon>
+        <f-icon name="right"></f-icon>
+        <f-icon name="loading"></f-icon>
+      </div>
+      <div class="display-row">
+        <f-button>按钮</f-button>
+        <f-button icon="setting">设置</f-button>
+        <f-button icon="download">下载</f-button>
+        <f-button icon="like">点赞</f-button>
         <f-button icon="left">上一页</f-button>
-        <f-button>目录</f-button>
+        <f-button icon="up">向上</f-button>
+        <f-button icon="down">向下</f-button>
+        <f-button icon="loading">加载中</f-button>
+        <f-button-group>
+          <f-button icon="left">上一页</f-button>
+          <f-button>目录</f-button>
+          <f-button icon="right" icon-position="right">下一页</f-button>
+        </f-button-group>
+      </div>
+      <div class="display-row">
+        <f-button icon="setting" icon-position="right">设置</f-button>
+        <f-button icon="download" icon-position="right">下载</f-button>
+        <f-button icon="like" icon-position="right">点赞</f-button>
         <f-button icon="right" icon-position="right">下一页</f-button>
-      </f-button-group>
+        <f-button icon="up" icon-position="right">向上</f-button>
+        <f-button icon="down" icon-position="right">向下</f-button>
+        <f-button icon="loading" icon-position="right">加载中</f-button>
+      </div>
+      <div class="display-row input-area">
+        <f-input value="输入框"></f-input>
+        <f-input value="禁止" disabled></f-input>
+        <f-input value="只读" readonly></f-input>
+        <!-- TODO: 继续完成一个带有清空输入的图标的输入框 -->
+        <!-- 样式问题：如何将一个图标放到输入框的内部右侧 -->
+        <!-- <f-input v-model="textWillBeCleared" clearable @click="clearText"></f-input> -->
+        <f-input value="错误" error="这是一条错误提示"></f-input>
+        <f-input value="触发 change 事件" @change="changeHandler"></f-input>
+      </div>
+      <div class="display-row">
+        <f-input v-model="message"></f-input>
+        <p>{{ message }}</p>
+      </div>
     </div>
-    <div class="display-row">
-      <f-button icon="setting" icon-position="right">设置</f-button>
-      <f-button icon="download" icon-position="right">下载</f-button>
-      <f-button icon="like" icon-position="right">点赞</f-button>
-      <f-button icon="right" icon-position="right">下一页</f-button>
-      <f-button icon="up" icon-position="right">向上</f-button>
-      <f-button icon="down" icon-position="right">向下</f-button>
-      <f-button icon="loading" icon-position="right">加载中</f-button>
-    </div>
-    <div class="display-row input-area">
-      <f-input value="输入框"></f-input>
-      <f-input value="禁止" disabled></f-input>
-      <f-input value="只读" readonly></f-input>
-      <!-- TODO: 继续完成一个带有清空输入的图标的输入框 -->
-      <!-- 样式问题：如何将一个图标放到输入框的内部右侧 -->
-      <!-- <f-input v-model="textWillBeCleared" clearable @click="clearText"></f-input> -->
-      <f-input value="错误" error="这是一条错误提示"></f-input>
-      <f-input value="触发 change 事件" @change="changeHandler"></f-input>
-    </div>
-    <div class="display-row">
-      <f-input v-model="message"></f-input>
-      <p>{{ message }}</p>
-    </div>
-  </div>
-  <script src="./src/app.js"></script>
-  <script src="//at.alicdn.com/t/font_984242_8p8smoq9tl4.js"></script>
-</body>
+    <script src="./src/app.js"></script>
+    <script src="//at.alicdn.com/t/font_984242_8p8smoq9tl4.js"></script>
+  </body>
 </html>
