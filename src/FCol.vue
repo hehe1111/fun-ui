@@ -75,86 +75,47 @@ export default {
 </script>
 
 <style lang="scss" scoped>
+@mixin spanByDeviceType($classPrefix: "col-") {
+  @for $n from 1 through 24 {
+    &.#{$classPrefix}#{$n} {
+      width: ($n / 24) * 100%;
+    }
+  }
+}
+
+@mixin offsetByDeviceType($classPrefix: "col-offset-") {
+  @for $n from 1 through 24 {
+    &.#{$classPrefix}#{$n} {
+      margin-left: ($n / 24) * 100%;
+    }
+  }
+}
+
 .col {
   // https://ant.design/components/grid-cn/#Col
   // 0 - 576 - 768 - 992 - 1200
   // 手机
-  $class-prefix: col-;
-  @for $n from 1 through 24 {
-    &.#{$class-prefix}#{$n} {
-      width: ($n / 24) * 100%;
-    }
-  }
-
-  $class-prefix: col-offset-;
-  @for $n from 1 through 24 {
-    &.#{$class-prefix}#{$n} {
-      margin-left: ($n / 24) * 100%;
-    }
-  }
+  @include spanByDeviceType();
+  @include offsetByDeviceType();
   // 平板
   @media (min-width: 577px) {
-    $class-prefix: col-ipad-;
-    @for $n from 1 through 24 {
-      &.#{$class-prefix}#{$n} {
-        width: ($n / 24) * 100%;
-      }
-    }
-
-    $class-prefix: col-offset-ipad-;
-    @for $n from 1 through 24 {
-      &.#{$class-prefix}#{$n} {
-        margin-left: ($n / 24) * 100%;
-      }
-    }
+    @include spanByDeviceType("col-ipad-");
+    @include offsetByDeviceType("col-offset-ipad-");
   }
   // 小屏幕电脑
   @media (min-width: 769px) {
-    $class-prefix: col-small-pc-;
-    @for $n from 1 through 24 {
-      &.#{$class-prefix}#{$n} {
-        width: ($n / 24) * 100%;
-      }
-    }
-
-    $class-prefix: col-offset-small-pc-;
-    @for $n from 1 through 24 {
-      &.#{$class-prefix}#{$n} {
-        margin-left: ($n / 24) * 100%;
-      }
-    }
+    @include spanByDeviceType("col-small-pc-");
+    @include offsetByDeviceType("col-offset-small-pc-");
   }
   // 电脑
   @media (min-width: 993px) {
-    $class-prefix: col-pc-;
-    @for $n from 1 through 24 {
-      &.#{$class-prefix}#{$n} {
-        width: ($n / 24) * 100%;
-      }
-    }
-
-    $class-prefix: col-offset-pc-;
-    @for $n from 1 through 24 {
-      &.#{$class-prefix}#{$n} {
-        margin-left: ($n / 24) * 100%;
-      }
-    }
+    @include spanByDeviceType("col-pc-");
+    @include offsetByDeviceType("col-offset-pc-");
   }
   // 大屏幕电脑及超大屏幕
   @media (min-width: 1201px) {
-    $class-prefix: col-large-pc-;
-    @for $n from 1 through 24 {
-      &.#{$class-prefix}#{$n} {
-        width: ($n / 24) * 100%;
-      }
-    }
-
-    $class-prefix: col-offset-large-pc-;
-    @for $n from 1 through 24 {
-      &.#{$class-prefix}#{$n} {
-        margin-left: ($n / 24) * 100%;
-      }
-    }
+    @include spanByDeviceType("col-large-pc-");
+    @include offsetByDeviceType("col-offset-large-pc-");
   }
 }
 </style>
