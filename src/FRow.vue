@@ -11,10 +11,18 @@ export default {
       type: [Number, String],
       default: 0,
     },
+    align: {
+      type: String,
+      default: "left",
+      validator(value) {
+        return ["left", "center", "right"].includes(value);
+      },
+    },
   },
   mounted() {
     this.$children.forEach(child => {
       child.gutter = this.gutter;
+      child.align = this.align;
     });
   },
   computed: {

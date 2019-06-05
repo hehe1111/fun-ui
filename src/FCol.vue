@@ -25,6 +25,9 @@ export default {
       type: [Number, String],
       default: 0,
     },
+    col_align: {
+      type: String,
+    },
     ipad: { type: Object, validator },
     small_pc: { type: Object, validator },
     pc: { type: Object, validator },
@@ -33,6 +36,7 @@ export default {
   data() {
     return {
       gutter: 0,
+      align: "left",
     };
   },
   computed: {
@@ -45,8 +49,11 @@ export default {
         pc,
         large_pc,
         createColClass,
+        col_align,
+        align,
       } = this;
       return [
+        col_align ? `align-${col_align}` : `align-${align}`,
         ...createColClass({ span, offset }),
         ...createColClass(ipad, "ipad-"),
         ...createColClass(small_pc, "small-pc-"),
@@ -63,7 +70,9 @@ export default {
   },
   methods: {
     createColClass(obj, deviceType = "") {
-      if (!obj) [];
+      if (!obj) {
+        return [];
+      }
       const { span, offset } = obj;
       return [
         span && `col-${deviceType}${span}`,
@@ -92,6 +101,16 @@ export default {
 }
 
 .col {
+  &.align-left {
+    text-align: left;
+  }
+  &.align-center {
+    text-align: center;
+  }
+  &.align-right {
+    text-align: right;
+  }
+
   // https://ant.design/components/grid-cn/#Col
   // 0 - 576 - 768 - 992 - 1200
   // 手机
