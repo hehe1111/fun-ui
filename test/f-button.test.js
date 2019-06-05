@@ -13,9 +13,10 @@ describe("FButton", () => {
 
   it("可以通过设置 icon 来使用对应的图标", () => {
     // Vue.extend 创建子类
-    let Component = Vue.extend(FButton);
+    let Constructor = Vue.extend(FButton);
     // new 创建子类实例
-    let c = new Component({
+    let c = new Constructor({
+      // 通过 propsData 传入 prop
       propsData: {
         icon: "loading",
       },
@@ -32,8 +33,8 @@ describe("FButton", () => {
   it('可以通过设置 iconPosition 来设置图标在按钮中的位置；右边的图标 order 为 "1"', () => {
     let div = document.createElement("div");
     document.body.appendChild(div);
-    let Component = Vue.extend(FButton);
-    let c = new Component({
+    let Constructor = Vue.extend(FButton);
+    let c = new Constructor({
       propsData: {
         icon: "setting",
         iconPosition: "right",
@@ -47,14 +48,14 @@ describe("FButton", () => {
     let { order } = window.getComputedStyle(c.$el.querySelector("svg"));
     expect(typeof order).to.eq("string");
     expect(order).to.eq("1");
-    c.$el.remove();
+    div.remove(); // div 仍然存在，因此需要手动销毁
     c.$destroy();
   });
 
   it("点击按钮时触发 click 事件", () => {
     // mock
-    let Component = Vue.extend(FButton);
-    let c = new Component().$mount();
+    let Constructor = Vue.extend(FButton);
+    let c = new Constructor().$mount();
     // const spy = chai.spy(() => { console.log('spy 被执行了') })
     // c.$on('click', spy)
     const fake = sinon.fake();

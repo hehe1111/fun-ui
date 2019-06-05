@@ -44,15 +44,16 @@ describe("FInput 测试", () => {
     });
 
     it("可以接收 error", () => {
+      const tip = "这是一条来自测试用例的错误提示";
       vm = new Component({
         propsData: {
-          error: "这是一条来自测试用例的错误提示",
+          error: tip,
         },
       }).$mount();
       const use = vm.$el.querySelector("use");
       const span = vm.$el.querySelector("span");
       expect(use.getAttribute("xlink:href")).to.eq("#icon-error");
-      expect(span.innerText).to.be.eq("这是一条来自测试用例的错误提示");
+      expect(span.innerText).to.be.eq(tip);
     });
   });
 
