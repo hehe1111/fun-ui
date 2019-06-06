@@ -1,6 +1,8 @@
 <template>
   <div class="col" :class="returnColClass" :style="returnGutterStyle">
-    <slot></slot>
+    <div class="col-inner">
+      <slot></slot>
+    </div>
   </div>
 </template>
 
@@ -19,7 +21,7 @@ export default {
   props: {
     span: {
       type: [Number, String],
-      default: 24,
+      required: true,
     },
     offset: {
       type: [Number, String],

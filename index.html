@@ -50,32 +50,22 @@
         flex-direction: column;
         align-items: flex-start;
       }
+      .col > .col-inner {
+        margin: 4px 0;
+        min-height: 40px;
+      }
+      .col:nth-child(odd) > .col-inner {
+        background-color: #378df1;
+      }
+      .col:nth-child(even) > .col-inner {
+        background-color: #79b7ff;
+      }
     </style>
   </head>
 
   <body>
     <div id="app" v-cloak>
-      <f-row>
-        <f-col
-          style="border: 1px solid red;"
-          span="1"
-          :ipad="{span: 5}"
-          :small_pc="{span: 9}"
-          :pc="{span: 13}"
-          :large_pc="{span: 17}"
-          >3</f-col
-        >
-        <f-col
-          style="border: 1px solid red;"
-          span="23"
-          :ipad="{span: 19}"
-          :small_pc="{span: 15}"
-          :pc="{span: 11}"
-          :large_pc="{span: 7}"
-          >3</f-col
-        >
-      </f-row>
-
+      <h2>图标</h2>
       <div class="display-row">
         <f-icon name="setting"></f-icon>
         <f-icon name="download"></f-icon>
@@ -86,6 +76,7 @@
         <f-icon name="right"></f-icon>
         <f-icon name="loading"></f-icon>
       </div>
+      <h2>按钮</h2>
       <div class="display-row">
         <f-button>按钮</f-button>
         <f-button icon="setting">设置</f-button>
@@ -110,6 +101,7 @@
         <f-button icon="down" icon-position="right">向下</f-button>
         <f-button icon="loading" icon-position="right">加载中</f-button>
       </div>
+      <h2>输入框</h2>
       <div class="display-row input-area">
         <f-input value="输入框"></f-input>
         <f-input value="禁止" disabled></f-input>
@@ -123,6 +115,200 @@
       <div class="display-row">
         <f-input v-model="message"></f-input>
         <p>{{ message }}</p>
+      </div>
+      <h2>网格系统</h2>
+      <h3>无 gutter</h3>
+      <div>
+        <f-row>
+          <f-col span="24"></f-col>
+        </f-row>
+        <f-row>
+          <f-col span="12"></f-col>
+          <f-col span="12"></f-col>
+        </f-row>
+        <f-row>
+          <f-col span="8"></f-col>
+          <f-col span="8"></f-col>
+          <f-col span="8"></f-col>
+        </f-row>
+        <f-row>
+          <f-col span="6"></f-col>
+          <f-col span="6"></f-col>
+          <f-col span="6"></f-col>
+          <f-col span="6"></f-col>
+        </f-row>
+        <f-row>
+          <f-col span="4"></f-col>
+          <f-col span="4"></f-col>
+          <f-col span="4"></f-col>
+          <f-col span="4"></f-col>
+          <f-col span="4"></f-col>
+          <f-col span="4"></f-col>
+        </f-row>
+        <f-row>
+          <f-col span="3"></f-col>
+          <f-col span="3"></f-col>
+          <f-col span="3"></f-col>
+          <f-col span="3"></f-col>
+          <f-col span="3"></f-col>
+          <f-col span="3"></f-col>
+          <f-col span="3"></f-col>
+          <f-col span="3"></f-col>
+        </f-row>
+        <f-row>
+          <f-col span="2"></f-col>
+          <f-col span="2"></f-col>
+          <f-col span="2"></f-col>
+          <f-col span="2"></f-col>
+          <f-col span="2"></f-col>
+          <f-col span="2"></f-col>
+          <f-col span="2"></f-col>
+          <f-col span="2"></f-col>
+          <f-col span="2"></f-col>
+          <f-col span="2"></f-col>
+          <f-col span="2"></f-col>
+          <f-col span="2"></f-col>
+        </f-row>
+        <f-row>
+          <f-col span="1"></f-col>
+          <f-col span="1"></f-col>
+          <f-col span="1"></f-col>
+          <f-col span="1"></f-col>
+          <f-col span="1"></f-col>
+          <f-col span="1"></f-col>
+          <f-col span="1"></f-col>
+          <f-col span="1"></f-col>
+          <f-col span="1"></f-col>
+          <f-col span="1"></f-col>
+          <f-col span="1"></f-col>
+          <f-col span="1"></f-col>
+          <f-col span="1"></f-col>
+          <f-col span="1"></f-col>
+          <f-col span="1"></f-col>
+          <f-col span="1"></f-col>
+          <f-col span="1"></f-col>
+          <f-col span="1"></f-col>
+          <f-col span="1"></f-col>
+          <f-col span="1"></f-col>
+          <f-col span="1"></f-col>
+          <f-col span="1"></f-col>
+          <f-col span="1"></f-col>
+          <f-col span="1"></f-col>
+        </f-row>
+      </div>
+
+      <h3>有 gutter</h3>
+      <div>
+        <f-row gutter="20">
+          <f-col span="24"></f-col>
+        </f-row>
+        <f-row gutter="20">
+          <f-col span="12"></f-col>
+          <f-col span="12"></f-col>
+        </f-row>
+        <f-row gutter="20">
+          <f-col span="8"></f-col>
+          <f-col span="8"></f-col>
+          <f-col span="8"></f-col>
+        </f-row>
+        <f-row gutter="20">
+          <f-col span="6"></f-col>
+          <f-col span="6"></f-col>
+          <f-col span="6"></f-col>
+          <f-col span="6"></f-col>
+        </f-row>
+        <f-row gutter="20">
+          <f-col span="4"></f-col>
+          <f-col span="4"></f-col>
+          <f-col span="4"></f-col>
+          <f-col span="4"></f-col>
+          <f-col span="4"></f-col>
+          <f-col span="4"></f-col>
+        </f-row>
+        <f-row gutter="20">
+          <f-col span="3"></f-col>
+          <f-col span="3"></f-col>
+          <f-col span="3"></f-col>
+          <f-col span="3"></f-col>
+          <f-col span="3"></f-col>
+          <f-col span="3"></f-col>
+          <f-col span="3"></f-col>
+          <f-col span="3"></f-col>
+        </f-row>
+        <f-row gutter="20">
+          <f-col span="2"></f-col>
+          <f-col span="2"></f-col>
+          <f-col span="2"></f-col>
+          <f-col span="2"></f-col>
+          <f-col span="2"></f-col>
+          <f-col span="2"></f-col>
+          <f-col span="2"></f-col>
+          <f-col span="2"></f-col>
+          <f-col span="2"></f-col>
+          <f-col span="2"></f-col>
+          <f-col span="2"></f-col>
+          <f-col span="2"></f-col>
+        </f-row>
+        <f-row gutter="20">
+          <f-col span="1"></f-col>
+          <f-col span="1"></f-col>
+          <f-col span="1"></f-col>
+          <f-col span="1"></f-col>
+          <f-col span="1"></f-col>
+          <f-col span="1"></f-col>
+          <f-col span="1"></f-col>
+          <f-col span="1"></f-col>
+          <f-col span="1"></f-col>
+          <f-col span="1"></f-col>
+          <f-col span="1"></f-col>
+          <f-col span="1"></f-col>
+          <f-col span="1"></f-col>
+          <f-col span="1"></f-col>
+          <f-col span="1"></f-col>
+          <f-col span="1"></f-col>
+          <f-col span="1"></f-col>
+          <f-col span="1"></f-col>
+          <f-col span="1"></f-col>
+          <f-col span="1"></f-col>
+          <f-col span="1"></f-col>
+          <f-col span="1"></f-col>
+          <f-col span="1"></f-col>
+          <f-col span="1"></f-col>
+        </f-row>
+      </div>
+      <h2>响应式</h2>
+      <div>
+        <f-row>
+          <f-col
+            span="1"
+            :ipad="{span: 5}"
+            :small_pc="{span: 9}"
+            :pc="{span: 13}"
+            :large_pc="{span: 17}"
+            >1</f-col
+          >
+          <f-col
+            span="23"
+            :ipad="{span: 19}"
+            :small_pc="{span: 15}"
+            :pc="{span: 11}"
+            :large_pc="{span: 7}"
+            >2</f-col
+          >
+        </f-row>
+      </div>
+      <h2>水平位置</h2>
+      <div>
+        <f-row>
+          <f-col span="8">1</f-col>
+          <f-col span="8">1</f-col>
+          <f-col span="8">1</f-col>
+        </f-row>
+        <f-row align="right">
+          <f-col span="8" col_align="center">1</f-col>
+          <f-col span="8">1</f-col>
+          <f-col span="8">1</f-col>
+        </f-row>
       </div>
     </div>
     <script src="./src/app.js"></script>
