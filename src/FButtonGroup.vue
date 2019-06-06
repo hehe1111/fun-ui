@@ -6,7 +6,9 @@
 </template>
 
 <script>
-export default {};
+export default {
+  name: "FunUIButtonGroup",
+};
 </script>
 
 <style lang="scss" scoped>

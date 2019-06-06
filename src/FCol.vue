@@ -18,6 +18,7 @@ let validator = paramObj => {
 };
 
 export default {
+  name: "FunUICol",
   props: {
     span: {
       type: [Number, String],

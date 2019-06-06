@@ -9,6 +9,7 @@
 import FIcon from "./FIcon.vue";
 
 export default {
+  name: "FunUIButton",
   props: {
     icon: {
       type: String,

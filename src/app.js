@@ -5,6 +5,11 @@ import FButtonGroup from "./FButtonGroup.vue";
 import FInput from "./FInput.vue";
 import FRow from "./FRow.vue";
 import FCol from "./FCol.vue";
+import FLayout from "./FLayout.vue";
+import FHeader from "./FHeader.vue";
+import FSidebar from "./FSidebar.vue";
+import FContent from "./FContent.vue";
+import FFooter from "./FFooter.vue";
 
 // 全局注册
 // Vue.component('FButton', FButton)
@@ -25,6 +30,11 @@ window.vmm = new Vue({
     FInput,
     FRow,
     FCol,
+    FLayout,
+    FHeader,
+    FSidebar,
+    FContent,
+    FFooter,
   },
   methods: {
     changeHandler(event) {

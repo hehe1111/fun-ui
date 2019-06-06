@@ -6,6 +6,7 @@
 
 <script>
 export default {
+  name: "FunUIRow",
   props: {
     gutter: {
       type: [Number, String],

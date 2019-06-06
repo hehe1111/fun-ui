@@ -21,7 +21,7 @@
 <script>
 import FIcon from "./FIcon.vue";
 export default {
-  name: "FInput",
+  name: "FunUIInput",
   props: {
     value: {
       type: String,

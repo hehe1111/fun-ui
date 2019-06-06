@@ -11,6 +11,7 @@
 
 <script>
 export default {
+  name: "FunUIIcon",
   props: {
     name: {
       type: String,
