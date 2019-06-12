@@ -6,19 +6,19 @@
 </template>
 
 <script>
-import FIcon from "./FIcon.vue";
+import FIcon from './FIcon.vue';
 
 export default {
-  name: "FunUIButton",
+  name: 'FunUIButton',
   props: {
     icon: {
       type: String,
     },
     iconPosition: {
       type: String,
-      default: "left",
+      default: 'left',
       validator(value) {
-        return value === "left" || value === "right";
+        return value === 'left' || value === 'right';
       },
     },
   },

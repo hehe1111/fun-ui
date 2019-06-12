@@ -11,12 +11,12 @@
 
 <script>
 export default {
-  name: "FunUIIcon",
+  name: 'FunUIIcon',
   props: {
     name: {
       type: String,
       validator(value) {
-        return value ? true : false;
+        return !!value;
       },
     },
   },

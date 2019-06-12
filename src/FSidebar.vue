@@ -11,17 +11,17 @@
 
 <script>
 export default {
-  name: "FunUISidebar",
+  name: 'FunUISidebar',
   data() {
     return {
       isSwitchOn: true,
-      switchText: "<<",
+      switchText: '<<',
     };
   },
   methods: {
     toggleSwitch() {
       this.isSwitchOn = !this.isSwitchOn;
-      this.switchText = this.isSwitchOn ? "<<" : ">>";
+      this.switchText = this.isSwitchOn ? '<<' : '>>';
     },
   },
 };

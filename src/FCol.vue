@@ -7,10 +7,11 @@
 </template>
 
 <script>
-let validator = paramObj => {
-  let keys = Object.keys(paramObj);
+const validator = paramObj => {
+  const keys = Object.keys(paramObj);
+  // eslint-disable-next-line consistent-return
   keys.forEach(k => {
-    if (!["span", "offset"].includes(k)) {
+    if (!['span', 'offset'].includes(k)) {
       return false;
     }
   });
@@ -18,7 +19,7 @@ let validator = paramObj => {
 };
 
 export default {
-  name: "FunUICol",
+  name: 'FunUICol',
   props: {
     span: {
       type: [Number, String],
@@ -39,7 +40,7 @@ export default {
   data() {
     return {
       gutter: 0,
-      align: "left",
+      align: 'left',
     };
   },
   computed: {
@@ -48,31 +49,31 @@ export default {
         span,
         offset,
         ipad,
-        small_pc,
+        small_pc: samllPC,
         pc,
-        large_pc,
+        large_pc: largePC,
         createColClass,
-        col_align,
+        col_align: colAlign,
         align,
       } = this;
       return [
-        col_align ? `align-${col_align}` : `align-${align}`,
+        colAlign ? `align-${colAlign}` : `align-${align}`,
         ...createColClass({ span, offset }),
-        ...createColClass(ipad, "ipad-"),
-        ...createColClass(small_pc, "small-pc-"),
-        ...createColClass(pc, "pc-"),
-        ...createColClass(large_pc, "large-pc-"),
+        ...createColClass(ipad, 'ipad-'),
+        ...createColClass(samllPC, 'small-pc-'),
+        ...createColClass(pc, 'pc-'),
+        ...createColClass(largePC, 'large-pc-'),
       ];
     },
     returnGutterStyle() {
       return {
-        paddingLeft: this.gutter / 2 + "px",
-        paddingRight: this.gutter / 2 + "px",
+        paddingLeft: `${this.gutter / 2}px`,
+        paddingRight: `${this.gutter / 2}px`,
       };
     },
   },
   methods: {
-    createColClass(obj, deviceType = "") {
+    createColClass(obj, deviceType = '') {
       if (!obj) {
         return [];
       }
@@ -87,7 +88,7 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-@mixin spanByDeviceType($classPrefix: "col-") {
+@mixin spanByDeviceType($classPrefix: 'col-') {
   @for $n from 1 through 24 {
     &.#{$classPrefix}#{$n} {
       width: ($n / 24) * 100%;
@@ -95,7 +96,7 @@ export default {
   }
 }
 
-@mixin offsetByDeviceType($classPrefix: "col-offset-") {
+@mixin offsetByDeviceType($classPrefix: 'col-offset-') {
   @for $n from 1 through 24 {
     &.#{$classPrefix}#{$n} {
       margin-left: ($n / 24) * 100%;
@@ -121,23 +122,23 @@ export default {
   @include offsetByDeviceType();
   // 平板
   @media (min-width: 577px) {
-    @include spanByDeviceType("col-ipad-");
-    @include offsetByDeviceType("col-offset-ipad-");
+    @include spanByDeviceType('col-ipad-');
+    @include offsetByDeviceType('col-offset-ipad-');
   }
   // 小屏幕电脑
   @media (min-width: 769px) {
-    @include spanByDeviceType("col-small-pc-");
-    @include offsetByDeviceType("col-offset-small-pc-");
+    @include spanByDeviceType('col-small-pc-');
+    @include offsetByDeviceType('col-offset-small-pc-');
   }
   // 电脑
   @media (min-width: 993px) {
-    @include spanByDeviceType("col-pc-");
-    @include offsetByDeviceType("col-offset-pc-");
+    @include spanByDeviceType('col-pc-');
+    @include offsetByDeviceType('col-offset-pc-');
   }
   // 大屏幕电脑及超大屏幕
   @media (min-width: 1201px) {
-    @include spanByDeviceType("col-large-pc-");
-    @include offsetByDeviceType("col-offset-large-pc-");
+    @include spanByDeviceType('col-large-pc-');
+    @include offsetByDeviceType('col-offset-large-pc-');
   }
 }
 </style>

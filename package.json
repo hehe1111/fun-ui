@@ -6,7 +6,21 @@
   "scripts": {
     "dev": "./node_modules/.bin/parcel index.html --no-cache",
     "dev-test": "./node_modules/.bin/parcel watch test/* --no-cache | karma start",
-    "test": "./node_modules/.bin/parcel build test/* --no-cache --no-minify && karma start --single-run"
+    "test": "./node_modules/.bin/parcel build test/* --no-cache --no-minify && karma start --single-run",
+    "precommit-msg": "echo 'Pre-commit checks......' && exit 0",
+    "lint": "eslint src/** --ext .js,.vue --cache --fix"
+  },
+  "pre-commit": [
+    "precommit-msg",
+    "lint"
+  ],
+  "eslintConfig": {
+    "root": true,
+    "extends": [
+      "plugin:vue/essential",
+      "plugin:prettier/recommended",
+      "eslint:recommended"
+    ]
   },
   "repository": {
     "type": "git",
@@ -28,8 +42,17 @@
   },
   "devDependencies": {
     "@vue/component-compiler-utils": "^2.3.1",
+    "acorn": "^6.1.1",
+    "babel-eslint": "^10.0.1",
     "chai": "^4.2.0",
     "chai-spies": "^1.0.0",
+    "eslint": "^5.16.0",
+    "eslint-config-airbnb": "^17.1.0",
+    "eslint-config-prettier": "^4.3.0",
+    "eslint-plugin-import": "^2.17.3",
+    "eslint-plugin-jsx-a11y": "^6.2.1",
+    "eslint-plugin-prettier": "^3.1.0",
+    "eslint-plugin-react": "^7.13.0",
     "karma": "^3.1.4",
     "karma-chai": "^0.1.0",
     "karma-chai-spies": "^0.1.4",
@@ -38,9 +61,11 @@
     "karma-sinon-chai": "^2.0.2",
     "mocha": "^5.2.0",
     "parcel-bundler": "^1.10.3",
+    "pre-commit": "^1.2.2",
     "sass": "^1.15.2",
     "sinon": "^7.2.2",
     "sinon-chai": "^3.3.0",
+    "vue-eslint-parser": "^6.0.4",
     "vue-template-compiler": "^2.5.21"
   },
   "alias": {

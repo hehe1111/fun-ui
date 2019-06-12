@@ -6,7 +6,7 @@
 
 <script>
 export default {
-  name: "FunUIRow",
+  name: 'FunUIRow',
   props: {
     gutter: {
       type: [Number, String],
@@ -14,23 +14,24 @@ export default {
     },
     align: {
       type: String,
-      default: "left",
+      default: 'left',
       validator(value) {
-        return ["left", "center", "right"].includes(value);
+        return ['left', 'center', 'right'].includes(value);
       },
     },
   },
   mounted() {
     this.$children.forEach(child => {
-      child.gutter = this.gutter;
-      child.align = this.align;
+      const vm = child;
+      vm.gutter = this.gutter;
+      vm.align = this.align;
     });
   },
   computed: {
     returnNegativeMargin() {
       return {
-        marginLeft: -this.gutter / 2 + "px",
-        marginRight: -this.gutter / 2 + "px",
+        marginLeft: `${-this.gutter / 2}px`,
+        marginRight: `${-this.gutter / 2}px`,
       };
     },
   },

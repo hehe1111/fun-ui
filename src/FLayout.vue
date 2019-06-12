@@ -6,7 +6,7 @@
 
 <script>
 export default {
-  name: "FunUILayout",
+  name: 'FunUILayout',
   data() {
     return {
       hasSidebar: false,
@@ -14,7 +14,7 @@ export default {
   },
   mounted() {
     this.$children.forEach(vm => {
-      if (vm.$options.name === "FunUISidebar") {
+      if (vm.$options.name === 'FunUISidebar') {
         this.hasSidebar = true;
       }
     });

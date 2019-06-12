@@ -7,7 +7,7 @@
 
 <script>
 export default {
-  name: "FunUIButtonGroup",
+  name: 'FunUIButtonGroup',
 };
 </script>
 

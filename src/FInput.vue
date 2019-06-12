@@ -19,9 +19,10 @@
 </template>
 
 <script>
-import FIcon from "./FIcon.vue";
+import FIcon from './FIcon.vue';
+
 export default {
-  name: "FunUIInput",
+  name: 'FunUIInput',
   props: {
     value: {
       type: String,

@@ -6,7 +6,7 @@
 
 <script>
 export default {
-  name: "FunUIFooter",
+  name: 'FunUIFooter',
 };
 </script>
 

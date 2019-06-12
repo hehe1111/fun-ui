@@ -1,19 +1,19 @@
 // Karma configuration
 // Generated on Thu Dec 27 2018 22:14:16 GMT+0800 (GMT+08:00)
 
-module.exports = function(config) {
+// eslint-disable-next-line prettier/prettier
+module.exports = function (config) {
   config.set({
     // base path that will be used to resolve all patterns (eg. files, exclude)
-    basePath: "",
+    basePath: '',
 
     // frameworks to use
     // available frameworks: https://npmjs.org/browse/keyword/karma-adapter
     // 写测试文件时无需再引入
-    frameworks: ["mocha", "sinon-chai"],
+    frameworks: ['mocha', 'sinon-chai'],
 
     // list of files / patterns to load in the browser
-    files: ["dist/**/*.test.js", "dist/**/*.test.css"],
-
+    files: ['dist/**/*.test.js', 'dist/**/*.test.css'],
     // list of files / patterns to exclude
     exclude: [],
 
@@ -24,7 +24,7 @@ module.exports = function(config) {
     // test results reporter to use
     // possible values: 'dots', 'progress'
     // available reporters: https://npmjs.org/browse/keyword/karma-reporter
-    reporters: ["progress"],
+    reporters: ['progress'],
 
     // web server port
     port: 9876,
@@ -42,7 +42,7 @@ module.exports = function(config) {
     // start these browsers
     // available browser launchers: https://npmjs.org/browse/keyword/karma-launcher
     // 无头浏览器：没有窗口界面的浏览器
-    browsers: ["ChromeHeadless"],
+    browsers: ['ChromeHeadless'],
 
     // Continuous Integration mode
     // if true, Karma captures browsers, runs the tests and exits

@@ -1,14 +1,14 @@
-import FIcon from "./src/FIcon.vue";
-import FButton from "./src/FButton.vue";
-import FButtonGroup from "./src/FButtonGroup.vue";
-import FInput from "./FInput.vue";
-import FRow from "./FRow.vue";
-import FCol from "./FCol.vue";
-import FLayout from "./FLayout.vue";
-import FHeader from "./FHeader.vue";
-import FSidebar from "./FSidebar.vue";
-import FContent from "./FContent.vue";
-import FFooter from "./FFooter.vue";
+import FIcon from './src/FIcon.vue';
+import FButton from './src/FButton.vue';
+import FButtonGroup from './src/FButtonGroup.vue';
+import FInput from './src/FInput.vue';
+import FRow from './src/FRow.vue';
+import FCol from './src/FCol.vue';
+import FLayout from './src/FLayout.vue';
+import FHeader from './src/FHeader.vue';
+import FSidebar from './src/FSidebar.vue';
+import FContent from './src/FContent.vue';
+import FFooter from './src/FFooter.vue';
 
 export {
   FButton,
