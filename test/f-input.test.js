@@ -1,9 +1,9 @@
 import Vue from 'vue';
-import chai from 'chai';
 import sinon from 'sinon';
 import { describe, it, afterEach } from 'mocha';
 import FInput from '../src/FInput.vue';
 
+// eslint-disable-next-line no-undef
 const { expect } = chai;
 
 Vue.config.productionTip = false;

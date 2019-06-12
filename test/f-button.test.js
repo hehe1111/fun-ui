@@ -1,13 +1,13 @@
 import Vue from 'vue';
-import chai from 'chai';
 import sinon from 'sinon';
 import { describe, it } from 'mocha';
 import FButton from '../src/FButton.vue';
 
+// eslint-disable-next-line no-undef
+const { expect } = chai;
+
 Vue.config.productionTip = false;
 Vue.config.devtools = false;
-
-const { expect } = chai;
 
 describe('FButton', () => {
   // expect(FButton).to.be.ok

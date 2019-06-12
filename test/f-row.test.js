@@ -1,9 +1,9 @@
 import Vue from 'vue';
-import chai from 'chai';
 import { describe, it } from 'mocha';
 import FRow from '../src/FRow.vue';
 import FCol from '../src/FCol.vue';
 
+// eslint-disable-next-line no-undef
 const { expect } = chai;
 
 Vue.config.productionTip = false;
