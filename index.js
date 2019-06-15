@@ -9,6 +9,7 @@ import FHeader from './src/FHeader.vue';
 import FSidebar from './src/FSidebar.vue';
 import FContent from './src/FContent.vue';
 import FFooter from './src/FFooter.vue';
+import FToast from './src/FToast.vue';
 
 export {
   FButton,
@@ -22,4 +23,5 @@ export {
   FLayout,
   FRow,
   FSidebar,
+  FToast,
 };

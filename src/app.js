@@ -10,6 +10,10 @@ import FHeader from './FHeader.vue';
 import FSidebar from './FSidebar.vue';
 import FContent from './FContent.vue';
 import FFooter from './FFooter.vue';
+import Plugin from './plugin';
+
+// Plugin.install(Vue)
+Vue.use(Plugin);
 
 // 全局注册
 // Vue.component('FButton', FButton)
@@ -35,12 +39,26 @@ window.vmm = new Vue({
     FContent,
     FFooter,
   },
+  created() {},
   methods: {
     changeHandler(event) {
       console.log('xxx', event);
     },
     clearText() {
       this.textWillBeCleared = '';
+    },
+    showToast() {
+      this.$toast(
+        '我是 Toast我是 Toast我是 Toast我是 Toast我是 Toast我是 Toast我是 Toast我是 Toast',
+        {
+          closeButton: {
+            text: '知道了安静点知道了安静点',
+            callback: () => {
+              console.log('huidiao知道了安静点');
+            },
+          },
+        }
+      );
     },
   },
 });
