@@ -1,9 +1,10 @@
 <template>
   <div class="toast">
-    <div class="slot-container">
-      <slot></slot>
+    <div class="slot-container" ref="slotContainer">
+      <slot v-if="!enableHTML"></slot>
+      <div v-else v-html="$slots.default"></div>
     </div>
-    <div class="line"></div>
+    <div class="line" ref="line"></div>
     <span class="close-button-text" v-if="closeButton" @click="onClickClose">{{ closeButton.text }}</span>
   </div>
 </template>
@@ -14,7 +15,7 @@ export default {
   props: {
     autoCloseDelay: {
       type: Number,
-      default: 3,
+      default: 300,
     },
     closeButton: {
       type: Object,
@@ -25,11 +26,20 @@ export default {
         };
       },
     },
+    enableHTML: {
+      type: Boolean,
+      default: false,
+    },
   },
   mounted() {
     setTimeout(() => {
       this.close();
     }, this.autoCloseDelay * 1000);
+    this.$nextTick(() => {
+      this.$refs.line.style.height = `${
+        this.$refs.slotContainer.getBoundingClientRect().height
+      }px`;
+    });
   },
   methods: {
     close() {
@@ -50,15 +60,17 @@ export default {
 $fontSize: 16px;
 $toastBg: rgba(0, 0, 0, 0.75);
 $padding: 1em;
+$left: 16px;
 
 @mixin verticalPadding {
   padding: 0.6 * $padding 0;
 }
 
 .toast {
+  max-width: 320px;
   font-size: $fontSize;
   line-height: 1.6;
-  padding: 0 1 * $padding;
+  padding-left: $padding;
   position: fixed;
   top: 0;
   left: 50%;
@@ -72,14 +84,24 @@ $padding: 1em;
 }
 .slot-container {
   @include verticalPadding;
+  word-break: break-all;
+  > div {
+    word-break: break-all;
+  }
 }
 .line {
   height: 100%;
   border-left: 1px solid #ccc;
-  margin: 0 16px;
+  margin-left: $left;
 }
 .close-button-text {
   @include verticalPadding;
   flex-shrink: 0;
+  padding-left: $left;
+  padding-right: $padding;
+  align-self: stretch;
+  display: flex;
+  align-items: center;
+  cursor: pointer;
 }
 </style>

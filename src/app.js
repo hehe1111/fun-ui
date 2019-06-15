@@ -48,17 +48,15 @@ window.vmm = new Vue({
       this.textWillBeCleared = '';
     },
     showToast() {
-      this.$toast(
-        '我是 Toast我是 Toast我是 Toast我是 Toast我是 Toast我是 Toast我是 Toast我是 Toast',
-        {
-          closeButton: {
-            text: '知道了安静点知道了安静点',
-            callback: () => {
-              console.log('huidiao知道了安静点');
-            },
-          },
-        }
-      );
+      this.$toast('我是 Toast<a href="https://baidu.com">百度</a>', {
+        enableHTML: true,
+        // closeButton: {
+        //   text: '知道了安静点知道了安静点',
+        //   callback: () => {
+        //     console.log('huidiao知道了安静点');
+        //   },
+        // },
+      });
     },
   },
 });
