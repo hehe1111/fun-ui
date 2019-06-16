@@ -75,12 +75,21 @@
         border: 1px dashed #ccc;
         word-break: break-all;
       }
+      #app {
+        display: flex;
+      }
+      #app > div {
+        margin: 0 10px;
+        cursor: pointer;
+      }
     </style>
   </head>
 
   <body>
     <div id="app" v-cloak>
-      <div @click="showToast">点我</div>
+      <div @click="showToast1">点我top</div>
+      <div @click="showToast2">点我middle</div>
+      <div @click="showToast3">点我bottom</div>
     </div>
     <script src="./src/app.js"></script>
     <script src="//at.alicdn.com/t/font_984242_8p8smoq9tl4.js"></script>

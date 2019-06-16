@@ -11,7 +11,7 @@ const validator = paramObj => {
   const keys = Object.keys(paramObj);
   // eslint-disable-next-line consistent-return
   keys.forEach(k => {
-    if (!['span', 'offset'].includes(k)) {
+    if (!(['span', 'offset'].indexOf(k) >= 0)) {
       return false;
     }
   });
