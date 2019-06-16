@@ -56,6 +56,7 @@ describe('FCol', () => {
     document.body.appendChild(div);
     const vm = new Constructor({
       propsData: {
+        span: 1,
         offset: 7,
       },
     }).$mount(div);
@@ -124,7 +125,7 @@ describe('FCol', () => {
     document.body.appendChild(div);
     div.innerHTML = `
       <f-row align="center">
-        <f-col col_align="right">1</f-col>
+        <f-col :span="1" col_align="right">1</f-col>
       </f-row>
     `;
 
