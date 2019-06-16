@@ -15,8 +15,7 @@
     "no-console": "off", // 允许 log
     "no-param-reassign": ["error", { "props": false }], // 允许在函数内修改函数参数
     "no-unused-vars": ["error", { "args": "none" }], // 允许函数参数声明但是未使用
-    // 允许使用短路运算 三元运算
-    "no-unused-expressions": ["error", { "allowShortCircuit": true, "allowTernary": true }],
+    "no-unused-expressions": "off",
     "no-multiple-empty-lines": ["error", { "max": 1, "maxEOF": 1 }],
     "eqeqeq": 0, // 必须使用严格相等符号 ===
     // 函数定义时括号前是否需要空格：匿名函数有，非匿名函数没有

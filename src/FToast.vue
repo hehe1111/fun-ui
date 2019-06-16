@@ -63,9 +63,11 @@ export default {
     },
     getLineHeight() {
       this.$nextTick(() => {
-        this.$refs.line.style.height = `${
-          this.$refs.slotContainer.getBoundingClientRect().height
-        }px`;
+        if (this.$refs.line && this.$refs.slotContainer) {
+          this.$refs.line.style.height = `${
+            this.$refs.slotContainer.getBoundingClientRect().height
+          }px`;
+        }
       });
     },
     close() {
