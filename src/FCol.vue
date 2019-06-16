@@ -23,7 +23,6 @@ export default {
   props: {
     span: {
       type: [Number, String],
-      required: true,
     },
     offset: {
       type: [Number, String],
