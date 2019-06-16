@@ -5,7 +5,7 @@ function createToast({ Vue, message, propsData, onClose }) {
   const toast = new Constructor({ propsData });
   toast.$slots.default = message;
   toast.$mount();
-  toast.on('close', onClose);
+  toast.$on('close', onClose);
   document.body.appendChild(toast.$el);
   return toast;
 }
