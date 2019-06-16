@@ -1,11 +1,17 @@
 <template>
-  <div class="toast" :class="classes">
-    <div class="slot-container" ref="slotContainer">
-      <slot v-if="!enableHTML"></slot>
-      <div v-else v-html="$slots.default"></div>
+  <div class="toast-container" :class="classes">
+    <div class="toast">
+      <div class="slot-container" ref="slotContainer">
+        <slot v-if="!enableHTML"></slot>
+        <div v-else v-html="$slots.default"></div>
+      </div>
+      <div class="line" ref="line"></div>
+      <span
+        class="close-button-text"
+        v-if="closeButton"
+        @click="onClickClose"
+      >{{ closeButton.text }}</span>
     </div>
-    <div class="line" ref="line"></div>
-    <span class="close-button-text" v-if="closeButton" @click="onClickClose">{{ closeButton.text }}</span>
   </div>
 </template>
 
@@ -113,39 +119,48 @@ $animationDuration: 0.4s;
   }
 }
 
+.toast-container {
+  // 外层做定位居中
+  position: fixed;
+  left: 50%;
+  transform: translateX(-50%);
+  &.position-top {
+    top: 0;
+    .toast {
+      // 内层做动画
+      border-top-left-radius: 0;
+      border-top-right-radius: 0;
+      animation: slide-down $animationDuration;
+    }
+  }
+  &.position-middle {
+    top: 50%;
+    transform: translate(-50%, -50%);
+    .toast {
+      animation: fade-in $animationDuration;
+    }
+  }
+  &.position-bottom {
+    bottom: 0;
+    .toast {
+      border-bottom-left-radius: 0;
+      border-bottom-right-radius: 0;
+      animation: slide-up $animationDuration;
+    }
+  }
+}
+
 .toast {
   max-width: 320px;
   font-size: $fontSize;
   line-height: 1.6;
   padding-left: $padding;
-  position: fixed;
-  left: 50%;
   border-radius: 6px;
   box-shadow: 0 1px 3px 0 rgba(0, 0, 0, 0.5);
   background-color: $toastBg;
   color: #fff;
   display: flex;
   align-items: center;
-
-  &.position-top {
-    top: 0;
-    transform: translateX(-50%);
-    border-top-left-radius: 0;
-    border-top-right-radius: 0;
-    animation: slide-down $animationDuration;
-  }
-  &.position-middle {
-    top: 50%;
-    transform: translate(-50%, -50%);
-    animation: fade-in $animationDuration;
-  }
-  &.position-bottom {
-    bottom: 0;
-    transform: translateX(-50%);
-    border-bottom-left-radius: 0;
-    border-bottom-right-radius: 0;
-    animation: slide-up $animationDuration;
-  }
 }
 .slot-container {
   @include verticalPadding;
