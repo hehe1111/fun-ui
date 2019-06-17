@@ -10,16 +10,18 @@
 <script>
 export default {
   name: 'FunUITabNav',
-  props: {
-    disable: {
-      type: Boolean,
-      default: false,
-    },
-  },
   inject: ['eventBus'],
 };
 </script>
 
 <style lang="scss" scoped>
-
+.tab-nav {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  > .actions-container {
+    margin-left: auto;
+    flex-shrink: 0;
+  }
+}
 </style>

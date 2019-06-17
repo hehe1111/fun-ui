@@ -27,10 +27,6 @@
         display: none;
       }
 
-      #app {
-        margin: 20px;
-      }
-
       body {
         font-size: var(--font-size);
       }
@@ -55,13 +51,16 @@
         flex-direction: column;
         align-items: flex-start;
       }
+
       .col > .col-inner {
         margin: 4px 0;
         min-height: 40px;
       }
+
       .col:nth-child(odd) > .col-inner {
         background-color: #378df1;
       }
+
       .col:nth-child(even) > .col-inner {
         background-color: #79b7ff;
       }
@@ -75,13 +74,6 @@
         border: 1px dashed #ccc;
         word-break: break-all;
       }
-      #app {
-        display: flex;
-      }
-      #app > div {
-        margin: 0 10px;
-        cursor: pointer;
-      }
     </style>
   </head>
 
@@ -89,17 +81,22 @@
     <div id="app" v-cloak>
       <f-tab :selected.sync="selectedTab">
         <f-tab-nav>
-          <f-tab-nav-item name="1">1</f-tab-nav-item>
+          <f-tab-nav-item name="1">
+            <f-icon name="setting"></f-icon>
+            1
+          </f-tab-nav-item>
           <f-tab-nav-item name="2">2</f-tab-nav-item>
           <f-tab-nav-item name="3">3</f-tab-nav-item>
+          <template slot="actions">
+            关闭
+          </template>
         </f-tab-nav>
         <f-tab-body>
-          <f-tab-body-item name="1">11</f-tab-body-item>
-          <f-tab-body-item name="2">22</f-tab-body-item>
-          <f-tab-body-item name="3">33</f-tab-body-item>
+          <f-tab-body-item name="1">0001</f-tab-body-item>
+          <f-tab-body-item name="2">0002</f-tab-body-item>
+          <f-tab-body-item name="3">0003</f-tab-body-item>
         </f-tab-body>
       </f-tab>
-
     </div>
     <script src="./src/app.js"></script>
     <script src="//at.alicdn.com/t/font_984242_8p8smoq9tl4.js"></script>

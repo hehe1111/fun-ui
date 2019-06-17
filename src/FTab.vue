@@ -32,10 +32,8 @@ export default {
       eventBus: this.eventBus,
     };
   },
-  created() {
-    this.eventBus.$on('update:selected', value => {
-      console.log('tab', value);
-    });
+  mounted() {
+    this.eventBus.$emit('update:selected', this.selected);
   },
 };
 </script>
