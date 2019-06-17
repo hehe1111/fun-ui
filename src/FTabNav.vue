@@ -1,6 +1,9 @@
 <template>
   <div class="tab-nav">
     <slot></slot>
+    <div class="actions-container">
+      <slot name="actions"></slot>
+    </div>
   </div>
 </template>
 
@@ -13,6 +16,7 @@ export default {
       default: false,
     },
   },
+  inject: ['eventBus'],
 };
 </script>
 
