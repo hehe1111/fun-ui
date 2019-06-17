@@ -29,7 +29,7 @@ describe('FToast', () => {
     });
   });
 
-  it('可以接受 closeButton 属性', () => {
+  it('可以接受 closeButton 属性', done => {
     const text = '关闭啦啦啦啦啦';
     const callback = sinon.fake();
     const toast = new Constructor({
@@ -43,8 +43,11 @@ describe('FToast', () => {
     toast.$mount();
     const button = toast.$el.querySelector('.close-button-text');
     expect(button.textContent.trim()).to.eq(text);
-    button.click();
-    expect(callback).to.have.been.called;
+    setTimeout(() => {
+      button.click();
+      expect(callback).to.have.been.called;
+      done();
+    }, 300);
   });
 
   it('可以接受 enableHTML 属性', () => {
