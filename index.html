@@ -87,9 +87,19 @@
 
   <body>
     <div id="app" v-cloak>
-      <div @click="showToast1">点我top</div>
-      <div @click="showToast2">点我middle</div>
-      <div @click="showToast3">点我bottom</div>
+      <f-tab :selected.sync="selectedTab">
+        <f-tab-nav>
+          <f-tab-nav-item name="1">1</f-tab-nav-item>
+          <f-tab-nav-item name="2">2</f-tab-nav-item>
+          <f-tab-nav-item name="3">3</f-tab-nav-item>
+        </f-tab-nav>
+        <f-tab-body>
+          <f-tab-body-item name="1">11</f-tab-body-item>
+          <f-tab-body-item name="2">22</f-tab-body-item>
+          <f-tab-body-item name="3">33</f-tab-body-item>
+        </f-tab-body>
+      </f-tab>
+
     </div>
     <script src="./src/app.js"></script>
     <script src="//at.alicdn.com/t/font_984242_8p8smoq9tl4.js"></script>
