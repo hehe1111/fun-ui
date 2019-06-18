@@ -34,6 +34,8 @@ export default {
   },
   mounted() {
     this.findSelectedNavItem();
+    this.addClassToChildComponent();
+    this.updateStyle();
   },
   methods: {
     findSelectedNavItem() {
@@ -49,6 +51,16 @@ export default {
           });
         }
       });
+    },
+    addClassToChildComponent() {
+      this.$children.forEach(vm => {
+        vm.$el.classList.add(this.direction);
+      });
+    },
+    updateStyle() {
+      if (this.direction === 'vertical') {
+        this.$el.style.display = 'flex';
+      }
     },
   },
 };

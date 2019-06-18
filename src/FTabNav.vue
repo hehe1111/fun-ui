@@ -1,7 +1,7 @@
 <template>
   <div class="tab-nav">
     <slot></slot>
-    <div class="bottom-line" ref="bottomLine"></div>
+    <div class="slideable-line" ref="slideableLine"></div>
     <div class="actions-container">
       <slot name="actions"></slot>
     </div>
@@ -13,14 +13,25 @@ export default {
   name: 'FunUITabNav',
   inject: ['eventBus'],
   mounted() {
-    this.getBottomLineStyle();
+    this.getSlideableLineStyle();
   },
   methods: {
-    getBottomLineStyle() {
+    getSlideableLineStyle() {
       this.eventBus.$on('update:selected', (value, vm) => {
-        const { width, left } = vm.$el.getBoundingClientRect();
-        this.$refs.bottomLine.style.width = `${width}px`;
-        this.$refs.bottomLine.style.left = `${left}px`;
+        // const { width: wrongWidth, left: wrongLeft } = vm.$el.getBoundingClientRect();
+        // console.log(wrongWidth, wrongLeft); // 1366 0
+        this.$nextTick(() => {
+          const { width, left, height, top } = vm.$el.getBoundingClientRect();
+          const isHorizontal = this.$el.classList.contains('horizontal');
+          if (isHorizontal) {
+            // console.log(width, left); // 56.21875 0
+            this.$refs.slideableLine.style.width = `${width}px`;
+            this.$refs.slideableLine.style.left = `${left}px`;
+          } else {
+            this.$refs.slideableLine.style.height = `${height}px`;
+            this.$refs.slideableLine.style.top = `${top}px`;
+          }
+        });
       });
     },
   },
@@ -30,30 +41,51 @@ export default {
 <style lang="scss" scoped>
 $blue: blue;
 $transitionDuration: 0.4s;
-$bottomLineHeight: 2px;
+$slideableLineWidth: 2px; // 线的粗细，不是长短
 $borderColor: #ddd;
 
 .tab-nav {
-  display: flex;
-  align-items: center;
-  flex-wrap: wrap;
+  // 共用样式
   position: relative;
-  border-bottom: $bottomLineHeight solid $borderColor;
-  > .bottom-line {
-    position: absolute;
-    top: 100%;
-    height: $bottomLineHeight;
-    border-radius: $bottomLineHeight;
+  border-style: solid;
+  border-color: $borderColor;
+  border-width: 0;
+  > .slideable-line {
     background-color: $blue;
+    border-radius: $slideableLineWidth;
     transition: all $transitionDuration;
   }
   > .actions-container {
-    margin-left: auto;
     padding: 0.5em 1em;
     flex-shrink: 0;
     display: flex;
     justify-content: center;
     align-items: center;
+  }
+  // tab 横向排列样式
+  &.horizontal {
+    display: flex;
+    align-items: center;
+    flex-wrap: wrap;
+    border-bottom-width: $slideableLineWidth;
+    > .slideable-line {
+      height: $slideableLineWidth;
+      position: absolute;
+      top: 100%;
+    }
+    > .actions-container {
+      margin-left: auto;
+    }
+  }
+  // tab 纵向排列样式
+  &.vertical {
+    display: block;
+    border-right-width: $slideableLineWidth;
+    > .slideable-line {
+      width: $slideableLineWidth;
+      position: absolute;
+      left: 100%;
+    }
   }
 }
 </style>

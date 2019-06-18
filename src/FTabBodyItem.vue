@@ -37,5 +37,6 @@ export default {
 <style lang="scss" scoped>
 .tab-body-item {
   padding: 1em;
+  height: 100%;
 }
 </style>

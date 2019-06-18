@@ -52,6 +52,7 @@ $transitionDuration: 0.4s;
 .tab-nav-item {
   flex-shrink: 0;
   display: flex;
+  justify-content: center;
   align-items: center;
   padding: 0.5em 1em;
   cursor: pointer;

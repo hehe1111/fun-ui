@@ -12,4 +12,7 @@ export default {
 </script>
 
 <style lang="scss" scoped>
+.tab-body {
+  flex: 1;
+}
 </style>
