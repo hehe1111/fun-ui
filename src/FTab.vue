@@ -33,11 +33,19 @@ export default {
     };
   },
   mounted() {
+    this.checkChild();
     this.findSelectedNavItem();
     this.addClassToChildComponent();
     this.updateStyle();
   },
   methods: {
+    checkChild() {
+      if (this.$children.length === 0) {
+        console &&
+          console.warn &&
+          console.warn('f-tab 的子组件应该是 f-tab-nav 和 f-tab-body');
+      }
+    },
     findSelectedNavItem() {
       this.$children.forEach(vm => {
         if (vm.$options.name === 'FunUITabNav') {

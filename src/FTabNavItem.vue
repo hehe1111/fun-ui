@@ -1,5 +1,5 @@
 <template>
-  <div class="tab-nav-item" :class="classes" @click="switchTab">
+  <div class="tab-nav-item" :class="classes" @click="switchTab" :data-name="name">
     <slot></slot>
   </div>
 </template>
@@ -24,9 +24,10 @@ export default {
   },
   inject: ['eventBus'],
   created() {
-    this.eventBus.$on('update:selected', (value, vm) => {
-      this.active = this.name === value;
-    });
+    this.eventBus &&
+      this.eventBus.$on('update:selected', (value, vm) => {
+        this.active = this.name === value;
+      });
   },
   computed: {
     classes() {
@@ -39,7 +40,8 @@ export default {
   methods: {
     switchTab() {
       if (this.disabled) return;
-      this.eventBus.$emit('update:selected', this.name, this);
+      this.eventBus && this.eventBus.$emit('update:selected', this.name, this);
+      this.$emit('click', this);
     },
   },
 };

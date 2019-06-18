@@ -20,9 +20,10 @@ export default {
   },
   inject: ['eventBus'],
   created() {
-    this.eventBus.$on('update:selected', value => {
-      this.active = this.name === value;
-    });
+    this.eventBus &&
+      this.eventBus.$on('update:selected', value => {
+        this.active = this.name === value;
+      });
   },
   computed: {
     classes() {
