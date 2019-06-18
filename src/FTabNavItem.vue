@@ -17,7 +17,7 @@ export default {
       type: [String, Number],
       required: true,
     },
-    disable: {
+    disabled: {
       type: Boolean,
       default: false,
     },
@@ -32,11 +32,13 @@ export default {
     classes() {
       return {
         active: this.active,
+        disabled: this.disabled,
       };
     },
   },
   methods: {
     switchTab() {
+      if (this.disabled) return;
       this.eventBus.$emit('update:selected', this.name, this);
     },
   },
@@ -56,6 +58,10 @@ $transitionDuration: 0.4s;
   transition: all $transitionDuration;
   &.active {
     color: $blue;
+  }
+  &.disabled {
+    color: grey;
+    cursor: not-allowed;
   }
 }
 </style>
