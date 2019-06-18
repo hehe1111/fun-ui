@@ -24,7 +24,7 @@ export default {
   },
   inject: ['eventBus'],
   created() {
-    this.eventBus.$on('update:selected', value => {
+    this.eventBus.$on('update:selected', (value, vm) => {
       this.active = this.name === value;
     });
   },
@@ -37,20 +37,25 @@ export default {
   },
   methods: {
     switchTab() {
-      this.eventBus.$emit('update:selected', this.name);
+      this.eventBus.$emit('update:selected', this.name, this);
     },
   },
 };
 </script>
 
 <style lang="scss" scoped>
-$navItemBg: #ddd;
+$blue: blue;
+$transitionDuration: 0.4s;
 
 .tab-nav-item {
   flex-shrink: 0;
+  display: flex;
+  align-items: center;
   padding: 0.5em 1em;
+  cursor: pointer;
+  transition: all $transitionDuration;
   &.active {
-    background-color: $navItemBg;
+    color: $blue;
   }
 }
 </style>

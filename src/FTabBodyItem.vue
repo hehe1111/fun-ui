@@ -35,11 +35,7 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-$bodyItemBg: #ddd;
-
 .tab-body-item {
-  &.active {
-    background-color: $bodyItemBg;
-  }
+  padding: 1em;
 }
 </style>

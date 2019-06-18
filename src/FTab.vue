@@ -33,7 +33,23 @@ export default {
     };
   },
   mounted() {
-    this.eventBus.$emit('update:selected', this.selected);
+    this.findSelectedNavItem();
+  },
+  methods: {
+    findSelectedNavItem() {
+      this.$children.forEach(vm => {
+        if (vm.$options.name === 'FunUITabNav') {
+          vm.$children.forEach(navItem => {
+            if (
+              navItem.$options.name === 'FunUITabNavItem' &&
+              navItem.name === this.selected
+            ) {
+              this.eventBus.$emit('update:selected', this.selected, navItem);
+            }
+          });
+        }
+      });
+    },
   },
 };
 </script>
