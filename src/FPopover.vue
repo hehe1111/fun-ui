@@ -20,6 +20,13 @@ export default {
   methods: {
     togglePopover() {
       this.visiable = !this.visiable;
+      this.$nextTick(() => {
+        const eventHandler = () => {
+          this.visiable = false;
+          document.removeEventListener('click', eventHandler);
+        };
+        document.addEventListener('click', eventHandler);
+      });
     },
   },
 };
