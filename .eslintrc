@@ -16,6 +16,7 @@
     "no-param-reassign": ["error", { "props": false }], // 允许在函数内修改函数参数
     "no-unused-vars": ["error", { "args": "none" }], // 允许函数参数声明但是未使用
     "no-unused-expressions": "off",
+    "no-useless-return": "off",
     "no-multiple-empty-lines": ["error", { "max": 1, "maxEOF": 1 }],
     "eqeqeq": 0, // 必须使用严格相等符号 ===
     // 函数定义时括号前是否需要空格：匿名函数有，非匿名函数没有
