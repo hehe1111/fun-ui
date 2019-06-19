@@ -16,6 +16,7 @@ import FTabNav from './FTabNav.vue';
 import FTabNavItem from './FTabNavItem.vue';
 import FTabBody from './FTabBody.vue';
 import FTabBodyItem from './FTabBodyItem.vue';
+import FPopover from './FPopover.vue';
 
 // Plugin.install(Vue)
 Vue.use(Plugin);
@@ -47,5 +48,6 @@ window.vmm = new Vue({
     FTabNavItem,
     FTabBody,
     FTabBodyItem,
+    FPopover,
   },
 });

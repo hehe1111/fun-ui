@@ -78,25 +78,19 @@
   </head>
 
   <body>
-    <div id="app" v-cloak>
-      <f-tab :selected.sync="selectedTab">
-        <f-tab-nav>
-          <f-tab-nav-item name="1">
-            <f-icon name="setting"></f-icon>
-            1
-          </f-tab-nav-item>
-          <f-tab-nav-item name="2" disabled>2</f-tab-nav-item>
-          <f-tab-nav-item name="3">3</f-tab-nav-item>
-          <template slot="actions">
-            关闭
-          </template>
-        </f-tab-nav>
-        <f-tab-body>
-          <f-tab-body-item name="1">0001</f-tab-body-item>
-          <f-tab-body-item name="2">0002</f-tab-body-item>
-          <f-tab-body-item name="3">0003</f-tab-body-item>
-        </f-tab-body>
-      </f-tab>
+    <div id="app" v-cloak style="margin: 100px;">
+      <f-popover>
+        <template slot="content">
+          <div>hahahhahhaha组件内容</div>
+        </template>
+        <button>点我</button>
+      </f-popover>
+      <f-popover>
+        <template slot="content">
+          <div>hahahhahhaha组件内容</div>
+        </template>
+        <button>点我</button>
+      </f-popover>
     </div>
     <script src="./src/app.js"></script>
     <script src="//at.alicdn.com/t/font_984242_8p8smoq9tl4.js"></script>
