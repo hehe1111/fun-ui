@@ -1,7 +1,8 @@
 <template>
   <div class="popover" ref="popover">
     <div class="content-container" :class="classes" v-if="visiable" ref="contentContainer">
-      <slot name="content"></slot>
+      <!-- slot-scope 把组件内部的东西暴露给插槽，从而可以在父组件作用域中调用 -->
+      <slot name="content" :close="close"></slot>
     </div>
     <div class="trigger-container" ref="triggerContainer">
       <slot></slot>

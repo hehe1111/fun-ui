@@ -89,10 +89,11 @@
       </f-popover>
 
       <f-popover position="bottom">
-        <template slot="content">
+        <template slot="content" slot-scope="{close}">
           <div>hahahhahhaha组件内容222222222</div>
           <div>hahahhahhaha组件内容222222222</div>
           <div>hahahhahhaha组件内容222222222</div>
+          <f-button @click="close">关闭</f-button>
         </template>
         <f-button>点我</f-button>
       </f-popover>
@@ -123,10 +124,11 @@
       </f-popover>
 
       <f-popover position="bottom" trigger="hover">
-        <template slot="content">
+        <template slot="content" slot-scope="{close}">
           <div>hahahhahhaha组件内容222222222</div>
           <div>hahahhahhaha组件内容222222222</div>
           <div>hahahhahhaha组件内容222222222</div>
+          <f-button @click="close">关闭</f-button>
         </template>
         <f-button>点我</f-button>
       </f-popover>
