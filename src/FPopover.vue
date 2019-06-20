@@ -50,15 +50,40 @@ export default {
 </script>
 
 <style lang="scss" scoped>
+$borderColor: #333;
+$borderRadius: 4px;
+
 body {
   position: relative;
 }
 .popver {
   display: inline-block;
+  vertical-align: top;
 }
 .content-container {
+  max-width: 20em;
+  margin-top: -10px;
+  border: 1px solid $borderColor;
+  border-radius: $borderRadius;
+  padding: 0.5em 1em;
   position: absolute;
-  border: 1px solid red;
   transform: translateY(-100%);
+  word-break: break-all;
+  // box-shadow: 0 0 3px rgba(0, 0, 0, 0.5);
+  filter: drop-shadow(0 0 3px rgba(0, 0, 0, 0.5));
+  background-color: #fff;
+  &::before,
+  &::after {
+    content: '';
+    border: 10px solid transparent;
+    border-top-color: $borderColor;
+    position: absolute;
+    top: 100%;
+    left: 10px;
+  }
+  &::after {
+    margin-top: -1px;
+    border-top-color: #fff;
+  }
 }
 </style>
