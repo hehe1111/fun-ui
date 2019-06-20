@@ -3,7 +3,7 @@
     <div class="content-container" :class="classes" v-if="visiable" ref="contentContainer">
       <slot name="content"></slot>
     </div>
-    <div class="button-container" ref="buttonContainer">
+    <div class="trigger-container" ref="triggerContainer">
       <slot></slot>
     </div>
   </div>
@@ -34,20 +34,10 @@ export default {
     },
   },
   mounted() {
-    if (this.trigger === 'click') {
-      this.$refs.popover.addEventListener('click', this.onClick);
-    } else {
-      this.$refs.popover.addEventListener('mouseenter', this.open);
-      this.$refs.popover.addEventListener('mouseleave', this.close);
-    }
+    this.addTriggerMouseListener();
   },
   destroyed() {
-    if (this.trigger === 'click') {
-      this.$refs.popover.removeEventListener('click', this.onClick);
-    } else {
-      this.$refs.popover.removeEventListener('mouseenter', this.open);
-      this.$refs.popover.removeEventListener('mouseleave', this.close);
-    }
+    this.removeTriggerMouseListener();
   },
   computed: {
     classes() {
@@ -57,15 +47,78 @@ export default {
     },
   },
   methods: {
-    relocatePopoverContent() {
-      const { contentContainer, buttonContainer } = this.$refs;
+    onClickTrigger() {
+      this.visiable ? this.close() : this.open();
+    },
+    open() {
+      clearTimeout(this.timer);
+      this.visiable = true;
+      this.$nextTick(() => {
+        this.handleContent();
+        document.addEventListener('click', this.onClickDocument);
+      });
+    },
+    close() {
+      // 这里语句执行顺序不能变，必须先移除监听器，再隐藏元素
+      this.removeContentMouseListener();
+      this.visiable = false;
+      document.removeEventListener('click', this.onClickDocument);
+    },
+    closeAfterDelay() {
+      this.timer = setTimeout(() => this.close(), 200);
+    },
+    handleContent() {
+      this.relocateContent();
+      this.addContentMouseListener();
+    },
+    addTriggerMouseListener() {
+      if (this.trigger === 'click') {
+        this.$refs.popover.addEventListener('click', this.onClickTrigger);
+      } else {
+        this.$refs.popover.addEventListener('mouseenter', this.open);
+        this.$refs.popover.addEventListener('mouseleave', this.closeAfterDelay);
+      }
+    },
+    removeTriggerMouseListener() {
+      if (this.trigger === 'click') {
+        this.$refs.popover.removeEventListener('click', this.onClickTrigger);
+      } else {
+        this.$refs.popover.removeEventListener('mouseenter', this.open);
+        this.$refs.popover.removeEventListener(
+          'mouseleave',
+          this.closeAfterDelay
+        );
+      }
+    },
+    enterContent() {
+      clearTimeout(this.timer);
+    },
+    addContentMouseListener() {
+      if (this.trigger === 'hover') {
+        const { contentContainer } = this.$refs;
+        contentContainer.addEventListener('mouseenter', this.enterContent);
+        contentContainer.addEventListener('mouseleave', this.closeAfterDelay);
+      }
+    },
+    removeContentMouseListener() {
+      if (this.trigger === 'hover') {
+        const { contentContainer } = this.$refs;
+        contentContainer.removeEventListener('mouseenter', this.enterContent);
+        contentContainer.removeEventListener(
+          'mouseleave',
+          this.closeAfterDelay
+        );
+      }
+    },
+    relocateContent() {
+      const { contentContainer, triggerContainer } = this.$refs;
       document.body.appendChild(contentContainer);
       const {
         width,
         height,
         top,
         left,
-      } = buttonContainer.getBoundingClientRect();
+      } = triggerContainer.getBoundingClientRect();
       const locationParams = {
         top: { top, left },
         bottom: { top: top + height, left },
@@ -76,17 +129,6 @@ export default {
       style.top = `${locationParams[this.position].top + window.scrollY}px`;
       style.left = `${locationParams[this.position].left + window.scrollX}px`;
     },
-    open() {
-      this.visiable = true;
-      this.$nextTick(() => {
-        this.relocatePopoverContent();
-        document.addEventListener('click', this.onClickDocument);
-      });
-    },
-    close() {
-      this.visiable = false;
-      document.removeEventListener('click', this.onClickDocument);
-    },
     onClickDocument(event) {
       // 点击 popover 的按钮时，点击会冒泡到 document 上，此时应该阻止该点击事件
       if (this.$refs.popover.contains(event.target)) return;
@@ -96,9 +138,6 @@ export default {
         return;
       }
       this.close();
-    },
-    onClick() {
-      this.visiable ? this.close() : this.open();
     },
   },
 };
