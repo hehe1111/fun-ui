@@ -1,5 +1,5 @@
 <template>
-  <div class="popover" @click="togglePopover" ref="popover">
+  <div class="popover" ref="popover">
     <div class="content-container" :class="classes" v-if="visiable" ref="contentContainer">
       <slot name="content"></slot>
     </div>
@@ -25,6 +25,29 @@ export default {
         return ['top', 'bottom', 'left', 'right'].indexOf(value) >= 0;
       },
     },
+    trigger: {
+      type: String,
+      default: 'click',
+      validator(value) {
+        return ['click', 'hover'].indexOf(value) >= 0;
+      },
+    },
+  },
+  mounted() {
+    if (this.trigger === 'click') {
+      this.$refs.popover.addEventListener('click', this.onClick);
+    } else {
+      this.$refs.popover.addEventListener('mouseenter', this.open);
+      this.$refs.popover.addEventListener('mouseleave', this.close);
+    }
+  },
+  destroyed() {
+    if (this.trigger === 'click') {
+      this.$refs.popover.removeEventListener('click', this.onClick);
+    } else {
+      this.$refs.popover.removeEventListener('mouseenter', this.open);
+      this.$refs.popover.removeEventListener('mouseleave', this.close);
+    }
   },
   computed: {
     classes() {
@@ -65,13 +88,16 @@ export default {
       document.removeEventListener('click', this.onClickDocument);
     },
     onClickDocument(event) {
+      // 点击 popover 的按钮时，点击会冒泡到 document 上，此时应该阻止该点击事件
+      if (this.$refs.popover.contains(event.target)) return;
+
       // 点击 popover 的内容部分时，内容部分不消失
       if (this.visiable && this.$refs.contentContainer.contains(event.target)) {
         return;
       }
       this.close();
     },
-    togglePopover(event) {
+    onClick() {
       this.visiable ? this.close() : this.open();
     },
   },
@@ -115,6 +141,7 @@ $borderRadius: 4px;
       left: 10px;
       top: 100%;
       border-top-color: $borderColor;
+      border-bottom: none; /* 防止闪烁 */
     }
     &::after {
       margin-top: -1px;
@@ -128,6 +155,7 @@ $borderRadius: 4px;
       left: 10px;
       bottom: 100%;
       border-bottom-color: $borderColor;
+      border-top: none; /* 防止闪烁 */
     }
     &::after {
       margin-bottom: -1px;
@@ -143,6 +171,7 @@ $borderRadius: 4px;
       transform: translateY(-50%);
       left: 100%;
       border-left-color: $borderColor;
+      border-right: none; /* 防止闪烁 */
     }
     &::after {
       margin-left: -1px;
@@ -158,6 +187,7 @@ $borderRadius: 4px;
       transform: translateY(-50%);
       right: 100%;
       border-right-color: $borderColor;
+      border-left: none; /* 防止闪烁 */
     }
     &::after {
       margin-right: -1px;
