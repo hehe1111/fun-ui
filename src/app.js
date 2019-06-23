@@ -17,6 +17,8 @@ import FTabNavItem from './FTabNavItem.vue';
 import FTabBody from './FTabBody.vue';
 import FTabBodyItem from './FTabBodyItem.vue';
 import FPopover from './FPopover.vue';
+import FCollapse from './FCollapse.vue';
+import FCollapseItem from './FCollapseItem.vue';
 
 // Plugin.install(Vue)
 Vue.use(Plugin);
@@ -27,9 +29,6 @@ Vue.use(Plugin);
 // Vue.component('FButtonGroup', FButtonGroup)
 window.vmm = new Vue({
   el: '#app',
-  data: {
-    selectedTab: '1',
-  },
   // 局部注册
   components: {
     FButton,
@@ -49,5 +48,7 @@ window.vmm = new Vue({
     FTabBody,
     FTabBodyItem,
     FPopover,
+    FCollapse,
+    FCollapseItem,
   },
 });
