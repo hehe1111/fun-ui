@@ -7,7 +7,12 @@
 <script>
 export default {
   name: 'FunUITabBody',
-  inject: ['eventBus'],
+  inject: {
+    eventBus: {
+      from: 'eventBus',
+      default: () => {},
+    },
+  },
 };
 </script>
 

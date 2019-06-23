@@ -18,9 +18,14 @@ export default {
       required: true,
     },
   },
-  inject: ['eventBus'],
+  inject: {
+    eventBus: {
+      from: 'eventBus',
+      default: () => {},
+    },
+  },
   created() {
-    this.eventBus &&
+    this.eventBus.$on &&
       this.eventBus.$on('update:selected', value => {
         this.active = this.name === value;
       });

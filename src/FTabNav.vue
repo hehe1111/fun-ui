@@ -11,28 +11,34 @@
 <script>
 export default {
   name: 'FunUITabNav',
-  inject: ['eventBus'],
+  inject: {
+    eventBus: {
+      from: 'eventBus',
+      default: () => {},
+    },
+  },
   mounted() {
     this.getSlideableLineStyle();
   },
   methods: {
     getSlideableLineStyle() {
-      this.eventBus.$on('update:selected', (value, vm) => {
-        // const { width: wrongWidth, left: wrongLeft } = vm.$el.getBoundingClientRect();
-        // console.log(wrongWidth, wrongLeft); // 1366 0
-        this.$nextTick(() => {
-          const { width, left, height, top } = vm.$el.getBoundingClientRect();
-          const isHorizontal = this.$el.classList.contains('horizontal');
-          if (isHorizontal) {
-            // console.log(width, left); // 56.21875 0
-            this.$refs.slideableLine.style.width = `${width}px`;
-            this.$refs.slideableLine.style.left = `${left}px`;
-          } else {
-            this.$refs.slideableLine.style.height = `${height}px`;
-            this.$refs.slideableLine.style.top = `${top}px`;
-          }
+      this.eventBus.$on &&
+        this.eventBus.$on('update:selected', (value, vm) => {
+          // const { width: wrongWidth, left: wrongLeft } = vm.$el.getBoundingClientRect();
+          // console.log(wrongWidth, wrongLeft); // 1366 0
+          this.$nextTick(() => {
+            const { width, left, height, top } = vm.$el.getBoundingClientRect();
+            const isHorizontal = this.$el.classList.contains('horizontal');
+            if (isHorizontal) {
+              // console.log(width, left); // 56.21875 0
+              this.$refs.slideableLine.style.width = `${width}px`;
+              this.$refs.slideableLine.style.left = `${left}px`;
+            } else {
+              this.$refs.slideableLine.style.height = `${height}px`;
+              this.$refs.slideableLine.style.top = `${top}px`;
+            }
+          });
         });
-      });
     },
   },
 };

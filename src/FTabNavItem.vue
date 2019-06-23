@@ -22,9 +22,16 @@ export default {
       default: false,
     },
   },
-  inject: ['eventBus'],
+  // inject: ['eventBus'],
+  // 可选注入，以便测试
+  inject: {
+    eventBus: {
+      from: 'eventBus',
+      default: () => {},
+    },
+  },
   created() {
-    this.eventBus &&
+    this.eventBus.$on &&
       this.eventBus.$on('update:selected', (value, vm) => {
         this.active = this.name === value;
       });
@@ -40,7 +47,8 @@ export default {
   methods: {
     switchTab() {
       if (this.disabled) return;
-      this.eventBus && this.eventBus.$emit('update:selected', this.name, this);
+      this.eventBus.$emit &&
+        this.eventBus.$emit('update:selected', this.name, this);
       this.$emit('click', this);
     },
   },
