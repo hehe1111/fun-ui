@@ -1,6 +1,6 @@
 <template>
-  <div class="collapse-item" @click="toggleContent">
-    <header class="title" :class="classes">{{ title }}</header>
+  <div class="collapse-item">
+    <header class="title" :class="classes" @click="toggleContent">{{ title }}</header>
     <div class="content" v-if="isOpened">
       <slot></slot>
     </div>
@@ -15,6 +15,16 @@ export default {
       type: String,
       required: true,
     },
+    name: {
+      type: String,
+      required: true,
+    },
+  },
+  inject: {
+    eventBus: {
+      from: 'eventBus',
+      default: () => {},
+    },
   },
   data() {
     return {
@@ -28,9 +38,16 @@ export default {
       };
     },
   },
+  mounted() {
+    this.eventBus.$on('update:opened', items => {
+      this.isOpened = items.indexOf(this.name) >= 0;
+    });
+  },
   methods: {
     toggleContent() {
-      this.isOpened = !this.isOpened;
+      this.isOpened
+        ? this.eventBus.$emit('removeOpenedItem', this.name)
+        : this.eventBus.$emit('addOpenedItem', this.name);
     },
   },
 };

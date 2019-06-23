@@ -30,6 +30,9 @@ Vue.use(Plugin);
 window.vmm = new Vue({
   el: '#app',
   // 局部注册
+  data: {
+    openedItemArray: ['c3', 'c2'],
+  },
   components: {
     FButton,
     FIcon,
