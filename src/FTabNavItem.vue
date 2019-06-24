@@ -31,7 +31,8 @@ export default {
     },
   },
   created() {
-    this.eventBus.$on &&
+    this.eventBus &&
+      this.eventBus.$on &&
       this.eventBus.$on('update:selected', (value, vm) => {
         this.active = this.name === value;
       });
