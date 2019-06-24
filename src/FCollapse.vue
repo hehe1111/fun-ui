@@ -12,6 +12,9 @@ export default {
   props: {
     opened: {
       type: Array,
+      validator(value) {
+        return value.every(n => typeof n === 'string');
+      },
     },
     single: {
       type: Boolean,
