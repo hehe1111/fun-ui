@@ -1,5 +1,5 @@
 <template>
-  <div class="collapse-item">
+  <div class="collapse-item" :data-name="name">
     <header class="title" :class="classes" @click="toggleContent">{{ title }}</header>
     <div class="content" v-if="isOpened">
       <slot></slot>
