@@ -29,13 +29,21 @@ export default {
 </script>
 
 <style lang="scss" scoped>
+$buttonHeight: 32px;
+$fontSize: 14px;
+$buttonBgColor: white;
+$buttonActiveBgColor: #eee;
+$borderRadius: 4px;
+$borderColor: #999;
+$borderHoverColor: #666;
+
 .f-button {
-  height: var(--button-height);
-  font-size: var(--font-size);
+  height: $buttonHeight;
+  font-size: $fontSize;
   padding: 0 1em;
-  border-radius: var(--border-radius);
-  border: 1px solid var(--border-color);
-  background-color: var(--button-bg-color);
+  border-radius: $borderRadius;
+  border: 1px solid $borderColor;
+  background-color: $buttonBgColor;
   display: inline-flex;
   justify-content: center;
   align-items: center;
@@ -43,10 +51,10 @@ export default {
   vertical-align: middle;
 
   &:hover {
-    border-color: var(--border-hover-color);
+    border-color: $borderHoverColor;
   }
   &:active {
-    background-color: var(--button-active-bg-color);
+    background-color: $buttonActiveBgColor;
   }
   &:focus {
     outline: none;
