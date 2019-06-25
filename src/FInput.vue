@@ -1,5 +1,5 @@
 <template>
-  <div class="input-wrapper" :class="{error}">
+  <div class="input-wrapper" :class="classes">
     <input
       type="text"
       :value="value"
@@ -45,6 +45,11 @@ export default {
   },
   components: {
     FIcon,
+  },
+  methods: {
+    classes() {
+      return { error: this.error };
+    },
   },
 };
 </script>

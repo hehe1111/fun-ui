@@ -1,5 +1,5 @@
 <template>
-  <div class="col" :class="returnColClass" :style="returnGutterStyle">
+  <div class="col" :class="classes" :style="returnGutterStyle">
     <div class="col-inner">
       <slot></slot>
     </div>
@@ -43,7 +43,7 @@ export default {
     };
   },
   computed: {
-    returnColClass() {
+    classes() {
       const {
         span,
         offset,

@@ -1,10 +1,5 @@
 <template>
-  <svg
-    class="icon"
-    :class="name === 'loading' ? 'loading' : ''"
-    aria-hidden="true"
-    @click="$emit('click', $event)"
-  >
+  <svg class="icon" :class="classes" aria-hidden="true" @click="$emit('click', $event)">
     <use :xlink:href="`#icon-${name}`"></use>
   </svg>
 </template>
@@ -18,6 +13,11 @@ export default {
       validator(value) {
         return !!value;
       },
+    },
+  },
+  computed: {
+    classes() {
+      return this.name === 'loading' ? 'loading' : '';
     },
   },
 };

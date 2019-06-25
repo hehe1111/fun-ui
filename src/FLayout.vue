@@ -1,5 +1,5 @@
 <template>
-  <div class="layout" :class="{ 'has-sidebar': hasSidebar }">
+  <div class="layout" :class="classes">
     <slot></slot>
   </div>
 </template>
@@ -18,6 +18,11 @@ export default {
         this.hasSidebar = true;
       }
     });
+  },
+  methods: {
+    classes() {
+      return { 'has-sidebar': this.hasSidebar };
+    },
   },
 };
 </script>
