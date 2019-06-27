@@ -21,7 +21,7 @@ export default {
   inject: {
     eventBus: {
       from: 'eventBus',
-      default: () => {},
+      default: () => ({}),
     },
   },
   created() {

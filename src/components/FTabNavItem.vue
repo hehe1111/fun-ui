@@ -32,12 +32,11 @@ export default {
   inject: {
     eventBus: {
       from: 'eventBus',
-      default: () => {},
+      default: () => ({}),
     },
   },
   created() {
-    this.eventBus &&
-      this.eventBus.$on &&
+    this.eventBus.$on &&
       this.eventBus.$on('update:selected', (value, vm) => {
         this.active = this.name === value;
       });
