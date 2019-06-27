@@ -2,8 +2,8 @@
   <div class="toast-container" :class="classes">
     <div class="toast">
       <div class="slot-container" ref="slotContainer">
-        <slot v-if="!enableHTML" />
-        <div v-else v-html="$slots.default"></div>
+        <div v-if="!enableHTML">{{ message }}</div>
+        <div v-else v-html="message"></div>
       </div>
       <div class="line" ref="line"></div>
       <span
@@ -20,6 +20,9 @@
 export default {
   name: 'FunUIToast',
   props: {
+    message: {
+      type: String,
+    },
     autoCloseDelay: {
       type: Number,
       default: 3,
