@@ -2,10 +2,12 @@
   <div class="sidebar-container">
     <transition name="sidebar-slide">
       <div class="sidebar" v-if="isSwitchOn">
-        <slot></slot>
+        <slot />
       </div>
     </transition>
-    <button class="sidebar-switch" @click="toggleSwitch">{{ switchText }}</button>
+    <button class="sidebar-switch" @click="toggleSwitch">
+      {{ switchText }}
+    </button>
   </div>
 </template>
 
@@ -28,6 +30,8 @@ export default {
 </script>
 
 <style lang="scss" scoped>
+@import '../assets/_var.scss';
+
 .sidebar-container {
   display: flex;
 }
@@ -42,11 +46,11 @@ export default {
 }
 .sidebar-slide-enter-active {
   /* 0 到 100% */
-  animation: sidebar-slide 0.5s;
+  animation: sidebar-slide $duration;
 }
 .sidebar-slide-leave-active {
   /* 100% 到 0 */
-  animation: sidebar-slide 0.5s reverse;
+  animation: sidebar-slide $duration reverse;
 }
 @keyframes sidebar-slide {
   0% {

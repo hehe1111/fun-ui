@@ -1,7 +1,7 @@
 <template>
   <!-- slot 不能作为组件根元素 -->
   <div class="f-button-group">
-    <slot></slot>
+    <slot />
   </div>
 </template>
 
@@ -12,7 +12,7 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-$borderRadius: 4px;
+@import '../assets/_var.scss';
 
 .f-button-group {
   display: inline-flex;

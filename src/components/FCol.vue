@@ -1,7 +1,7 @@
 <template>
   <div class="col" :class="classes" :style="returnGutterStyle">
     <div class="col-inner">
-      <slot></slot>
+      <slot />
     </div>
   </div>
 </template>
@@ -9,7 +9,6 @@
 <script>
 const validator = paramObj => {
   const keys = Object.keys(paramObj);
-  // eslint-disable-next-line consistent-return
   keys.forEach(k => {
     if (!(['span', 'offset'].indexOf(k) >= 0)) {
       return false;

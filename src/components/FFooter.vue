@@ -1,6 +1,6 @@
 <template>
   <div class="footer">
-    <slot></slot>
+    <slot />
   </div>
 </template>
 
@@ -10,5 +10,4 @@ export default {
 };
 </script>
 
-<style lang="scss" scoped>
-</style>
+<style lang="scss" scoped></style>

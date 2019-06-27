@@ -1,11 +1,16 @@
 <template>
   <div class="popover" ref="popover">
-    <div class="content-container" :class="classes" v-if="visiable" ref="contentContainer">
+    <div
+      class="content-container"
+      :class="classes"
+      v-if="visiable"
+      ref="contentContainer"
+    >
       <!-- slot-scope 把组件内部的东西暴露给插槽，从而可以在父组件作用域中调用 -->
-      <slot name="content" :close="close"></slot>
+      <slot name="content" :close="close" />
     </div>
     <div class="trigger-container" ref="triggerContainer">
-      <slot></slot>
+      <slot />
     </div>
   </div>
 </template>
@@ -145,8 +150,7 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-$borderColor: #333;
-$borderRadius: 4px;
+@import '../assets/_var.scss';
 
 .popover {
   display: inline-block;
@@ -160,8 +164,8 @@ $borderRadius: 4px;
   padding: 0.5em 1em;
   position: absolute;
   word-break: break-all;
-  // box-shadow: 0 0 3px rgba(0, 0, 0, 0.5);
-  filter: drop-shadow(0 0 3px rgba(0, 0, 0, 0.5));
+  // box-shadow: 0 0 3px $boxShadow;
+  filter: drop-shadow(0 0 3px $boxShadow);
   background-color: #fff;
 
   &::before,

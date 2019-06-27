@@ -1,9 +1,9 @@
 <template>
   <div class="tab-nav">
-    <slot></slot>
+    <slot />
     <div class="slideable-line" ref="slideableLine"></div>
     <div class="actions-container">
-      <slot name="actions"></slot>
+      <slot name="actions" />
     </div>
   </div>
 </template>
@@ -45,21 +45,18 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-$blue: blue;
-$transitionDuration: 0.4s;
-$slideableLineWidth: 2px; // 线的粗细，不是长短
-$borderColor: #ddd;
+@import '../assets/_var.scss';
 
 .tab-nav {
   // 共用样式
   position: relative;
   border-style: solid;
-  border-color: $borderColor;
+  border-color: $borderColorLight;
   border-width: 0;
   > .slideable-line {
     background-color: $blue;
     border-radius: $slideableLineWidth;
-    transition: all $transitionDuration;
+    transition: all $duration;
   }
   > .actions-container {
     padding: 0.5em 1em;

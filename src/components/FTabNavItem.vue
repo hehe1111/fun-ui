@@ -1,6 +1,11 @@
 <template>
-  <div class="tab-nav-item" :class="classes" @click="switchTab" :data-name="name">
-    <slot></slot>
+  <div
+    class="tab-nav-item"
+    :class="classes"
+    @click="switchTab"
+    :data-name="name"
+  >
+    <slot />
   </div>
 </template>
 
@@ -57,8 +62,7 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-$blue: blue;
-$transitionDuration: 0.4s;
+@import '../assets/_var.scss';
 
 .tab-nav-item {
   flex-shrink: 0;
@@ -67,7 +71,7 @@ $transitionDuration: 0.4s;
   align-items: center;
   padding: 0.5em 1em;
   cursor: pointer;
-  transition: all $transitionDuration;
+  transition: all $duration;
   &.active {
     color: $blue;
   }

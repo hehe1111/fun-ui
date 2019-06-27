@@ -1,6 +1,6 @@
 <template>
   <div class="tab-body-item" :class="classes" v-if="active">
-    <slot></slot>
+    <slot />
   </div>
 </template>
 

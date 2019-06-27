@@ -2,7 +2,7 @@
   <div class="toast-container" :class="classes">
     <div class="toast">
       <div class="slot-container" ref="slotContainer">
-        <slot v-if="!enableHTML"></slot>
+        <slot v-if="!enableHTML" />
         <div v-else v-html="$slots.default"></div>
       </div>
       <div class="line" ref="line"></div>
@@ -10,7 +10,8 @@
         class="close-button-text"
         v-if="closeButton"
         @click="onClickClose"
-      >{{ closeButton.text }}</span>
+        >{{ closeButton.text }}</span
+      >
     </div>
   </div>
 </template>
@@ -86,11 +87,11 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-$fontSize: 16px;
-$toastBg: rgba(0, 0, 0, 0.75);
+@import '../assets/_var.scss';
+
 $padding: 1em;
 $left: 16px;
-$animationDuration: 0.4s;
+
 @mixin verticalPadding {
   padding: 0.6 * $padding 0;
 }
@@ -132,14 +133,14 @@ $animationDuration: 0.4s;
       // 内层做动画
       border-top-left-radius: 0;
       border-top-right-radius: 0;
-      animation: slide-down $animationDuration;
+      animation: slide-down $duration;
     }
   }
   &.position-middle {
     top: 50%;
     transform: translate(-50%, -50%);
     .toast {
-      animation: fade-in $animationDuration;
+      animation: fade-in $duration;
     }
   }
   &.position-bottom {
@@ -147,7 +148,7 @@ $animationDuration: 0.4s;
     .toast {
       border-bottom-left-radius: 0;
       border-bottom-right-radius: 0;
-      animation: slide-up $animationDuration;
+      animation: slide-up $duration;
     }
   }
 }
@@ -158,7 +159,7 @@ $animationDuration: 0.4s;
   line-height: 1.6;
   padding-left: $padding;
   border-radius: 6px;
-  box-shadow: 0 1px 3px 0 rgba(0, 0, 0, 0.5);
+  box-shadow: 0 1px 3px 0 $boxShadow;
   background-color: $toastBg;
   color: #fff;
   display: flex;

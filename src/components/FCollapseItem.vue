@@ -1,8 +1,10 @@
 <template>
   <div class="collapse-item" :data-name="name">
-    <header class="title" :class="classes" @click="toggleContent">{{ title }}</header>
+    <header class="title" :class="classes" @click="toggleContent">
+      {{ title }}
+    </header>
     <div class="content" v-if="isOpened">
-      <slot></slot>
+      <slot />
     </div>
   </div>
 </template>
@@ -54,8 +56,7 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-$borderColor: #ddd;
-$borderRadius: 4px;
+@import '../assets/_var.scss';
 
 .collapse-item {
   > .title,
@@ -63,7 +64,7 @@ $borderRadius: 4px;
     padding: 0.5em;
   }
   > .title {
-    border: 1px solid $borderColor;
+    border: 1px solid $borderColorLight;
     margin: -1px;
     display: flex;
     align-items: center;

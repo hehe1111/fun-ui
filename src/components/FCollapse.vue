@@ -1,6 +1,6 @@
 <template>
   <div class="collapse">
-    <slot></slot>
+    <slot />
   </div>
 </template>
 
@@ -75,11 +75,10 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-$borderColor: #ddd;
-$borderRadius: 4px;
+@import '../assets/_var.scss';
 
 .collapse {
-  border: 1px solid $borderColor;
+  border: 1px solid $borderColorLight;
   border-radius: $borderRadius;
 }
 </style>

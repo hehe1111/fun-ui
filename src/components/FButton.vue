@@ -1,7 +1,11 @@
 <template>
   <button class="f-button" @click="$emit('click')">
-    <f-icon v-if="icon" :name="icon" :class="{[`icon-${iconPosition}`]: true}"></f-icon>
-    <slot></slot>
+    <f-icon
+      v-if="icon"
+      :name="icon"
+      :class="{ [`icon-${iconPosition}`]: true }"
+    />
+    <slot />
   </button>
 </template>
 
@@ -29,16 +33,10 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-$buttonHeight: 32px;
-$fontSize: 14px;
-$buttonBgColor: white;
-$buttonActiveBgColor: #eee;
-$borderRadius: 4px;
-$borderColor: #999;
-$borderHoverColor: #666;
+@import '../assets/_var.scss';
 
 .f-button {
-  height: $buttonHeight;
+  height: $height;
   font-size: $fontSize;
   padding: 0 1em;
   border-radius: $borderRadius;
@@ -51,7 +49,7 @@ $borderHoverColor: #666;
   vertical-align: middle;
 
   &:hover {
-    border-color: $borderHoverColor;
+    border-color: $borderColorHover;
   }
   &:active {
     background-color: $buttonActiveBgColor;
