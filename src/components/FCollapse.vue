@@ -32,10 +32,10 @@ export default {
     };
   },
   mounted() {
-    const openedCopy = this.checkOpened();
-    this.eventBus.$emit('update:opened', openedCopy);
-    this.onRemoveOpenedItem(openedCopy);
-    this.onAddOpenedItem(openedCopy);
+    this.openedCopy = this.checkOpened();
+    this.eventBus.$emit('update:opened', this.openedCopy);
+    this.onRemoveOpenedItem();
+    this.onAddOpenedItem();
   },
   methods: {
     checkOpened() {
@@ -50,25 +50,27 @@ export default {
       }
       return openedCopy;
     },
-    onRemoveOpenedItem(items) {
+    onRemoveOpenedItem() {
+      const { openedCopy } = this;
       this.eventBus.$on('removeOpenedItem', item => {
-        if (this.single) items.length = 0;
-        const index = items.indexOf(item);
-        index >= 0 && items.splice(index, 1);
-        this.emitNewOpenedItems(items);
+        if (this.single) openedCopy.splice(0);
+        const index = openedCopy.indexOf(item);
+        index >= 0 && openedCopy.splice(index, 1);
+        this.emitNewOpenedItems(openedCopy);
       });
     },
-    onAddOpenedItem(items) {
+    onAddOpenedItem() {
+      const { openedCopy } = this;
       this.eventBus.$on('addOpenedItem', item => {
-        if (this.single) items.length = 0;
-        items.push(item);
-        this.emitNewOpenedItems(items);
+        if (this.single) openedCopy.splice(0);
+        openedCopy.push(item);
+        this.emitNewOpenedItems(openedCopy);
       });
     },
-    emitNewOpenedItems(items) {
-      const temp = JSON.parse(JSON.stringify(items));
-      this.eventBus.$emit('update:opened', temp);
-      this.$emit('update:opened', temp);
+    emitNewOpenedItems() {
+      const { openedCopy } = this;
+      this.eventBus.$emit('update:opened', openedCopy);
+      this.$emit('update:opened', openedCopy);
     },
   },
 };
