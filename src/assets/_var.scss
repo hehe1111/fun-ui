@@ -15,3 +15,11 @@ $inputWidth: 400px;
 $red: #f1453d;
 $slideableLineWidth: 2px; // 线的粗细，不是长短
 $toastBg: rgba(0, 0, 0, 0.75);
+
+*,
+*::before,
+*::after {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
