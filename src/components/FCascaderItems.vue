@@ -1,5 +1,5 @@
 <template>
-  <div class="cascader-items">
+  <div class="cascader-items" :style="cascaderItemsStyle">
     <div class="level left">
       <div
         class="label"
@@ -26,11 +26,21 @@ export default {
     items: {
       type: Array,
     },
+    height: {
+      type: String,
+    },
   },
   data() {
     return {
       selected: null,
     };
+  },
+  computed: {
+    cascaderItemsStyle() {
+      return {
+        height: this.height,
+      };
+    },
   },
 };
 </script>

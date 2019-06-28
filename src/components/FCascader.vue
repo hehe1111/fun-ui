@@ -2,7 +2,7 @@
   <div class="cascader">
     <div class="trigger" @click="isPopoverVisiable = !isPopoverVisiable"></div>
     <div class="popover" v-if="isPopoverVisiable">
-      <f-cascader-items :items="source" />
+      <f-cascader-items :items="source" :height="popoverHeight" />
     </div>
   </div>
 </template>
@@ -15,6 +15,10 @@ export default {
   props: {
     source: {
       type: Array,
+    },
+    popoverHeight: {
+      type: String,
+      default: '14em',
     },
   },
   data() {
@@ -33,7 +37,6 @@ export default {
     border: 1px solid red;
   }
   .popover {
-    height: 14em;
     overflow: auto;
     border: 1px solid red;
     display: flex;
