@@ -63,11 +63,15 @@ export default {
   > .content {
     padding: 0.5em;
   }
+  > .title:hover {
+    background-color: $greyHover;
+  }
   > .title {
     border: 1px solid $borderColorLight;
     margin: -1px;
     display: flex;
     align-items: center;
+    background-color: $grey;
   }
   &:first-child {
     > .title {
