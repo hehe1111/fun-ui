@@ -162,7 +162,7 @@ $left: 16px;
   line-height: 1.6;
   padding-left: $padding;
   border-radius: 6px;
-  box-shadow: 0 1px 3px 0 $boxShadow;
+  box-shadow: 0 1px 3px 0 $boxShadowColor;
   background-color: $toastBg;
   color: #fff;
   display: flex;

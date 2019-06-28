@@ -13,12 +13,12 @@
     <f-input value="禁止" disabled />
     <f-input value="禁止" clearable @click="value = ''" />
     <f-input value="禁止" error="这是错误信息" />
-    <f-collapse :opened="['xxx']" single>
+    <f-collapse :opened.sync="openedCollapseItems">
       <f-collapse-item name="xxx" title="标题1">内容1</f-collapse-item>
       <f-collapse-item name="yyy" title="标题2">内容2</f-collapse-item>
       <f-collapse-item name="ccc" title="标题3">内容3</f-collapse-item>
     </f-collapse>
-
+    {{ openedCollapseItems }}
     <f-button @click="showPopover">点我 toast</f-button>
     <f-popover>
       <template slot="content"
@@ -51,9 +51,14 @@ export default {
     FInput,
     FPopover,
   },
+  data() {
+    return {
+      openedCollapseItems: ['xxx', 'yyy'],
+    };
+  },
   methods: {
     showPopover() {
-      this.$toast('弹出内容', {
+      this.$toast('<p id="testHTML" style="color: red">哈哈哈</p>', {
         autoCloseDelay: 300,
       });
     },

@@ -164,8 +164,8 @@ export default {
   padding: 0.5em 1em;
   position: absolute;
   word-break: break-all;
-  // box-shadow: 0 0 3px $boxShadow;
-  filter: drop-shadow(0 0 3px $boxShadow);
+  // box-shadow: 0 0 3px $boxShadowColor;
+  filter: drop-shadow(0 0 3px $boxShadowColor);
   background-color: #fff;
 
   &::before,

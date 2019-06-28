@@ -83,7 +83,7 @@ export default {
       border-color: $borderColorHover;
     }
     &:focus {
-      box-shadow: inset 0 0 5px $boxShadow;
+      box-shadow: inset 0 0 5px $boxShadowColor;
       outline: none;
     }
     &[disabled],
@@ -94,11 +94,11 @@ export default {
     }
   }
   &.error {
-    color: $errorColor;
+    color: $red;
     > input {
-      border-color: $errorColor;
+      border-color: $red;
       &:focus {
-        box-shadow: inset 0 0 5px $errorColor;
+        box-shadow: inset 0 0 5px $red;
       }
       &:hover {
         border-color: red;
