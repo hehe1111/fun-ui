@@ -35,10 +35,7 @@
     "env": {
       "node": true
     },
-    "extends": [
-      "plugin:vue/essential",
-      "@vue/prettier"
-    ],
+    "extends": ["plugin:vue/essential", "@vue/prettier"],
     "rules": {
       "no-console": "off",
       "no-param-reassign": [
@@ -70,18 +67,9 @@
           "named": "never"
         }
       ],
-      "array-bracket-spacing": [
-        "error",
-        "never"
-      ],
-      "object-curly-spacing": [
-        "error",
-        "always"
-      ],
-      "func-names": [
-        "error",
-        "never"
-      ],
+      "array-bracket-spacing": ["error", "never"],
+      "object-curly-spacing": ["error", "always"],
+      "func-names": ["error", "never"],
       "prettier/prettier": [
         "error",
         {
@@ -101,8 +89,5 @@
       "autoprefixer": {}
     }
   },
-  "browserslist": [
-    "> 1%",
-    "last 2 versions"
-  ]
+  "browserslist": ["> 1%", "last 2 versions"]
 }
