@@ -1,6 +1,6 @@
 <template>
-  <div class="cascader-items" :style="cascaderItemsStyle">
-    <div class="level left">
+  <div class="cascader-items">
+    <div class="level left" :style="levelLeftStyle">
       <div
         class="label-container"
         v-for="item in items"
@@ -19,6 +19,7 @@
         :items="rightItems"
         :selected="selected"
         @update:selected="onUpdateSelected"
+        :height="height"
       />
     </div>
   </div>
@@ -45,7 +46,7 @@ export default {
     },
   },
   computed: {
-    cascaderItemsStyle() {
+    levelLeftStyle() {
       return {
         height: this.height,
       };
@@ -84,10 +85,9 @@ export default {
 @import '../assets/_var.scss';
 
 .cascader-items {
-  height: 100%;
   display: flex;
   > .level {
-    height: 100%;
+    overflow: auto;
     > .label-container {
       min-width: 6em;
       padding: 0.5em;

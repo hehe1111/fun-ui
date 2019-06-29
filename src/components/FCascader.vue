@@ -2,7 +2,6 @@
   <div class="cascader">
     <div class="trigger" @click="isPopoverVisiable = !isPopoverVisiable"></div>
     <div class="popover" v-if="isPopoverVisiable">
-      <!-- TODO: height 需要重新实现！考虑是否需要层层传递 -->
       <f-cascader-items
         :items="source"
         :selected="selected"
@@ -56,7 +55,6 @@ export default {
     border: 1px solid grey;
   }
   .popover {
-    overflow: auto;
     margin-top: 0.2em;
     display: flex;
     position: absolute;
