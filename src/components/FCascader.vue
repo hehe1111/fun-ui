@@ -1,6 +1,8 @@
 <template>
   <div class="cascader">
-    <div class="trigger" @click="isPopoverVisiable = !isPopoverVisiable"></div>
+    <div class="trigger" @click="isPopoverVisiable = !isPopoverVisiable">
+      {{ result }}
+    </div>
     <div class="popover" v-if="isPopoverVisiable">
       <f-cascader-items
         :items="source"
@@ -35,6 +37,11 @@ export default {
       isPopoverVisiable: false,
     };
   },
+  computed: {
+    result() {
+      return this.selected.map(i => i.name).join(' / ');
+    },
+  },
   methods: {
     onUpdateSelected($event) {
       this.$emit('update:selected', $event);
@@ -52,7 +59,11 @@ export default {
   .trigger {
     width: 20em;
     height: 2em;
-    border: 1px solid grey;
+    padding: 0 0.5em;
+    border: 1px solid $borderColor;
+    border-radius: $borderRadius;
+    display: flex;
+    align-items: center;
   }
   .popover {
     margin-top: 0.2em;
@@ -62,6 +73,7 @@ export default {
     background-color: #fff;
     box-shadow: 0 0 5px 0 lighten($boxShadowColor, 34%);
     border-radius: $borderRadius;
+    z-index: 1;
   }
 }
 </style>
