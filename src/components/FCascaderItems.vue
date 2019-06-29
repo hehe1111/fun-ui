@@ -3,6 +3,7 @@
     <div class="level left" :style="levelLeftStyle">
       <div
         class="label-container"
+        :class="{ active: actived === item.name }"
         v-for="item in items"
         :key="item.name"
         @click="onSelected(item)"
@@ -45,6 +46,11 @@ export default {
       type: Array,
     },
   },
+  data() {
+    return {
+      actived: '',
+    };
+  },
   computed: {
     levelLeftStyle() {
       return {
@@ -66,6 +72,8 @@ export default {
   },
   methods: {
     onSelected(item) {
+      this.actived = item.name;
+
       const selectedCopy = JSON.parse(JSON.stringify(this.selected));
       this.$set(selectedCopy, this.level, item);
       selectedCopy.splice(this.level + 1);
@@ -93,6 +101,7 @@ export default {
       padding: 0.5em;
       display: flex;
       align-items: center;
+      &.active,
       &:hover {
         background-color: $grey;
       }
