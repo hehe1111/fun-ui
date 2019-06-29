@@ -17,7 +17,8 @@
       <fun-u-i-cascader-items
         :level="level + 1"
         :items="rightItems"
-        :selected-result="selectedResult"
+        :selected="selected"
+        @update:selected="onUpdateSelected"
       />
     </div>
   </div>
@@ -39,21 +40,9 @@ export default {
       type: Number,
       default: 0,
     },
-    selectedResult: {
+    selected: {
       type: Array,
-      default: () => [],
     },
-  },
-  inject: {
-    eventBus: {
-      from: 'eventBus',
-      default: () => ({}),
-    },
-  },
-  data() {
-    return {
-      selected: null,
-    };
   },
   computed: {
     cascaderItemsStyle() {
@@ -62,7 +51,7 @@ export default {
       };
     },
     rightItems() {
-      const currentSelected = this.selectedResult[this.level];
+      const currentSelected = this.selected[this.level];
       if (
         currentSelected &&
         currentSelected.children &&
@@ -76,9 +65,13 @@ export default {
   },
   methods: {
     onSelected(item) {
-      this.selected = item;
-      this.eventBus.$emit &&
-        this.eventBus.$emit('left-selected', { [this.level]: item });
+      const selectedCopy = JSON.parse(JSON.stringify(this.selected));
+      this.$set(selectedCopy, this.level, item);
+      selectedCopy.splice(this.level + 1);
+      this.$emit('update:selected', selectedCopy);
+    },
+    onUpdateSelected($event) {
+      this.$emit('update:selected', $event);
     },
   },
   components: {

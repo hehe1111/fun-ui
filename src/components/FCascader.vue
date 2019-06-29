@@ -5,7 +5,8 @@
       <!-- TODO: height 需要重新实现！考虑是否需要层层传递 -->
       <f-cascader-items
         :items="source"
-        :selected-result="selectedResult"
+        :selected="selected"
+        @update:selected="onUpdateSelected"
         :height="popoverHeight"
       />
     </div>
@@ -13,7 +14,6 @@
 </template>
 
 <script>
-import Vue from 'vue';
 import FCascaderItems from './FCascaderItems';
 
 export default {
@@ -21,6 +21,10 @@ export default {
   props: {
     source: {
       type: Array,
+    },
+    selected: {
+      type: Array,
+      default: () => [],
     },
     popoverHeight: {
       type: String,
@@ -30,21 +34,12 @@ export default {
   data() {
     return {
       isPopoverVisiable: false,
-      eventBus: new Vue(),
-      selectedResult: [],
     };
   },
-  provide() {
-    return {
-      eventBus: this.eventBus,
-    };
-  },
-  mounted() {
-    this.eventBus.$on('left-selected', $event => {
-      const key = Object.keys($event)[0];
-      this.$set(this.selectedResult, key, $event[key]);
-      this.selectedResult.splice(parseInt(key) + 1);
-    });
+  methods: {
+    onUpdateSelected($event) {
+      this.$emit('update:selected', $event);
+    },
   },
   components: { FCascaderItems },
 };
