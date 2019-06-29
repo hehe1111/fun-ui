@@ -5,7 +5,7 @@
         class="label-container"
         v-for="item in items"
         :key="item.name"
-        @click="selected = item"
+        @click="onSelected(item)"
       >
         <span class="label">{{ item.name }}</span>
         <template v-if="item.children && item.children.length">
@@ -14,7 +14,11 @@
       </div>
     </div>
     <div class="level right" v-if="rightItems">
-      <fun-u-i-cascader-items :items="rightItems" />
+      <fun-u-i-cascader-items
+        :level="level + 1"
+        :items="rightItems"
+        :selected-result="selectedResult"
+      />
     </div>
   </div>
 </template>
@@ -31,6 +35,20 @@ export default {
     height: {
       type: String,
     },
+    level: {
+      type: Number,
+      default: 0,
+    },
+    selectedResult: {
+      type: Array,
+      default: () => [],
+    },
+  },
+  inject: {
+    eventBus: {
+      from: 'eventBus',
+      default: () => ({}),
+    },
   },
   data() {
     return {
@@ -44,12 +62,23 @@ export default {
       };
     },
     rightItems() {
-      const { selected } = this;
-      if (selected && selected.children && selected.children.length) {
-        return selected.children;
+      const currentSelected = this.selectedResult[this.level];
+      if (
+        currentSelected &&
+        currentSelected.children &&
+        currentSelected.children.length
+      ) {
+        return currentSelected.children;
       } else {
         return null;
       }
+    },
+  },
+  methods: {
+    onSelected(item) {
+      this.selected = item;
+      this.eventBus.$emit &&
+        this.eventBus.$emit('left-selected', { [this.level]: item });
     },
   },
   components: {
