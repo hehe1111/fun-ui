@@ -3,7 +3,11 @@
     <div class="level left" :style="levelLeftStyle">
       <div
         class="label-container"
-        :class="{ active: actived === item.name }"
+        :class="{
+          active:
+            item.name === actived ||
+            (selected[level] && item.name === selected[level].name),
+        }"
         v-for="item in items"
         :key="item.name"
         @click="onSelected(item)"
