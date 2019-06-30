@@ -1,10 +1,7 @@
 <template>
   <div id="app">
-    <f-cascader
-      :source.sync="source"
-      :selected.sync="selected"
-      :load-data="loadData"
-    />
+    <f-cascader :source.sync="source" :selected.sync="selected" />
+    <!-- :load-data="loadData" -->
     selected - {{ selected }}
     <hr />
     source - {{ source }}
@@ -30,6 +27,40 @@ function ajax(id = 0) {
   });
 }
 
+const db2 = [
+  {
+    name: '浙江',
+    children: [
+      {
+        name: '杭州',
+        children: [{ name: '上城' }, { name: '下城' }, { name: '江干' }],
+      },
+      {
+        name: '嘉兴',
+        children: [{ name: '南湖' }, { name: '秀洲' }, { name: '嘉善' }],
+      },
+    ],
+  },
+  {
+    name: '福建',
+    children: [
+      {
+        name: '福州',
+        children: [{ name: '鼓楼' }, { name: '台江' }, { name: '仓山' }],
+      },
+    ],
+  },
+  {
+    name: '安徽',
+    children: [
+      {
+        name: '合肥',
+        children: [{ name: '瑶海' }, { name: '庐阳' }],
+      },
+    ],
+  },
+];
+
 export default {
   name: 'app',
   components: {
@@ -38,11 +69,11 @@ export default {
   data() {
     return {
       selected: [],
-      source: [],
+      source: db2,
     };
   },
   created() {
-    ajax(0).then(result => (this.source = result));
+    // ajax(0).then(result => (this.source = result));
   },
   methods: {
     loadData({ id }, updateSource) {

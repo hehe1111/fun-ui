@@ -9,6 +9,7 @@
         :selected="selected"
         @update:selected="onUpdateSelected"
         :height="popoverHeight"
+        :load-data="loadData"
       />
     </div>
   </div>
@@ -80,6 +81,7 @@ export default {
         JSON.stringify($event[$event.length - 1])
       );
       !latestSelected.isLeaf &&
+        this.loadData &&
         this.loadData(latestSelected, this.updateSource);
     },
   },

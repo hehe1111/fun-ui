@@ -9,9 +9,7 @@
         @click="onSelected(item)"
       >
         <span class="label">{{ item.name }}</span>
-        <template v-if="!item.isLeaf">
-          <f-icon name="right" />
-        </template>
+        <f-icon name="right" v-if="isRightIconVisiable(item)" />
       </div>
     </div>
     <div class="level right" v-if="rightItems">
@@ -21,6 +19,7 @@
         :selected="selected"
         @update:selected="onUpdateSelected"
         :height="height"
+        :load-data="loadData"
       />
     </div>
   </div>
@@ -44,6 +43,9 @@ export default {
     },
     selected: {
       type: Array,
+    },
+    loadData: {
+      type: Function,
     },
   },
   data() {
@@ -84,6 +86,9 @@ export default {
     },
     onUpdateSelected($event) {
       this.$emit('update:selected', $event);
+    },
+    isRightIconVisiable(item) {
+      return this.loadData ? !item.isLeaf : item.children;
     },
   },
   components: {
