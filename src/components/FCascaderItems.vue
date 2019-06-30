@@ -104,6 +104,8 @@ export default {
       padding: 0.5em;
       display: flex;
       align-items: center;
+      user-select: none;
+      cursor: pointer;
       &.active,
       &:hover {
         background-color: $grey;
