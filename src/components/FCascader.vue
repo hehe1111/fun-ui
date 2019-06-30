@@ -1,8 +1,6 @@
 <template>
-  <div class="cascader">
-    <div class="trigger" @click="isPopoverVisiable = !isPopoverVisiable">
-      {{ result }}
-    </div>
+  <div class="cascader" ref="cascader">
+    <div class="trigger" @click="togglePopover">{{ result }}</div>
     <div class="popover" v-if="isPopoverVisiable">
       <f-cascader-items
         :items="source"
@@ -47,6 +45,25 @@ export default {
     },
   },
   methods: {
+    togglePopover() {
+      this.isPopoverVisiable ? this.close() : this.open();
+    },
+    open() {
+      this.isPopoverVisiable = true;
+      this.$nextTick(() => {
+        document.addEventListener('click', this.onClickDocument);
+      });
+    },
+    close() {
+      this.isPopoverVisiable = false;
+      document.removeEventListener('click', this.onClickDocument);
+    },
+    onClickDocument(event) {
+      if (this.$refs.cascader.contains(event.target)) {
+        return;
+      }
+      this.close();
+    },
     updateSource(result) {
       const latestSelected = this.selected[this.selected.length - 1];
       const simple = (targetArray, id) => {
@@ -93,6 +110,7 @@ export default {
 @import '../assets/_var.scss';
 
 .cascader {
+  display: inline-block;
   position: relative;
   .trigger {
     width: 20em;
