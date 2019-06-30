@@ -79,7 +79,8 @@ export default {
       const latestSelected = JSON.parse(
         JSON.stringify($event[$event.length - 1])
       );
-      this.loadData(latestSelected, this.updateSource);
+      !latestSelected.isLeaf &&
+        this.loadData(latestSelected, this.updateSource);
     },
   },
   components: { FCascaderItems },
