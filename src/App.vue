@@ -18,9 +18,14 @@ import db from './assets/db.js';
 function ajax(id = 0) {
   return new Promise((resolve, reject) => {
     setTimeout(() => {
-      resolve(
-        JSON.parse(JSON.stringify(db.filter(n => n['parent_id'] === id)))
+      const result = JSON.parse(
+        JSON.stringify(db.filter(n => n['parent_id'] === id))
       );
+      result.forEach(a => {
+        const hasChild = db.some(b => b['parent_id'] === a.id);
+        a.isLeaf = !hasChild;
+      });
+      resolve(result);
     }, 500);
   });
 }

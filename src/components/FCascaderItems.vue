@@ -9,7 +9,7 @@
         @click="onSelected(item)"
       >
         <span class="label">{{ item.name }}</span>
-        <template v-if="item.children && item.children.length">
+        <template v-if="!item.isLeaf">
           <f-icon name="right" />
         </template>
       </div>
