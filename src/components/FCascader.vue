@@ -8,6 +8,7 @@
         @update:selected="onUpdateSelected"
         :height="popoverHeight"
         :load-data="loadData"
+        :loading-item="loadingItem"
       />
     </div>
   </div>
@@ -38,6 +39,7 @@ export default {
   data() {
     return {
       isPopoverVisiable: false,
+      loadingItem: {},
     };
   },
   computed: {
@@ -83,16 +85,21 @@ export default {
       const sourceCopy = JSON.parse(JSON.stringify(this.source));
       const willBeUpdated = complex(sourceCopy, latestSelected.id);
       if (willBeUpdated && result.length) willBeUpdated.children = result;
+      // 数据更新完成（数据加载完成之后还需要更新到 source 上）
       this.$emit('update:source', sourceCopy);
+      this.loadingItem = {};
     },
     onUpdateSelected($event) {
       this.$emit('update:selected', $event);
+
       const latestSelected = JSON.parse(
         JSON.stringify($event[$event.length - 1])
       );
-      !latestSelected.isLeaf &&
-        this.loadData &&
+      if (!latestSelected.isLeaf && this.loadData) {
+        // 开始加载数据
+        this.loadingItem = latestSelected;
         this.loadData(latestSelected, this.updateSource);
+      }
     },
   },
   components: { FCascaderItems },

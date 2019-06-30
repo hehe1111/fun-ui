@@ -9,7 +9,8 @@
         @click="onSelected(item)"
       >
         <span class="label">{{ item.name }}</span>
-        <f-icon name="right" v-if="isRightIconVisiable(item)" />
+        <f-icon name="right" class="next" v-if="isRightIconVisiable(item)" />
+        <f-icon name="loading" v-if="isLoadingIconVisiable(item)" />
       </div>
     </div>
     <div class="level right" v-if="rightItems">
@@ -20,6 +21,7 @@
         @update:selected="onUpdateSelected"
         :height="height"
         :load-data="loadData"
+        :loading-item="loadingItem"
       />
     </div>
   </div>
@@ -46,6 +48,10 @@ export default {
     },
     loadData: {
       type: Function,
+    },
+    loadingItem: {
+      type: Object,
+      default: () => ({}),
     },
   },
   data() {
@@ -88,12 +94,17 @@ export default {
       this.$emit('update:selected', $event);
     },
     isRightIconVisiable(item) {
+      if (this.isLoadingIconVisiable(item)) return false;
       return this.loadData ? !item.isLeaf : item.children;
     },
+    isLoadingIconVisiable(item) {
+      // item.id === this.loadingItem.id 剔除掉区名跟市名相同的情况 省-市-区
+      return (
+        item.name === this.loadingItem.name && item.id === this.loadingItem.id
+      );
+    },
   },
-  components: {
-    FIcon,
-  },
+  components: { FIcon },
 };
 </script>
 
@@ -110,6 +121,7 @@ export default {
       display: flex;
       align-items: center;
       user-select: none;
+      white-space: nowrap;
       cursor: pointer;
       &.active,
       &:hover {
