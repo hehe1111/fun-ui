@@ -1,13 +1,29 @@
 <template>
   <div id="app">
-    2333
-    {{ selectedResult }}
-    <f-cascader :source="source" :selected.sync="selectedResult" />2333
+    <f-cascader
+      :source.sync="source"
+      :selected.sync="selected"
+      :load-data="loadData"
+    />
+    selected - {{ selected }}
+    <hr />
+    source - {{ source }}
   </div>
 </template>
 
 <script>
 import FCascader from './components/FCascader';
+import db from './assets/db.js';
+
+function ajax(id = 0) {
+  return new Promise((resolve, reject) => {
+    setTimeout(() => {
+      resolve(
+        JSON.parse(JSON.stringify(db.filter(n => n['parent_id'] === id)))
+      );
+    }, 500);
+  });
+}
 
 export default {
   name: 'app',
@@ -16,45 +32,17 @@ export default {
   },
   data() {
     return {
-      selectedResult: [],
-      source: [
-        {
-          name: '浙江浙江',
-          children: [
-            {
-              name: '杭州杭州',
-              children: [
-                { name: '上城上城' },
-                { name: '下城' },
-                { name: '江干' },
-              ],
-            },
-            {
-              name: '嘉兴',
-              children: [{ name: '南湖' }, { name: '秀洲' }, { name: '嘉善' }],
-            },
-          ],
-        },
-        {
-          name: '福建',
-          children: [
-            {
-              name: '福州',
-              children: [{ name: '鼓楼' }, { name: '台江' }, { name: '仓山' }],
-            },
-          ],
-        },
-        {
-          name: '安徽',
-          children: [
-            {
-              name: '合肥',
-              children: [{ name: '瑶海' }, { name: '庐阳' }],
-            },
-          ],
-        },
-      ],
+      selected: [],
+      source: [],
     };
+  },
+  created() {
+    ajax(0).then(result => (this.source = result));
+  },
+  methods: {
+    loadData({ id }, updateSource) {
+      ajax(id).then(result => updateSource(result));
+    },
   },
 };
 </script>

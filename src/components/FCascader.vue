@@ -31,6 +31,9 @@ export default {
       type: String,
       default: '14em',
     },
+    loadData: {
+      type: Function,
+    },
   },
   data() {
     return {
@@ -43,8 +46,40 @@ export default {
     },
   },
   methods: {
+    updateSource(result) {
+      const latestSelected = this.selected[this.selected.length - 1];
+      const simple = (targetArray, id) => {
+        return targetArray.filter(n => n.id === id)[0];
+      };
+      const complex = (targetArray, id) => {
+        let found = simple(targetArray, id);
+        if (found) {
+          return found;
+        }
+        const hasChildren = [];
+        const noChildren = [];
+        targetArray.forEach(n => {
+          n.children ? hasChildren.push(n) : noChildren.push(n);
+        });
+        for (let i = 0; i < hasChildren.length; i++) {
+          found = complex(hasChildren[i].children, id);
+          if (found) {
+            return found;
+          }
+        }
+      };
+
+      const sourceCopy = JSON.parse(JSON.stringify(this.source));
+      const willBeUpdated = complex(sourceCopy, latestSelected.id);
+      if (willBeUpdated && result.length) willBeUpdated.children = result;
+      this.$emit('update:source', sourceCopy);
+    },
     onUpdateSelected($event) {
       this.$emit('update:selected', $event);
+      const latestSelected = JSON.parse(
+        JSON.stringify($event[$event.length - 1])
+      );
+      this.loadData(latestSelected, this.updateSource);
     },
   },
   components: { FCascaderItems },

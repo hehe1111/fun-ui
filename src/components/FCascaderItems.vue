@@ -58,16 +58,19 @@ export default {
       };
     },
     rightItems() {
-      const currentSelected = this.selected[this.level];
-      if (
-        currentSelected &&
-        currentSelected.children &&
-        currentSelected.children.length
-      ) {
-        return currentSelected.children;
-      } else {
-        return null;
+      // this.selected 只记录每一层选中的值，其元素不会有 children 属性
+      // this.items 来源于顶层的 source
+      // source 经过更新后，其元素会有 children 属性
+      // 所以应该从 this.items 里拿 children 作为 rightItems 进行渲染
+      if (this.selected[this.level]) {
+        let currentSelected = this.items.filter(
+          item => item.name === this.selected[this.level].name
+        )[0];
+        if (currentSelected.children && currentSelected.children.length) {
+          return currentSelected.children;
+        }
       }
+      return null;
     },
   },
   methods: {
