@@ -1,5 +1,5 @@
 <template>
-  <div class="cascader" ref="cascader">
+  <div class="cascader" ref="cascader" v-click-outside="close">
     <div class="trigger" @click="togglePopover">{{ result }}</div>
     <div class="popover" v-if="isPopoverVisiable">
       <f-cascader-items
@@ -15,6 +15,7 @@
 
 <script>
 import FCascaderItems from './FCascaderItems';
+import { clickOutside } from './directives';
 
 export default {
   name: 'FunUIFCascader',
@@ -49,20 +50,12 @@ export default {
       this.isPopoverVisiable ? this.close() : this.open();
     },
     open() {
+      if (this.isPopoverVisiable) return;
       this.isPopoverVisiable = true;
-      this.$nextTick(() => {
-        document.addEventListener('click', this.onClickDocument);
-      });
     },
     close() {
+      if (!this.isPopoverVisiable) return;
       this.isPopoverVisiable = false;
-      document.removeEventListener('click', this.onClickDocument);
-    },
-    onClickDocument(event) {
-      if (this.$refs.cascader.contains(event.target)) {
-        return;
-      }
-      this.close();
     },
     updateSource(result) {
       const latestSelected = this.selected[this.selected.length - 1];
@@ -103,6 +96,7 @@ export default {
     },
   },
   components: { FCascaderItems },
+  directives: { clickOutside },
 };
 </script>
 
