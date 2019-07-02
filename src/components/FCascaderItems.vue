@@ -1,5 +1,5 @@
 <template>
-  <div class="cascader-items">
+  <div class="cascader-items" ref="cascaderItems">
     <div class="level left" :style="levelLeftStyle">
       <div
         class="label-container"
@@ -63,6 +63,9 @@ export default {
       actived: '',
     };
   },
+  mounted() {
+    this.scrollToSelectedItem();
+  },
   computed: {
     levelLeftStyle() {
       return {
@@ -105,6 +108,27 @@ export default {
       const { loadingItem } = this;
       // item.id === loadingItem.id 剔除掉区名跟市名相同的情况，做到只高亮市名 省-市-区
       return item.name === loadingItem.name && item.id === loadingItem.id;
+    },
+    scrollToSelectedItem() {
+      const levelLeft = this.$refs.cascaderItems.querySelector('.level.left');
+      const activeItem = this.$refs.cascaderItems.querySelector(
+        '.label-container.active'
+      );
+      if (levelLeft && activeItem) {
+        const levelLeftTop =
+          levelLeft.getBoundingClientRect &&
+          levelLeft.getBoundingClientRect().top;
+        const activeItemTop =
+          activeItem.getBoundingClientRect &&
+          activeItem.getBoundingClientRect().top;
+        if (activeItemTop > levelLeftTop) {
+          levelLeft.scrollBy &&
+            levelLeft.scrollBy({
+              top: activeItemTop - levelLeftTop,
+              behavior: 'smooth',
+            });
+        }
+      }
     },
   },
   components: { FIcon },

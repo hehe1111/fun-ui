@@ -1,10 +1,14 @@
 <template>
   <div id="app">
-    <f-cascader :source.sync="source" :selected.sync="selected" />
-    <!-- :load-data="loadData" -->
-    selected - {{ selected }}
+    <f-cascader
+      :source.sync="source"
+      :selected.sync="selected"
+      :load-data="loadData"
+    />
+    <!-- <f-cascader :source.sync="source" :selected.sync="selected" /> -->
+    <!-- selected - {{ selected }}
     <hr />
-    source - {{ source }}
+    source - {{ source }} -->
   </div>
 </template>
 
@@ -23,7 +27,7 @@ function ajax(id = 0) {
         a.isLeaf = !hasChild;
       });
       resolve(result);
-    }, 500);
+    }, 2000);
   });
 }
 
@@ -69,11 +73,12 @@ export default {
   data() {
     return {
       selected: [],
-      source: db2,
+      source: [],
+      // source: db2,
     };
   },
   created() {
-    // ajax(0).then(result => (this.source = result));
+    ajax(0).then(result => (this.source = result));
   },
   methods: {
     loadData({ id }, updateSource) {
