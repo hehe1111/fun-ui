@@ -59,31 +59,27 @@ export default {
       if (!this.isPopoverVisiable) return;
       this.isPopoverVisiable = false;
     },
+    searchSelectedItem(sourceArray, id) {
+      let selectedItem = sourceArray.filter(n => n.id === id)[0];
+      if (selectedItem) return selectedItem;
+
+      const hasChildren = [];
+      sourceArray.forEach(n => {
+        n.children ? hasChildren.push(n) : null;
+      });
+      for (let i = 0; i < hasChildren.length; i++) {
+        selectedItem = this.searchSelectedItem(hasChildren[i].children, id);
+        if (selectedItem) return selectedItem;
+      }
+    },
     updateSource(result) {
       const latestSelected = this.selected[this.selected.length - 1];
-      const simple = (targetArray, id) => {
-        return targetArray.filter(n => n.id === id)[0];
-      };
-      const complex = (targetArray, id) => {
-        let found = simple(targetArray, id);
-        if (found) {
-          return found;
-        }
-        const hasChildren = [];
-        const noChildren = [];
-        targetArray.forEach(n => {
-          n.children ? hasChildren.push(n) : noChildren.push(n);
-        });
-        for (let i = 0; i < hasChildren.length; i++) {
-          found = complex(hasChildren[i].children, id);
-          if (found) {
-            return found;
-          }
-        }
-      };
-
       const sourceCopy = JSON.parse(JSON.stringify(this.source));
-      const willBeUpdated = complex(sourceCopy, latestSelected.id);
+
+      const willBeUpdated = this.searchSelectedItem(
+        sourceCopy,
+        latestSelected.id
+      );
       if (willBeUpdated && result.length) willBeUpdated.children = result;
       // 数据更新完成（数据加载完成之后还需要更新到 source 上）
       this.$emit('update:source', sourceCopy);
@@ -91,9 +87,11 @@ export default {
     },
     onUpdateSelected($event) {
       this.$emit('update:selected', $event);
-
+      this.execLoadData($event);
+    },
+    execLoadData(newSelected) {
       const latestSelected = JSON.parse(
-        JSON.stringify($event[$event.length - 1])
+        JSON.stringify(newSelected[newSelected.length - 1])
       );
       if (!latestSelected.isLeaf && this.loadData) {
         // 开始加载数据
