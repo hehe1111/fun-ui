@@ -1,91 +1,46 @@
 <template>
   <div id="app">
-    <f-cascader
-      :source.sync="source"
-      :selected.sync="selected"
-      :load-data="loadData"
-    />
-    <!-- <f-cascader :source.sync="source" :selected.sync="selected" /> -->
-    <!-- selected - {{ selected }}
-    <hr />
-    source - {{ source }} -->
+    {{ selected }}
+    <!-- TODO: 如何协调动画持续时间 duration 和自动播放时的切换时间 autoPlay -->
+    <f-carousel>
+      <f-carousel-item name="x1">
+        <div class="image">1</div>
+      </f-carousel-item>
+      <f-carousel-item name="x2">
+        <div class="image">2</div>
+      </f-carousel-item>
+      <f-carousel-item name="x3">
+        <div class="image">3</div>
+      </f-carousel-item>
+    </f-carousel>
   </div>
 </template>
 
 <script>
-import FCascader from './components/FCascader';
-import db from './assets/db.js';
-
-function ajax(id = 0) {
-  return new Promise((resolve, reject) => {
-    setTimeout(() => {
-      const result = JSON.parse(
-        JSON.stringify(db.filter(n => n['parent_id'] === id))
-      );
-      result.forEach(a => {
-        const hasChild = db.some(b => b['parent_id'] === a.id);
-        a.isLeaf = !hasChild;
-      });
-      resolve(result);
-    }, 2000);
-  });
-}
-
-const db2 = [
-  {
-    name: '浙江',
-    children: [
-      {
-        name: '杭州',
-        children: [{ name: '上城' }, { name: '下城' }, { name: '江干' }],
-      },
-      {
-        name: '嘉兴',
-        children: [{ name: '南湖' }, { name: '秀洲' }, { name: '嘉善' }],
-      },
-    ],
-  },
-  {
-    name: '福建',
-    children: [
-      {
-        name: '福州',
-        children: [{ name: '鼓楼' }, { name: '台江' }, { name: '仓山' }],
-      },
-    ],
-  },
-  {
-    name: '安徽',
-    children: [
-      {
-        name: '合肥',
-        children: [{ name: '瑶海' }, { name: '庐阳' }],
-      },
-    ],
-  },
-];
+import FCarousel from './components/FCarousel.vue';
+import FCarouselItem from './components/FCarouselItem.vue';
 
 export default {
   name: 'app',
   components: {
-    FCascader,
+    FCarousel,
+    FCarouselItem,
   },
   data() {
     return {
-      selected: [],
-      source: [],
-      // source: db2,
+      selected: 'x1',
     };
-  },
-  created() {
-    ajax(0).then(result => (this.source = result));
-  },
-  methods: {
-    loadData({ id }, updateSource) {
-      ajax(id).then(result => updateSource(result));
-    },
   },
 };
 </script>
 
-<style lang="scss"></style>
+<style lang="scss">
+.image {
+  width: 100px;
+  height: 100px;
+  background-color: #ddd;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+</style>
