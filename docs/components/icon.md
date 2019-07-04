@@ -1,5 +1,5 @@
 # 图标 Icon
 
 <ClientOnly>
-  <demo-icon/>
+  <demo-icon />
 </ClientOnly>

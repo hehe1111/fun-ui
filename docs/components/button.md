@@ -1,5 +1,5 @@
 # 按钮 Button
 
 <ClientOnly>
-  <demo-button/>
+  <demo-button />
 </ClientOnly>

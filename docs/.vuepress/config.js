@@ -40,6 +40,7 @@ module.exports = {
         collapsable: false,
         children: [
           '/components/button',
+          '/components/cascader',
           '/components/collapse',
           '/components/grid',
           '/components/icon',
