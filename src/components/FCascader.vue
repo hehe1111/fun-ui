@@ -1,7 +1,7 @@
 <template>
   <div class="cascader" ref="cascader" v-click-outside="close">
     <div class="trigger" @click="togglePopover">{{ result }}</div>
-    <div class="popover" v-if="isPopoverVisiable">
+    <div class="popover" v-if="isPopoverVisible">
       <f-cascader-items
         :items="source"
         :selected="selected"
@@ -38,7 +38,7 @@ export default {
   },
   data() {
     return {
-      isPopoverVisiable: false,
+      isPopoverVisible: false,
       loadingItem: {},
     };
   },
@@ -49,15 +49,15 @@ export default {
   },
   methods: {
     togglePopover() {
-      this.isPopoverVisiable ? this.close() : this.open();
+      this.isPopoverVisible ? this.close() : this.open();
     },
     open() {
-      if (this.isPopoverVisiable) return;
-      this.isPopoverVisiable = true;
+      if (this.isPopoverVisible) return;
+      this.isPopoverVisible = true;
     },
     close() {
-      if (!this.isPopoverVisiable) return;
-      this.isPopoverVisiable = false;
+      if (!this.isPopoverVisible) return;
+      this.isPopoverVisible = false;
     },
     searchSelectedItem(sourceArray, id) {
       let selectedItem = sourceArray.filter(n => n.id === id)[0];

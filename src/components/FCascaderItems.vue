@@ -13,8 +13,8 @@
         @click="onSelected(item)"
       >
         <span class="label">{{ item.name }}</span>
-        <f-icon name="right" v-if="isRightIconVisiable(item)" />
-        <f-icon name="loading" v-if="isLoadingIconVisiable(item)" />
+        <f-icon name="right" v-if="isRightIconVisible(item)" />
+        <f-icon name="loading" v-if="isLoadingIconVisible(item)" />
       </div>
     </div>
     <div class="level right" v-if="rightItems">
@@ -100,11 +100,11 @@ export default {
     onUpdateSelected($event) {
       this.$emit('update:selected', $event);
     },
-    isRightIconVisiable(item) {
-      if (this.isLoadingIconVisiable(item)) return false;
+    isRightIconVisible(item) {
+      if (this.isLoadingIconVisible(item)) return false;
       return this.loadData ? !item.isLeaf : item.children;
     },
-    isLoadingIconVisiable(item) {
+    isLoadingIconVisible(item) {
       const { loadingItem } = this;
       // item.id === loadingItem.id 剔除掉区名跟市名相同的情况，做到只高亮市名 省-市-区
       return item.name === loadingItem.name && item.id === loadingItem.id;

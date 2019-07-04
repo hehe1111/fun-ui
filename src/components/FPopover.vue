@@ -3,7 +3,7 @@
     <div
       class="content-container"
       :class="classes"
-      v-if="visiable"
+      v-if="visible"
       ref="contentContainer"
     >
       <!-- slot-scope 把组件内部的东西暴露给插槽，从而可以在父组件作用域中调用 -->
@@ -20,7 +20,7 @@ export default {
   name: 'FunUIPopover',
   data() {
     return {
-      visiable: false,
+      visible: false,
     };
   },
   props: {
@@ -54,11 +54,11 @@ export default {
   },
   methods: {
     onClickTrigger() {
-      this.visiable ? this.close() : this.open();
+      this.visible ? this.close() : this.open();
     },
     open() {
       clearTimeout(this.timer);
-      this.visiable = true;
+      this.visible = true;
       this.$nextTick(() => {
         this.handleContent();
         document.addEventListener('click', this.onClickDocument);
@@ -67,7 +67,7 @@ export default {
     close() {
       // 这里语句执行顺序不能变，必须先移除监听器，再隐藏元素
       this.removeContentMouseListener();
-      this.visiable = false;
+      this.visible = false;
       document.removeEventListener('click', this.onClickDocument);
     },
     closeAfterDelay() {
@@ -140,7 +140,7 @@ export default {
       if (this.$refs.popover.contains(event.target)) return;
 
       // 点击 popover 的内容部分时，内容部分不消失
-      if (this.visiable && this.$refs.contentContainer.contains(event.target)) {
+      if (this.visible && this.$refs.contentContainer.contains(event.target)) {
         return;
       }
       this.close();
