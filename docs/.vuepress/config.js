@@ -37,7 +37,7 @@ module.exports = {
       '/get-started',
       {
         title: '组件',
-        // collapsable: false,
+        collapsable: false,
         children: [
           '/components/button',
           '/components/collapse',

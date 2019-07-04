@@ -15,8 +15,8 @@
 
 
 <script>
-import FIcon from "../../../src/FIcon.vue";
-import FButton from "../../../src/FButton.vue";
+import FIcon from "../../../src/components/FIcon.vue";
+import FButton from "../../../src/components/FButton.vue";
 
 export default {
   components: {

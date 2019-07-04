@@ -7,7 +7,9 @@
     "build": "vue-cli-service build",
     "lint": "vue-cli-service lint",
     "test": "vue-cli-service test:unit",
-    "test:unit": "vue-cli-service test:unit"
+    "test:unit": "vue-cli-service test:unit",
+    "docs:dev": "vuepress dev docs",
+    "docs:build": "vuepress build docs"
   },
   "dependencies": {
     "core-js": "^2.6.5",
@@ -28,14 +30,18 @@
     "sass-loader": "^7.1.0",
     "sinon": "^7.3.2",
     "sinon-chai": "^3.3.0",
-    "vue-template-compiler": "^2.6.10"
+    "vue-template-compiler": "^2.6.10",
+    "vuepress": "^1.0.2"
   },
   "eslintConfig": {
     "root": true,
     "env": {
       "node": true
     },
-    "extends": ["plugin:vue/essential", "@vue/prettier"],
+    "extends": [
+      "plugin:vue/essential",
+      "@vue/prettier"
+    ],
     "rules": {
       "no-console": "off",
       "no-param-reassign": [
@@ -67,9 +73,18 @@
           "named": "never"
         }
       ],
-      "array-bracket-spacing": ["error", "never"],
-      "object-curly-spacing": ["error", "always"],
-      "func-names": ["error", "never"],
+      "array-bracket-spacing": [
+        "error",
+        "never"
+      ],
+      "object-curly-spacing": [
+        "error",
+        "always"
+      ],
+      "func-names": [
+        "error",
+        "never"
+      ],
       "prettier/prettier": [
         "error",
         {
@@ -89,5 +104,8 @@
       "autoprefixer": {}
     }
   },
-  "browserslist": ["> 1%", "last 2 versions"]
+  "browserslist": [
+    "> 1%",
+    "last 2 versions"
+  ]
 }

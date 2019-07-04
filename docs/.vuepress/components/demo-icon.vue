@@ -14,7 +14,7 @@
 
 
 <script>
-import FIcon from "../../../src/FIcon.vue";
+import FIcon from "../../../src/components/FIcon.vue";
 
 export default {
   components: {
