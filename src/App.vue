@@ -2,7 +2,7 @@
   <div id="app">
     {{ selected }}
     <!-- TODO: 如何协调动画持续时间 duration 和自动播放时的切换时间 autoPlay -->
-    <f-carousel>
+    <f-carousel :selected.sync="selected">
       <f-carousel-item name="x1">
         <div class="image">1</div>
       </f-carousel-item>

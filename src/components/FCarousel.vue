@@ -30,8 +30,8 @@ export default {
     this.updateChildren();
     this.autoPlayHandler();
   },
-  updated() {
-    this.updateChildren();
+  beforeDestroy() {
+    window.clearTimeout(this.timerId);
   },
   methods: {
     initialize() {
@@ -45,7 +45,10 @@ export default {
       return this.mutableSelected || this.$children[0].name;
     },
     updateChildren() {
-      this.$children.forEach(vm => (vm.selected = this.getSelected()));
+      this.$children.forEach(vm => {
+        vm.leftToRight = this.oldIndex > this.newIndex;
+        this.$nextTick(() => (vm.selected = this.getSelected()));
+      });
     },
     autoPlayHandler() {
       if (!this.autoPlay) return;
@@ -54,11 +57,11 @@ export default {
     setTimer() {
       setTimeout(() => {
         let index = this.names.indexOf(this.getSelected());
-        index += 1;
-        // 从右到左
+        this.oldIndex = index;
+        this.newIndex = index -= 1;
         if (index >= this.names.length) index = 0;
-        // 从左到右
         if (index < 0) index = this.names.length - 1;
+
         this.mutableSelected = this.names[index];
         this.$emit('update:selected', this.mutableSelected);
         this.updateChildren();

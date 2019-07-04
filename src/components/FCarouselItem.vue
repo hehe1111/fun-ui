@@ -1,6 +1,6 @@
 <template>
   <transition name="slide">
-    <div v-if="visible" class="f-carousel-item">
+    <div v-if="visible" class="f-carousel-item" :class="classes">
       <slot />
     </div>
   </transition>
@@ -18,11 +18,17 @@ export default {
   data() {
     return {
       selected: '',
+      leftToRight: false,
     };
   },
   computed: {
     visible() {
       return this.selected === this.name;
+    },
+    classes() {
+      return {
+        'left-to-right': this.leftToRight,
+      };
     },
   },
 };
@@ -44,5 +50,11 @@ export default {
 }
 .slide-leave-to {
   transform: translateX(-100%);
+}
+.slide-enter.left-to-right {
+  transform: translateX(-100%);
+}
+.slide-leave-to.left-to-right {
+  transform: translateX(100%);
 }
 </style>
