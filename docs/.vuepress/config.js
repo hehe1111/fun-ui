@@ -52,5 +52,7 @@ module.exports = {
         ],
       },
     ],
+    // 最后更新时间 基于 git
+    lastUpdated: 'Last Updated',
   },
 };
