@@ -20,10 +20,16 @@ export default {
   },
   data() {
     return {
-      names: [],
       timerId: null,
       mutableSelected: '',
+      oldSelectedIndex: null,
+      newSelectedIndex: null,
     };
+  },
+  computed: {
+    names() {
+      return this.$children.map(vm => vm.name);
+    },
   },
   mounted() {
     this.initialize();
@@ -38,7 +44,6 @@ export default {
       if (!this.$children.length) {
         throw new Error('FCarousel 组件必须接收 FCarouselItem 作为子组件');
       }
-      this.names = this.$children.map(vm => vm.name);
       this.mutableSelected = this.selected;
     },
     getSelected() {
@@ -46,7 +51,7 @@ export default {
     },
     updateChildren() {
       this.$children.forEach(vm => {
-        vm.leftToRight = this.oldIndex > this.newIndex;
+        vm.leftToRight = this.oldSelectedIndex > this.newSelectedIndex;
         this.$nextTick(() => (vm.selected = this.getSelected()));
       });
     },
@@ -56,17 +61,20 @@ export default {
     },
     setTimer() {
       setTimeout(() => {
-        let index = this.names.indexOf(this.getSelected());
-        this.oldIndex = index;
-        this.newIndex = index -= 1;
-        if (index >= this.names.length) index = 0;
-        if (index < 0) index = this.names.length - 1;
-
-        this.mutableSelected = this.names[index];
+        this.mutableSelected = this.names[this.getIndex()];
         this.$emit('update:selected', this.mutableSelected);
         this.updateChildren();
         this.timerId = this.setTimer();
       }, this.autoPlay * 1000);
+    },
+    getIndex() {
+      let { names } = this;
+      let index = names.indexOf(this.getSelected());
+      this.oldSelectedIndex = index;
+      this.newSelectedIndex = index += 1;
+      if (index >= names.length) index = 0;
+      if (index < 0) index = names.length - 1;
+      return index;
     },
   },
 };
@@ -74,8 +82,8 @@ export default {
 
 <style lang="scss" scoped>
 .f-carousel {
-  border: 1px solid red;
   &-window {
+    border: 1px solid red;
     overflow: hidden;
     display: inline-block;
     vertical-align: top;
