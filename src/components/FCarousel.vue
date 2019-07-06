@@ -167,7 +167,6 @@ export default {
   position: relative;
 
   &-window {
-    border: 1px solid red;
     overflow: hidden;
     position: relative;
   }
