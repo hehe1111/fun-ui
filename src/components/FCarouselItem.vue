@@ -44,6 +44,8 @@ export default {
   // top left 必须写，否则从最后一张再到第一张的行为会出错
   top: 0;
   left: 0;
+  width: 100%;
+  height: 100%;
 }
 .slide-enter {
   transform: translateX(100%);

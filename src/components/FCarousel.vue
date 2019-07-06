@@ -85,7 +85,6 @@ export default {
   &-window {
     border: 1px solid red;
     overflow: hidden;
-    display: inline-block;
     vertical-align: top;
     position: relative;
   }
