@@ -96,6 +96,7 @@ export default {
       });
     },
     autoPlayHandler() {
+      this.stopAutoPlay();
       this.autoPlay && (this.timerId = this.setTimer());
     },
     setTimer() {
