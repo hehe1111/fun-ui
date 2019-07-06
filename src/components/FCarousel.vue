@@ -44,12 +44,27 @@ export default {
       this.mutableSelected = this.selected;
     },
     getSelected() {
-      return this.mutableSelected || this.$children[0].name;
+      const name = this.mutableSelected || this.$children[0].name;
+      return {
+        index: this.names.indexOf(name),
+        name,
+      };
     },
     updateChildren() {
       this.$children.forEach(vm => {
-        vm.leftToRight = this.oldSelectedIndex > this.newSelectedIndex;
-        this.$nextTick(() => (vm.selected = this.getSelected()));
+        const { oldSelectedIndex, newSelectedIndex } = this;
+        const last = this.names.length - 1;
+        vm.leftToRight = oldSelectedIndex > newSelectedIndex;
+
+        // 边界情况
+        if (oldSelectedIndex === last && newSelectedIndex === 0) {
+          vm.leftToRight = false;
+        }
+        if (oldSelectedIndex === 0 && newSelectedIndex === last) {
+          vm.leftToRight = true;
+        }
+
+        this.$nextTick(() => (vm.selected = this.getSelected().name));
       });
     },
     autoPlayHandler() {
@@ -66,11 +81,12 @@ export default {
     },
     getIndex() {
       let { names } = this;
-      let index = names.indexOf(this.getSelected());
+      let { index } = this.getSelected();
       this.oldSelectedIndex = index;
-      this.newSelectedIndex = index += 1;
+      index += 1;
       if (index >= names.length) index = 0;
       if (index < 0) index = names.length - 1;
+      this.newSelectedIndex = index;
       return index;
     },
   },
