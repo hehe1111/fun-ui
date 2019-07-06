@@ -20,16 +20,12 @@ export default {
   },
   data() {
     return {
+      names: [],
       timerId: null,
       mutableSelected: '',
       oldSelectedIndex: null,
       newSelectedIndex: null,
     };
-  },
-  computed: {
-    names() {
-      return this.$children.map(vm => vm.name);
-    },
   },
   mounted() {
     this.initialize();
@@ -44,6 +40,7 @@ export default {
       if (!this.$children.length) {
         throw new Error('FCarousel 组件必须接收 FCarouselItem 作为子组件');
       }
+      this.names = this.$children.map(vm => vm.name);
       this.mutableSelected = this.selected;
     },
     getSelected() {
