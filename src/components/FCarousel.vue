@@ -107,16 +107,19 @@ export default {
       if (index < 0) index = this.names.length - 1;
       return index;
     },
-    onClickDots($event) {
+    onClickDots(newIndex) {
       this.timerId && window.clearTimeout(this.timerId);
-      this.getNewSelected($event);
+      this.getNewSelected(newIndex);
       this.autoPlay && !this.isMouseEntered && (this.timerId = this.setTimer());
     },
-    stopAutoPlay() {
+    stopAutoPlay($event) {
+      // 判断点击是来自鼠标还是手指
+      if ($event.sourceCapabilities.firesTouchEvents) return;
       this.isMouseEntered = true;
       if (this.timerId) window.clearTimeout(this.timerId);
     },
-    restoreToBeforeEnter() {
+    restoreToBeforeEnter($event) {
+      if ($event.sourceCapabilities.firesTouchEvents) return;
       this.isMouseEntered = false;
       if (this.autoPlay) this.timerId = this.setTimer();
     },
