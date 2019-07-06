@@ -20,10 +20,20 @@
         @click="onClickDots(n - 1)"
       ></span>
     </div>
+    <template class="f-carousel-arrow-container" v-if="enableArrow">
+      <div class="f-carousel-arrow f-carousel-prev" @click="onClickPrevious">
+        <f-icon name="left" class="icon" />
+      </div>
+      <div class="f-carousel-arrow f-carousel-next" @click="onClickNext">
+        <f-icon name="right" class="icon" />
+      </div>
+    </template>
   </div>
 </template>
 
 <script>
+import FIcon from './FIcon.vue';
+
 export default {
   name: 'FunUICarousel',
   props: {
@@ -34,6 +44,10 @@ export default {
       type: [Number, Boolean],
       default: 2,
     },
+    enableArrow: {
+      type: Boolean,
+      default: false,
+    },
   },
   data() {
     return {
@@ -43,7 +57,6 @@ export default {
       mutableSelected: '',
       oldSelectedIndex: null,
       newSelectedIndex: null,
-      isMouseEntered: false,
       startTouch: null,
     };
   },
@@ -60,8 +73,10 @@ export default {
       if (!this.$children.length) {
         throw new Error('FCarousel 组件必须接收 FCarouselItem 作为子组件');
       }
-      this.names = this.$children.map(vm => vm.name);
-      this.childrenLength = this.$children.length;
+      this.$children.map(vm => {
+        if (vm.$options.name === 'FunUICarouselItem') this.names.push(vm.name);
+      });
+      this.childrenLength = this.names.length;
       this.mutableSelected = this.selected;
     },
     getSelected() {
@@ -110,19 +125,18 @@ export default {
       this.timerId && window.clearTimeout(this.timerId);
     },
     onClickDots(newIndex) {
-      this.stopAutoPlay();
       this.getNewSelected(newIndex);
-      !this.isMouseEntered && this.autoPlayHandler();
+    },
+    onClickPrevious() {
+      this.getNewSelected(this.getSelected().index - 1);
+    },
+    onClickNext() {
+      this.getNewSelected(this.getSelected().index + 1);
     },
     onMouseEnter(event) {
-      // 判断点击是来自鼠标还是手指
-      if (event.sourceCapabilities.firesTouchEvents) return;
-      this.isMouseEntered = true;
       this.stopAutoPlay();
     },
     onMouseLeave(event) {
-      if (event.sourceCapabilities.firesTouchEvents) return;
-      this.isMouseEntered = false;
       this.autoPlayHandler();
     },
     onTouchStart(event) {
@@ -142,10 +156,13 @@ export default {
       this.autoPlayHandler();
     },
   },
+  components: { FIcon },
 };
 </script>
 
 <style lang="scss" scoped>
+@import '../assets/_var.scss';
+
 .f-carousel {
   position: relative;
 
@@ -169,7 +186,7 @@ export default {
       height: 0.8em;
       border-radius: 50%;
       margin: 0.4em;
-      background-color: #ccd2dd;
+      background-color: #ccc;
       display: inline-block;
       vertical-align: top;
       transition: all 0.3s;
@@ -183,6 +200,34 @@ export default {
         background-color: #fff;
         cursor: pointer;
       }
+    }
+  }
+
+  &-arrow {
+    width: 2em;
+    height: 2em;
+    border-radius: 50%;
+    background-color: $grey;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    position: absolute;
+    top: 50%;
+
+    &:hover {
+      background-color: $greyHover;
+    }
+
+    > .icon {
+      fill: #fff;
+    }
+
+    &.f-carousel-prev {
+      left: 1em;
+    }
+
+    &.f-carousel-next {
+      right: 1em;
     }
   }
 }
