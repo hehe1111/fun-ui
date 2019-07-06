@@ -29,6 +29,7 @@ export default {
           this.$nextTick(() => {
             const { width, left, height, top } = vm.$el.getBoundingClientRect();
             const isHorizontal = this.$el.classList.contains('horizontal');
+            if (!this.$refs.slideableLine) return;
             if (isHorizontal) {
               // console.log(width, left); // 56.21875 0
               this.$refs.slideableLine.style.width = `${width}px`;

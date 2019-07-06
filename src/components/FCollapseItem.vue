@@ -25,7 +25,7 @@ export default {
   inject: {
     eventBus: {
       from: 'eventBus',
-      default: () => {},
+      default: () => ({}),
     },
   },
   data() {
@@ -41,12 +41,14 @@ export default {
     },
   },
   mounted() {
-    this.eventBus.$on('update:opened', items => {
-      this.isOpened = items.indexOf(this.name) >= 0;
-    });
+    this.eventBus.$on &&
+      this.eventBus.$on('update:opened', items => {
+        this.isOpened = items.indexOf(this.name) >= 0;
+      });
   },
   methods: {
     toggleContent() {
+      if (!this.eventBus.$emit) return;
       this.isOpened
         ? this.eventBus.$emit('removeOpenedItem', this.name)
         : this.eventBus.$emit('addOpenedItem', this.name);

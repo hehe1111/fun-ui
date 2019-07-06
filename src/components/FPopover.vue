@@ -42,7 +42,7 @@ export default {
   mounted() {
     this.addTriggerMouseListener();
   },
-  destroyed() {
+  beforeDestroy() {
     this.removeTriggerMouseListener();
   },
   computed: {
@@ -78,6 +78,7 @@ export default {
       this.addContentMouseListener();
     },
     addTriggerMouseListener() {
+      if (!this.$refs.popover) return;
       if (this.trigger === 'click') {
         this.$refs.popover.addEventListener('click', this.onClickTrigger);
       } else {
@@ -102,6 +103,7 @@ export default {
     addContentMouseListener() {
       if (this.trigger === 'hover') {
         const { contentContainer } = this.$refs;
+        if (!contentContainer) return;
         contentContainer.addEventListener('mouseenter', this.enterContent);
         contentContainer.addEventListener('mouseleave', this.closeAfterDelay);
       }
@@ -118,6 +120,7 @@ export default {
     },
     relocateContent() {
       const { contentContainer, triggerContainer } = this.$refs;
+      if (!contentContainer || !triggerContainer) return;
       document.body.appendChild(contentContainer);
       const {
         width,
