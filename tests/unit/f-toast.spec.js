@@ -6,18 +6,21 @@ import FToast from '@/components/FToast.vue';
 chai.use(sinonChai);
 
 describe('FToast.vue', () => {
-  it('存在', () => expect(FToast).to.exist);
+  it('存在', () => {
+    const wrapper = mount(FToast);
+    expect(wrapper.exists()).to.eq(true);
+    wrapper.destroy();
+  });
 
   it('可以接受 autoCloseDelay 属性', () => {
     const fake = sinon.fake();
     const wrapper = mount(FToast, {
-      propsData: {
-        autoCloseDelay: 1,
-      },
+      propsData: { autoCloseDelay: 1 },
       listeners: {
         close: () => {
           fake();
           expect(fake).to.have.been.called;
+          wrapper.destroy();
         },
       },
     });
@@ -39,6 +42,7 @@ describe('FToast.vue', () => {
     expect(button.text().trim()).to.eq(text);
     button.trigger('click');
     expect(fake).to.have.been.called;
+    wrapper.destroy();
   });
 
   it('可以接受 enableHTML 属性', () => {
@@ -55,10 +59,9 @@ describe('FToast.vue', () => {
 
   it('可以接受 position 属性', () => {
     const wrapper = mount(FToast, {
-      propsData: {
-        position: 'middle',
-      },
+      propsData: { position: 'middle' },
     });
     expect(wrapper.classes()).include('position-middle');
+    wrapper.destroy();
   });
 });

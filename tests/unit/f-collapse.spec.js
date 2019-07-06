@@ -9,9 +9,7 @@ chai.use(sinonChai);
 function returnOptionsObj(propsData) {
   return {
     propsData,
-    stubs: {
-      'f-collapse-item': FCollapseItem,
-    },
+    stubs: { FCollapseItem },
     slots: {
       default: `
         <f-collapse-item title="标题1" name="c1">内容1</f-collapse-item>
@@ -23,20 +21,23 @@ function returnOptionsObj(propsData) {
 }
 
 describe('FCollapse.vue', () => {
-  it('存在', () => expect(FCollapse).to.exist);
+  it('存在', () => {
+    const wrapper = mount(FCollapse, returnOptionsObj({ opened: ['c1'] }));
+    expect(wrapper.exists()).to.eq(true);
+    wrapper.destroy();
+  });
 
   it('可以接受 opened 属性', () => {
     const wrapper = mount(
       FCollapse,
-      returnOptionsObj({
-        opened: ['c2', 'c3'],
-      })
+      returnOptionsObj({ opened: ['c2', 'c3'] })
     );
 
     wrapper.vm.$nextTick().then(() => {
       expect(wrapper.find('[data-name="c1"] > .content').element).to.not.exist;
       expect(wrapper.find('[data-name="c2"] > .content').element).to.exist;
       expect(wrapper.find('[data-name="c3"] > .content').element).to.exist;
+      wrapper.destroy();
     });
   });
 
@@ -58,18 +59,18 @@ describe('FCollapse.vue', () => {
     expect(wrapper.find('[data-name="c1"] > .content').element).to.not.exist;
     expect(wrapper.find('[data-name="c2"] > .content').element).to.not.exist;
     expect(wrapper.find('[data-name="c3"] > .content').element).to.exist;
+    wrapper.destroy();
   });
 
   it('可以触发 update:opened 事件', () => {
     const callback = sinon.fake();
     const wrapper = mount(FCollapse, {
       ...returnOptionsObj({ opened: [] }),
-      listeners: {
-        'update:opened': callback,
-      },
+      listeners: { 'update:opened': callback },
     });
 
     wrapper.find('[data-name="c3"] > header').trigger('click');
     expect(callback).to.have.been.called;
+    wrapper.destroy();
   });
 });

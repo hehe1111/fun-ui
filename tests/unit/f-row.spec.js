@@ -4,16 +4,16 @@ import FRow from '@/components/FRow.vue';
 import FCol from '@/components/FCol.vue';
 
 describe('FRow.vue', () => {
-  it('存在', () => expect(FRow).to.exist);
+  it('存在', () => {
+    const wrapper = mount(FRow);
+    expect(wrapper.exists()).to.eq(true);
+    wrapper.destroy();
+  });
 
   it('可以接受 gutter 属性', () => {
     const wrapper = mount(FRow, {
-      propsData: {
-        gutter: '20',
-      },
-      stubs: {
-        'f-col': FCol,
-      },
+      propsData: { gutter: '20' },
+      stubs: { FCol },
       slots: {
         default: `
           <f-col span="12"></f-col>
@@ -30,6 +30,7 @@ describe('FRow.vue', () => {
 
       expect(cols.at(0).element.style.paddingRight).to.eq('10px');
       expect(cols.at(1).element.style.paddingLeft).to.eq('10px');
+      wrapper.destroy();
     });
   });
 
@@ -38,9 +39,7 @@ describe('FRow.vue', () => {
       propsData: {
         align: 'center',
       },
-      stubs: {
-        'f-col': FCol,
-      },
+      stubs: { FCol },
       slots: {
         default: '<f-col span="12">1</f-col>',
       },
@@ -48,6 +47,9 @@ describe('FRow.vue', () => {
 
     console.log(wrapper.html());
     console.log(1, wrapper.find('.col').element.style.textAlign);
+    console.log(wrapper.exists());
+    wrapper.destroy();
+    console.log(wrapper.exists());
 
     // const div = document.createElement('div');
     // document.body.appendChild(div);

@@ -6,7 +6,13 @@ import FTabNavItem from '@/components/FTabNavItem.vue';
 chai.use(sinonChai);
 
 describe('FTabNavItem.vue', () => {
-  it('存在', () => expect(FTabNavItem).to.exist);
+  it('存在', () => {
+    const wrapper = mount(FTabNavItem, {
+      propsData: { name: 'xx' },
+    });
+    expect(wrapper.exists()).to.eq(true);
+    wrapper.destroy();
+  });
 
   it('可以接受 name 属性', () => {
     /**
@@ -24,6 +30,7 @@ describe('FTabNavItem.vue', () => {
       propsData: { name },
     });
     expect(wrapper.attributes('data-name')).to.eq(name);
+    wrapper.destroy();
   });
 
   it('可以接受 disabled 属性', () => {
@@ -33,12 +40,11 @@ describe('FTabNavItem.vue', () => {
         name: 'hahaha',
         disabled: true,
       },
-      listeners: {
-        click: fake,
-      },
+      listeners: { click: fake },
     });
     expect(wrapper.classes()).include('disabled');
     wrapper.trigger('click');
     expect(fake).to.have.not.been.called;
+    wrapper.destroy();
   });
 });
