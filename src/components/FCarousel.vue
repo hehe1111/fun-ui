@@ -1,8 +1,10 @@
 <template>
   <div
     class="f-carousel"
-    @mouseenter="stopAutoPlay"
-    @mouseleave="restoreToBeforeEnter"
+    @mouseenter="onMouseEnter"
+    @mouseleave="onMouseLeave"
+    @touchstart="onTouchStart"
+    @touchend="onTouchend"
   >
     <div class="f-carousel-window">
       <slot />
@@ -42,6 +44,7 @@ export default {
       oldSelectedIndex: null,
       newSelectedIndex: null,
       isMouseEntered: false,
+      startTouch: null,
     };
   },
   mounted() {
@@ -50,7 +53,7 @@ export default {
     this.autoPlayHandler();
   },
   beforeDestroy() {
-    window.clearTimeout(this.timerId);
+    this.stopAutoPlay();
   },
   methods: {
     initialize() {
@@ -67,8 +70,11 @@ export default {
     },
     getNewSelected(newIndex) {
       this.oldSelectedIndex = this.getSelected().index;
-      this.newSelectedIndex = newIndex;
-      this.mutableSelected = this.names[newIndex];
+      let newIndexCopy = newIndex;
+      if (newIndexCopy >= this.names.length) newIndexCopy = 0;
+      if (newIndexCopy < 0) newIndexCopy = this.names.length - 1;
+      this.newSelectedIndex = newIndexCopy;
+      this.mutableSelected = this.names[newIndexCopy];
       this.$emit('update:selected', this.mutableSelected);
       this.updateChildren();
     },
@@ -90,38 +96,49 @@ export default {
       });
     },
     autoPlayHandler() {
-      if (!this.autoPlay) return;
-      this.timerId = this.setTimer();
+      this.autoPlay && (this.timerId = this.setTimer());
     },
     setTimer() {
       // 记得要手动返回定时器返回的 id，否则就默认返回 undefined
       return setTimeout(() => {
-        this.getNewSelected(this.getNewIndex());
+        this.getNewSelected(this.getSelected().index + 1);
         this.timerId = this.setTimer();
       }, this.autoPlay * 1000);
     },
-    getNewIndex() {
-      let { index } = this.getSelected();
-      index += 1;
-      if (index >= this.names.length) index = 0;
-      if (index < 0) index = this.names.length - 1;
-      return index;
+    stopAutoPlay() {
+      this.timerId && window.clearTimeout(this.timerId);
     },
     onClickDots(newIndex) {
-      this.timerId && window.clearTimeout(this.timerId);
+      this.stopAutoPlay();
       this.getNewSelected(newIndex);
-      this.autoPlay && !this.isMouseEntered && (this.timerId = this.setTimer());
+      !this.isMouseEntered && this.autoPlayHandler();
     },
-    stopAutoPlay($event) {
+    onMouseEnter(event) {
       // 判断点击是来自鼠标还是手指
-      if ($event.sourceCapabilities.firesTouchEvents) return;
+      if (event.sourceCapabilities.firesTouchEvents) return;
       this.isMouseEntered = true;
-      if (this.timerId) window.clearTimeout(this.timerId);
+      this.stopAutoPlay();
     },
-    restoreToBeforeEnter($event) {
-      if ($event.sourceCapabilities.firesTouchEvents) return;
+    onMouseLeave(event) {
+      if (event.sourceCapabilities.firesTouchEvents) return;
       this.isMouseEntered = false;
-      if (this.autoPlay) this.timerId = this.setTimer();
+      this.autoPlayHandler();
+    },
+    onTouchStart(event) {
+      this.stopAutoPlay();
+      this.startTouch = event.touches[0];
+    },
+    onTouchend(event) {
+      const { clientX: x1, clientY: y1 } = this.startTouch;
+      const { clientX: x2, clientY: y2 } = event.changedTouches[0];
+      const distance = Math.sqrt(Math.pow(x1 - x2, 2) + Math.pow(y1 - y2, 2));
+      const rate = distance / Math.abs(y1 - y2);
+      if (x1 - x2 !== 0) {
+        rate > 2 && x1 - x2 > 0
+          ? this.getNewSelected(this.getSelected().index + 1)
+          : this.getNewSelected(this.getSelected().index - 1);
+      }
+      this.autoPlayHandler();
     },
   },
 };
