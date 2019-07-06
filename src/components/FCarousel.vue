@@ -135,7 +135,9 @@ export default {
   }
 
   &-dots {
-    display: inline-block;
+    display: inline-flex;
+    align-items: center;
+    flex-wrap: nowrap;
     position: absolute;
     bottom: 0.6em;
     left: 50%;
