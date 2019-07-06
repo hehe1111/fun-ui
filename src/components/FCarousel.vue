@@ -1,5 +1,9 @@
 <template>
-  <div class="f-carousel">
+  <div
+    class="f-carousel"
+    @mouseenter="stopAutoPlay"
+    @mouseleave="restoreToBeforeEnter"
+  >
     <div class="f-carousel-window">
       <slot />
     </div>
@@ -37,6 +41,7 @@ export default {
       mutableSelected: '',
       oldSelectedIndex: null,
       newSelectedIndex: null,
+      isMouseEntered: false,
     };
   },
   mounted() {
@@ -103,9 +108,17 @@ export default {
       return index;
     },
     onClickDots($event) {
-      window.clearTimeout(this.timerId);
+      this.timerId && window.clearTimeout(this.timerId);
       this.getNewSelected($event);
-      this.timerId = this.setTimer();
+      this.autoPlay && !this.isMouseEntered && (this.timerId = this.setTimer());
+    },
+    stopAutoPlay() {
+      this.isMouseEntered = true;
+      if (this.timerId) window.clearTimeout(this.timerId);
+    },
+    restoreToBeforeEnter() {
+      this.isMouseEntered = false;
+      if (this.autoPlay) this.timerId = this.setTimer();
     },
   },
 };
