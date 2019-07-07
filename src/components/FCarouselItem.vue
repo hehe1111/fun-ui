@@ -1,5 +1,5 @@
 <template>
-  <transition name="slide">
+  <transition :name="animationName">
     <div v-if="visible" class="f-carousel-item" :class="classes">
       <slot />
     </div>
@@ -18,7 +18,8 @@ export default {
   data() {
     return {
       selected: '',
-      leftToRight: false,
+      reversed: false,
+      animationName: 'slide',
     };
   },
   computed: {
@@ -27,7 +28,7 @@ export default {
     },
     classes() {
       return {
-        'left-to-right': this.leftToRight,
+        reversed: this.reversed,
       };
     },
   },
@@ -36,10 +37,13 @@ export default {
 
 <style lang="scss" scoped>
 .slide-enter-active,
-.slide-leave-active {
+.slide-leave-active,
+.slide-vertical-enter-active,
+.slide-vertical-leave-active {
   transition: all 0.4s;
 }
-.slide-leave-active {
+.slide-leave-active,
+.slide-vertical-leave-active {
   position: absolute;
   // top left 必须写，否则从最后一张再到第一张的行为会出错
   top: 0;
@@ -53,10 +57,23 @@ export default {
 .slide-leave-to {
   transform: translateX(-100%);
 }
-.slide-enter.left-to-right {
+.slide-enter.reversed {
   transform: translateX(-100%);
 }
-.slide-leave-to.left-to-right {
+.slide-leave-to.reversed {
   transform: translateX(100%);
+}
+
+.slide-vertical-enter {
+  transform: translateY(100%);
+}
+.slide-vertical-leave-to {
+  transform: translateY(-100%);
+}
+.slide-vertical-enter.reversed {
+  transform: translateY(-100%);
+}
+.slide-vertical-leave-to.reversed {
+  transform: translateY(100%);
 }
 </style>

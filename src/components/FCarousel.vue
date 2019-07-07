@@ -9,7 +9,7 @@
     <div class="f-carousel-window">
       <slot />
     </div>
-    <div class="f-carousel-dots">
+    <div class="f-carousel-dots" :class="dotsClasses">
       <span
         class="dot"
         :class="{
@@ -20,7 +20,9 @@
         @click="onClickDots(n - 1)"
       ></span>
     </div>
-    <template v-if="enableArrow">
+    <template
+      v-if="enableArrow && ['left', 'right'].indexOf(dotPosition) === -1"
+    >
       <div class="f-carousel-arrow f-carousel-prev" @click="onClickPrevious">
         <f-icon name="left" class="icon" />
       </div>
@@ -48,6 +50,10 @@ export default {
       type: Boolean,
       default: false,
     },
+    dotPosition: {
+      type: String,
+      default: 'bottom',
+    },
   },
   data() {
     return {
@@ -60,8 +66,16 @@ export default {
       startTouch: null,
     };
   },
+  computed: {
+    dotsClasses() {
+      return {
+        [`position-${this.dotPosition}`]: this.dotPosition,
+      };
+    },
+  },
   mounted() {
     this.initialize();
+    this.updateChildrenStyle();
     this.updateChildren();
     this.autoPlayHandler();
   },
@@ -93,15 +107,22 @@ export default {
       this.$emit('update:selected', this.mutableSelected);
       this.updateChildren();
     },
+    updateChildrenStyle() {
+      this.$children.forEach(vm => {
+        if (['left', 'right'].indexOf(this.dotPosition) !== -1) {
+          vm.animationName = 'slide-vertical';
+        }
+      });
+    },
     updateChildren() {
       this.$children.forEach(vm => {
         const { oldSelectedIndex: oldI, newSelectedIndex: newI } = this;
         const last = this.names.length - 1;
 
-        vm.leftToRight = oldI > newI;
+        vm.reversed = oldI > newI;
         // 边界情况
-        if (oldI === last && newI === 0) vm.leftToRight = false;
-        if (oldI === 0 && newI === last) vm.leftToRight = true;
+        if (oldI === last && newI === 0) vm.reversed = false;
+        if (oldI === 0 && newI === last) vm.reversed = true;
 
         this.$nextTick(() => (vm.selected = this.getSelected().name));
       });
@@ -172,9 +193,35 @@ export default {
     align-items: center;
     flex-wrap: nowrap;
     position: absolute;
-    bottom: 0.6em;
-    left: 50%;
-    transform: translateX(-50%);
+
+    &.position-top,
+    &.position-bottom {
+      transform: translateX(-50%);
+      left: 50%;
+    }
+
+    &.position-top {
+      top: 0.6em;
+    }
+
+    &.position-bottom {
+      bottom: 0.6em;
+    }
+
+    &.position-left,
+    &.position-right {
+      flex-direction: column;
+      transform: translateY(-50%);
+      top: 50%;
+    }
+
+    &.position-left {
+      left: 0.6em;
+    }
+
+    &.position-right {
+      right: 0.6em;
+    }
 
     > .dot {
       width: 0.8em;
