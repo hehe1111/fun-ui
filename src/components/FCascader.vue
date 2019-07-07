@@ -1,6 +1,14 @@
 <template>
   <div class="cascader" ref="cascader" v-click-outside="close">
-    <div class="trigger" @click="togglePopover">{{ result || `&nbsp;` }}</div>
+    <div class="trigger" @click="togglePopover" ref="popoverRef">
+      {{ result || `&nbsp;` }}
+      <f-icon
+        name="error"
+        class="icon"
+        @click="clearSelected"
+        ref="clearIconRef"
+      />
+    </div>
     <div class="popover" v-if="isPopoverVisible">
       <f-cascader-items
         :items="source"
@@ -15,8 +23,9 @@
 </template>
 
 <script>
-import FCascaderItems from './FCascaderItems';
-import { clickOutside } from './directives';
+import FIcon from './FIcon.vue';
+import FCascaderItems from './FCascaderItems.vue';
+import { clickOutside } from './directives.js';
 
 export default {
   name: 'FunUIFCascader',
@@ -48,7 +57,8 @@ export default {
     },
   },
   methods: {
-    togglePopover() {
+    togglePopover($event) {
+      if (!$event.target.contains(this.$refs.popoverRef)) return;
       this.isPopoverVisible ? this.close() : this.open();
     },
     open() {
@@ -64,9 +74,7 @@ export default {
       if (selectedItem) return selectedItem;
 
       const hasChildren = [];
-      sourceArray.forEach(n => {
-        n.children ? hasChildren.push(n) : null;
-      });
+      sourceArray.forEach(n => (n.children ? hasChildren.push(n) : null));
       for (let i = 0; i < hasChildren.length; i++) {
         selectedItem = this.searchSelectedItem(hasChildren[i].children, id);
         if (selectedItem) return selectedItem;
@@ -99,8 +107,11 @@ export default {
         this.loadData(latestSelected, this.updateSource);
       }
     },
+    clearSelected($event) {
+      this.$emit('update:selected', []);
+    },
   },
-  components: { FCascaderItems },
+  components: { FCascaderItems, FIcon },
   directives: { clickOutside },
 };
 </script>
@@ -119,6 +130,17 @@ export default {
     border-radius: $borderRadius;
     display: flex;
     align-items: center;
+
+    > .icon {
+      margin-left: auto;
+      display: none;
+    }
+
+    &:hover {
+      > .icon {
+        display: inline-block;
+      }
+    }
   }
   .popover {
     margin-top: 0.2em;
