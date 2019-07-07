@@ -2,8 +2,8 @@ import chai, { expect } from 'chai';
 import sinon from 'sinon';
 import sinonChai from 'sinon-chai';
 import { mount } from '@vue/test-utils';
-import FCarousel from '@/components/FCarousel.vue';
-import FCarouselItem from '@/components/FCarouselItem.vue';
+import FCarousel from '../../src/components/carousel/FCarousel.vue';
+import FCarouselItem from '../../src/components/carousel/FCarouselItem.vue';
 chai.use(sinonChai);
 
 const returnOptionsObj = propsData => {

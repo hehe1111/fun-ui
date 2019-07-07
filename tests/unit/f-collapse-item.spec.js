@@ -1,7 +1,7 @@
 import { expect } from 'chai';
 import { mount } from '@vue/test-utils';
-import FCollapse from '@/components/FCollapse.vue';
-import FCollapseItem from '@/components/FCollapseItem.vue';
+import FCollapse from '../../src/components/collapse/FCollapse.vue';
+import FCollapseItem from '../../src/components/collapse/FCollapseItem.vue';
 
 describe('FCollapseItem.vue', () => {
   it('存在', () => {

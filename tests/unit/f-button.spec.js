@@ -2,7 +2,7 @@ import chai, { expect } from 'chai';
 import sinon from 'sinon';
 import sinonChai from 'sinon-chai';
 import { mount } from '@vue/test-utils';
-import FButton from '@/components/FButton.vue';
+import FButton from '../../src/components/button/FButton.vue';
 chai.use(sinonChai);
 
 describe('FButton.vue', () => {

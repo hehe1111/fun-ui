@@ -46,7 +46,7 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-@import '../assets/_var.scss';
+@import '../../assets/_var.scss';
 
 .tab-nav {
   // 共用样式

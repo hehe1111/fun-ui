@@ -45,10 +45,10 @@
 </template>
 
 <script>
-import FButton from "../../../src/components/FButton.vue";
-import FButtonGroup from "../../../src/components/FButtonGroup.vue";
-import FCarousel from "../../../src/components/FCarousel.vue";
-import FCarouselItem from "../../../src/components/FCarouselItem.vue";
+import FButton from "../../../src/components/button/FButton.vue";
+import FButtonGroup from "../../../src/components/button/FButtonGroup.vue";
+import FCarousel from "../../../src/components/carousel/FCarousel.vue";
+import FCarouselItem from "../../../src/components/carousel/FCarouselItem.vue";
 
 export default {
   data() {

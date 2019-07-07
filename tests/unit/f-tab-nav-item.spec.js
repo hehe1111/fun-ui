@@ -2,7 +2,7 @@ import chai, { expect } from 'chai';
 import sinon from 'sinon';
 import sinonChai from 'sinon-chai';
 import { mount } from '@vue/test-utils';
-import FTabNavItem from '@/components/FTabNavItem.vue';
+import FTabNavItem from '../../src/components/tab/FTabNavItem.vue';
 chai.use(sinonChai);
 
 describe('FTabNavItem.vue', () => {

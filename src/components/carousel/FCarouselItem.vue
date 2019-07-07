@@ -36,11 +36,13 @@ export default {
 </script>
 
 <style lang="scss" scoped>
+@import '../../assets/_var.scss';
+
 .slide-enter-active,
 .slide-leave-active,
 .slide-vertical-enter-active,
 .slide-vertical-leave-active {
-  transition: all 0.4s;
+  transition: all $duration;
 }
 .slide-leave-active,
 .slide-vertical-leave-active {

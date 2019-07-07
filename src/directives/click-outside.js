@@ -16,4 +16,5 @@ const clickOutside = {
 
 document.addEventListener('click', onClickDocument);
 
-export { clickOutside, removeListener };
+export default clickOutside;
+export { removeListener };

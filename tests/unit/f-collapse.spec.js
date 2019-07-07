@@ -2,8 +2,8 @@ import chai, { expect } from 'chai';
 import sinon from 'sinon';
 import sinonChai from 'sinon-chai';
 import { mount } from '@vue/test-utils';
-import FCollapse from '@/components/FCollapse.vue';
-import FCollapseItem from '@/components/FCollapseItem.vue';
+import FCollapse from '../../src/components/collapse/FCollapse.vue';
+import FCollapseItem from '../../src/components/collapse/FCollapseItem.vue';
 chai.use(sinonChai);
 
 function returnOptionsObj(propsData) {

@@ -2,7 +2,7 @@ import chai, { expect } from 'chai';
 import sinon from 'sinon';
 import sinonChai from 'sinon-chai';
 import { mount } from '@vue/test-utils';
-import FToast from '@/components/FToast.vue';
+import FToast from '../../src/components/FToast.vue';
 chai.use(sinonChai);
 
 describe('FToast.vue', () => {

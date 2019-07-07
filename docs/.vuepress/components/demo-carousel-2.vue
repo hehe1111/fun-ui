@@ -18,8 +18,8 @@
 </template>
 
 <script>
-import FCarousel from "../../../src/components/FCarousel.vue";
-import FCarouselItem from "../../../src/components/FCarouselItem.vue";
+import FCarousel from "../../../src/components/carousel/FCarousel.vue";
+import FCarouselItem from "../../../src/components/carousel/FCarouselItem.vue";
 
 export default {
   components: { FCarousel, FCarouselItem },

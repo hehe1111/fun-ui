@@ -1,7 +1,7 @@
 import { expect } from 'chai';
 import { mount } from '@vue/test-utils';
-import FRow from '@/components/FRow.vue';
-import FCol from '@/components/FCol.vue';
+import FRow from '../../src/components/grid/FRow.vue';
+import FCol from '../../src/components/grid/FCol.vue';
 
 describe('FCol.vue', () => {
   it('存在', () => {

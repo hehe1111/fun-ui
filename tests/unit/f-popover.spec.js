@@ -1,6 +1,6 @@
 import { expect } from 'chai';
 import { mount } from '@vue/test-utils';
-import FPopover from '@/components/FPopover.vue';
+import FPopover from '../../src/components/FPopover.vue';
 
 describe('FPopover.vue', () => {
   it('存在', () => {

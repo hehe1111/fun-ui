@@ -32,7 +32,7 @@
 </template>
 
 <script>
-import FIcon from './FIcon';
+import FIcon from '../FIcon.vue';
 
 export default {
   name: 'FunUICascaderItems',
@@ -136,7 +136,7 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-@import '../assets/_var.scss';
+@import '../../assets/_var.scss';
 
 .cascader-items {
   display: flex;

@@ -6,7 +6,7 @@
 </template>
 
 <script>
-import FCascader from "../../../src/components/FCascader.vue";
+import FCascader from "../../../src/components/cascader/FCascader.vue";
 
 const db = [
   {

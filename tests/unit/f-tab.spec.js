@@ -1,10 +1,10 @@
 import { expect } from 'chai';
 import { mount } from '@vue/test-utils';
-import FTab from '@/components/FTab.vue';
-import FTabNav from '@/components/FTabNav.vue';
-import FTabNavItem from '@/components/FTabNavItem.vue';
-import FTabBody from '@/components/FTabBody.vue';
-import FTabBodyItem from '@/components/FTabBodyItem.vue';
+import FTab from '../../src/components/tab/FTab.vue';
+import FTabNav from '../../src/components/tab/FTabNav.vue';
+import FTabNavItem from '../../src/components/tab/FTabNavItem.vue';
+import FTabBody from '../../src/components/tab/FTabBody.vue';
+import FTabBodyItem from '../../src/components/tab/FTabBodyItem.vue';
 
 function returnOptionsObj(propsData) {
   return {

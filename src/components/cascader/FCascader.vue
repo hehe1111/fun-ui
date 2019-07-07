@@ -23,9 +23,9 @@
 </template>
 
 <script>
-import FIcon from './FIcon.vue';
+import FIcon from '../FIcon.vue';
 import FCascaderItems from './FCascaderItems.vue';
-import { clickOutside } from './directives.js';
+import clickOutside from '../../directives/click-outside.js';
 
 export default {
   name: 'FunUIFCascader',
@@ -117,7 +117,7 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-@import '../assets/_var.scss';
+@import '../../assets/_var.scss';
 
 .cascader {
   display: inline-block;

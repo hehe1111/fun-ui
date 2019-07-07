@@ -10,7 +10,7 @@
 </template>
 
 <script>
-import './svg';
+import '../assets/svg.js';
 
 export default {
   name: 'FunUIIcon',

@@ -19,9 +19,7 @@
 import FIcon from "../../../src/components/FIcon.vue";
 
 export default {
-  components: {
-    "f-icon": FIcon,
-  },
+  components: { FIcon },
   data() {
     return {
       code: `

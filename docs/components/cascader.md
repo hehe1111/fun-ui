@@ -16,7 +16,7 @@
   </template>
 
   <script>
-  import FCascader from "../../../src/components/FCascader.vue";
+  import FCascader from "../../../src/components/cascader/FCascader.vue";
 
   const db = [
     {
@@ -84,8 +84,8 @@
   </template>
 
   <script>
-  import FCascader from "../../../src/components/FCascader.vue";
-  import db from "../../../src/assets/db.js";
+  import FCascader from "../../../src/components/cascader/FCascader.vue";
+  import db from "../../../tests/fixture/db.js";
 
   function ajax(id = 0) {
     return new Promise((resolve, reject) => {

@@ -1,4 +1,4 @@
-import FToast from './FToast.vue';
+import FToast from '../components/FToast.vue';
 
 function createToast({ Vue, message, propsData, onClose }) {
   const Constructor = Vue.extend(FToast);

@@ -5,14 +5,14 @@
       :source.sync="source"
       :selected.sync="selected"
       :load-data="loadData"
-      style="z-index: 2;" 
+      style="z-index: 2;"
     />
   </div>
 </template>
 
 <script>
-import FCascader from "../../../src/components/FCascader.vue";
-import db from "../../../src/assets/db.js";
+import FCascader from "../../../src/components/cascader/FCascader.vue";
+import db from "../../../tests/fixture/db.js";
 
 function ajax(id = 0) {
   return new Promise((resolve, reject) => {

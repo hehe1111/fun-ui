@@ -34,7 +34,7 @@
 </template>
 
 <script>
-import FIcon from './FIcon.vue';
+import FIcon from '../FIcon.vue';
 
 export default {
   name: 'FunUICarousel',
@@ -178,7 +178,7 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-@import '../assets/_var.scss';
+@import '../../assets/_var.scss';
 
 .f-carousel {
   position: relative;
