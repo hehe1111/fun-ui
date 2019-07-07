@@ -20,7 +20,7 @@
         @click="onClickDots(n - 1)"
       ></span>
     </div>
-    <template class="f-carousel-arrow-container" v-if="enableArrow">
+    <template v-if="enableArrow">
       <div class="f-carousel-arrow f-carousel-prev" @click="onClickPrevious">
         <f-icon name="left" class="icon" />
       </div>
@@ -85,30 +85,29 @@ export default {
     },
     getNewSelected(newIndex) {
       this.oldSelectedIndex = this.getSelected().index;
-      let newIndexCopy = newIndex;
-      if (newIndexCopy >= this.names.length) newIndexCopy = 0;
-      if (newIndexCopy < 0) newIndexCopy = this.names.length - 1;
-      this.newSelectedIndex = newIndexCopy;
-      this.mutableSelected = this.names[newIndexCopy];
+      let copy = newIndex;
+      if (copy >= this.names.length) copy = 0;
+      if (copy < 0) copy = this.names.length - 1;
+      this.newSelectedIndex = copy;
+      this.mutableSelected = this.names[copy];
       this.$emit('update:selected', this.mutableSelected);
       this.updateChildren();
     },
     updateChildren() {
       this.$children.forEach(vm => {
-        const { oldSelectedIndex, newSelectedIndex } = this;
+        const { oldSelectedIndex: oldI, newSelectedIndex: newI } = this;
         const last = this.names.length - 1;
-        vm.leftToRight = oldSelectedIndex > newSelectedIndex;
 
+        vm.leftToRight = oldI > newI;
         // 边界情况
-        if (oldSelectedIndex === last && newSelectedIndex === 0) {
-          vm.leftToRight = false;
-        }
-        if (oldSelectedIndex === 0 && newSelectedIndex === last) {
-          vm.leftToRight = true;
-        }
+        if (oldI === last && newI === 0) vm.leftToRight = false;
+        if (oldI === 0 && newI === last) vm.leftToRight = true;
 
         this.$nextTick(() => (vm.selected = this.getSelected().name));
       });
+    },
+    stopAutoPlay() {
+      this.timerId && window.clearTimeout(this.timerId);
     },
     autoPlayHandler() {
       this.stopAutoPlay();
@@ -120,9 +119,6 @@ export default {
         this.getNewSelected(this.getSelected().index + 1);
         this.timerId = this.setTimer();
       }, this.autoPlay * 1000);
-    },
-    stopAutoPlay() {
-      this.timerId && window.clearTimeout(this.timerId);
     },
     onClickDots(newIndex) {
       this.getNewSelected(newIndex);
