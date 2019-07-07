@@ -1,6 +1,6 @@
 <template>
   <div class="cascader" ref="cascader" v-click-outside="close">
-    <div class="trigger" @click="togglePopover">{{ result }}</div>
+    <div class="trigger" @click="togglePopover">{{ result || `&nbsp;` }}</div>
     <div class="popover" v-if="isPopoverVisible">
       <f-cascader-items
         :items="source"
