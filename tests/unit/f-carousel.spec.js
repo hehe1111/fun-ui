@@ -36,7 +36,7 @@ describe('FCarousel.vue', () => {
     });
   });
 
-  it('可以接收 selected 属性', () => {
+  it('可以接受 selected 属性', () => {
     const selected = 'x2';
     const wrapper = mount(
       FCarousel,
@@ -54,7 +54,7 @@ describe('FCarousel.vue', () => {
     });
   });
 
-  it('可以接收 autoPlay 属性', done => {
+  it('可以接受 autoPlay 属性', done => {
     const fake = sinon.fake();
     const wrapper = mount(FCarousel, {
       listeners: { 'update:selected': fake },
@@ -87,7 +87,7 @@ describe('FCarousel.vue', () => {
     });
   });
 
-  it('可以接收 enableArrow 属性', () => {
+  it('可以接受 enableArrow 属性', () => {
     const wrapper = mount(
       FCarousel,
       returnOptionsObj({ enableArrow: true, autoPlay: false })
@@ -95,6 +95,46 @@ describe('FCarousel.vue', () => {
     wrapper.vm.$nextTick().then(() => {
       expect(wrapper.find('.f-carousel-prev').exists()).to.eq(true);
       expect(wrapper.find('.f-carousel-next').exists()).to.eq(true);
+      wrapper.destroy();
+    });
+  });
+
+  it('可以接受 dotPosition 属性', () => {
+    let dotPosition = 'top';
+    const wrapper = mount(
+      FCarousel,
+      returnOptionsObj({
+        dotPosition,
+        enableArrow: true,
+        autoPlay: false,
+      })
+    );
+    wrapper.vm.$nextTick().then(() => {
+      expect(wrapper.find('.f-carousel-dots').classes()).include(
+        `position-${dotPosition}`
+      );
+      expect(wrapper.find('.f-carousel-prev').exists()).to.eq(true);
+      expect(wrapper.find('.f-carousel-next').exists()).to.eq(true);
+      wrapper.destroy();
+    });
+  });
+
+  it('  |-- 值为 left / right 时 enableArrow 属性无效', () => {
+    let dotPosition = 'left';
+    const wrapper = mount(
+      FCarousel,
+      returnOptionsObj({
+        dotPosition,
+        enableArrow: true,
+        autoPlay: false,
+      })
+    );
+    wrapper.vm.$nextTick().then(() => {
+      expect(wrapper.find('.f-carousel-dots').classes()).include(
+        `position-${dotPosition}`
+      );
+      expect(wrapper.find('.f-carousel-prev').exists()).to.eq(false);
+      expect(wrapper.find('.f-carousel-next').exists()).to.eq(false);
       wrapper.destroy();
     });
   });
