@@ -1,10 +1,22 @@
 <template>
-  <div class="f-sub-nav-container" @click="toggle">
-    <f-nav-item :name="name">
-      <slot name="title" />
-    </f-nav-item>
+  <div class="f-sub-nav-container" v-click-outside="close">
+    <div
+      class="f-sub-nav-title-container"
+      @click="toggle"
+      @mouseenter="open"
+      @mouseleave="closeAfterDelay"
+    >
+      <f-nav-item :name="name">
+        <slot name="title" />
+      </f-nav-item>
+    </div>
     <!-- 用 v-show 以便从一开始就能获取到所有后代子组件 -->
-    <div class="f-sub-nav" v-show="isSubNavVisible">
+    <div
+      class="f-sub-nav"
+      v-show="isSubNavVisible"
+      @mouseenter="open"
+      @mouseleave="closeAfterDelay"
+    >
       <slot />
     </div>
   </div>
@@ -12,6 +24,7 @@
 
 <script>
 import FNavItem from './FNavItem.vue';
+import clickOutside from '../../directives/click-outside.js';
 
 export default {
   name: 'FunUISubNav',
@@ -25,14 +38,28 @@ export default {
     return {
       selected: null,
       isSubNavVisible: false,
+      timerId: null,
     };
   },
   methods: {
-    toggle() {
-      this.isSubNavVisible = !this.isSubNavVisible;
+    toggle($event) {
+      this.isSubNavVisible ? this.close() : this.open();
+    },
+    open() {
+      this.timerId && window.clearTimeout(this.timerId);
+      this.isSubNavVisible = true;
+    },
+    close() {
+      this.isSubNavVisible = false;
+    },
+    closeAfterDelay() {
+      this.timerId = setTimeout(() => {
+        this.close();
+      }, 300);
     },
   },
   components: { FNavItem },
+  directives: { clickOutside },
 };
 </script>
 
