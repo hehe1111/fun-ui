@@ -53,13 +53,28 @@ export default {
   padding: 0.5em 1em;
   user-select: none;
   cursor: pointer;
+  position: relative;
+  transition: all $duration;
+  min-width: 6em;
+  display: flex;
+  justify-content: center;
+  align-items: center;
 
   &.active {
-    background-color: $grey;
+    color: $blue;
+
+    &::after {
+      content: '';
+      position: absolute;
+      bottom: 0;
+      left: 0;
+      width: 100%;
+      border-bottom: 2px solid $blue;
+    }
   }
 
   &:hover {
-    background-color: $greyHover;
+    background-color: $grey;
   }
 }
 </style>
