@@ -51,6 +51,8 @@ export default {
 .f-nav-item {
   white-space: nowrap;
   padding: 0.5em 1em;
+  user-select: none;
+  cursor: pointer;
 
   &.active {
     background-color: $grey;
