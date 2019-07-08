@@ -76,6 +76,13 @@ export default {
     margin-top: 4px;
     box-shadow: 0 0 3px 0 $boxShadowColor;
     background-clip: content-box;
+
+    // 多层嵌套 sub-nav
+    .f-sub-nav {
+      top: 0;
+      left: 100%;
+      margin-left: 4px;
+    }
   }
 }
 </style>
