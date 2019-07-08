@@ -1,46 +1,47 @@
 <template>
   <div id="app">
-    {{ selected }}
-    <!-- TODO: 如何协调动画持续时间 duration 和自动播放时的切换时间 autoPlay -->
-    <f-carousel :selected.sync="selected">
-      <f-carousel-item name="x1">
-        <div class="image">1</div>
-      </f-carousel-item>
-      <f-carousel-item name="x2">
-        <div class="image">2</div>
-      </f-carousel-item>
-      <f-carousel-item name="x3">
-        <div class="image">3</div>
-      </f-carousel-item>
-    </f-carousel>
+    {{selected}}
+    <f-nav :selected.sync="selected">
+      <f-nav-item name="home">首页</f-nav-item>
+      <f-sub-nav name="about">
+        <!-- eslint-disable-next-line -->
+        <template slot="title">关于</template>
+        <!-- 上面一行抽风了。一定要换行， prettier 才不会报 warning。但这个 warning 真的是多余，你让它保持一行又不会死！！！  -->
+        <f-nav-item name="culture">企业文化</f-nav-item>
+        <f-nav-item name="team">团队</f-nav-item>
+        <f-nav-item name="contancts">联系方式</f-nav-item>
+      </f-sub-nav>
+      <f-nav-item name="hire">招聘</f-nav-item>
+    </f-nav>
   </div>
 </template>
 
 <script>
-import FCarousel from './components/FCarousel.vue';
-import FCarouselItem from './components/FCarouselItem.vue';
+import FNav from './components/nav/FNav.vue';
+import FSubNav from './components/nav/FSubNav.vue';
+import FNavItem from './components/nav/FNavItem.vue';
 
 export default {
   name: 'app',
   components: {
-    FCarousel,
-    FCarouselItem,
+    FNav,
+    FSubNav,
+    FNavItem,
   },
   data() {
     return {
-      selected: 'x1',
+      selected: 'team',
     };
   },
 };
 </script>
 
 <style lang="scss">
-.image {
-  width: 100px;
-  height: 100px;
-  background-color: #ddd;
-  display: flex;
-  align-items: center;
-  justify-content: center;
+*,
+*::before,
+*::after {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
 }
 </style>
