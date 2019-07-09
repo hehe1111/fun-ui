@@ -76,10 +76,18 @@ export default {
   display: flex;
   border-bottom: 1px solid $borderColorLight;
 
+  // 纵向样式
   &.vertical {
     display: inline-flex;
     flex-direction: column;
     border: 1px solid $borderColorLight;
   }
+}
+
+/* 选中项高亮下划线样式 */
+// 横向时，顶层栏选中项「加」高亮下划线
+.f-nav > .f-nav-item.active::after {
+  content: '';
+  @extend .selectedItemBlueBorderBottom;
 }
 </style>

@@ -82,27 +82,17 @@ export default {
 
   &.active {
     color: $blue;
-
-    // 横向时，顶层栏选中项「加」高亮下划线
-    &::after {
-      content: '';
-      position: absolute;
-      bottom: 0;
-      left: 0;
-      width: 100%;
-      border-bottom: 2px solid $blue;
-    }
-
-    // 纵向时，顶层栏选中项「不加」高亮下划线
-    &.vertical::after {
-      content: '';
-      display: none;
-      border-bottom: none;
-    }
   }
 
   &:hover {
     background-color: $grey;
+  }
+
+  // 纵向时，选中项「不加」高亮下划线
+  &.vertical {
+    &.active::after {
+      display: none;
+    }
   }
 }
 </style>

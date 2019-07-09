@@ -194,17 +194,6 @@ export default {
       left: 100%;
       margin-left: 4px;
     }
-
-    // 多层嵌套的 sub-nav 里的 nav-item 被选中时不需要下划线
-    .f-nav-item {
-      justify-content: flex-start;
-
-      &.active {
-        &::after {
-          display: none;
-        }
-      }
-    }
   }
 
   // 纵向样式
@@ -219,6 +208,19 @@ export default {
       padding-left: 1em;
       overflow: hidden;
     }
+  }
+}
+
+/* 选中项高亮下划线样式 */
+// 横向时，顶层栏选中项「加」高亮下划线
+.f-sub-nav-container {
+  > .f-sub-nav-title-container > .f-nav-item.active::after {
+    content: '';
+    @extend .selectedItemBlueBorderBottom;
+  }
+
+  .f-sub-nav-container .f-nav-item.active::after {
+    display: none;
   }
 }
 </style>
