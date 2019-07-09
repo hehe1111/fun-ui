@@ -29,6 +29,12 @@ export default {
       typeof this.root.getNavItems === 'function' &&
       this.root.getNavItems(this);
   },
+  watch: {
+    selected(newValue, oldValue) {
+      // 只在第一次更新后执行一次
+      !oldValue && newValue === this.name && this.updateRootNamePath();
+    },
+  },
   computed: {
     classes() {
       const { namePath } = this.root;
