@@ -16,6 +16,7 @@ export default {
     return {
       mutableSelected: '',
       navItems: [],
+      namePath: [], // 记录通往「被选中项」的上层路径
     };
   },
   provide() {

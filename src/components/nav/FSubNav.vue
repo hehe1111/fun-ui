@@ -34,9 +34,14 @@ export default {
       required: true,
     },
   },
+  inject: {
+    root: {
+      from: 'root',
+      default: () => ({}),
+    },
+  },
   data() {
     return {
-      selected: null,
       isSubNavVisible: false,
       timerId: null,
     };
@@ -56,6 +61,11 @@ export default {
       this.timerId = setTimeout(() => {
         this.close();
       }, 300);
+    },
+    updateRootNamePath() {
+      this.root.namePath.unshift(this.name);
+      const fn = this.$parent.updateRootNamePath;
+      fn && typeof fn === 'function' && fn();
     },
   },
   components: { FNavItem },

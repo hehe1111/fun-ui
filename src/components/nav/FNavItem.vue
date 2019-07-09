@@ -31,8 +31,11 @@ export default {
   },
   computed: {
     classes() {
+      const { namePath } = this.root;
       return {
-        active: this.name === this.selected,
+        active:
+          this.name === this.selected ||
+          (namePath && namePath.indexOf(this.name) >= 0),
       };
     },
   },
@@ -40,6 +43,12 @@ export default {
     onClick() {
       // this.$emit('update:selected', this.name) 等同于 this.root.mutableSelected = this.name
       this.$emit('update:selected', this.name);
+      this.updateRootNamePath();
+    },
+    updateRootNamePath() {
+      this.root.namePath = [];
+      const fn = this.$parent.updateRootNamePath;
+      fn && typeof fn === 'function' && fn();
     },
   },
 };
