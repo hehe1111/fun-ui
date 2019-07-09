@@ -1,24 +1,30 @@
 <template>
-  <div class="f-sub-nav-container" v-click-outside="close">
+  <div
+    class="f-sub-nav-container"
+    :class="verticalClass"
+    v-click-outside="closeIfNotVertical"
+  >
     <div
       class="f-sub-nav-title-container"
       @click="toggle"
-      @mouseenter="open"
-      @mouseleave="closeAfterDelay"
+      @mouseenter="onMouseEnter"
+      @mouseleave="onMouseLeave"
     >
       <f-nav-item :name="name">
         <slot name="title" />
         <div class="icon-container">
-          <f-icon name="right" :class="addDownClass" />
+          <f-icon name="up" v-if="vertical" class="icon" :class="rotateClass" />
+          <f-icon name="right" v-else class="icon" :class="rotateClass" />
         </div>
       </f-nav-item>
     </div>
+
     <!-- 用 v-show 以便从一开始就能获取到所有后代子组件 -->
     <div
       class="f-sub-nav"
       v-show="isSubNavVisible"
-      @mouseenter="open"
-      @mouseleave="closeAfterDelay"
+      @mouseenter="onMouseEnter"
+      @mouseleave="onMouseLeave"
     >
       <slot />
     </div>
@@ -43,6 +49,10 @@ export default {
       from: 'root',
       default: () => ({}),
     },
+    vertical: {
+      from: 'vertical',
+      default: false,
+    },
   },
   data() {
     return {
@@ -51,9 +61,14 @@ export default {
     };
   },
   computed: {
-    addDownClass() {
+    rotateClass() {
+      return this.vertical
+        ? { rotate180deg: this.isSubNavVisible }
+        : { rotate90deg: this.isSubNavVisible };
+    },
+    verticalClass() {
       return {
-        down: this.isSubNavVisible,
+        vertical: this.vertical,
       };
     },
   },
@@ -73,6 +88,15 @@ export default {
         this.close();
       }, 300);
     },
+    closeIfNotVertical() {
+      !this.vertical && this.close();
+    },
+    onMouseEnter() {
+      !this.vertical && this.open();
+    },
+    onMouseLeave() {
+      !this.vertical && this.closeAfterDelay();
+    },
     updateRootNamePath() {
       this.root.namePath.unshift(this.name);
       const fn = this.$parent.updateRootNamePath;
@@ -86,6 +110,25 @@ export default {
 
 <style lang="scss" scoped>
 @import '../../assets/_var.scss';
+
+// icon 通用样式
+.icon-container {
+  margin-left: auto;
+
+  > .icon {
+    display: inline-flex;
+    transition: transform $duration;
+    margin-left: 1em;
+
+    &.rotate90deg {
+      transform: rotateZ(90deg);
+    }
+
+    &.rotate180deg {
+      transform: rotateZ(180deg);
+    }
+  }
+}
 
 .f-sub-nav-container {
   position: relative;
@@ -102,22 +145,13 @@ export default {
     box-shadow: 0 0 3px 0 $boxShadowColor;
     background-color: #fff;
 
-    // 多层嵌套的 sub-nav 的 icon 的指向
+    // 多层嵌套的 sub-nav 的 icon
     .f-sub-nav-container
       > .f-sub-nav-title-container
       > .f-nav-item
-      > .icon-container {
-      margin-left: auto;
-
+      > .icon-container
       > .icon {
-        display: inline-flex;
-        transition: transform $duration;
-        margin-left: 1em;
-
-        &.down {
-          transform: rotateZ(90deg);
-        }
-      }
+      display: inline-flex;
     }
 
     // 多层嵌套的 sub-nav 位置
@@ -136,6 +170,19 @@ export default {
           display: none;
         }
       }
+    }
+  }
+
+  // 纵向样式
+  &.vertical {
+    > .f-sub-nav-title-container > .f-nav-item > .icon-container > .icon {
+      display: inline-flex;
+    }
+
+    > .f-sub-nav {
+      position: static;
+      box-shadow: none;
+      padding-left: 1em;
     }
   }
 }

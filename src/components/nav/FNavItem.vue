@@ -18,6 +18,10 @@ export default {
       from: 'root',
       default: () => ({}),
     },
+    vertical: {
+      from: 'vertical',
+      default: false,
+    },
   },
   data() {
     return {
@@ -39,6 +43,7 @@ export default {
     classes() {
       const { namePath } = this.root;
       return {
+        vertical: this.vertical,
         active:
           this.name === this.selected ||
           (namePath && namePath.indexOf(this.name) >= 0),
@@ -72,12 +77,13 @@ export default {
   transition: all $duration;
   min-width: 6em;
   display: flex;
-  justify-content: center;
+  // justify-content: center;
   align-items: center;
 
   &.active {
     color: $blue;
 
+    // 横向时，顶层栏选中项「加」高亮下划线
     &::after {
       content: '';
       position: absolute;
@@ -85,6 +91,13 @@ export default {
       left: 0;
       width: 100%;
       border-bottom: 2px solid $blue;
+    }
+
+    // 纵向时，顶层栏选中项「不加」高亮下划线
+    &.vertical::after {
+      content: '';
+      display: none;
+      border-bottom: none;
     }
   }
 

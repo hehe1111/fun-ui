@@ -1,5 +1,5 @@
 <template>
-  <div class="f-nav">
+  <div class="f-nav" :class="{ vertical }">
     <slot />
   </div>
 </template>
@@ -10,6 +10,10 @@ export default {
   props: {
     selected: {
       type: String,
+    },
+    vertical: {
+      type: Boolean,
+      default: false,
     },
   },
   data() {
@@ -24,6 +28,7 @@ export default {
       // 法一：用 new Vue() 做 eventBus
       // 法二：直接将当前组件实例 this 提供给其后代组件（如下）
       root: this,
+      vertical: this.vertical,
     };
   },
   created() {
@@ -70,5 +75,11 @@ export default {
 .f-nav {
   display: flex;
   border-bottom: 1px solid $borderColorLight;
+
+  &.vertical {
+    display: inline-flex;
+    flex-direction: column;
+    border: 1px solid $borderColorLight;
+  }
 }
 </style>
