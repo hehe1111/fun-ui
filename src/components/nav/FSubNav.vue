@@ -6,7 +6,7 @@
   >
     <div
       class="f-sub-nav-title-container"
-      @click="toggle"
+      @click="toggleIfVertical"
       @mouseenter="onMouseEnter"
       @mouseleave="onMouseLeave"
     >
@@ -82,8 +82,8 @@ export default {
     },
   },
   methods: {
-    toggle($event) {
-      this.isSubNavVisible ? this.close() : this.open();
+    toggleIfVertical($event) {
+      this.vertical && this.isSubNavVisible ? this.close() : this.open();
     },
     open() {
       this.timerId && window.clearTimeout(this.timerId);
