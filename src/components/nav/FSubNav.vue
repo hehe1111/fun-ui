@@ -81,7 +81,16 @@ export default {
       };
     },
   },
+  mounted() {
+    this.updateRootTitleNavItems();
+  },
   methods: {
+    updateRootTitleNavItems() {
+      const { getTitleNavItems } = this.root;
+      getTitleNavItems &&
+        typeof getTitleNavItems === 'function' &&
+        getTitleNavItems(this);
+    },
     toggleIfVertical($event) {
       this.vertical && this.isSubNavVisible ? this.close() : this.open();
     },

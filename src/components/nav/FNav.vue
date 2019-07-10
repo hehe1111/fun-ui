@@ -19,7 +19,8 @@ export default {
   data() {
     return {
       mutableSelected: '',
-      navItems: [],
+      navItems: [], // 所有后代 item
+      titleNavItems: [], // 仅限子菜单的 title item
       namePath: [], // 记录通往「被选中项」的上层路径
     };
   },
@@ -43,6 +44,9 @@ export default {
     getNavItems(vm) {
       this.navItems.push(vm);
     },
+    getTitleNavItems(vm) {
+      this.titleNavItems.push(vm);
+    },
     checkChildren() {
       this.$children.forEach(vm => {
         if (['FunUINavItem', 'FunUISubNav'].indexOf(vm.$options.name) === -1) {
@@ -53,7 +57,11 @@ export default {
     listenToChildren() {
       this.navItems.map(vm => {
         // vm 监听 vm 自身触发的事件
-        vm.$on('update:selected', $event => (this.mutableSelected = $event));
+        vm.$on('update:selected', $event => {
+          if (this.titleNavItems.map(vm => vm.name).indexOf($event) === -1) {
+            this.mutableSelected = $event;
+          }
+        });
       });
     },
     updateChildren() {

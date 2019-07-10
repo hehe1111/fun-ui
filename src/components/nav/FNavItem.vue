@@ -29,9 +29,7 @@ export default {
     };
   },
   mounted() {
-    this.root.getNavItems &&
-      typeof this.root.getNavItems === 'function' &&
-      this.root.getNavItems(this);
+    this.updateRootNavItems();
   },
   watch: {
     selected(newValue, oldValue) {
@@ -51,22 +49,31 @@ export default {
     },
   },
   methods: {
+    updateRootNavItems() {
+      const { getNavItems } = this.root;
+      getNavItems && typeof getNavItems === 'function' && getNavItems(this);
+    },
     onClick($event) {
       // this.$emit('update:selected', this.name) 等同于 this.root.mutableSelected = this.name
       this.$emit('update:selected', this.name);
-      this.updateRootNamePath();
+      this.updateIfNotTitleAndNotInNamePath();
       this.hijackClickEvent($event);
+    },
+    updateIfNotTitleAndNotInNamePath() {
+      this.root.titleNavItems.map(vm => vm.name).indexOf(this.name) === -1 &&
+        this.root.namePath.indexOf(this.name) === -1 &&
+        this.updateRootNamePath();
+    },
+    updateRootNamePath() {
+      this.root.namePath = [];
+      const fn = this.$parent.updateRootNamePath;
+      fn && typeof fn === 'function' && fn();
     },
     hijackClickEvent($event) {
       $event.target.contains(this.$refs.navItemRef) &&
         this.$slots.default.length === 1 &&
         this.$slots.default[0].elm.nodeType === Node.ELEMENT_NODE &&
         this.$slots.default[0].elm.click();
-    },
-    updateRootNamePath() {
-      this.root.namePath = [];
-      const fn = this.$parent.updateRootNamePath;
-      fn && typeof fn === 'function' && fn();
     },
   },
 };
@@ -87,7 +94,8 @@ export default {
   // justify-content: center;
   align-items: center;
 
-  &.active {
+  &.active,
+  &:hover {
     color: $blue;
   }
 
