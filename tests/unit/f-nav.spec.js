@@ -21,7 +21,7 @@ const returnOptionsObj = propsData => {
   };
 };
 
-describe('FButton.vue', () => {
+describe('FNav.vue', () => {
   it('存在', () => {
     const wrapper = mount(FNav, returnOptionsObj());
     expect(wrapper.exists()).to.eq(true);
