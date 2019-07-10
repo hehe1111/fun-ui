@@ -21,6 +21,7 @@
 
     <!-- 用 v-show 以便从一开始就能获取到所有后代子组件 -->
     <transition
+      @before-enter="beforeEnter"
       @enter="enter"
       @after-enter="afterEnter"
       @leave="leave"
@@ -111,11 +112,15 @@ export default {
       fn && typeof fn === 'function' && fn();
     },
     // 过渡 JS 钩子函数
+    beforeEnter(el) {
+      el.style.opacity = 0;
+    },
     enter(el, done) {
       this.subNavHeight = el.getBoundingClientRect().height;
       el.style.height = 0;
       el.getBoundingClientRect(); // 强制浏览器渲染上一次操作的结果
       el.style.height = `${this.subNavHeight}px`;
+      el.style.opacity = 1;
       // 等待过渡完成
       el.addEventListener('transitionend', () => {
         done();
@@ -128,6 +133,7 @@ export default {
       el.style.height = `${this.subNavHeight}px`;
       el.getBoundingClientRect();
       el.style.height = 0;
+      el.style.opacity = 0;
       el.addEventListener('transitionend', () => {
         done();
       });
@@ -177,7 +183,7 @@ export default {
     margin-top: 4px;
     box-shadow: 0 0 3px 0 $boxShadowColor;
     background-color: #fff;
-    transition: all 0.05s linear;
+    transition: all 0.2s linear;
 
     // 多层嵌套的 sub-nav 的 icon
     .f-sub-nav-container
