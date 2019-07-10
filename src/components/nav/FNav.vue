@@ -15,6 +15,10 @@ export default {
       type: Boolean,
       default: false,
     },
+    trigger: {
+      type: String,
+      default: 'hover',
+    },
   },
   data() {
     return {
@@ -30,6 +34,7 @@ export default {
       // 法二：直接将当前组件实例 this 提供给其后代组件（如下）
       root: this,
       vertical: this.vertical,
+      trigger: this.trigger,
     };
   },
   created() {

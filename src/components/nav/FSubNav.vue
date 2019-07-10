@@ -6,7 +6,7 @@
   >
     <div
       class="f-sub-nav-title-container"
-      @click="toggleIfVertical"
+      @click="toggle"
       @mouseenter="onMouseEnter"
       @mouseleave="onMouseLeave"
     >
@@ -61,6 +61,10 @@ export default {
       from: 'vertical',
       default: false,
     },
+    trigger: {
+      from: 'trigger',
+      default: 'hover',
+    },
   },
   data() {
     return {
@@ -91,8 +95,13 @@ export default {
         typeof getTitleNavItems === 'function' &&
         getTitleNavItems(this);
     },
-    toggleIfVertical($event) {
-      this.vertical && this.isSubNavVisible ? this.close() : this.open();
+    toggle($event) {
+      if (this.vertical) {
+        return this.isSubNavVisible ? this.close() : this.open();
+      }
+      this.trigger === 'click' && this.isSubNavVisible
+        ? this.close()
+        : this.open();
     },
     open() {
       this.timerId && window.clearTimeout(this.timerId);
@@ -110,10 +119,12 @@ export default {
       !this.vertical && this.close();
     },
     onMouseEnter() {
-      !this.vertical && this.open();
+      if (this.vertical) return;
+      this.trigger !== 'click' && this.open();
     },
     onMouseLeave() {
-      !this.vertical && this.closeAfterDelay();
+      if (this.vertical) return;
+      this.trigger !== 'click' && this.closeAfterDelay();
     },
     updateRootNamePath() {
       this.root.namePath.unshift(this.name);
