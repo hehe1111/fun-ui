@@ -1,5 +1,5 @@
 <template>
-  <div class="f-nav-item" :class="classes" @click="onClick">
+  <div class="f-nav-item" :class="classes" @click="onClick" ref="navItemRef">
     <slot />
   </div>
 </template>
@@ -51,10 +51,17 @@ export default {
     },
   },
   methods: {
-    onClick() {
+    onClick($event) {
       // this.$emit('update:selected', this.name) 等同于 this.root.mutableSelected = this.name
       this.$emit('update:selected', this.name);
       this.updateRootNamePath();
+      this.hijackClickEvent($event);
+    },
+    hijackClickEvent($event) {
+      $event.target.contains(this.$refs.navItemRef) &&
+        this.$slots.default.length === 1 &&
+        this.$slots.default[0].elm.nodeType === Node.ELEMENT_NODE &&
+        this.$slots.default[0].elm.click();
     },
     updateRootNamePath() {
       this.root.namePath = [];
