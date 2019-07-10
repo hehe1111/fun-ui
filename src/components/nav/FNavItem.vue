@@ -1,5 +1,11 @@
 <template>
-  <div class="f-nav-item" :class="classes" @click="onClick" ref="navItemRef">
+  <div
+    class="f-nav-item"
+    :class="classes"
+    @click="onClick"
+    ref="navItemRef"
+    :data-name="name"
+  >
     <slot />
   </div>
 </template>
