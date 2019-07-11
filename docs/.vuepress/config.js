@@ -47,6 +47,7 @@ module.exports = {
           '/components/icon',
           '/components/input',
           '/components/layout',
+          '/components/nav',
           '/components/popover',
           '/components/tab',
           '/components/toast',
