@@ -57,5 +57,13 @@ export default {
   &:focus {
     outline: none;
   }
+  > .icon-left {
+    margin-right: 6px;
+  }
+  // order 默认为 0
+  > .icon-right {
+    margin-left: 6px;
+    order: 1;
+  }
 }
 </style>

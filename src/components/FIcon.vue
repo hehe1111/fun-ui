@@ -5,7 +5,7 @@
     aria-hidden="true"
     @click="$emit('click', $event)"
   >
-    <use :xlink:href="`#icon-${name}`"></use>
+    <use :xlink:href="`#icon-${name}`" />
   </svg>
 </template>
 
@@ -38,12 +38,7 @@ export default {
   fill: currentColor;
   overflow: hidden;
 }
-// order 默认为 0
-.icon-right {
-  margin-left: 6px;
-  margin-right: 0;
-  order: 1;
-}
+
 @keyframes spin {
   0% {
     transform: rotate(0deg);
@@ -52,6 +47,7 @@ export default {
     transform: rotate(360deg);
   }
 }
+
 .loading {
   animation: spin 1s infinite linear;
 }
