@@ -8,6 +8,8 @@
       <f-icon name="left" />按钮
       <f-icon name="right" />
     </f-button>
+    <f-button icon="setting">按钮</f-button>
+    <f-button icon="setting" icon-position="right">按钮</f-button>
 
     <pre><code>{{ code }}</code></pre>
   </div>
