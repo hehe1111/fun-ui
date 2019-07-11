@@ -14,6 +14,7 @@ export default {
   name: 'FunUITabNavItem',
   data() {
     return {
+      selected: null,
       active: false,
     };
   },
