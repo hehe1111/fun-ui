@@ -206,8 +206,8 @@ export default {
     margin-top: 4px;
     box-shadow: 0 0 3px 0 $boxShadowColor;
     background-color: #fff;
-    transition: all 0.2s linear;
-    z-index: 1;
+    transition: all 0.1s linear;
+    z-index: 2;
 
     // 多层嵌套的 sub-nav 的 icon
     .f-sub-nav-container
