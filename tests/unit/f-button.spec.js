@@ -26,8 +26,9 @@ describe('FButton.vue', () => {
     wrapper.destroy();
   });
 
-  xit('可以通过设置 iconPosition 来设置图标在按钮中的位置；右边的图标 order 为 "1"', () => {
+  it('可以通过设置 iconPosition 来设置图标在按钮中的位置；右边的图标 order 为 "1"', () => {
     const wrapper = mount(FButton, {
+      attachToDocument: true,
       propsData: {
         icon: 'setting',
         iconPosition: 'right',
@@ -38,9 +39,9 @@ describe('FButton.vue', () => {
     const classValue = svg.attributes()['class'];
     expect(href).to.eq('#icon-setting');
     expect(classValue).to.eq('icon icon-right');
-    // const { order } = window.getComputedStyle(c.$el.querySelector('svg'));
-    // expect(typeof order).to.eq('string');
-    // expect(order).to.eq('1');
+    const { order } = window.getComputedStyle(svg.element);
+    expect(typeof order).to.eq('string');
+    expect(order).to.eq('1');
     wrapper.destroy();
   });
 

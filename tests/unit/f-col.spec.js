@@ -40,10 +40,10 @@ describe('FCol.vue', () => {
     expect(wrapper.classes()).include('col-offset-ipad-7');
     wrapper.destroy();
   });
-  it('可以接受 small_pc 属性', () => {
+  it('可以接受 samllPC 属性', () => {
     const wrapper = mount(FCol, {
       propsData: {
-        small_pc: { span: '7', offset: '7' },
+        samllPC: { span: '7', offset: '7' },
       },
     });
     expect(wrapper.classes()).include('col-small-pc-7');
@@ -60,10 +60,10 @@ describe('FCol.vue', () => {
     expect(wrapper.classes()).include('col-offset-pc-7');
     wrapper.destroy();
   });
-  it('可以接受 large_pc 属性', () => {
+  it('可以接受 largePC 属性', () => {
     const wrapper = mount(FCol, {
       propsData: {
-        large_pc: { span: '7', offset: '7' },
+        largePC: { span: '7', offset: '7' },
       },
     });
     expect(wrapper.classes()).include('col-large-pc-7');
@@ -71,16 +71,21 @@ describe('FCol.vue', () => {
     wrapper.destroy();
   });
 
-  it('可以接受 col_align 属性', () => {
+  it('可以接受 colAlign 属性', () => {
+    const colAlign = 'right';
     const wrapper = mount(FRow, {
+      attachToDocument: true,
       propsData: { align: 'center' },
       // https://vue-test-utils.vuejs.org/zh/api/options.html#stubs
       stubs: { FCol },
       slots: {
-        default: '<f-col :span="1" col_align="right">1</f-col>',
+        default: `<f-col :span="1" col-align=${colAlign}>1</f-col>`,
       },
     });
-    expect(wrapper.find('.col').classes()).include('align-right');
+    expect(wrapper.find('.col').classes()).include(`align-${colAlign}`);
+    expect(
+      window.getComputedStyle(wrapper.find('.col').element).textAlign
+    ).to.eq(colAlign);
     wrapper.destroy();
   });
 });

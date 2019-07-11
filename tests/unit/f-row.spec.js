@@ -34,39 +34,19 @@ describe('FRow.vue', () => {
     });
   });
 
-  xit('可以接受 align 属性', () => {
+  it('可以接受 align 属性', () => {
+    const align = 'center';
     const wrapper = mount(FRow, {
-      propsData: {
-        align: 'center',
-      },
+      attachToDocument: true,
+      propsData: { align },
       stubs: { FCol },
       slots: {
         default: '<f-col span="12">1</f-col>',
       },
     });
-
-    console.log(wrapper.html());
-    console.log(1, wrapper.find('.col').element.style.textAlign);
-    console.log(wrapper.exists());
+    expect(
+      window.getComputedStyle(wrapper.find('.col').element).textAlign
+    ).to.eq(align);
     wrapper.destroy();
-    console.log(wrapper.exists());
-
-    // const div = document.createElement('div');
-    // document.body.appendChild(div);
-    // div.innerHTML = `
-    //   <f-row align="center">
-    //     <f-col span="12">1</f-col>;
-    //   </f-row>
-    // `;
-    // const vm = new Vue({
-    //   el: div,
-    // });
-    // setTimeout(() => {
-    //   const col = vm.$el.querySelector('.col');
-    //   expect(getComputedStyle(col).textAlign).to.eq('center');
-    //   vm.$el.remove();
-    //   vm.$destroy();
-    //   done();
-    // }, 0);
   });
 });

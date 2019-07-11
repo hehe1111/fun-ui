@@ -45,17 +45,19 @@ describe('FTab.vue', () => {
     });
   });
 
-  xit('可以接受 direction 属性', () => {
-    const wrapper = mount(
-      FTab,
-      returnOptionsObj({
+  it('可以接受 direction 属性', () => {
+    const wrapper = mount(FTab, {
+      attachToDocument: true,
+      ...returnOptionsObj({
         selected: '11',
         direction: 'vertical',
-      })
-    );
+      }),
+    });
     expect(wrapper.find('.tab').element.style.display).to.eq('flex');
     expect(wrapper.find('.tab-nav').classes()).include('vertical');
-    // expect(wrapper.find('.tab-nav').element.style.display).to.eq('block');
+    expect(
+      window.getComputedStyle(wrapper.find('.tab-nav').element).display
+    ).to.eq('block');
     expect(wrapper.find('.tab-body').classes()).include('vertical');
     wrapper.destroy();
   });

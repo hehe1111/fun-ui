@@ -50,16 +50,23 @@ describe('FCollapse.vue', () => {
       })
     );
 
-    expect(wrapper.find('[data-name="c1"] > .content').element).to.not.exist;
-    expect(wrapper.find('[data-name="c2"] > .content').element).to.exist;
-    expect(wrapper.find('[data-name="c3"] > .content').element).to.not.exist;
+    wrapper.vm.$nextTick().then(() => {
+      expect(wrapper.find('[data-name="c1"] > .content').element).to.not.exist;
+      expect(wrapper.find('[data-name="c2"] > .content').element).to.exist;
+      expect(wrapper.find('[data-name="c3"] > .content').element).to.not.exist;
 
-    wrapper.find('[data-name="c3"] > header').trigger('click');
+      wrapper.find('[data-name="c3"] > header').trigger('click');
 
-    expect(wrapper.find('[data-name="c1"] > .content').element).to.not.exist;
-    expect(wrapper.find('[data-name="c2"] > .content').element).to.not.exist;
-    expect(wrapper.find('[data-name="c3"] > .content').element).to.exist;
-    wrapper.destroy();
+      wrapper.vm.$nextTick().then(() => {
+        expect(wrapper.find('[data-name="c1"] > .content').element).to.not
+          .exist;
+        expect(wrapper.find('[data-name="c2"] > .content').element).to.not
+          .exist;
+        expect(wrapper.find('[data-name="c3"] > .content').element).to.exist;
+
+        wrapper.destroy();
+      });
+    });
   });
 
   it('可以触发 update:opened 事件', () => {

@@ -30,10 +30,12 @@ describe('FNav.vue', () => {
 
   it('可以接受 selected 属性', () => {
     const wrapper = mount(FNav, returnOptionsObj({ selected: 'x2' }));
-    expect(wrapper.find('.f-nav-item[data-name="x2"]').classes()).include(
-      'active'
-    );
-    wrapper.destroy();
+    wrapper.vm.$nextTick().then(() => {
+      expect(wrapper.find('.f-nav-item[data-name="x2"]').classes()).include(
+        'active'
+      );
+      wrapper.destroy();
+    });
   });
 
   it('可以接受 vertical 属性', () => {
@@ -56,10 +58,14 @@ describe('FNav.vue', () => {
       },
     });
     wrapper.find('.aaa > .f-sub-nav-title-container').trigger('mouseenter');
-    expect(wrapper.find('.f-sub-nav').element.style.display).to.eq('none');
-    wrapper.find('.aaa > .f-sub-nav-title-container').trigger('click');
-    expect(wrapper.find('.f-sub-nav').element.style.display).to.eq('');
-    wrapper.destroy();
+    wrapper.vm.$nextTick().then(() => {
+      expect(wrapper.find('.f-sub-nav').element.style.display).to.eq('none');
+      wrapper.find('.aaa > .f-sub-nav-title-container').trigger('click');
+      wrapper.vm.$nextTick().then(() => {
+        expect(wrapper.find('.f-sub-nav').element.style.display).to.eq('');
+        wrapper.destroy();
+      });
+    });
   });
 
   it('可以触发 update:selected 事件', () => {
@@ -68,11 +74,12 @@ describe('FNav.vue', () => {
       ...returnOptionsObj(),
       listeners: { 'update:selected': fake },
     });
-    expect(fake).to.have.been.calledOnceWith(undefined);
     wrapper.find('.f-nav-item[data-name="x1"]').trigger('click');
-    expect(fake).to.have.been.calledWith('x1');
-    expect(fake.callCount).to.eq(2);
-    wrapper.destroy();
+    wrapper.vm.$nextTick().then(() => {
+      expect(fake).to.have.been.calledWith('x1');
+      expect(fake.callCount).to.eq(2);
+      wrapper.destroy();
+    });
   });
 
   it('可以获取所有后代 nav item', () => {

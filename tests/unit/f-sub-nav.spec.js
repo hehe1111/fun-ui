@@ -42,12 +42,10 @@ describe('FSubNav.vue', () => {
     const fake = sinon.fake();
     const onMouseEnter = $event => {
       fake();
-      expect($event.target.innerText).to.not.exist;
       expect($event.target.textContent).to.eq('子菜单1');
     };
     const onMouseLeave = $event => {
       fake();
-      expect($event.target.innerText).to.not.exist;
       expect($event.target.textContent).to.eq('子菜单1');
     };
     const wrapper = mount(FSubNav, {
@@ -60,14 +58,15 @@ describe('FSubNav.vue', () => {
     wrapper.find('.xxx > .f-sub-nav-title-container').trigger('mouseenter');
     wrapper.find('.xxx > .f-sub-nav-title-container').trigger('mouseleave');
     expect(fake).to.have.been.calledTwice;
-    wrapper.destroy();
+    wrapper.vm.$nextTick().then(() => {
+      wrapper.destroy();
+    });
   });
 
   it('测试由 FNav 组件注入的 trigger 属性: 值为 click 时可以触发点击事件', () => {
     const fake = sinon.fake();
     const onClick = $event => {
       fake();
-      expect($event.target.innerText).to.not.exist;
       expect($event.target.textContent).to.eq('子菜单1');
     };
     const wrapper = mount(FSubNav, {
@@ -80,7 +79,9 @@ describe('FSubNav.vue', () => {
       },
     });
     wrapper.find('.xxx > .f-sub-nav-title-container').trigger('click');
-    expect(fake).to.have.been.calledOnce;
-    wrapper.destroy();
+    wrapper.vm.$nextTick().then(() => {
+      expect(fake).to.have.been.calledOnce;
+      wrapper.destroy();
+    });
   });
 });
