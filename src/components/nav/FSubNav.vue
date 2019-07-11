@@ -99,9 +99,10 @@ export default {
       if (this.vertical) {
         return this.isSubNavVisible ? this.close() : this.open();
       }
-      this.trigger === 'click' && this.isSubNavVisible
-        ? this.close()
-        : this.open();
+      if (this.trigger === 'click') {
+        this.$emit('click', $event);
+        this.isSubNavVisible ? this.close() : this.open();
+      }
     },
     open() {
       this.timerId && window.clearTimeout(this.timerId);
@@ -118,13 +119,15 @@ export default {
     closeIfNotVertical() {
       !this.vertical && this.close();
     },
-    onMouseEnter() {
-      if (this.vertical) return;
-      this.trigger !== 'click' && this.open();
+    onMouseEnter($event) {
+      if (this.vertical || this.trigger === 'click') return;
+      this.$emit('mouseenter', $event);
+      this.open();
     },
-    onMouseLeave() {
-      if (this.vertical) return;
-      this.trigger !== 'click' && this.closeAfterDelay();
+    onMouseLeave($event) {
+      if (this.vertical || this.trigger === 'click') return;
+      this.$emit('mouseleave', $event);
+      this.closeAfterDelay();
     },
     updateRootNamePath() {
       this.root.namePath.unshift(this.name);
