@@ -27,13 +27,13 @@ export default {
       type: [Number, String],
       default: 0,
     },
-    col_align: {
+    colAlign: {
       type: String,
     },
     ipad: { type: Object, validator },
-    small_pc: { type: Object, validator },
+    samllPC: { type: Object, validator },
     pc: { type: Object, validator },
-    large_pc: { type: Object, validator },
+    largePC: { type: Object, validator },
   },
   data() {
     return {
@@ -47,11 +47,11 @@ export default {
         span,
         offset,
         ipad,
-        small_pc: samllPC,
+        samllPC,
         pc,
-        large_pc: largePC,
+        largePC,
         createColClass,
-        col_align: colAlign,
+        colAlign,
         align,
       } = this;
       return [
