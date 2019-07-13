@@ -15,35 +15,6 @@ export default {
 @import '../../assets/_var.scss';
 
 .f-button-group {
-  display: inline-flex;
-  vertical-align: middle;
-
-  .f-button {
-    margin-left: -1px;
-    border-radius: 0;
-
-    &.disabled {
-      border-color: $borderColor;
-      &:hover {
-        border-color: $borderColor;
-        z-index: 0;
-      }
-    }
-
-    // 解决 hover 时 margin-left: -1px; 的 bug
-    &:hover {
-      position: relative;
-      z-index: 1;
-    }
-
-    &:first-child {
-      border-top-left-radius: $borderRadius;
-      border-bottom-left-radius: $borderRadius;
-    }
-    &:last-child {
-      border-top-right-radius: $borderRadius;
-      border-bottom-right-radius: $borderRadius;
-    }
-  }
+  @extend .f-button-group-common;
 }
 </style>
