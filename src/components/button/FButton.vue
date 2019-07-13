@@ -1,9 +1,9 @@
 <template>
-  <button class="f-button" @click="$emit('click')">
+  <button class="f-button" :class="{ disabled }" @click="onClick">
     <f-icon
       v-if="icon"
       :name="icon"
-      :class="{ [`icon-${iconPosition}`]: true }"
+      :class="{ [`icon-${iconPosition}`]: $slots.default }"
     />
     <slot />
   </button>
@@ -25,10 +25,17 @@ export default {
         return value === 'left' || value === 'right';
       },
     },
+    disabled: {
+      type: Boolean,
+      default: false,
+    },
   },
-  components: {
-    FIcon,
+  methods: {
+    onClick() {
+      !this.disabled && this.$emit('click');
+    },
   },
+  components: { FIcon },
 };
 </script>
 
@@ -42,9 +49,9 @@ export default {
   border-radius: $borderRadius;
   border: 1px solid $borderColor;
   background-color: $buttonBgColor;
-  display: inline-flex;
-  justify-content: center;
-  align-items: center;
+  user-select: none;
+  cursor: pointer;
+  @extend .inline-flex-center;
   // top/middle/bottom/text-top/text-bottom/-webkit-baseline-middle 都可以解决 inline 对不齐的 bug
   vertical-align: middle;
 
@@ -56,6 +63,15 @@ export default {
   }
   &:focus {
     outline: none;
+  }
+  &.disabled {
+    cursor: not-allowed;
+    background-color: $grey;
+    color: $disabledGrey;
+  }
+  &.disabled,
+  &.disabled:hover {
+    border-color: $disabledGrey;
   }
   > .icon-left {
     margin-right: 6px;
