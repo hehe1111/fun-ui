@@ -1,7 +1,7 @@
 <template>
   <div
     class="f-sub-nav-container"
-    :class="verticalClass"
+    :class="{ vertical }"
     v-click-outside="closeIfNotVertical"
   >
     <div
@@ -96,9 +96,7 @@ export default {
         getTitleNavItems(this);
     },
     toggle($event) {
-      if (this.vertical) {
-        return this.isSubNavVisible ? this.close() : this.open();
-      }
+      if (this.vertical) this.isSubNavVisible ? this.close() : this.open();
       if (this.trigger === 'click') {
         this.$emit('click', $event);
         this.isSubNavVisible ? this.close() : this.open();
@@ -112,9 +110,7 @@ export default {
       this.isSubNavVisible = false;
     },
     closeAfterDelay() {
-      this.timerId = setTimeout(() => {
-        this.close();
-      }, 300);
+      this.timerId = setTimeout(() => this.close(), 300);
     },
     closeIfNotVertical() {
       !this.vertical && this.close();
@@ -145,9 +141,7 @@ export default {
       el.style.height = `${this.subNavHeight}px`;
       el.style.opacity = 1;
       // 等待过渡完成
-      el.addEventListener('transitionend', () => {
-        done();
-      });
+      el.addEventListener('transitionend', () => done());
     },
     afterEnter(el) {
       el.style.height = 'auto';
@@ -157,9 +151,7 @@ export default {
       el.getBoundingClientRect();
       el.style.height = 0;
       el.style.opacity = 0;
-      el.addEventListener('transitionend', () => {
-        done();
-      });
+      el.addEventListener('transitionend', () => done());
     },
     afterLeave(el) {
       el.style.height = 'auto';

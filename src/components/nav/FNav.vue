@@ -8,9 +8,7 @@
 export default {
   name: 'FunUINav',
   props: {
-    selected: {
-      type: String,
-    },
+    selected: String,
     vertical: {
       type: Boolean,
       default: false,
