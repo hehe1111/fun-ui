@@ -123,20 +123,28 @@ export default {
     margin: 0 0.4em;
   }
 
-  .high-light,
-  .high-light:hover,
-  .high-light:focus {
-    color: $blue;
-    border-color: $blue;
-    z-index: 1;
-  }
+  .f-button {
+    &:not(.disabled):hover,
+    &.high-light,
+    &.high-light:hover,
+    &.high-light:focus {
+      color: $blue;
+      border-color: $blue;
+    }
 
-  .high-light,
-  .high-light:hover,
-  .high-light:focus,
-  .separator {
-    background-color: #fff;
-    cursor: not-allowed;
+    &.high-light,
+    &.high-light:hover,
+    &.high-light:focus,
+    &.separator {
+      background-color: #fff;
+      cursor: not-allowed;
+      z-index: 1;
+    }
+
+    &.separator {
+      z-index: 0;
+      font-weight: bold;
+    }
   }
 }
 </style>
