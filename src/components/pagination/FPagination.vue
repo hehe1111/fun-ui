@@ -43,7 +43,8 @@ export default {
     this.mutableCurrent = this.current;
   },
   watch: {
-    mutableCurrent(newValue) {
+    mutableCurrent(newValue, oldValue) {
+      if (!oldValue) return;
       this.$emit('update:current', newValue);
     },
   },

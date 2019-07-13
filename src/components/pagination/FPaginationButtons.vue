@@ -10,6 +10,7 @@
       :key="index"
       @click="goToPage(n)"
       :class="classes(n)"
+      :data-name="n"
       >{{ n }}</f-button
     >
     <f-button icon="right" :class="disabledClassRight" @click="goToNext" />
