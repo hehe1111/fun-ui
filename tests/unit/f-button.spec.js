@@ -18,6 +18,7 @@ describe('FButton.vue', () => {
     const wrapper = mount(FButton, {
       // 通过 propsData 传入 prop
       propsData: { icon: 'loading' },
+      slots: { default: '按钮' },
     });
     const href = wrapper.find('use').attributes('href');
     const classValue = wrapper.find('svg').attributes('class');
@@ -33,6 +34,7 @@ describe('FButton.vue', () => {
         icon: 'setting',
         iconPosition: 'right',
       },
+      slots: { default: '按钮' },
     });
     const href = wrapper.find('use').attributes()['href'];
     const svg = wrapper.find('svg');
