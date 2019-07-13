@@ -29,7 +29,9 @@
 <script>
 import FButton from './button/FButton.vue';
 import FButtonGroup from './button/FButtonGroup.vue';
+
 const separator = '...';
+
 export default {
   name: 'FunUIPagination',
   props: {
@@ -105,7 +107,7 @@ export default {
       }
     },
     goToPage(n) {
-      if (!Number.isNaN(window.parseInt(n, 10))) {
+      if (!Number.isNaN(window.parseInt(n, 10)) && n !== this.mutableCurrent) {
         this.mutableCurrent = n;
         this.onCurrentPageChange();
       }
@@ -138,11 +140,16 @@ export default {
     margin: 0 0.4em;
   }
   .high-light,
-  .high-light:hover {
+  .high-light:hover,
+  .high-light:focus {
     color: $blue;
     border-color: $blue;
+    background-color: #fff;
     z-index: 1;
   }
+  .high-light,
+  .high-light:hover,
+  .high-light:focus,
   .separator {
     cursor: not-allowed;
   }
