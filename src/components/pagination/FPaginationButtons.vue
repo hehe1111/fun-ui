@@ -90,7 +90,7 @@ export default {
       this.current > 1 && this.onCurrentPageChange(this.current - 1);
     },
     goToPage(n) {
-      if (!Number.isNaN(window.parseInt(n, 10)) && n !== this.current) {
+      if (!Number.isNaN(parseInt(n, 10)) && n !== this.current) {
         this.onCurrentPageChange(n);
       }
     },
