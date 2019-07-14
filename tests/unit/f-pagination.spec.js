@@ -37,12 +37,15 @@ describe('FPagination.vue', () => {
     it('在第一页时禁止切换到上一页', () => {
       const fake = sinon.fake();
       const wrapper = returnWrapper(fake);
+      const selector = `.f-button[data-name="${current}"]`;
+      const prevButton = wrapper.findAll('.f-button').at(0);
 
-      wrapper
-        .findAll('.f-button')
-        .at(0)
-        .trigger('click');
+      expect(wrapper.find(selector).classes()).to.include('high-light');
+      expect(prevButton.classes()).to.include('disabled');
+      prevButton.trigger('click');
       expect(fake).to.have.not.been.called;
+      expect(wrapper.find(selector).classes()).to.include('high-light');
+      expect(prevButton.classes()).to.include('disabled');
       wrapper.destroy();
     });
 
@@ -50,12 +53,18 @@ describe('FPagination.vue', () => {
       const current = 2;
       const fake = sinon.fake();
       const wrapper = returnWrapper(fake, { current });
+      const oldSelector = `.f-button[data-name="${current}"]`;
+      const newSelector = `.f-button[data-name="${current - 1}"]`;
+      const prevButton = wrapper.findAll('.f-button').at(0);
 
-      wrapper
-        .findAll('.f-button')
-        .at(0)
-        .trigger('click');
+      expect(wrapper.find(oldSelector).classes()).to.include('high-light');
+      expect(wrapper.find(newSelector).classes()).to.not.include('high-light');
+      expect(prevButton.classes()).to.not.include('disabled');
+      prevButton.trigger('click');
       expect(fake).to.have.been.calledOnceWith(current - 1);
+      expect(wrapper.find(oldSelector).classes()).to.not.include('high-light');
+      expect(wrapper.find(newSelector).classes()).to.include('high-light');
+      expect(prevButton.classes()).to.include('disabled');
       wrapper.destroy();
     });
 
@@ -63,10 +72,16 @@ describe('FPagination.vue', () => {
       const current = total;
       const fake = sinon.fake();
       const wrapper = returnWrapper(fake, { current });
+      const selector = `.f-button[data-name="${current}"]`;
       const buttons = wrapper.findAll('.f-button').wrappers;
+      const nextButton = buttons[buttons.length - 1];
 
-      buttons[buttons.length - 1].trigger('click');
+      expect(wrapper.find(selector).classes()).to.include('high-light');
+      expect(nextButton.classes()).to.include('disabled');
+      nextButton.trigger('click');
       expect(fake).to.have.not.been.called;
+      expect(wrapper.find(selector).classes()).to.include('high-light');
+      expect(nextButton.classes()).to.include('disabled');
       wrapper.destroy();
     });
 
@@ -74,20 +89,33 @@ describe('FPagination.vue', () => {
       const current = 2;
       const fake = sinon.fake();
       const wrapper = returnWrapper(fake, { current });
+      const oldSelector = `.f-button[data-name="${current}"]`;
+      const newSelector = `.f-button[data-name="${current + 1}"]`;
       const buttons = wrapper.findAll('.f-button').wrappers;
+      const nextButton = buttons[buttons.length - 1];
 
-      buttons[buttons.length - 1].trigger('click');
+      expect(wrapper.find(oldSelector).classes()).to.include('high-light');
+      expect(wrapper.find(newSelector).classes()).to.not.include('high-light');
+      expect(nextButton.classes()).to.not.include('disabled');
+      nextButton.trigger('click');
       expect(fake).to.have.been.calledOnceWith(current + 1);
+      expect(wrapper.find(oldSelector).classes()).to.not.include('high-light');
+      expect(wrapper.find(newSelector).classes()).to.include('high-light');
       wrapper.destroy();
     });
 
     it('也可以通过直接点击某一个页码来切换', () => {
       const fake = sinon.fake();
       const wrapper = returnWrapper(fake);
-      const buttons = wrapper.findAll('.f-button').wrappers;
+      const oldSelector = `.f-button[data-name="${current}"]`;
+      const newSelector = `.f-button[data-name="${total}"]`;
 
-      buttons[buttons.length - 2].trigger('click');
+      expect(wrapper.find(oldSelector).classes()).to.include('high-light');
+      expect(wrapper.find(newSelector).classes()).to.not.include('high-light');
+      wrapper.find(newSelector).trigger('click');
       expect(fake).to.have.been.calledOnceWith(total);
+      expect(wrapper.find(oldSelector).classes()).to.not.include('high-light');
+      expect(wrapper.find(newSelector).classes()).to.include('high-light');
       wrapper.destroy();
     });
 
