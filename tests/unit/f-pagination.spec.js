@@ -26,7 +26,7 @@ describe('FPagination.vue', () => {
     wrapper.destroy();
   });
 
-  describe('可以切换页码', () => {
+  describe('可以切换页码, 同时会触发 update:current 事件', () => {
     const returnWrapper = (listener, propsData = {}) => {
       return mount(FPagination, {
         propsData: { total, ...propsData },
@@ -47,8 +47,8 @@ describe('FPagination.vue', () => {
     });
 
     it('不在第一页时可以切换到上一页', () => {
-      const fake = sinon.fake();
       const current = 2;
+      const fake = sinon.fake();
       const wrapper = returnWrapper(fake, { current });
 
       wrapper
@@ -63,20 +63,20 @@ describe('FPagination.vue', () => {
       const current = total;
       const fake = sinon.fake();
       const wrapper = returnWrapper(fake, { current });
-      const vmArray = wrapper.findAll('.f-button').wrappers;
+      const buttons = wrapper.findAll('.f-button').wrappers;
 
-      vmArray[vmArray.length - 1].trigger('click');
+      buttons[buttons.length - 1].trigger('click');
       expect(fake).to.have.not.been.called;
       wrapper.destroy();
     });
 
     it('不在最后一页时可以切换到下一页', () => {
-      const fake = sinon.fake();
       const current = 2;
+      const fake = sinon.fake();
       const wrapper = returnWrapper(fake, { current });
-      const vmArray = wrapper.findAll('.f-button').wrappers;
+      const buttons = wrapper.findAll('.f-button').wrappers;
 
-      vmArray[vmArray.length - 1].trigger('click');
+      buttons[buttons.length - 1].trigger('click');
       expect(fake).to.have.been.calledOnceWith(current + 1);
       wrapper.destroy();
     });
@@ -84,9 +84,9 @@ describe('FPagination.vue', () => {
     it('也可以通过直接点击某一个页码来切换', () => {
       const fake = sinon.fake();
       const wrapper = returnWrapper(fake);
-      const vmArray = wrapper.findAll('.f-button').wrappers;
+      const buttons = wrapper.findAll('.f-button').wrappers;
 
-      vmArray[vmArray.length - 2].trigger('click');
+      buttons[buttons.length - 2].trigger('click');
       expect(fake).to.have.been.calledOnceWith(total);
       wrapper.destroy();
     });
