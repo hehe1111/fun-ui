@@ -43,10 +43,12 @@ describe('FPagination.vue', () => {
       expect(wrapper.find(selector).classes()).to.include('high-light');
       expect(prevButton.classes()).to.include('disabled');
       prevButton.trigger('click');
-      expect(fake).to.have.not.been.called;
-      expect(wrapper.find(selector).classes()).to.include('high-light');
-      expect(prevButton.classes()).to.include('disabled');
-      wrapper.destroy();
+      wrapper.vm.$nextTick().then(() => {
+        expect(fake).to.have.not.been.called;
+        expect(wrapper.find(selector).classes()).to.include('high-light');
+        expect(prevButton.classes()).to.include('disabled');
+        wrapper.destroy();
+      });
     });
 
     it('不在第一页时可以切换到上一页', () => {
@@ -61,11 +63,15 @@ describe('FPagination.vue', () => {
       expect(wrapper.find(newSelector).classes()).to.not.include('high-light');
       expect(prevButton.classes()).to.not.include('disabled');
       prevButton.trigger('click');
-      expect(fake).to.have.been.calledOnceWith(current - 1);
-      expect(wrapper.find(oldSelector).classes()).to.not.include('high-light');
-      expect(wrapper.find(newSelector).classes()).to.include('high-light');
-      expect(prevButton.classes()).to.include('disabled');
-      wrapper.destroy();
+      wrapper.vm.$nextTick().then(() => {
+        expect(fake).to.have.been.calledOnceWith(current - 1);
+        expect(wrapper.find(oldSelector).classes()).to.not.include(
+          'high-light'
+        );
+        expect(wrapper.find(newSelector).classes()).to.include('high-light');
+        expect(prevButton.classes()).to.include('disabled');
+        wrapper.destroy();
+      });
     });
 
     it('在最后一页时禁止切换到下一页', () => {
@@ -79,10 +85,12 @@ describe('FPagination.vue', () => {
       expect(wrapper.find(selector).classes()).to.include('high-light');
       expect(nextButton.classes()).to.include('disabled');
       nextButton.trigger('click');
-      expect(fake).to.have.not.been.called;
-      expect(wrapper.find(selector).classes()).to.include('high-light');
-      expect(nextButton.classes()).to.include('disabled');
-      wrapper.destroy();
+      wrapper.vm.$nextTick().then(() => {
+        expect(fake).to.have.not.been.called;
+        expect(wrapper.find(selector).classes()).to.include('high-light');
+        expect(nextButton.classes()).to.include('disabled');
+        wrapper.destroy();
+      });
     });
 
     it('不在最后一页时可以切换到下一页', () => {
@@ -98,10 +106,14 @@ describe('FPagination.vue', () => {
       expect(wrapper.find(newSelector).classes()).to.not.include('high-light');
       expect(nextButton.classes()).to.not.include('disabled');
       nextButton.trigger('click');
-      expect(fake).to.have.been.calledOnceWith(current + 1);
-      expect(wrapper.find(oldSelector).classes()).to.not.include('high-light');
-      expect(wrapper.find(newSelector).classes()).to.include('high-light');
-      wrapper.destroy();
+      wrapper.vm.$nextTick().then(() => {
+        expect(fake).to.have.been.calledOnceWith(current + 1);
+        expect(wrapper.find(oldSelector).classes()).to.not.include(
+          'high-light'
+        );
+        expect(wrapper.find(newSelector).classes()).to.include('high-light');
+        wrapper.destroy();
+      });
     });
 
     it('也可以通过直接点击某一个页码来切换', () => {
@@ -113,10 +125,14 @@ describe('FPagination.vue', () => {
       expect(wrapper.find(oldSelector).classes()).to.include('high-light');
       expect(wrapper.find(newSelector).classes()).to.not.include('high-light');
       wrapper.find(newSelector).trigger('click');
-      expect(fake).to.have.been.calledOnceWith(total);
-      expect(wrapper.find(oldSelector).classes()).to.not.include('high-light');
-      expect(wrapper.find(newSelector).classes()).to.include('high-light');
-      wrapper.destroy();
+      wrapper.vm.$nextTick().then(() => {
+        expect(fake).to.have.been.calledOnceWith(total);
+        expect(wrapper.find(oldSelector).classes()).to.not.include(
+          'high-light'
+        );
+        expect(wrapper.find(newSelector).classes()).to.include('high-light');
+        wrapper.destroy();
+      });
     });
 
     it('点击分隔符时不能切换页码', () => {
@@ -127,8 +143,10 @@ describe('FPagination.vue', () => {
         .findAll('.f-button.separator')
         .at(0)
         .trigger('click');
-      expect(fake).to.have.not.been.called;
-      wrapper.destroy();
+      wrapper.vm.$nextTick().then(() => {
+        expect(fake).to.have.not.been.called;
+        wrapper.destroy();
+      });
     });
   });
 });
