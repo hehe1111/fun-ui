@@ -23,7 +23,7 @@ import FButton from '../button/FButton.vue';
 const separator = '...';
 
 export default {
-  name: 'FunUIPagination',
+  name: 'FunUIPaginationButtons',
   props: {
     current: {
       type: Number,
