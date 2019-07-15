@@ -10,19 +10,11 @@
 
 - 禁止自动播放
 
-  ```vue
-  :auto-play="false"
-  ```
-
   <ClientOnly>
     <demo-carousel-2 />
   </ClientOnly>
 
 - 允许用箭头指示器切换
-
-  ```vue
-  :enable-arrow="true"
-  ```
 
   <ClientOnly>
     <demo-carousel-3 />
@@ -34,12 +26,14 @@
   - 默认值：`bottom`
   - **注意：`left`/`right` 时 `enableArrow` 无效**
 
-  ```vue
-  dot-position="left"
-  ```
-
   <ClientOnly>
     <demo-carousel-4 />
   </ClientOnly>
 
 ## API
+
+| 参数         | 说明                                       | 类型              | 默认值 | 可选值                      | 是否必选 |
+| ------------ | ------------------------------------------ | ----------------- | ------ | --------------------------- | -------- |
+| auto-play    | 布尔值：自动播放；数值：自动播放的时间间隔 | boolean 或 number | 2      | -                           | 否       |
+| enable-arrow | 是否显示箭头                               | boolean           | false  | false / true                | 否       |
+| dot-position | 圆点位置                                   | string            | bottom | left / right / top / bottom | 否       |
