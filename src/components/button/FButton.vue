@@ -43,7 +43,9 @@ export default {
 @import '../../assets/_var.scss';
 
 .f-button {
+  @extend .inline-flex-center;
   height: $height;
+  line-height: 1;
   font-size: $fontSize;
   padding: 0 1em;
   border-radius: $borderRadius;
@@ -54,6 +56,7 @@ export default {
   @extend .inline-flex-center;
   // top/middle/bottom/text-top/text-bottom/-webkit-baseline-middle 都可以解决 inline 对不齐的 bug
   vertical-align: middle;
+  white-space: nowrap;
 
   &:hover {
     border-color: $borderColorHover;

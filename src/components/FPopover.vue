@@ -161,7 +161,9 @@ export default {
   position: relative;
 }
 .content-container {
+  @extend .flex-center;
   max-width: 20em;
+  line-height: 1.4;
   border: 1px solid $borderColor;
   border-radius: $borderRadius;
   padding: 0.5em 1em;
