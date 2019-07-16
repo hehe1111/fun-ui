@@ -5,7 +5,11 @@
         <tr>
           <th v-if="isIdVisiable">#</th>
           <th>
-            <input type="checkbox" />
+            <input
+              type="checkbox"
+              @change="selecteAllItems"
+              :checked="isAllItemsChecked"
+            />
           </th>
           <th v-for="column in columns" :key="column.field">
             {{ column.text }}
@@ -60,6 +64,7 @@ export default {
   data() {
     return {
       mutableSelectedItems: [],
+      isAllItemsChecked: false,
     };
   },
   created() {
@@ -77,12 +82,27 @@ export default {
         index >= 0 && this.mutableSelectedItems.splice(index, 1);
       }
     },
+    selecteAllItems($event) {
+      this.mutableSelectedItems = $event.target.checked
+        ? this.dataSource.map(n => n.id)
+        : [];
+    },
     getItemCheckState(item) {
       return this.mutableSelectedItems.indexOf(item.id) >= 0;
     },
+    updateIsAllItemsSelected() {
+      const selectedItemsString = [...this.mutableSelectedItems].sort().join();
+      const allItemsString = this.dataSource
+        .map(n => n.id)
+        .sort()
+        .join();
+      this.isAllItemsChecked = selectedItemsString === allItemsString;
+    },
+  },
   watch: {
     mutableSelectedItems(newValue, oldValue) {
       this.$emit('update:selectedItems', newValue);
+      this.updateIsAllItemsSelected();
     },
   },
 };
