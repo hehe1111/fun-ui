@@ -3,7 +3,7 @@
     <table class="f-table">
       <thead>
         <tr>
-          <th v-if="isIdVisiable">#</th>
+          <th v-if="isIdVisible">#</th>
           <th>
             <input
               type="checkbox"
@@ -23,7 +23,7 @@
           :key="item.id"
           :class="highlightClass(item)"
         >
-          <td v-if="isIdVisiable">{{ item.id }}</td>
+          <td v-if="isIdVisible">{{ item.id }}</td>
           <td>
             <input
               type="checkbox"
@@ -50,7 +50,7 @@ export default {
     dataSource: {
       type: Array,
     },
-    isIdVisiable: {
+    isIdVisible: {
       type: Boolean,
       default: false,
     },
