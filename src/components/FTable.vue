@@ -98,6 +98,13 @@ export default {
       type: Boolean,
       default: true,
     },
+    size: {
+      type: String,
+      default: undefined,
+      validator: value => {
+        return [undefined, 'small'].indexOf(value) >= 0;
+      },
+    },
   },
   data() {
     return {
@@ -111,6 +118,7 @@ export default {
       return {
         bordered: this.bordered,
         striped: this.striped,
+        small: this.size,
       };
     },
   },
@@ -197,6 +205,11 @@ export default {
     &.bordered th,
     &.bordered td {
       border: 1px solid $borderColorLight;
+    }
+
+    &.small th,
+    &.small td {
+      padding: 0.2em;
     }
 
     th,
