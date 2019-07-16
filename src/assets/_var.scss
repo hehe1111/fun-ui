@@ -8,11 +8,12 @@ $buttonActiveBgColor: #eee;
 $buttonBgColor: white;
 $disabledGrey: #ddd;
 $duration: 0.4s;
-$fontSize: 14px;
+$fontSize: 16px;
 $grey: #eee;
 $greyHover: #ddd;
 $height: 32px;
 $inputWidth: 400px;
+$lineHeight: 1.4;
 $red: #f1453d;
 $slideableLineWidth: 2px; // 线的粗细，不是长短
 $toastBg: rgba(0, 0, 0, 0.75);
@@ -23,6 +24,11 @@ $toastBg: rgba(0, 0, 0, 0.75);
   margin: 0;
   padding: 0;
   box-sizing: border-box;
+}
+
+html {
+  font-size: $fontSize;
+  line-height: $lineHeight;
 }
 
 a {
