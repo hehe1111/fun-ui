@@ -6,6 +6,7 @@
       :selected-items.sync="selectedItems"
       :sort-rules="sortRules"
       @re-sort="reSort"
+      :loading="loading"
     />
   </div>
 </template>
@@ -42,10 +43,12 @@ export default {
       // sortRules: { name: 'ascend' },
       // sortRules: { name: 'ascend', score: 'descend' },
       sortRules: { name: 'ascend', score: 'descend', class: true },
+      loading: false,
     };
   },
   methods: {
     reSort(rules) {
+      this.loading = true;
       // 模拟后端排序
       setTimeout(() => {
         Object.keys(rules).forEach(k => {
@@ -62,7 +65,8 @@ export default {
               return 0;
             });
         });
-      });
+        this.loading = false;
+      }, 3000);
     },
   },
   components: { FTable },

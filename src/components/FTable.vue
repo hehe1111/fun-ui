@@ -48,6 +48,9 @@
         </tr>
       </tbody>
     </table>
+    <div class="f-table-loading-mask" v-if="loading">
+      <f-icon name="loading" class="f-table-loading-icon" />
+    </div>
   </div>
 </template>
 
@@ -82,6 +85,10 @@ export default {
           return ['ascend', 'descend', true].indexOf(obj[key]) >= 0;
         });
       },
+    },
+    loading: {
+      type: Boolean,
+      default: false,
     },
   },
   data() {
@@ -165,6 +172,7 @@ export default {
 @import '../assets/_var.scss';
 
 .f-table-container {
+  position: relative;
   .f-table {
     width: 100%;
     border-collapse: collapse;
@@ -231,6 +239,28 @@ export default {
           }
         }
       }
+    }
+  }
+
+  > .f-table-loading-mask {
+    width: 100%;
+    height: 100%;
+    position: absolute;
+    top: 0;
+    left: 0;
+    background-color: rgba(255, 255, 255, 0.8);
+    user-select: none;
+
+    > .f-table-loading-icon {
+      @extend .flex-center;
+      width: 2em;
+      height: 2em;
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      // transform: translate(-50%, -50%); 无效
+      margin-top: -1em;
+      margin-left: -1em;
     }
   }
 }
