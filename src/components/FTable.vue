@@ -13,7 +13,18 @@
             />
           </th>
           <th v-for="column in columns" :key="column.field">
-            {{ column.text }}
+            <div class="f-table-column-title-and-sort-icons">
+              <span class="f-table-column-title">{{ column.text }}</span>
+              <span
+                v-if="column.field in mutableSortRules"
+                class="f-table-sort-icons"
+                :class="sortIconActiveClass(column.field)"
+                @click="reSort(column.field)"
+              >
+                <f-icon name="up" class="icon up" />
+                <f-icon name="down" class="icon down" />
+              </span>
+            </div>
           </th>
         </tr>
       </thead>
@@ -41,6 +52,8 @@
 </template>
 
 <script>
+import FIcon from './FIcon.vue';
+
 export default {
   name: 'FunUITable',
   props: {
@@ -61,19 +74,36 @@ export default {
         return array.every(n => typeof n === 'number');
       },
     },
+    sortRules: {
+      type: Object,
+      default: () => ({}),
+      validator: obj => {
+        return Object.keys(obj).every(key => {
+          return ['ascend', 'descend', true].indexOf(obj[key]) >= 0;
+        });
+      },
+    },
   },
   data() {
     return {
       mutableSelectedItems: [],
       isMainCheckBoxChecked: false,
+      mutableSortRules: {},
     };
   },
   created() {
     this.mutableSelectedItems = [...this.selectedItems];
+    this.mutableSortRules = { ...this.sortRules };
   },
   methods: {
     highlightClass(item) {
       return { highlight: this.mutableSelectedItems.indexOf(item.id) >= 0 };
+    },
+    sortIconActiveClass(field) {
+      return {
+        ascend: this.mutableSortRules[field] === 'ascend',
+        descend: this.mutableSortRules[field] === 'descend',
+      };
     },
     selectItemCheckBox({ id }, $event) {
       if ($event.target.checked) {
@@ -110,6 +140,16 @@ export default {
         this.$refs.mainCheckBoxRef.indeterminate = false;
       }
     },
+    reSort(field) {
+      const { mutableSortRules } = this;
+      const oldValues = ['ascend', 'descend', true];
+      const newValues = ['descend', true, 'ascend'];
+      const index = oldValues.indexOf(mutableSortRules[field]);
+      index >= 0
+        ? (mutableSortRules[field] = newValues[index])
+        : this.$set(mutableSortRules, field, 'ascend');
+      this.$emit('re-sort', mutableSortRules);
+    },
   },
   watch: {
     mutableSelectedItems(newValue, oldValue) {
@@ -117,6 +157,7 @@ export default {
       this.updateMainCheckBoxState();
     },
   },
+  components: { FIcon },
 };
 </script>
 
@@ -138,6 +179,35 @@ export default {
       > tr {
         > th {
           text-align: left;
+
+          > .f-table-column-title-and-sort-icons {
+            @extend .inline-flex-center;
+
+            > span.f-table-sort-icons {
+              transform: scale(0.8);
+              display: inline-flex;
+              flex-direction: column;
+              cursor: pointer;
+              padding: 0 6px;
+
+              > .icon {
+                fill: $darkGrey;
+
+                &.up {
+                  margin-bottom: -2px;
+                }
+
+                &.down {
+                  margin-top: -2px;
+                }
+              }
+
+              &.ascend > .icon.up,
+              &.descend > .icon.down {
+                fill: $blue;
+              }
+            }
+          }
         }
       }
     }
