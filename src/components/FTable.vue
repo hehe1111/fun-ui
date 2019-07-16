@@ -9,6 +9,7 @@
               type="checkbox"
               @change="selecteAllItems"
               :checked="isAllItemsChecked"
+              ref="mainCheckBoxRef"
             />
           </th>
           <th v-for="column in columns" :key="column.field">
@@ -90,19 +91,30 @@ export default {
     getItemCheckState(item) {
       return this.mutableSelectedItems.indexOf(item.id) >= 0;
     },
-    updateIsAllItemsSelected() {
+    updateMainCheckBoxState() {
       const selectedItemsString = [...this.mutableSelectedItems].sort().join();
       const allItemsString = this.dataSource
         .map(n => n.id)
         .sort()
         .join();
+
+      // 全选
       this.isAllItemsChecked = selectedItemsString === allItemsString;
+      // 半选
+      if (
+        selectedItemsString.length &&
+        selectedItemsString !== allItemsString
+      ) {
+        this.$refs.mainCheckBoxRef.indeterminate = true;
+      } else {
+        this.$refs.mainCheckBoxRef.indeterminate = false;
+      }
     },
   },
   watch: {
     mutableSelectedItems(newValue, oldValue) {
       this.$emit('update:selectedItems', newValue);
-      this.updateIsAllItemsSelected();
+      this.updateMainCheckBoxState();
     },
   },
 };
