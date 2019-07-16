@@ -1,6 +1,6 @@
 <template>
   <div class="f-table-container">
-    <table class="f-table">
+    <table class="f-table" :class="tableClasses">
       <thead>
         <tr>
           <th v-if="isIdVisible">#</th>
@@ -90,6 +90,10 @@ export default {
       type: Boolean,
       default: false,
     },
+    bordered: {
+      type: Boolean,
+      default: false,
+    },
   },
   data() {
     return {
@@ -97,6 +101,13 @@ export default {
       isMainCheckBoxChecked: false,
       mutableSortRules: {},
     };
+  },
+  computed: {
+    tableClasses() {
+      return {
+        bordered: this.bordered,
+      };
+    },
   },
   created() {
     this.mutableSelectedItems = [...this.selectedItems];
@@ -177,6 +188,12 @@ export default {
     width: 100%;
     border-collapse: collapse;
 
+    &.bordered,
+    &.bordered th,
+    &.bordered td {
+      border: 1px solid $borderColorLight;
+    }
+
     th,
     td {
       padding: 0.4em 0.8em;
@@ -233,10 +250,6 @@ export default {
         &.highlight {
           background-color: lighten($blue, 10%);
           color: #fff;
-
-          > td {
-            border-bottom-color: #fff;
-          }
         }
       }
     }
