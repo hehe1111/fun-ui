@@ -94,6 +94,10 @@ export default {
       type: Boolean,
       default: false,
     },
+    striped: {
+      type: Boolean,
+      default: true,
+    },
   },
   data() {
     return {
@@ -106,6 +110,7 @@ export default {
     tableClasses() {
       return {
         bordered: this.bordered,
+        striped: this.striped,
       };
     },
   },
@@ -200,57 +205,55 @@ export default {
       border-bottom: 1px solid $borderColorLight;
     }
 
-    > thead {
-      > tr {
-        > th {
-          text-align: left;
+    > thead > tr > th {
+      text-align: left;
 
-          > .f-table-column-title-and-sort-icons {
-            @extend .inline-flex-center;
+      > .f-table-column-title-and-sort-icons {
+        @extend .inline-flex-center;
 
-            > span.f-table-sort-icons {
-              transform: scale(0.8);
-              display: inline-flex;
-              flex-direction: column;
-              cursor: pointer;
-              padding: 0 6px;
+        > span.f-table-sort-icons {
+          transform: scale(0.8);
+          display: inline-flex;
+          flex-direction: column;
+          cursor: pointer;
+          padding: 0 6px;
 
-              > .icon {
-                fill: $darkGrey;
+          > .icon {
+            fill: $darkGrey;
 
-                &.up {
-                  margin-bottom: -2px;
-                }
-
-                &.down {
-                  margin-top: -2px;
-                }
-              }
-
-              &.ascend > .icon.up,
-              &.descend > .icon.down {
-                fill: $blue;
-              }
+            &.up {
+              margin-bottom: -2px;
             }
+
+            &.down {
+              margin-top: -2px;
+            }
+          }
+
+          &.ascend > .icon.up,
+          &.descend > .icon.down {
+            fill: $blue;
           }
         }
       }
     }
 
-    > tbody {
-      > tr {
-        &:nth-child(odd) {
-          background-color: $grey;
-        }
+    &.striped > tbody > tr {
+      &:nth-child(odd) {
+        background-color: $grey;
+      }
+    }
 
-        &:hover {
-          background-color: $greyHover;
-        }
+    > tbody > tr {
+      background-color: #fff;
 
-        &.highlight {
-          background-color: lighten($blue, 10%);
-          color: #fff;
-        }
+      &:hover {
+        background-color: $greyHover;
+      }
+
+      &.highlight {
+        background-color: lighten($blue, 10%);
+        color: #fff;
       }
     }
   }
