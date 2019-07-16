@@ -199,6 +199,17 @@ export default {
 <style lang="scss" scoped>
 @import '../assets/_var.scss';
 
+.tbody-row-common {
+  &:hover {
+    background-color: $greyHover;
+  }
+
+  &.highlight {
+    background-color: lighten($blue, 10%);
+    color: #fff;
+  }
+}
+
 .f-table-container {
   position: relative;
   .f-table {
@@ -256,22 +267,16 @@ export default {
     }
 
     &.striped > tbody > tr {
+      @extend .tbody-row-common;
       &:nth-child(odd) {
         background-color: $grey;
+        @extend .tbody-row-common;
       }
     }
 
     > tbody > tr {
+      @extend .tbody-row-common;
       background-color: #fff;
-
-      &:hover {
-        background-color: $greyHover;
-      }
-
-      &.highlight {
-        background-color: lighten($blue, 10%);
-        color: #fff;
-      }
     }
   }
 
