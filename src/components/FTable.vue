@@ -7,8 +7,8 @@
           <th>
             <input
               type="checkbox"
-              @change="selecteAllItems"
-              :checked="isAllItemsChecked"
+              :checked="isMainCheckBoxChecked"
+              @change="selectMainCheckBox"
               ref="mainCheckBoxRef"
             />
           </th>
@@ -27,8 +27,8 @@
           <td>
             <input
               type="checkbox"
-              :checked="getItemCheckState(item)"
-              @change="selectSingleItem(item, $event)"
+              :checked="getItemCheckBoxState(item)"
+              @change="selectItemCheckBox(item, $event)"
             />
           </td>
           <td v-for="column in columns" :key="column.field">
@@ -65,7 +65,7 @@ export default {
   data() {
     return {
       mutableSelectedItems: [],
-      isAllItemsChecked: false,
+      isMainCheckBoxChecked: false,
     };
   },
   created() {
@@ -75,7 +75,7 @@ export default {
     highlightClass(item) {
       return { highlight: this.mutableSelectedItems.indexOf(item.id) >= 0 };
     },
-    selectSingleItem({ id }, $event) {
+    selectItemCheckBox({ id }, $event) {
       if ($event.target.checked) {
         this.mutableSelectedItems.push(id);
       } else {
@@ -83,12 +83,12 @@ export default {
         index >= 0 && this.mutableSelectedItems.splice(index, 1);
       }
     },
-    selecteAllItems($event) {
+    selectMainCheckBox($event) {
       this.mutableSelectedItems = $event.target.checked
         ? this.dataSource.map(n => n.id)
         : [];
     },
-    getItemCheckState(item) {
+    getItemCheckBoxState(item) {
       return this.mutableSelectedItems.indexOf(item.id) >= 0;
     },
     updateMainCheckBoxState() {
@@ -99,7 +99,7 @@ export default {
         .join();
 
       // 全选
-      this.isAllItemsChecked = selectedItemsString === allItemsString;
+      this.isMainCheckBoxChecked = selectedItemsString === allItemsString;
       // 半选
       if (
         selectedItemsString.length &&
