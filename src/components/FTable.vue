@@ -4,7 +4,7 @@
       <thead>
         <tr>
           <th v-if="isIdVisible">#</th>
-          <th>
+          <th v-if="isCheckBoxVisible">
             <input
               type="checkbox"
               :checked="isMainCheckBoxChecked"
@@ -35,7 +35,7 @@
           :class="highlightClass(item)"
         >
           <td v-if="isIdVisible">{{ item.id }}</td>
-          <td>
+          <td v-if="isCheckBoxVisible">
             <input
               type="checkbox"
               :checked="getItemCheckBoxState(item)"
@@ -67,6 +67,10 @@ export default {
       type: Array,
     },
     isIdVisible: {
+      type: Boolean,
+      default: false,
+    },
+    isCheckBoxVisible: {
       type: Boolean,
       default: false,
     },
