@@ -1,4 +1,5 @@
 <template>
+  <div class="f-table-container">
   <table class="f-table">
     <thead>
       <tr>
@@ -15,6 +16,7 @@
       </tr>
     </tbody>
   </table>
+  </div>
 </template>
 
 <script>
@@ -38,25 +40,36 @@ export default {
 <style lang="scss" scoped>
 @import '../assets/_var.scss';
 
-.f-table {
-  border-collapse: collapse;
+.f-table-container {
+  .f-table {
+    width: 100%;
+    border-collapse: collapse;
 
-  > tbody {
-    > tr {
-      &:nth-child(odd) {
-        background-color: $grey;
-      }
+    th,
+    td {
+      padding: 0.4em 0.8em;
+      border-bottom: 1px solid $borderColorLight;
+    }
 
-      &:hover {
-        background-color: $greyHover;
+    > thead {
+      > tr {
+        > th {
+          text-align: left;
+        }
       }
     }
-  }
 
-  th,
-  td {
-    padding: 0.4em 0.8em;
-    border-bottom: 1px solid $borderColorLight;
+    > tbody {
+      > tr {
+        &:nth-child(odd) {
+          background-color: $grey;
+        }
+
+        &:hover {
+          background-color: $greyHover;
+        }
+      }
+    }
   }
 }
 </style>
