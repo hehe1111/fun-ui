@@ -8,7 +8,17 @@
       <table class="f-table" :class="tableClasses">
         <thead>
           <tr>
-            <th v-if="isCheckBoxVisible" :style="{ width: '2em' }">
+            <th
+              class="f-table-collapsible-row-icon-container cell-default"
+              v-if="isCollapseIconsColumnVisible"
+            >
+              <f-icon name="right" class="right-icon" :style="{ opacity: 0 }" />
+            </th>
+            <th
+              v-if="isCheckBoxVisible"
+              class="cell-default"
+              id="main-checkbox-container"
+            >
               <input
                 type="checkbox"
                 :checked="isMainCheckBoxChecked"
@@ -38,27 +48,46 @@
           </tr>
         </thead>
         <tbody>
-          <tr
-            v-for="item in dataSource"
-            :key="item.id"
-            :class="highlightClass(item)"
-          >
-            <td v-if="isCheckBoxVisible" :style="{ width: '2em' }">
-              <input
-                type="checkbox"
-                :checked="getItemCheckBoxState(item)"
-                @change="selectItemCheckBox(item, $event)"
-              />
-            </td>
-            <td v-if="isIdVisible">{{ item.id }}</td>
-            <td
-              v-for="column in columns"
-              :key="column.field"
-              :data-name="column.field"
-            >
-              {{ item[column.field] }}
-            </td>
-          </tr>
+          <template v-for="item in dataSource">
+            <tr :key="item.id" :class="highlightClass(item)">
+              <td
+                class="f-table-collapsible-row-icon-container cell-default"
+                @click="toggleRow(item)"
+                v-if="isCollapseIconsColumnVisible"
+              >
+                <f-icon
+                  name="right"
+                  class="right-icon"
+                  :class="downIconClass(item)"
+                  v-if="item.description"
+                />
+              </td>
+              <td v-if="isCheckBoxVisible" class="cell-default">
+                <input
+                  type="checkbox"
+                  :checked="getItemCheckBoxState(item)"
+                  @change="selectItemCheckBox(item, $event)"
+                />
+              </td>
+              <td v-if="isIdVisible">{{ item.id }}</td>
+              <td
+                v-for="column in columns"
+                :key="column.field"
+                :data-name="column.field"
+              >
+                {{ item[column.field] }}
+              </td>
+            </tr>
+            <transition :key="`${item.id}-collapsible-row`" name="fade">
+              <tr
+                class="f-table-collapsible-row"
+                :class="collapsibleRowClass"
+                v-if="isRowCollapsed(item)"
+              >
+                <td :colspan="colspan">{{ item.description }}</td>
+              </tr>
+            </transition>
+          </template>
         </tbody>
       </table>
     </div>
@@ -130,6 +159,7 @@ export default {
       mutableSelectedItems: [],
       isMainCheckBoxChecked: false,
       mutableSortRules: {},
+      openedRowIds: [],
     };
   },
   computed: {
@@ -145,6 +175,20 @@ export default {
         striped: this.striped,
         small: this.size,
       };
+    },
+    isCollapseIconsColumnVisible() {
+      return this.dataSource.some(n => !!n.description);
+    },
+    collapsibleRowClass() {
+      return { small: this.size };
+    },
+    colspan() {
+      return (
+        1 +
+        this.columns.length +
+        (this.isIdVisible ? 1 : 0) +
+        (this.isCheckBoxVisible ? 1 : 0)
+      );
     },
   },
   created() {
@@ -213,6 +257,17 @@ export default {
         : this.$set(mutableSortRules, field, 'ascend');
       this.$emit('re-sort', mutableSortRules);
     },
+    isRowCollapsed(item) {
+      return item.description && this.openedRowIds.indexOf(item.id) >= 0;
+    },
+    downIconClass({ id }) {
+      return { down: this.openedRowIds.indexOf(id) >= 0 };
+    },
+    toggleRow({ id }) {
+      const { openedRowIds } = this;
+      const index = openedRowIds.indexOf(id);
+      index >= 0 ? openedRowIds.splice(index, 1) : openedRowIds.push(id);
+    },
     fixTHead() {
       const { outerContainerRef: ref } = this.$refs;
       const oldTableContainer = ref.querySelector('.f-table-container');
@@ -264,6 +319,30 @@ export default {
 
 <style lang="scss" scoped>
 @import '../assets/_var.scss';
+
+// collapsiable row transition
+.fade-enter-active,
+.fade-leave-active {
+  transition: opacity $duration ease-in-out;
+}
+.fade-enter,
+.fade-leave-to {
+  opacity: 0;
+}
+
+#main-checkbox-container,
+.cell-default {
+  text-align: center;
+  width: 2em;
+}
+
+.f-table-collapsible-row-icon-container > .right-icon {
+  transform: scale(0.8);
+  transition: transform $duration linear;
+  &.down {
+    transform: scale(0.8) rotate(90deg);
+  }
+}
 
 .tbody-row-common {
   &:hover {
@@ -344,6 +423,17 @@ export default {
       > tbody > tr {
         @extend .tbody-row-common;
         background-color: #fff;
+
+        &.f-table-collapsible-row {
+          background-color: #fff !important;
+          > td {
+            padding: 1em 2em;
+          }
+
+          &.small > td {
+            padding: 0.2em 2em;
+          }
+        }
       }
     }
   }
