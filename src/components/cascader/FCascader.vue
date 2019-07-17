@@ -151,6 +151,7 @@ export default {
     box-shadow: 0 0 5px 0 lighten($boxShadowColor, 34%);
     border-radius: $borderRadius;
     z-index: 1;
+    overflow: hidden;
   }
 }
 </style>

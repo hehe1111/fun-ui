@@ -1,16 +1,18 @@
 <template>
   <div class="cascader-items" ref="cascaderItems">
-    <div class="level left" :style="levelLeftStyle">
-      <div
-        class="label-container"
-        :class="activeClass(item)"
-        v-for="item in items"
-        :key="item.name"
-        @click="onSelected(item)"
-      >
-        <span class="label">{{ item.name }}</span>
-        <f-icon name="right" v-if="isRightIconVisible(item)" />
-        <f-icon name="loading" v-if="isLoadingIconVisible(item)" />
+    <div class="level left" ref="leftLevelRef">
+      <div class="left-inner" :style="leftInnerStyle" ref="leftInnerRef">
+        <div
+          class="label-container"
+          :class="activeClass(item)"
+          v-for="item in items"
+          :key="item.name"
+          @click="onSelected(item)"
+        >
+          <span class="label">{{ item.name }}</span>
+          <f-icon name="right" v-if="isRightIconVisible(item)" />
+          <f-icon name="loading" v-if="isLoadingIconVisible(item)" />
+        </div>
       </div>
     </div>
     <div class="level right" v-if="rightItems">
@@ -61,10 +63,16 @@ export default {
     };
   },
   mounted() {
+    // 隐藏第二层及后面层级的垂直滚动条
+    this.hideVerticalScrollbar();
     this.scrollToSelectedItem();
   },
+  updated() {
+    // 隐藏第一层的垂直滚动条
+    this.hideVerticalScrollbar();
+  },
   computed: {
-    levelLeftStyle() {
+    leftInnerStyle() {
       return {
         height: this.height,
       };
@@ -114,22 +122,28 @@ export default {
       // item.id === loadingItem.id 剔除掉区名跟市名相同的情况，做到只高亮市名 省-市-区
       return item.name === loadingItem.name && item.id === loadingItem.id;
     },
+    hideVerticalScrollbar() {
+      const { leftInnerRef, leftLevelRef } = this.$refs;
+      if (leftInnerRef.offsetWidth > leftInnerRef.clientWidth) {
+        leftLevelRef.classList.add('hide-vertical-scrollbar');
+        leftInnerRef.classList.add('hide-vertical-scrollbar');
+      }
+    },
     scrollToSelectedItem() {
-      const levelLeft = this.$refs.cascaderItems.querySelector('.level.left');
-      const activeItem = this.$refs.cascaderItems.querySelector(
-        '.label-container.active'
-      );
-      if (levelLeft && activeItem) {
-        const levelLeftTop =
-          levelLeft.getBoundingClientRect &&
-          levelLeft.getBoundingClientRect().top;
+      const { cascaderItems } = this.$refs;
+      const leftInner = cascaderItems.querySelector('.left-inner');
+      const activeItem = cascaderItems.querySelector('.label-container.active');
+      if (leftInner && activeItem) {
+        const leftInnerTop =
+          leftInner.getBoundingClientRect &&
+          leftInner.getBoundingClientRect().top;
         const activeItemTop =
           activeItem.getBoundingClientRect &&
           activeItem.getBoundingClientRect().top;
-        if (activeItemTop > levelLeftTop) {
-          levelLeft.scrollBy &&
-            levelLeft.scrollBy({
-              top: activeItemTop - levelLeftTop,
+        if (activeItemTop > leftInnerTop) {
+          leftInner.scrollBy &&
+            leftInner.scrollBy({
+              top: activeItemTop - leftInnerTop,
               behavior: 'smooth',
             });
         }
@@ -145,30 +159,41 @@ export default {
 
 .cascader-items {
   display: flex;
-  > .level {
-    overflow: auto;
-    > .label-container {
-      min-width: 6em;
-      padding: 0.5em;
-      display: flex;
-      align-items: center;
-      user-select: none;
-      white-space: nowrap;
-      cursor: pointer;
-      &.active,
-      &:hover {
-        background-color: $grey;
+  > .level.left {
+    &.hide-vertical-scrollbar {
+      overflow: hidden;
+    }
+
+    > .left-inner {
+      &.hide-vertical-scrollbar {
+        margin-right: -17px;
       }
-      > .label {
-        justify-content: flex-start;
-        flex: 1;
-      }
-      > .icon {
-        transform: scale(0.7);
-        margin-left: 1em;
+      overflow: auto;
+
+      > .label-container {
+        min-width: 6em;
+        padding: 0.5em;
+        display: flex;
+        align-items: center;
+        user-select: none;
+        white-space: nowrap;
+        cursor: pointer;
+        &.active,
+        &:hover {
+          background-color: $grey;
+        }
+        > .label {
+          justify-content: flex-start;
+          flex: 1;
+        }
+        > .icon {
+          transform: scale(0.7);
+          margin-left: 1em;
+        }
       }
     }
   }
+
   > .level.right {
     border-left: 1px solid darken($grey, 8%);
   }
