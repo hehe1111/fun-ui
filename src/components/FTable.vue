@@ -8,8 +8,7 @@
       <table class="f-table" :class="tableClasses">
         <thead>
           <tr>
-            <th v-if="isIdVisible">#</th>
-            <th v-if="isCheckBoxVisible">
+            <th v-if="isCheckBoxVisible" :style="{ minWidth: '2em' }">
               <input
                 type="checkbox"
                 :checked="isMainCheckBoxChecked"
@@ -17,7 +16,12 @@
                 ref="mainCheckBoxRef"
               />
             </th>
-            <th v-for="column in columns" :key="column.field">
+            <th v-if="isIdVisible">#</th>
+            <th
+              v-for="column in columns"
+              :key="column.field"
+              :data-name="column.field"
+            >
               <div class="f-table-column-title-and-sort-icons">
                 <span class="f-table-column-title">{{ column.text }}</span>
                 <span
@@ -39,15 +43,19 @@
             :key="item.id"
             :class="highlightClass(item)"
           >
-            <td v-if="isIdVisible">{{ item.id }}</td>
-            <td v-if="isCheckBoxVisible">
+            <td v-if="isCheckBoxVisible" :style="{ minWidth: '2em' }">
               <input
                 type="checkbox"
                 :checked="getItemCheckBoxState(item)"
                 @change="selectItemCheckBox(item, $event)"
               />
             </td>
-            <td v-for="column in columns" :key="column.field">
+            <td v-if="isIdVisible">{{ item.id }}</td>
+            <td
+              v-for="column in columns"
+              :key="column.field"
+              :data-name="column.field"
+            >
               {{ item[column.field] }}
             </td>
           </tr>
@@ -146,10 +154,6 @@ export default {
   mounted() {
     this.height && this.fixTHead();
   },
-  beforeDestroy() {
-    this.newTableContainer.remove();
-    window.removeEventListener('resize', this.onResize);
-  },
   methods: {
     highlightClass(item) {
       return { highlight: this.mutableSelectedItems.indexOf(item.id) >= 0 };
@@ -210,6 +214,7 @@ export default {
       const oldTableContainer = ref.querySelector('.f-table-container');
       const oldTable = ref.querySelector('table');
       const oldTHead = ref.querySelector('thead');
+      const oldTBody = ref.querySelector('tbody');
 
       // 挖出 thead，放到新 table 里
       this.newTableContainer = oldTableContainer.cloneNode(false);
@@ -221,25 +226,24 @@ export default {
       // 调整样式
       const { height: oldTHeadHeight } = oldTHead.getBoundingClientRect();
       oldTableContainer.style.height = `${this.height - oldTHeadHeight}px`;
-      oldTableContainer.style.overflow = 'auto';
+      oldTableContainer.style.overflowY = 'auto';
+      oldTableContainer.style.overflowX = 'hidden';
       if (this.height < oldTable.getBoundingClientRect().height) {
         // 隐藏出现的竖直滚动条
         oldTableContainer.style.marginRight = '-17px';
         ref.style.overflow = 'hidden';
       }
-
-      this.onResize = () => {
-        // 窗口大小变化时保持在大部分情况下「列」不错位
-        const oldTBody = ref.querySelector('tbody');
-        const tds = Array.from(oldTBody.children[0].children);
-        const ths = Array.from(oldTHead.children[0].children);
-        ths.forEach((th, index) => {
-          th.style.width = `${tds[index].getBoundingClientRect().width}px`;
-        });
-      };
-
-      this.onResize();
-      window.addEventListener('resize', this.onResize);
+      // 防止列头和列内容错位
+      const tds = Array.from(oldTBody.children[0].children);
+      const ths = Array.from(oldTHead.children[0].children);
+      const fieldsWithMinWidth = {};
+      this.columns.forEach(c => (fieldsWithMinWidth[c.field] = c.minWidth));
+      [...ths, ...tds].forEach(
+        cell =>
+          (cell.style.minWidth = `${
+            fieldsWithMinWidth[cell.getAttribute('data-name')]
+          }px`)
+      );
     },
   },
   watch: {
