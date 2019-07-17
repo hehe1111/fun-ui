@@ -8,7 +8,7 @@
       <table class="f-table" :class="tableClasses">
         <thead>
           <tr>
-            <th v-if="isCheckBoxVisible" :style="{ minWidth: '2em' }">
+            <th v-if="isCheckBoxVisible" :style="{ width: '2em' }">
               <input
                 type="checkbox"
                 :checked="isMainCheckBoxChecked"
@@ -43,7 +43,7 @@
             :key="item.id"
             :class="highlightClass(item)"
           >
-            <td v-if="isCheckBoxVisible" :style="{ minWidth: '2em' }">
+            <td v-if="isCheckBoxVisible" :style="{ width: '2em' }">
               <input
                 type="checkbox"
                 :checked="getItemCheckBoxState(item)"
@@ -154,6 +154,10 @@ export default {
   mounted() {
     this.height && this.fixTHead();
   },
+  destroyed() {
+    this.newTableContainer.remove();
+    window.removeEventListener('resize', this.onResize);
+  },
   methods: {
     highlightClass(item) {
       return { highlight: this.mutableSelectedItems.indexOf(item.id) >= 0 };
@@ -226,24 +230,26 @@ export default {
       // 调整样式
       const { height: oldTHeadHeight } = oldTHead.getBoundingClientRect();
       oldTableContainer.style.height = `${this.height - oldTHeadHeight}px`;
-      oldTableContainer.style.overflowY = 'auto';
-      oldTableContainer.style.overflowX = 'hidden';
+      oldTableContainer.style.overflow = 'auto';
       if (this.height < oldTable.getBoundingClientRect().height) {
         // 隐藏出现的竖直滚动条
         oldTableContainer.style.marginRight = '-17px';
         ref.style.overflow = 'hidden';
       }
       // 防止列头和列内容错位
-      const tds = Array.from(oldTBody.children[0].children);
-      const ths = Array.from(oldTHead.children[0].children);
-      const fieldsWithMinWidth = {};
-      this.columns.forEach(c => (fieldsWithMinWidth[c.field] = c.minWidth));
-      [...ths, ...tds].forEach(
-        cell =>
-          (cell.style.minWidth = `${
-            fieldsWithMinWidth[cell.getAttribute('data-name')]
-          }px`)
-      );
+      this.onResize = () => {
+        // 这一句必须加，否则在移动端上依然会错位
+        oldTable.style.width = getComputedStyle(newTable).width;
+        // 只需要让 tbody 的第一行的 td 的宽度等于 th 的宽度即可
+        const tds = Array.from(oldTBody.querySelectorAll('tr')[0].children);
+        const ths = newTable.querySelectorAll('th');
+        tds.forEach((td, index) => {
+          td.width = getComputedStyle(ths[index]).width;
+        });
+      };
+
+      this.onResize();
+      window.addEventListener('resize', this.onResize);
     },
   },
   watch: {
