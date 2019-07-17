@@ -1,53 +1,59 @@
 <template>
-  <div class="f-table-container">
-    <table class="f-table" :class="tableClasses">
-      <thead>
-        <tr>
-          <th v-if="isIdVisible">#</th>
-          <th v-if="isCheckBoxVisible">
-            <input
-              type="checkbox"
-              :checked="isMainCheckBoxChecked"
-              @change="selectMainCheckBox"
-              ref="mainCheckBoxRef"
-            />
-          </th>
-          <th v-for="column in columns" :key="column.field">
-            <div class="f-table-column-title-and-sort-icons">
-              <span class="f-table-column-title">{{ column.text }}</span>
-              <span
-                v-if="column.field in mutableSortRules"
-                class="f-table-sort-icons"
-                :class="sortIconActiveClass(column.field)"
-                @click="reSort(column.field)"
-              >
-                <f-icon name="up" class="icon up" />
-                <f-icon name="down" class="icon down" />
-              </span>
-            </div>
-          </th>
-        </tr>
-      </thead>
-      <tbody>
-        <tr
-          v-for="item in dataSource"
-          :key="item.id"
-          :class="highlightClass(item)"
-        >
-          <td v-if="isIdVisible">{{ item.id }}</td>
-          <td v-if="isCheckBoxVisible">
-            <input
-              type="checkbox"
-              :checked="getItemCheckBoxState(item)"
-              @change="selectItemCheckBox(item, $event)"
-            />
-          </td>
-          <td v-for="column in columns" :key="column.field">
-            {{ item[column.field] }}
-          </td>
-        </tr>
-      </tbody>
-    </table>
+  <div
+    class="f-table-outer-container"
+    :style="outerContainerStyle"
+    ref="outerContainerRef"
+  >
+    <div class="f-table-container">
+      <table class="f-table" :class="tableClasses">
+        <thead>
+          <tr>
+            <th v-if="isIdVisible">#</th>
+            <th v-if="isCheckBoxVisible">
+              <input
+                type="checkbox"
+                :checked="isMainCheckBoxChecked"
+                @change="selectMainCheckBox"
+                ref="mainCheckBoxRef"
+              />
+            </th>
+            <th v-for="column in columns" :key="column.field">
+              <div class="f-table-column-title-and-sort-icons">
+                <span class="f-table-column-title">{{ column.text }}</span>
+                <span
+                  v-if="column.field in mutableSortRules"
+                  class="f-table-sort-icons"
+                  :class="sortIconActiveClass(column.field)"
+                  @click="reSort(column.field)"
+                >
+                  <f-icon name="up" class="icon up" />
+                  <f-icon name="down" class="icon down" />
+                </span>
+              </div>
+            </th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr
+            v-for="item in dataSource"
+            :key="item.id"
+            :class="highlightClass(item)"
+          >
+            <td v-if="isIdVisible">{{ item.id }}</td>
+            <td v-if="isCheckBoxVisible">
+              <input
+                type="checkbox"
+                :checked="getItemCheckBoxState(item)"
+                @change="selectItemCheckBox(item, $event)"
+              />
+            </td>
+            <td v-for="column in columns" :key="column.field">
+              {{ item[column.field] }}
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
     <div class="f-table-loading-mask" v-if="loading">
       <f-icon name="loading" class="f-table-loading-icon" />
     </div>
@@ -109,6 +115,7 @@ export default {
         return [undefined, 'small'].indexOf(value) >= 0;
       },
     },
+    height: Number,
   },
   data() {
     return {
@@ -118,6 +125,12 @@ export default {
     };
   },
   computed: {
+    outerContainerStyle() {
+      return {
+        height: `${this.height}px`,
+        borderBottom: this.height ? '1px solid #ddd' : 'none',
+      };
+    },
     tableClasses() {
       return {
         bordered: this.bordered,
@@ -129,6 +142,13 @@ export default {
   created() {
     this.mutableSelectedItems = [...this.selectedItems];
     this.mutableSortRules = { ...this.sortRules };
+  },
+  mounted() {
+    this.height && this.fixTHead();
+  },
+  beforeDestroy() {
+    this.newTableContainer.remove();
+    window.removeEventListener('resize', this.onResize);
   },
   methods: {
     highlightClass(item) {
@@ -185,6 +205,42 @@ export default {
         : this.$set(mutableSortRules, field, 'ascend');
       this.$emit('re-sort', mutableSortRules);
     },
+    fixTHead() {
+      const { outerContainerRef: ref } = this.$refs;
+      const oldTableContainer = ref.querySelector('.f-table-container');
+      const oldTable = ref.querySelector('table');
+      const oldTHead = ref.querySelector('thead');
+
+      // 挖出 thead，放到新 table 里
+      this.newTableContainer = oldTableContainer.cloneNode(false);
+      const newTable = oldTable.cloneNode(false);
+      newTable.appendChild(oldTHead);
+      this.newTableContainer.appendChild(newTable);
+      ref.insertBefore(this.newTableContainer, oldTableContainer);
+
+      // 调整样式
+      const { height: oldTHeadHeight } = oldTHead.getBoundingClientRect();
+      oldTableContainer.style.height = `${this.height - oldTHeadHeight}px`;
+      oldTableContainer.style.overflow = 'auto';
+      if (this.height < oldTable.getBoundingClientRect().height) {
+        // 隐藏出现的竖直滚动条
+        oldTableContainer.style.marginRight = '-17px';
+        ref.style.overflow = 'hidden';
+      }
+
+      this.onResize = () => {
+        // 窗口大小变化时保持在大部分情况下「列」不错位
+        const oldTBody = ref.querySelector('tbody');
+        const tds = Array.from(oldTBody.children[0].children);
+        const ths = Array.from(oldTHead.children[0].children);
+        ths.forEach((th, index) => {
+          th.style.width = `${tds[index].getBoundingClientRect().width}px`;
+        });
+      };
+
+      this.onResize();
+      window.addEventListener('resize', this.onResize);
+    },
   },
   watch: {
     mutableSelectedItems(newValue, oldValue) {
@@ -210,73 +266,75 @@ export default {
   }
 }
 
-.f-table-container {
+.f-table-outer-container {
   position: relative;
-  .f-table {
-    width: 100%;
-    border-collapse: collapse;
+  .f-table-container {
+    .f-table {
+      width: 100%;
+      border-collapse: collapse;
 
-    &.bordered,
-    &.bordered th,
-    &.bordered td {
-      border: 1px solid $borderColorLight;
-    }
+      &.bordered,
+      &.bordered th,
+      &.bordered td {
+        border: 1px solid $borderColorLight;
+      }
 
-    &.small th,
-    &.small td {
-      padding: 0.2em;
-    }
+      &.small th,
+      &.small td {
+        padding: 0.2em;
+      }
 
-    th,
-    td {
-      padding: 0.4em 0.8em;
-      border-bottom: 1px solid $borderColorLight;
-    }
+      th,
+      td {
+        padding: 0.4em 0.8em;
+        border-bottom: 1px solid $borderColorLight;
+      }
 
-    > thead > tr > th {
-      text-align: left;
+      > thead > tr > th {
+        text-align: left;
 
-      > .f-table-column-title-and-sort-icons {
-        @extend .inline-flex-center;
+        > .f-table-column-title-and-sort-icons {
+          @extend .inline-flex-center;
 
-        > span.f-table-sort-icons {
-          transform: scale(0.8);
-          display: inline-flex;
-          flex-direction: column;
-          cursor: pointer;
-          padding: 0 6px;
+          > span.f-table-sort-icons {
+            transform: scale(0.8);
+            display: inline-flex;
+            flex-direction: column;
+            cursor: pointer;
+            padding: 0 6px;
 
-          > .icon {
-            fill: $darkGrey;
+            > .icon {
+              fill: $darkGrey;
 
-            &.up {
-              margin-bottom: -2px;
+              &.up {
+                margin-bottom: -2px;
+              }
+
+              &.down {
+                margin-top: -2px;
+              }
             }
 
-            &.down {
-              margin-top: -2px;
+            &.ascend > .icon.up,
+            &.descend > .icon.down {
+              fill: $blue;
             }
-          }
-
-          &.ascend > .icon.up,
-          &.descend > .icon.down {
-            fill: $blue;
           }
         }
       }
-    }
 
-    &.striped > tbody > tr {
-      @extend .tbody-row-common;
-      &:nth-child(odd) {
-        background-color: $grey;
+      &.striped > tbody > tr {
         @extend .tbody-row-common;
+        &:nth-child(odd) {
+          background-color: $grey;
+          @extend .tbody-row-common;
+        }
       }
-    }
 
-    > tbody > tr {
-      @extend .tbody-row-common;
-      background-color: #fff;
+      > tbody > tr {
+        @extend .tbody-row-common;
+        background-color: #fff;
+      }
     }
   }
 
