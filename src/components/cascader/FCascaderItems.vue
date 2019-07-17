@@ -3,11 +3,7 @@
     <div class="level left" :style="levelLeftStyle">
       <div
         class="label-container"
-        :class="{
-          active:
-            item.name === actived ||
-            (selected[level] && item.name === selected[level].name),
-        }"
+        :class="activeClass(item)"
         v-for="item in items"
         :key="item.name"
         @click="onSelected(item)"
@@ -18,7 +14,8 @@
       </div>
     </div>
     <div class="level right" v-if="rightItems">
-      <fun-u-i-cascader-items
+      <!-- 可以用 fun-u-i-cascader-items 也可以用 FunUICascaderItems -->
+      <FunUICascaderItems
         :level="level + 1"
         :items="rightItems"
         :selected="selected"
@@ -89,6 +86,14 @@ export default {
     },
   },
   methods: {
+    activeClass(item) {
+      const { actived, selected, level } = this;
+      return {
+        active:
+          item.name === actived ||
+          (selected[level] && item.name === selected[level].name),
+      };
+    },
     onSelected(item) {
       this.actived = item.name;
 
