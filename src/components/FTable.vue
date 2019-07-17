@@ -310,7 +310,7 @@ export default {
   watch: {
     mutableSelectedItems(newValue, oldValue) {
       this.$emit('update:selectedItems', newValue);
-      this.updateMainCheckBoxState();
+      this.isCheckBoxVisible && this.updateMainCheckBoxState();
     },
   },
   components: { FIcon },
