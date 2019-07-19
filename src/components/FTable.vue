@@ -169,6 +169,13 @@ export default {
       },
     },
     height: Number,
+    align: {
+      type: String,
+      defalt: 'left',
+      validator: value => {
+        return ['left', 'center', 'centre', 'right'].indexOf(value) >= 0;
+      },
+    },
   },
   data() {
     return {
@@ -190,6 +197,7 @@ export default {
         bordered: this.bordered,
         striped: this.striped,
         small: this.size,
+        [`align-${this.align}`]: this.align,
       };
     },
     isCollapseIconsColumnVisible() {
@@ -422,10 +430,43 @@ export default {
 }
 
 // col alignment
-.col-head,
 .col-body {
   display: inline-block;
   vertical-align: top;
+}
+
+.f-table-outer-container > .f-table-container {
+  > .f-table.align-left {
+    > thead > tr > th {
+      justify-content: flex-start;
+
+      > .f-table-column-title-and-sort-icons {
+        justify-content: flex-start;
+      }
+    }
+    > tbody > tr > td {
+      text-align: left;
+    }
+  }
+
+  > .f-table.align-center {
+    > tbody > tr > td {
+      text-align: center;
+    }
+  }
+
+  > .f-table.align-right {
+    > thead > tr > th {
+      justify-content: flex-end;
+
+      > .f-table-column-title-and-sort-icons {
+        justify-content: flex-end;
+      }
+    }
+    > tbody > tr > td {
+      text-align: right;
+    }
+  }
 }
 
 .f-table-outer-container {
