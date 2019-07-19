@@ -60,7 +60,7 @@
                   name="right"
                   class="right-icon"
                   :class="downIconClass(item)"
-                  v-if="item.description"
+                  v-if="item.collapsibleContent"
                 />
               </td>
               <td v-if="isCheckBoxVisible" class="cell-default">
@@ -85,7 +85,7 @@
                 :class="collapsibleRowClass"
                 v-if="isRowCollapsed(item)"
               >
-                <td :colspan="colspan">{{ item.description }}</td>
+                <td :colspan="colspan">{{ item.collapsibleContent }}</td>
               </tr>
             </transition>
           </template>
@@ -118,11 +118,11 @@ export default {
       type: Boolean,
       default: false,
     },
-    selectedItems: {
+    selectedIds: {
       type: Array,
       default: () => [],
       validator: array => {
-        return array.every(n => typeof n === 'number');
+        return array.every(id => typeof id === 'number');
       },
     },
     sortRules: {
@@ -157,7 +157,7 @@ export default {
   },
   data() {
     return {
-      mutableSelectedItems: [],
+      mutableSelectedIds: [],
       isMainCheckBoxChecked: false,
       mutableSortRules: {},
       openedRowIds: [],
@@ -178,7 +178,7 @@ export default {
       };
     },
     isCollapseIconsColumnVisible() {
-      return this.dataSource.some(n => !!n.description);
+      return this.dataSource.some(n => !!n.collapsibleContent);
     },
     collapsibleRowClass() {
       return { small: this.size };
@@ -193,7 +193,7 @@ export default {
     },
   },
   created() {
-    this.mutableSelectedItems = [...this.selectedItems];
+    this.mutableSelectedIds = [...this.selectedIds];
     this.mutableSortRules = { ...this.sortRules };
   },
   mounted() {
@@ -205,7 +205,7 @@ export default {
   },
   methods: {
     highlightClass(item) {
-      return { highlight: this.mutableSelectedItems.indexOf(item.id) >= 0 };
+      return { highlight: this.mutableSelectedIds.indexOf(item.id) >= 0 };
     },
     sortIconActiveClass(field) {
       return {
@@ -215,38 +215,32 @@ export default {
     },
     selectItemCheckBox({ id }, $event) {
       if ($event.target.checked) {
-        this.mutableSelectedItems.push(id);
+        this.mutableSelectedIds.push(id);
       } else {
-        const index = this.mutableSelectedItems.indexOf(id);
-        index >= 0 && this.mutableSelectedItems.splice(index, 1);
+        const index = this.mutableSelectedIds.indexOf(id);
+        index >= 0 && this.mutableSelectedIds.splice(index, 1);
       }
     },
     selectMainCheckBox($event) {
-      this.mutableSelectedItems = $event.target.checked
+      this.mutableSelectedIds = $event.target.checked
         ? this.dataSource.map(n => n.id)
         : [];
     },
     getItemCheckBoxState(item) {
-      return this.mutableSelectedItems.indexOf(item.id) >= 0;
+      return this.mutableSelectedIds.indexOf(item.id) >= 0;
     },
     updateMainCheckBoxState() {
-      const selectedItemsString = [...this.mutableSelectedItems].sort().join();
-      const allItemsString = this.dataSource
+      const selectedIdsString = [...this.mutableSelectedIds].sort().join();
+      const allIdsString = this.dataSource
         .map(n => n.id)
         .sort()
         .join();
 
       // 全选
-      this.isMainCheckBoxChecked = selectedItemsString === allItemsString;
+      this.isMainCheckBoxChecked = selectedIdsString === allIdsString;
       // 半选
-      if (
-        selectedItemsString.length &&
-        selectedItemsString !== allItemsString
-      ) {
-        this.$refs.mainCheckBoxRef.indeterminate = true;
-      } else {
-        this.$refs.mainCheckBoxRef.indeterminate = false;
-      }
+      this.$refs.mainCheckBoxRef.indeterminate =
+        selectedIdsString.length && selectedIdsString !== allIdsString;
     },
     reSort(field) {
       const { mutableSortRules } = this;
@@ -259,10 +253,10 @@ export default {
       this.$emit('re-sort', mutableSortRules);
     },
     isRowCollapsed(item) {
-      return item.description && this.openedRowIds.indexOf(item.id) >= 0;
+      return this.openedRowIds.indexOf(item.id) >= 0;
     },
-    downIconClass({ id }) {
-      return { down: this.openedRowIds.indexOf(id) >= 0 };
+    downIconClass(item) {
+      return { down: this.isRowCollapsed(item) };
     },
     toggleRow({ id }) {
       const { openedRowIds } = this;
@@ -284,10 +278,11 @@ export default {
       ref.insertBefore(this.newTableContainer, oldTableContainer);
 
       // 调整样式
-      const { height: oldTHeadHeight } = oldTHead.getBoundingClientRect();
-      oldTableContainer.style.height = `${this.height - oldTHeadHeight}px`;
+      const newTCHeight = this.newTableContainer.getBoundingClientRect().height;
+      const oldTCHeight = this.height - newTCHeight;
+      oldTableContainer.style.height = `${oldTCHeight}px`;
       oldTableContainer.style.overflow = 'auto';
-      if (this.height < oldTable.getBoundingClientRect().height) {
+      if (oldTCHeight < oldTable.getBoundingClientRect().height) {
         // 隐藏出现的竖直滚动条
         oldTableContainer.style.marginRight = '-17px';
         ref.style.overflow = 'hidden';
@@ -309,8 +304,8 @@ export default {
     },
   },
   watch: {
-    mutableSelectedItems(newValue, oldValue) {
-      this.$emit('update:selectedItems', newValue);
+    mutableSelectedIds(newValue, oldValue) {
+      this.$emit('update:selectedIds', newValue);
       this.isCheckBoxVisible && this.updateMainCheckBoxState();
     },
   },
