@@ -33,7 +33,10 @@
               :key="column.field"
               :data-name="column.field"
             >
-              <div class="f-table-column-title-and-sort-icons">
+              <span
+                class="f-table-column-title-and-sort-icons col-head"
+                ref="colHeadRef"
+              >
                 <span class="f-table-column-title">{{ column.text }}</span>
                 <span
                   v-if="column.field in mutableSortRules"
@@ -44,7 +47,7 @@
                   <f-icon name="up" class="icon up" />
                   <f-icon name="down" class="icon down" />
                 </span>
-              </div>
+              </span>
             </th>
           </tr>
         </thead>
@@ -76,16 +79,18 @@
                 :key="column.field"
                 :data-name="column.field"
               >
-                <template v-if="column.actions">
-                  <f-button
-                    v-for="action in column.actions"
-                    :key="action.text"
-                    @click="action.callback(item)"
-                    class="f-table-action-button"
-                    >{{ action.text }}</f-button
-                  >
-                </template>
-                <template v-else>{{ item[column.field] }}</template>
+                <span class="col-body" ref="colBodyRef">
+                  <template v-if="column.actions">
+                    <f-button
+                      v-for="action in column.actions"
+                      :key="action.text"
+                      @click="action.callback(item)"
+                      class="f-table-action-button"
+                      >{{ action.text }}</f-button
+                    >
+                  </template>
+                  <template v-else>{{ item[column.field] }}</template>
+                </span>
               </td>
             </tr>
             <transition :key="`${item.id}-collapsible-row`" name="fade">
@@ -319,12 +324,12 @@ export default {
       oldTC.style.overflow = 'auto';
     },
     hideOldTCVerticalScrollbar() {
-      const { oldTC, oldTable } = this;
-      const oldTCHeight = oldTC.getBoundingClientRect().height;
-      const oldTableHeight = oldTable.getBoundingClientRect().height;
-      if (oldTCHeight < oldTableHeight) {
-        oldTC.style.marginRight = '-17px';
-        oldTC.parentElement.style.overflow = 'hidden';
+      const { offsetHeight, clientHeight } = this.oldTC;
+      // PC: offsetHeight > clientHeight
+      // mobile: offsetHeight === clientHeight
+      if (offsetHeight - clientHeight === 17) {
+        this.oldTC.style.marginRight = '-17px';
+        this.oldTC.parentElement.style.overflow = 'hidden';
       }
     },
     hideNewTCHorizontalScrollbar() {
@@ -335,13 +340,22 @@ export default {
       oldTC.style.marginTop = offsetHeight > clientHeight ? '-17px' : 0;
     },
     onResize() {
-      // 兼容移动端
-      this.oldTable.style.width = getComputedStyle(this.newTable).width;
-      // 设置 tbody 的第一行即可，tbody 的列宽基于 thead 的列宽
-      const tds = Array.from(this.oldTBody.querySelectorAll('tr')[0].children);
-      const ths = this.newTable.querySelectorAll('th');
-      tds.forEach((td, index) => {
-        td.width = getComputedStyle(ths[index]).width;
+      const { colHeadRef, colBodyRef } = this.$refs;
+      const bodyCells = colBodyRef.slice(0, colHeadRef.length);
+
+      const headCellsWidth = colHeadRef.map(
+        el => el.getBoundingClientRect().width
+      );
+      const bodyCellsWidth = bodyCells.map(
+        el => el.getBoundingClientRect().width
+      );
+      colHeadRef.map((el, index) => {
+        const cellMaxWidth = Math.max(
+          headCellsWidth[index],
+          bodyCellsWidth[index]
+        );
+        el.style.width = `${cellMaxWidth}px`;
+        bodyCells[index].style.width = `${cellMaxWidth}px`;
       });
 
       this.hideNewTCHorizontalScrollbar();
@@ -370,7 +384,7 @@ export default {
 <style lang="scss" scoped>
 @import '../assets/_var.scss';
 
-// collapsiable row transition
+// collapsible row transition
 .fade-enter-active,
 .fade-leave-active {
   transition: opacity $duration ease-in-out;
@@ -380,12 +394,7 @@ export default {
   opacity: 0;
 }
 
-#main-checkbox-container,
-.cell-default {
-  text-align: center;
-  width: 2em;
-}
-
+// collapsible row icon transition
 .f-table-collapsible-row-icon-container > .right-icon {
   transform: scale(0.8);
   transition: transform $duration linear;
@@ -394,6 +403,13 @@ export default {
   }
 }
 
+#main-checkbox-container,
+.cell-default {
+  text-align: center;
+  width: 2em;
+}
+
+// row highlight
 .tbody-row-common {
   &:hover {
     background-color: $greyHover;
@@ -405,11 +421,17 @@ export default {
   }
 }
 
+// col alignment
+.col-head,
+.col-body {
+  display: inline-block;
+  vertical-align: top;
+}
+
 .f-table-outer-container {
   position: relative;
   .f-table-container {
     .f-table {
-      width: 100%;
       border-collapse: collapse;
 
       &.bordered,
@@ -475,7 +497,7 @@ export default {
         @extend .tbody-row-common;
         background-color: #fff;
 
-        > td > .f-table-action-button {
+        > td > span > .f-table-action-button {
           &:not(:last-child) {
             margin-right: 6px;
           }
