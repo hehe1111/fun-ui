@@ -11,6 +11,7 @@
             <th
               class="f-table-collapsible-row-icon-container cell-default"
               v-if="isCollapseIconsColumnVisible"
+              data-role="exits-to-keep-align"
             >
               <f-icon name="right" class="right-icon" :style="{ opacity: 0 }" />
             </th>
