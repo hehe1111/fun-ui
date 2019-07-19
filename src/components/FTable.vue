@@ -5,7 +5,7 @@
     ref="outerContainerRef"
   >
     <div class="f-table-container">
-      <table class="f-table" :class="tableClasses">
+      <table class="f-table" :class="tableClasses" ref="tableRef">
         <thead>
           <tr>
             <th
@@ -101,7 +101,7 @@
         </tbody>
       </table>
     </div>
-    <div class="f-table-loading-mask" v-if="loading">
+    <div class="f-table-loading-mask" v-show="loading" ref="loadingMaskRef">
       <f-icon name="loading" class="f-table-loading-icon" />
     </div>
   </div>
@@ -208,6 +208,7 @@ export default {
   },
   mounted() {
     this.height && this.fixTHead();
+    this.updateLoadingMaskStyle();
   },
   destroyed() {
     const { oldTC, newTC, onScrollOldTC, onScrollNewTC, onResize } = this;
@@ -217,6 +218,14 @@ export default {
     window.removeEventListener('resize', onResize);
   },
   methods: {
+    updateLoadingMaskStyle() {
+      const { tableRef, loadingMaskRef } = this.$refs;
+      const { width: tableWidth, height: tableHeight } = getComputedStyle(
+        tableRef
+      );
+      loadingMaskRef.style.width = tableWidth;
+      loadingMaskRef.style.height = tableHeight;
+    },
     highlightClass(item) {
       return { highlight: this.mutableSelectedIds.indexOf(item.id) >= 0 };
     },
