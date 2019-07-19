@@ -132,7 +132,7 @@ export default {
       type: Array,
       default: () => [],
       validator: array => {
-        return array.every(id => typeof id === 'number');
+        return array.every(id => typeof id === 'string');
       },
     },
     sortRules: {
