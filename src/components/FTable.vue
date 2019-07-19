@@ -509,7 +509,7 @@ export default {
       width: 2em;
       height: 2em;
       position: absolute;
-      top: 50%;
+      top: 10%;
       left: 50%;
       // transform: translate(-50%, -50%); 无效
       margin-top: -1em;
