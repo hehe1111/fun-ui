@@ -76,7 +76,16 @@
                 :key="column.field"
                 :data-name="column.field"
               >
-                {{ item[column.field] }}
+                <template v-if="column.actions">
+                  <f-button
+                    v-for="action in column.actions"
+                    :key="action.text"
+                    @click="action.callback(item)"
+                    class="f-table-action-button"
+                    >{{ action.text }}</f-button
+                  >
+                </template>
+                <template v-else>{{ item[column.field] }}</template>
               </td>
             </tr>
             <transition :key="`${item.id}-collapsible-row`" name="fade">
@@ -100,6 +109,7 @@
 
 <script>
 import FIcon from './FIcon.vue';
+import FButton from './button/FButton.vue';
 
 export default {
   name: 'FunUITable',
@@ -344,7 +354,7 @@ export default {
       this.isCheckBoxVisible && this.updateMainCheckBoxState();
     },
   },
-  components: { FIcon },
+  components: { FIcon, FButton },
 };
 </script>
 
@@ -408,6 +418,7 @@ export default {
       td {
         padding: 0.4em 0.8em;
         border-bottom: 1px solid $borderColorLight;
+        white-space: nowrap;
       }
 
       > thead > tr > th {
@@ -454,6 +465,12 @@ export default {
       > tbody > tr {
         @extend .tbody-row-common;
         background-color: #fff;
+
+        > td > .f-table-action-button {
+          &:not(:last-child) {
+            margin-right: 6px;
+          }
+        }
 
         &.f-table-collapsible-row {
           background-color: #fff !important;
