@@ -13,30 +13,37 @@
               v-if="isCollapseIconsColumnVisible"
               data-role="exits-to-keep-align"
             >
-              <f-icon name="right" class="right-icon" :style="{ opacity: 0 }" />
+              <span class="cell-inner">
+                <f-icon
+                  name="right"
+                  class="right-icon"
+                  :style="{ opacity: 0 }"
+                />
+              </span>
             </th>
             <th
               v-if="isCheckBoxVisible"
               class="cell-default"
               id="main-checkbox-container"
             >
-              <input
-                type="checkbox"
-                :checked="isMainCheckBoxChecked"
-                @change="selectMainCheckBox"
-                ref="mainCheckBoxRef"
-              />
+              <span class="cell-inner">
+                <input
+                  type="checkbox"
+                  :checked="isMainCheckBoxChecked"
+                  @change="selectMainCheckBox"
+                  ref="mainCheckBoxRef"
+                />
+              </span>
             </th>
-            <th v-if="isIdVisible">#</th>
+            <th v-if="isIdVisible">
+              <span class="cell-inner">#</span>
+            </th>
             <th
               v-for="column in columns"
               :key="column.field"
               :data-name="column.field"
             >
-              <span
-                class="f-table-column-title-and-sort-icons col-head"
-                ref="colHeadRef"
-              >
+              <span class="f-table-column-title-and-sort-icons cell-inner">
                 <span class="f-table-column-title">{{ column.text }}</span>
                 <span
                   v-if="column.field in mutableSortRules"
@@ -59,27 +66,33 @@
                 @click="toggleRow(item)"
                 v-if="isCollapseIconsColumnVisible"
               >
-                <f-icon
-                  name="right"
-                  class="right-icon"
-                  :class="downIconClass(item)"
-                  v-if="item.collapsibleContent"
-                />
+                <span class="cell-inner">
+                  <f-icon
+                    name="right"
+                    class="right-icon"
+                    :class="downIconClass(item)"
+                    v-if="item.collapsibleContent"
+                  />
+                </span>
               </td>
               <td v-if="isCheckBoxVisible" class="cell-default">
-                <input
-                  type="checkbox"
-                  :checked="getItemCheckBoxState(item)"
-                  @change="selectItemCheckBox(item, $event)"
-                />
+                <span class="cell-inner">
+                  <input
+                    type="checkbox"
+                    :checked="getItemCheckBoxState(item)"
+                    @change="selectItemCheckBox(item, $event)"
+                  />
+                </span>
               </td>
-              <td v-if="isIdVisible">{{ item.id }}</td>
+              <td v-if="isIdVisible">
+                <span class="cell-inner">{{ item.id }}</span>
+              </td>
               <td
                 v-for="column in columns"
                 :key="column.field"
                 :data-name="column.field"
               >
-                <span class="col-body" ref="colBodyRef">
+                <span class="cell-inner">
                   <template v-if="column.actions">
                     <f-button
                       v-for="action in column.actions"
@@ -99,7 +112,9 @@
                 :class="collapsibleRowClass"
                 v-if="isRowCollapsed(item)"
               >
-                <td :colspan="colspan">{{ item.collapsibleContent }}</td>
+                <td :colspan="colspan">
+                  <span>{{ item.collapsibleContent }}</span>
+                </td>
               </tr>
             </transition>
           </template>
@@ -332,10 +347,10 @@ export default {
       oldTC.style.overflow = 'auto';
     },
     hideOldTCVerticalScrollbar() {
-      const { offsetHeight, clientHeight } = this.oldTC;
-      // PC: offsetHeight > clientHeight
-      // mobile: offsetHeight === clientHeight
-      if (offsetHeight - clientHeight === 17) {
+      const { offsetWidth, clientWidth } = this.oldTC;
+      // PC: offsetWidth > clientWidth
+      // mobile: offsetWidth === clientWidth
+      if (offsetWidth - clientWidth === 17) {
         this.oldTC.style.marginRight = '-17px';
         this.oldTC.parentElement.style.overflow = 'hidden';
       }
@@ -348,25 +363,45 @@ export default {
       oldTC.style.marginTop = offsetHeight > clientHeight ? '-17px' : 0;
     },
     onResize() {
-      const { colHeadRef, colBodyRef } = this.$refs;
-      const bodyCells = colBodyRef.slice(0, colHeadRef.length);
-
-      const headCellsWidth = colHeadRef.map(
-        el => el.getBoundingClientRect().width
-      );
-      const bodyCellsWidth = bodyCells.map(
-        el => el.getBoundingClientRect().width
-      );
-      colHeadRef.map((el, index) => {
-        const cellMaxWidth = Math.max(
-          headCellsWidth[index],
-          bodyCellsWidth[index]
-        );
-        el.style.width = `${cellMaxWidth}px`;
-        bodyCells[index].style.width = `${cellMaxWidth}px`;
-      });
-
+      this.reSizeCells(this.getCellsWidth());
       this.hideNewTCHorizontalScrollbar();
+    },
+    getCellsWidth() {
+      const ths = Array.from(document.querySelectorAll('thead > tr > th'));
+      const tds = Array.from(
+        document.querySelectorAll('tbody > tr:first-child > td')
+      );
+      const thWidthArray = ths.map(el => {
+        // substract 1 for double count collapsed border
+        return (
+          el.getBoundingClientRect().width -
+          1 -
+          2 * parseInt(getComputedStyle(el).paddingLeft, 10) -
+          2 * parseInt(getComputedStyle(el).borderLeftWidth, 10)
+        );
+      });
+      const tdWidthArray = tds.map(el => {
+        return (
+          el.getBoundingClientRect().width -
+          1 -
+          2 * parseInt(getComputedStyle(el).paddingLeft, 10) -
+          2 * parseInt(getComputedStyle(el).borderLeftWidth, 10)
+        );
+      });
+      return { thWidthArray, tdWidthArray };
+    },
+    reSizeCells({ thWidthArray, tdWidthArray }) {
+      const thCellInners = Array.from(
+        document.querySelectorAll('thead > tr > th > .cell-inner')
+      );
+      const tdCellInners = Array.from(
+        document.querySelectorAll('tbody > tr:first-child > td > .cell-inner')
+      );
+      thCellInners.map((el, i) => {
+        const cellMaxWidth = Math.max(thWidthArray[i], tdWidthArray[i]);
+        el.style.width = `${cellMaxWidth}px`;
+        tdCellInners[i].style.width = `${cellMaxWidth}px`;
+      });
     },
     syncScroll() {
       this.oldTC.addEventListener('scroll', this.onScrollOldTC);
@@ -403,7 +438,7 @@ export default {
 }
 
 // collapsible row icon transition
-.f-table-collapsible-row-icon-container > .right-icon {
+.f-table-collapsible-row-icon-container > .cell-inner > .right-icon {
   transform: scale(0.8);
   transition: transform $duration linear;
   &.down {
@@ -430,7 +465,7 @@ export default {
 }
 
 // col alignment
-.col-body {
+.cell-inner {
   display: inline-block;
   vertical-align: top;
 }
@@ -538,7 +573,7 @@ export default {
         @extend .tbody-row-common;
         background-color: #fff;
 
-        > td > span > .f-table-action-button {
+        > td > .cell-inner > .f-table-action-button {
           &:not(:last-child) {
             margin-right: 6px;
           }
