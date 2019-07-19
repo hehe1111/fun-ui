@@ -200,8 +200,11 @@ export default {
     this.height && this.fixTHead();
   },
   destroyed() {
-    this.newTableContainer.remove();
-    window.removeEventListener('resize', this.onResize);
+    const { oldTC, newTC, onScrollOldTC, onScrollNewTC, onResize } = this;
+    oldTC && oldTC.removeEventListener('scroll', onScrollOldTC);
+    newTC && newTC.removeEventListener('scroll', onScrollNewTC);
+    newTC.remove();
+    window.removeEventListener('resize', onResize);
   },
   methods: {
     highlightClass(item) {
@@ -264,43 +267,75 @@ export default {
       index >= 0 ? openedRowIds.splice(index, 1) : openedRowIds.push(id);
     },
     fixTHead() {
-      const { outerContainerRef: ref } = this.$refs;
-      const oldTableContainer = ref.querySelector('.f-table-container');
-      const oldTable = ref.querySelector('table');
-      const oldTHead = ref.querySelector('thead');
-      const oldTBody = ref.querySelector('tbody');
-
-      // 挖出 thead，放到新 table 里
-      this.newTableContainer = oldTableContainer.cloneNode(false);
-      const newTable = oldTable.cloneNode(false);
-      newTable.appendChild(oldTHead);
-      this.newTableContainer.appendChild(newTable);
-      ref.insertBefore(this.newTableContainer, oldTableContainer);
-
-      // 调整样式
-      const newTCHeight = this.newTableContainer.getBoundingClientRect().height;
-      const oldTCHeight = this.height - newTCHeight;
-      oldTableContainer.style.height = `${oldTCHeight}px`;
-      oldTableContainer.style.overflow = 'auto';
-      if (oldTCHeight < oldTable.getBoundingClientRect().height) {
-        // 隐藏出现的竖直滚动条
-        oldTableContainer.style.marginRight = '-17px';
-        ref.style.overflow = 'hidden';
-      }
-      // 防止列头和列内容错位
-      this.onResize = () => {
-        // 这一句必须加，否则在移动端上依然会错位
-        oldTable.style.width = getComputedStyle(newTable).width;
-        // 只需要让 tbody 的第一行的 td 的宽度等于 th 的宽度即可
-        const tds = Array.from(oldTBody.querySelectorAll('tr')[0].children);
-        const ths = newTable.querySelectorAll('th');
-        tds.forEach((td, index) => {
-          td.width = getComputedStyle(ths[index]).width;
-        });
-      };
-
+      this.appendOldTHeadToNewTable();
+      if (!this.isEachHtmlElement([this.newTC, this.newTable])) return;
+      this.updateOldTCStyle();
+      this.hideOldTCVerticalScrollbar();
       this.onResize();
       window.addEventListener('resize', this.onResize);
+      this.syncScroll();
+    },
+    isEachHtmlElement(array) {
+      return array.every(el => el.nodeType === Node.ELEMENT_NODE);
+    },
+    appendOldTHeadToNewTable() {
+      // oldTC: old table container
+      // newTC: new table container
+      const { outerContainerRef: ref } = this.$refs;
+      this.oldTC = ref.querySelector('.f-table-container');
+      this.oldTable = ref.querySelector('table');
+      this.oldTHead = ref.querySelector('thead');
+      this.oldTBody = ref.querySelector('tbody');
+
+      this.newTC = this.oldTC.cloneNode(false);
+      this.newTable = this.oldTable.cloneNode(false);
+      this.newTable.appendChild(this.oldTHead);
+      this.newTC.appendChild(this.newTable);
+      ref.insertBefore(this.newTC, this.oldTC);
+    },
+    updateOldTCStyle() {
+      const { newTC, oldTC, height } = this;
+      const newTCHeight = newTC.getBoundingClientRect().height;
+      oldTC.style.height = `${height - newTCHeight}px`;
+      oldTC.style.overflow = 'auto';
+    },
+    hideOldTCVerticalScrollbar() {
+      const { oldTC, oldTable } = this;
+      const oldTCHeight = oldTC.getBoundingClientRect().height;
+      const oldTableHeight = oldTable.getBoundingClientRect().height;
+      if (oldTCHeight < oldTableHeight) {
+        oldTC.style.marginRight = '-17px';
+        oldTC.parentElement.style.overflow = 'hidden';
+      }
+    },
+    hideNewTCHorizontalScrollbar() {
+      const { newTC, oldTC } = this;
+      newTC.style.overflow = 'auto';
+
+      const { offsetHeight, clientHeight } = newTC;
+      oldTC.style.marginTop = offsetHeight > clientHeight ? '-17px' : 0;
+    },
+    onResize() {
+      // 兼容移动端
+      this.oldTable.style.width = getComputedStyle(this.newTable).width;
+      // 设置 tbody 的第一行即可，tbody 的列宽基于 thead 的列宽
+      const tds = Array.from(this.oldTBody.querySelectorAll('tr')[0].children);
+      const ths = this.newTable.querySelectorAll('th');
+      tds.forEach((td, index) => {
+        td.width = getComputedStyle(ths[index]).width;
+      });
+
+      this.hideNewTCHorizontalScrollbar();
+    },
+    syncScroll() {
+      this.oldTC.addEventListener('scroll', this.onScrollOldTC);
+      this.newTC.addEventListener('scroll', this.onScrollNewTC);
+    },
+    onScrollOldTC() {
+      this.newTC.scrollLeft = this.oldTC.scrollLeft;
+    },
+    onScrollNewTC() {
+      this.oldTC.scrollLeft = this.newTC.scrollLeft;
     },
   },
   watch: {
