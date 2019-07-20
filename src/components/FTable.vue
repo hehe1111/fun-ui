@@ -294,7 +294,9 @@ export default {
     downIconClass(item) {
       return { down: this.isRowCollapsed(item) };
     },
-    toggleRow({ id }) {
+    toggleRow(item) {
+      const { id, collapsibleContent } = item;
+      if (!collapsibleContent) return;
       const { openedRowIds } = this;
       const index = openedRowIds.indexOf(id);
       index >= 0 ? openedRowIds.splice(index, 1) : openedRowIds.push(id);
