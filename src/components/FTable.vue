@@ -8,24 +8,15 @@
       <table class="f-table" :class="tableClasses" ref="tableRef">
         <thead>
           <tr>
-            <th
-              class="f-table-collapsible-row-icon-container cell-default"
-              v-if="isCollapseIconsColumnVisible"
-              data-role="exits-to-keep-align"
-            >
+            <th v-if="isCollapseIconsColumnVisible">
               <span class="cell-inner">
                 <f-icon
                   name="right"
-                  class="right-icon"
-                  :style="{ opacity: 0 }"
+                  class="icon-exits-to-keep-align right-icon"
                 />
               </span>
             </th>
-            <th
-              v-if="isCheckBoxVisible"
-              class="cell-default"
-              id="main-checkbox-container"
-            >
+            <th v-if="isCheckBoxVisible">
               <span class="cell-inner">
                 <input
                   type="checkbox"
@@ -43,8 +34,8 @@
               :key="column.field"
               :data-name="column.field"
             >
-              <span class="f-table-column-title-and-sort-icons cell-inner">
-                <span class="f-table-column-title">{{ column.text }}</span>
+              <span class="cell-inner">
+                <span>{{ column.text }}</span>
                 <span
                   v-if="column.field in mutableSortRules"
                   class="f-table-sort-icons"
@@ -61,11 +52,7 @@
         <tbody>
           <template v-for="item in dataSource">
             <tr :key="item.id" :class="highlightClass(item)">
-              <td
-                class="f-table-collapsible-row-icon-container cell-default"
-                @click="toggleRow(item)"
-                v-if="isCollapseIconsColumnVisible"
-              >
+              <td @click="toggleRow(item)" v-if="isCollapseIconsColumnVisible">
                 <span class="cell-inner">
                   <f-icon
                     name="right"
@@ -75,7 +62,7 @@
                   />
                 </span>
               </td>
-              <td v-if="isCheckBoxVisible" class="cell-default">
+              <td v-if="isCheckBoxVisible">
                 <span class="cell-inner">
                   <input
                     type="checkbox"
@@ -186,7 +173,7 @@ export default {
     height: Number,
     align: {
       type: String,
-      defalt: 'left',
+      default: 'left',
       validator: value => {
         return ['left', 'center', 'centre', 'right'].indexOf(value) >= 0;
       },
@@ -204,7 +191,6 @@ export default {
     outerContainerStyle() {
       return {
         height: `${this.height}px`,
-        borderBottom: this.height ? '1px solid #ddd' : 'none',
       };
     },
     tableClasses() {
@@ -345,6 +331,8 @@ export default {
       const newTCHeight = newTC.getBoundingClientRect().height;
       oldTC.style.height = `${height - newTCHeight}px`;
       oldTC.style.overflow = 'auto';
+      oldTC.style.borderBottomWidth = '1px';
+      oldTC.style.borderBottomStyle = 'solid';
     },
     hideOldTCVerticalScrollbar() {
       const { offsetWidth, clientWidth } = this.oldTC;
@@ -427,6 +415,10 @@ export default {
 <style lang="scss" scoped>
 @import '../assets/_var.scss';
 
+.icon-exits-to-keep-align {
+  opacity: 0;
+}
+
 // collapsible row transition
 .fade-enter-active,
 .fade-leave-active {
@@ -437,19 +429,35 @@ export default {
   opacity: 0;
 }
 
-// collapsible row icon transition
-.f-table-collapsible-row-icon-container > .cell-inner > .right-icon {
-  transform: scale(0.8);
-  transition: transform $duration linear;
-  &.down {
-    transform: scale(0.8) rotate(90deg);
+.cell-inner {
+  @extend .inline-flex-center;
+
+  > .right-icon {
+    // collapsible row icon transition
+    transform: scale(0.8);
+    transition: transform $duration linear;
+    &.down {
+      transform: scale(0.8) rotate(90deg);
+    }
   }
 }
 
-#main-checkbox-container,
-.cell-default {
-  text-align: center;
-  width: 2em;
+.f-table {
+  &.align-left {
+    .cell-inner {
+      justify-content: flex-start;
+    }
+  }
+  &.align-center {
+    .cell-inner {
+      justify-content: center;
+    }
+  }
+  &.align-right {
+    .cell-inner {
+      justify-content: flex-end;
+    }
+  }
 }
 
 // row highlight
@@ -464,50 +472,15 @@ export default {
   }
 }
 
-// col alignment
-.cell-inner {
-  display: inline-block;
-  vertical-align: top;
-}
-
-.f-table-outer-container > .f-table-container {
-  > .f-table.align-left {
-    > thead > tr > th {
-      justify-content: flex-start;
-
-      > .f-table-column-title-and-sort-icons {
-        justify-content: flex-start;
-      }
-    }
-    > tbody > tr > td {
-      text-align: left;
-    }
-  }
-
-  > .f-table.align-center {
-    > tbody > tr > td {
-      text-align: center;
-    }
-  }
-
-  > .f-table.align-right {
-    > thead > tr > th {
-      justify-content: flex-end;
-
-      > .f-table-column-title-and-sort-icons {
-        justify-content: flex-end;
-      }
-    }
-    > tbody > tr > td {
-      text-align: right;
-    }
-  }
-}
-
 .f-table-outer-container {
   position: relative;
-  .f-table-container {
-    .f-table {
+  display: inline-block;
+  vertical-align: top;
+
+  > .f-table-container {
+    border-bottom-color: $borderColorLight;
+
+    > .f-table {
       border-collapse: collapse;
 
       &.bordered,
@@ -529,11 +502,7 @@ export default {
       }
 
       > thead > tr > th {
-        text-align: left;
-
-        > .f-table-column-title-and-sort-icons {
-          @extend .inline-flex-center;
-
+        > .cell-inner {
           > span.f-table-sort-icons {
             transform: scale(0.8);
             display: inline-flex;
