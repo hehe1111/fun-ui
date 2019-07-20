@@ -51,6 +51,7 @@ module.exports = {
           '/components/pagination',
           '/components/popover',
           '/components/tab',
+          '/components/table',
           '/components/toast',
         ],
       },
