@@ -121,26 +121,19 @@ import FButton from './button/FButton.vue';
 export default {
   name: 'FunUITable',
   props: {
-    columns: {
-      type: Array,
-    },
+    columns: Array,
     dataSource: {
       type: Array,
+      validator: array => {
+        return array.every(n => typeof n.id === 'string');
+      },
     },
-    isIdVisible: {
-      type: Boolean,
-      default: false,
-    },
-    isCheckBoxVisible: {
-      type: Boolean,
-      default: false,
-    },
+    isIdVisible: { type: Boolean, default: false },
+    isCheckBoxVisible: { type: Boolean, default: false },
     selectedIds: {
       type: Array,
       default: () => [],
-      validator: array => {
-        return array.every(id => typeof id === 'string');
-      },
+      validator: array => array.every(id => typeof id === 'string'),
     },
     sortRules: {
       type: Object,
@@ -151,24 +144,13 @@ export default {
         });
       },
     },
-    loading: {
-      type: Boolean,
-      default: false,
-    },
-    bordered: {
-      type: Boolean,
-      default: false,
-    },
-    striped: {
-      type: Boolean,
-      default: true,
-    },
+    loading: { type: Boolean, default: false },
+    bordered: { type: Boolean, default: false },
+    striped: { type: Boolean, default: true },
     size: {
       type: String,
       default: undefined,
-      validator: value => {
-        return [undefined, 'small'].indexOf(value) >= 0;
-      },
+      validator: value => [undefined, 'small'].indexOf(value) >= 0,
     },
     height: Number,
     align: {
@@ -227,8 +209,8 @@ export default {
   beforeDestroy() {
     if (!this.height) return;
     const { oldTC, newTC, onScrollOldTC, onScrollNewTC, onResize } = this;
-    oldTC && oldTC.removeEventListener('scroll', onScrollOldTC);
-    newTC && newTC.removeEventListener('scroll', onScrollNewTC);
+    oldTC.removeEventListener('scroll', onScrollOldTC);
+    newTC.removeEventListener('scroll', onScrollNewTC);
     newTC.remove();
     window.removeEventListener('resize', onResize);
   },
@@ -354,15 +336,18 @@ export default {
       oldTC.style.marginTop = offsetHeight > clientHeight ? '-17px' : 0;
     },
     onResize() {
-      this.reSizeCells(this.getCellsWidth());
-      this.hideNewTCHorizontalScrollbar();
-    },
-    getCellsWidth() {
       const ths = Array.from(document.querySelectorAll('thead > tr > th'));
       const tds = Array.from(
         document.querySelectorAll('tbody > tr:first-child > td')
       );
-      const thWidthArray = ths.map(el => {
+      this.reSizeCells({
+        thWidthArray: this.getCellsWidthArray(ths),
+        tdWidthArray: this.getCellsWidthArray(tds),
+      });
+      this.hideNewTCHorizontalScrollbar();
+    },
+    getCellsWidthArray(array) {
+      return array.map(el => {
         // substract 1 for double count collapsed border
         return (
           el.getBoundingClientRect().width -
@@ -371,15 +356,6 @@ export default {
           2 * parseInt(getComputedStyle(el).borderLeftWidth, 10)
         );
       });
-      const tdWidthArray = tds.map(el => {
-        return (
-          el.getBoundingClientRect().width -
-          1 -
-          2 * parseInt(getComputedStyle(el).paddingLeft, 10) -
-          2 * parseInt(getComputedStyle(el).borderLeftWidth, 10)
-        );
-      });
-      return { thWidthArray, tdWidthArray };
     },
     reSizeCells({ thWidthArray, tdWidthArray }) {
       const thCellInners = Array.from(
