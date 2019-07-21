@@ -316,7 +316,7 @@ export default {
             }, 3000);
           },
         }
-      `, 0),
+      `),
     };
   },
   methods: {
