@@ -224,7 +224,8 @@ export default {
     this.height && this.fixTHead();
     this.updateLoadingMaskStyle();
   },
-  destroyed() {
+  beforeDestroy() {
+    if (!this.height) return;
     const { oldTC, newTC, onScrollOldTC, onScrollNewTC, onResize } = this;
     oldTC && oldTC.removeEventListener('scroll', onScrollOldTC);
     newTC && newTC.removeEventListener('scroll', onScrollNewTC);
