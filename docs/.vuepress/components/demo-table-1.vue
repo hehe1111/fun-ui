@@ -292,7 +292,7 @@ export default {
         },
         methods: {
           onAlert(item) {
-            alert('alert', item);
+            alert('当前行数据：' + JSON.stringify(item));
           },
           reSort(rules) {
             this.loading = true;
@@ -321,7 +321,7 @@ export default {
   },
   methods: {
     onAlert(item) {
-      alert('alert', item);
+      alert('当前行数据：' + JSON.stringify(item));
     },
     reSort(rules) {
       this.loading = true;
