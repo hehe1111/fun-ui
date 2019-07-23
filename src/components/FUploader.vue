@@ -1,6 +1,6 @@
 <template>
   <div class="f-uploader">
-    <div @click="clickToSelectFile">
+    <div @click="onClickToSelectFile">
       <slot></slot>
     </div>
     <div>
@@ -17,11 +17,16 @@
     <ul>
       <li
         class="url-of-uploaded-file"
+        :class="liClasses"
         v-for="file in mutableFileList"
         :key="file.url"
       >
-        <img :src="file.url" alt="preview uploaded image" height="50" />
-        <span>{{ file.name }}</span>
+        <img
+          :src="file.url"
+          alt="preview uploaded image"
+          v-if="listType !== 'text'"
+        />
+        <span v-if="listType !== 'picture-card'">{{ file.name }}</span>
       </li>
     </ul>
   </div>
@@ -62,12 +67,26 @@ export default {
       type: Array,
       default: () => [],
     },
+    listType: {
+      type: String,
+      default: 'text',
+      validator: value => {
+        return ['text', 'picture', 'picture-card'].indexOf(value) >= 0;
+      },
+    },
+  },
+  computed: {
+    liClasses() {
+      return {
+        'picture-card': this.listType === 'picture-card',
+      };
+    },
   },
   created() {
     this.mutableFileList = this.fileList;
   },
   methods: {
-    clickToSelectFile() {
+    onClickToSelectFile() {
       this.$refs.inputRef.click();
     },
     onChange() {
@@ -143,7 +162,7 @@ export default {
     border-radius: $borderRadius;
     border: 1px solid $borderColor;
     padding: 0.5em;
-    margin: 0.5em 0;
+    margin: 0.3em;
     cursor: pointer;
     word-break: break-all;
 
@@ -152,7 +171,17 @@ export default {
       border-color: $blue;
     }
 
+    &.picture-card {
+      display: inline-flex;
+
+      > img {
+        height: 200px;
+        margin-right: 0;
+      }
+    }
+
     > img {
+      height: 50px;
       margin-right: 0.5em;
     }
   }

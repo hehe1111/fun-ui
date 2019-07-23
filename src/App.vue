@@ -7,6 +7,7 @@
       name="myFile"
       :parse-response="parseResponse"
       :file-list.sync="fileList"
+      list-type="picture"
     >
       <f-button>上传</f-button>
       <!-- eslint-disable-next-line prettier/prettier -->
