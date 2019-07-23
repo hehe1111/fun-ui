@@ -14,6 +14,7 @@
       :accept="accept"
     />
     <p class="progress-bar" :class="barStatus">{{ barText }}</p>
+    <img :src="previewUrl" alt="preview uploaded image" />
   </div>
 </template>
 
@@ -22,6 +23,7 @@ export default {
   name: 'FunUIUploader',
   data() {
     return {
+      previewUrl: 'about:blank',
       barText: '',
       barStatus: '',
     };
@@ -42,6 +44,10 @@ export default {
       type: String,
       required: true,
     },
+    parseResponse: {
+      type: Function,
+      required: true,
+    },
   },
   methods: {
     onClick() {
@@ -55,31 +61,34 @@ export default {
     },
     upload(formData) {
       const xhr = new XMLHttpRequest();
-      xhr.onload = () => {
-        // receive response. A type of download
-        this.barText = 'Upload successed.';
-        this.barStatus = 'successed';
-      };
-      xhr.upload.onprogress = event => {
-        // https://developer.mozilla.org/en-US/docs/Web/API/XMLHttpRequest/Using_XMLHttpRequest#Monitoring_progress
-        // https://developer.mozilla.org/en-US/docs/Web/API/ProgressEvent
-        if (event.lengthComputable) {
-          if (event.total / 1024 > 300) {
-            xhr.abort();
-            this.barText =
-              'File too large. Please compress it before uploading.';
-            return (this.barStatus = 'warning');
-          }
-          this.barText =
-            'Uploading: ' + (event.loaded / event.total).toFixed(3) * 100 + '%';
-        }
-      };
-      xhr.onerror = () => {
-        this.barText = 'Upload failed.';
-        this.barStatus = 'failed';
-      };
+      xhr.onload = event => this.handleLoad(xhr, event);
+      xhr.upload.onprogress = event => this.handleUploadProgress(xhr, event);
+      xhr.onerror = event => this.handleError(xhr, event);
       xhr.open(this.method.toUpperCase(), this.action);
       xhr.send(formData);
+    },
+    handleLoad(xhr, event) {
+      // receive response. A type of download
+      this.barText = 'Upload successed.';
+      this.barStatus = 'successed';
+
+      this.previewUrl = this.parseResponse(xhr.response);
+    },
+    handleUploadProgress(xhr, event) {
+      // https://developer.mozilla.org/en-US/docs/Web/API/XMLHttpRequest/Using_XMLHttpRequest#Monitoring_progress
+      // https://developer.mozilla.org/en-US/docs/Web/API/ProgressEvent
+      if (!event.lengthComputable) return;
+      if (event.total / 1024 > 300) {
+        xhr.abort();
+        this.barText = 'File too large. Please compress it before uploading.';
+        return (this.barStatus = 'warning');
+      }
+      this.barText =
+        'Uploading: ' + (event.loaded / event.total).toFixed(3) * 100 + '%';
+    },
+    handleError(xhr, event) {
+      this.barText = 'Upload failed.';
+      this.barStatus = 'failed';
     },
   },
 };

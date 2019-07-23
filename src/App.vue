@@ -3,8 +3,9 @@
     <f-uploader
       accept="image/*"
       method="post"
-      action="http://127.1.1.0:3000/upload/"
+      :action="`${baseUrl}upload/`"
       name="myFile"
+      :parse-response="parseResponse"
     >
       <f-button>上传</f-button>
       <!-- eslint-disable-next-line prettier/prettier -->
@@ -20,7 +21,17 @@ import FButton from './components/button/FButton.vue';
 
 export default {
   name: 'App',
+  data() {
+    return {
+      baseUrl: 'http://127.1.1.0:3000/',
+    };
+  },
   components: { FUploader, FButton },
+  methods: {
+    parseResponse(response) {
+      return `${this.baseUrl}preview/${response}`;
+    },
+  },
 };
 </script>
 
