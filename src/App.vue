@@ -6,6 +6,7 @@
       :action="`${baseUrl}upload/`"
       name="myFile"
       :parse-response="parseResponse"
+      :file-list.sync="fileList"
     >
       <f-button>上传</f-button>
       <!-- eslint-disable-next-line prettier/prettier -->
@@ -24,12 +25,17 @@ export default {
   data() {
     return {
       baseUrl: 'http://127.1.1.0:3000/',
+      fileList: [],
     };
   },
   components: { FUploader, FButton },
   methods: {
     parseResponse(response) {
-      return `${this.baseUrl}preview/${response}`;
+      const fileInfo = JSON.parse(response);
+      return {
+        name: fileInfo.originalname,
+        url: `${this.baseUrl}preview/${fileInfo.filename}`,
+      };
     },
   },
 };
