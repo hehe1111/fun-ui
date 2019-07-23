@@ -102,12 +102,15 @@ export default {
       const formData = new FormData();
       const fileToUpload = this.$refs.inputRef.files[0];
       formData.append(this.name, fileToUpload);
+      this.handleBeforeUpload(fileToUpload);
       this.handleUpload(formData, fileToUpload);
     },
-    handleUpload(formData, fileToUpload) {
+    handleBeforeUpload(fileToUpload) {
       if (!this.checkFileSize(fileToUpload.size)) return;
       this.mutableFileList.push({ name: fileToUpload.name });
-
+      this.isUploading = true;
+    },
+    handleUpload(formData) {
       const xhr = new XMLHttpRequest();
       xhr.onload = event => this.handleLoad(xhr, event);
       xhr.upload.onprogress = event => this.handleUploadProgress(xhr, event);
@@ -115,8 +118,6 @@ export default {
       xhr.onloadend = event => this.handleLoadEnd(xhr, event);
       xhr.open(this.method.toUpperCase(), this.action);
       xhr.send(formData);
-
-      this.isUploading = true;
     },
     updateProgressBar({ barText = '', barStatus = '' } = {}) {
       this.barText = barText;
