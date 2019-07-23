@@ -95,12 +95,12 @@ export default {
       this.$refs.inputRef.click();
     },
     onChange() {
-      this.barStatus = '';
+      this.updateProgressBar();
       const formData = new FormData();
-      const uploadingFile = this.$refs.inputRef.files[0];
-      this.mutableFileList.push({ name: uploadingFile.name });
-      formData.append(this.name, uploadingFile);
-      this.handleUpload(formData);
+      const fileToUpload = this.$refs.inputRef.files[0];
+      this.mutableFileList.push({ name: fileToUpload.name });
+      formData.append(this.name, fileToUpload);
+      this.handleUpload(formData, fileToUpload);
     },
     handleUpload(formData) {
       const xhr = new XMLHttpRequest();
@@ -109,6 +109,10 @@ export default {
       xhr.onerror = event => this.handleError(xhr, event);
       xhr.open(this.method.toUpperCase(), this.action);
       xhr.send(formData);
+    },
+    updateProgressBar({ barText = '', barStatus = '' } = {}) {
+      this.barText = barText;
+      this.barStatus = barStatus;
     },
     handleOnRemove(file) {
       const index = this.mutableFileList.map(f => f.url).indexOf(file.url);
@@ -120,8 +124,10 @@ export default {
     },
     handleLoad(xhr, event) {
       // receive response. A type of download
-      this.barText = 'Upload successed.';
-      this.barStatus = 'successed';
+      this.updateProgressBar({
+        barText: 'Upload successed.',
+        barStatus: 'successed',
+      });
 
       const fileInfo = this.parseResponse(xhr.response);
       const list = this.mutableFileList;
@@ -134,15 +140,21 @@ export default {
       if (!event.lengthComputable) return;
       if (event.total / 1024 > 300) {
         xhr.abort();
-        this.barText = 'File too large. Please compress it before uploading.';
-        return (this.barStatus = 'warning');
+        return this.updateProgressBar({
+          barText: 'File too large. Please compress it before uploading.',
+          barStatus: 'warning',
+        });
       }
-      this.barText =
-        'Uploading: ' + (event.loaded / event.total).toFixed(3) * 100 + '%';
+      this.updateProgressBar({
+        barText:
+          'Uploading: ' + (event.loaded / event.total).toFixed(3) * 100 + '%',
+      });
     },
     handleError(xhr, event) {
-      this.barText = 'Upload failed.';
-      this.barStatus = 'failed';
+      this.updateProgressBar({
+        barText: 'Upload failed.',
+        barStatus: 'failed',
+      });
     },
   },
   components: { FIcon },
