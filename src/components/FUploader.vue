@@ -21,18 +21,21 @@
         v-for="file in mutableFileList"
         :key="file.url"
       >
-        <img
-          :src="file.url"
-          alt="preview uploaded image"
-          v-if="listType !== 'text'"
+        <img :src="file.url" alt="preview uploaded image" />
+        <span class="file-name">{{ file.name }}</span>
+        <f-icon
+          class="f-uploader-remove-icon"
+          name="error"
+          @click="handleOnRemove(file)"
         />
-        <span v-if="listType !== 'picture-card'">{{ file.name }}</span>
       </li>
     </ul>
   </div>
 </template>
 
 <script>
+import FIcon from './FIcon.vue';
+
 export default {
   name: 'FunUIUploader',
   data() {
@@ -74,11 +77,12 @@ export default {
         return ['text', 'picture', 'picture-card'].indexOf(value) >= 0;
       },
     },
+    onRemove: Function,
   },
   computed: {
     liClasses() {
       return {
-        'picture-card': this.listType === 'picture-card',
+        [`${this.listType}`]: this.listType,
       };
     },
   },
@@ -102,6 +106,14 @@ export default {
       xhr.onerror = event => this.handleError(xhr, event);
       xhr.open(this.method.toUpperCase(), this.action);
       xhr.send(formData);
+    },
+    handleOnRemove(file) {
+      const index = this.mutableFileList.map(f => f.url).indexOf(file.url);
+      if (index >= 0) {
+        this.mutableFileList.splice(index, 1);
+        this.$emit('update:file-list', this.mutableFileList);
+        this.onRemove && this.onRemove();
+      }
     },
     handleLoad(xhr, event) {
       // receive response. A type of download
@@ -130,6 +142,7 @@ export default {
       this.barStatus = 'failed';
     },
   },
+  components: { FIcon },
 };
 </script>
 
@@ -165,14 +178,35 @@ export default {
     margin: 0.3em;
     cursor: pointer;
     word-break: break-all;
+    position: relative;
 
     &:hover {
       color: $blue;
       border-color: $blue;
+
+      > .f-uploader-remove-icon {
+        display: block;
+      }
+    }
+
+    &.text {
+      > img {
+        display: none;
+      }
+
+      > .f-uploader-remove-icon {
+        top: 50%;
+        // transform: translateY(-50%); 对 SVG 无效
+        margin-top: -0.5em;
+      }
     }
 
     &.picture-card {
       display: inline-flex;
+
+      > .file-name {
+        display: none;
+      }
 
       > img {
         height: 200px;
@@ -183,6 +217,15 @@ export default {
     > img {
       height: 50px;
       margin-right: 0.5em;
+    }
+
+    > .f-uploader-remove-icon {
+      display: none;
+      position: absolute;
+      top: 0;
+      right: 0;
+      margin-top: 0.2em;
+      margin-right: 0.2em;
     }
   }
 }
