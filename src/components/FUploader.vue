@@ -21,6 +21,7 @@
         v-for="file in mutableFileList"
         :key="file.url"
       >
+        <f-icon name="loading" v-if="isUploading && !file.url" />
         <img :src="file.url" />
         <span class="file-name">{{ file.name }}</span>
         <f-icon
@@ -43,6 +44,7 @@ export default {
       barText: '',
       barStatus: '',
       mutableFileList: [],
+      isUploading: false,
     };
   },
   props: {
@@ -110,8 +112,11 @@ export default {
       xhr.onload = event => this.handleLoad(xhr, event);
       xhr.upload.onprogress = event => this.handleUploadProgress(xhr, event);
       xhr.onerror = event => this.handleError(xhr, event);
+      xhr.onloadend = event => this.handleLoadEnd(xhr, event);
       xhr.open(this.method.toUpperCase(), this.action);
       xhr.send(formData);
+
+      this.isUploading = true;
     },
     updateProgressBar({ barText = '', barStatus = '' } = {}) {
       this.barText = barText;
@@ -151,6 +156,9 @@ export default {
         barText: 'Upload failed.',
         barStatus: 'failed',
       });
+    },
+    handleLoadEnd(xhr, event) {
+      this.isUploading = false;
     },
     checkFileSize(fileSize) {
       if (this.maxSize && fileSize / 1024 > this.maxSize) {
