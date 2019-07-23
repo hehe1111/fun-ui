@@ -21,7 +21,7 @@
         v-for="file in mutableFileList"
         :key="file.url"
       >
-        <img :src="file.url" alt="preview uploaded image" />
+        <img :src="file.url" />
         <span class="file-name">{{ file.name }}</span>
         <f-icon
           class="f-uploader-remove-icon"
@@ -40,7 +40,6 @@ export default {
   name: 'FunUIUploader',
   data() {
     return {
-      previewUrl: '',
       barText: '',
       barStatus: '',
       mutableFileList: [],
@@ -98,10 +97,12 @@ export default {
     onChange() {
       this.barStatus = '';
       const formData = new FormData();
-      formData.append(this.name, this.$refs.inputRef.files[0]);
-      this.upload(formData);
+      const uploadingFile = this.$refs.inputRef.files[0];
+      this.mutableFileList.push({ name: uploadingFile.name });
+      formData.append(this.name, uploadingFile);
+      this.handleUpload(formData);
     },
-    upload(formData) {
+    handleUpload(formData) {
       const xhr = new XMLHttpRequest();
       xhr.onload = event => this.handleLoad(xhr, event);
       xhr.upload.onprogress = event => this.handleUploadProgress(xhr, event);
@@ -123,9 +124,9 @@ export default {
       this.barStatus = 'successed';
 
       const fileInfo = this.parseResponse(xhr.response);
-      this.previewUrl = fileInfo.url;
-      this.mutableFileList.push(fileInfo);
-      this.$emit('update:file-list', [...this.mutableFileList]);
+      const list = this.mutableFileList;
+      list[list.length - 1].url = fileInfo.url;
+      this.$emit('update:file-list', [...list]);
     },
     handleUploadProgress(xhr, event) {
       // https://developer.mozilla.org/en-US/docs/Web/API/XMLHttpRequest/Using_XMLHttpRequest#Monitoring_progress
