@@ -91,6 +91,8 @@ export default {
   },
   methods: {
     onClickToSelectFile() {
+      // Reset FileList object to enable upload the same file multiple times
+      this.$refs.inputRef.value = null;
       this.$refs.inputRef.click();
     },
     onChange() {
