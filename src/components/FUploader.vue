@@ -14,16 +14,14 @@
       :accept="accept"
     />
     <p class="progress-bar" :class="barStatus">{{ barText }}</p>
-    <img :src="previewUrl" alt="preview uploaded image" height="100" />
     <ul>
       <li
         class="url-of-uploaded-file"
-        :class="liClasses(file.url)"
         v-for="file in mutableFileList"
         :key="file.url"
-        @click="clickToPreview(file.url)"
       >
-        {{ file.name }}
+        <img :src="file.url" alt="preview uploaded image" height="50" />
+        <span>{{ file.name }}</span>
       </li>
     </ul>
   </div>
@@ -86,14 +84,6 @@ export default {
       xhr.open(this.method.toUpperCase(), this.action);
       xhr.send(formData);
     },
-    clickToPreview(url) {
-      this.previewUrl = url;
-    },
-    liClasses(url) {
-      return {
-        previewing: this.previewUrl === url,
-      };
-    },
     handleLoad(xhr, event) {
       // receive response. A type of download
       this.barText = 'Upload successed.';
@@ -147,24 +137,23 @@ export default {
   }
 
   > ul > .url-of-uploaded-file {
+    @extend .flex-center;
+    justify-content: flex-start;
     background-color: #fff;
-    color: $green;
     border-radius: $borderRadius;
     border: 1px solid $borderColor;
-    padding: 0.2em 1em;
+    padding: 0.5em;
+    margin: 0.5em 0;
     cursor: pointer;
     word-break: break-all;
 
     &:hover {
-      background-color: $grey;
-      color: lighten($green, 5%);
+      color: $blue;
+      border-color: $blue;
     }
 
-    &.previewing,
-    &.previewing:hover {
-      background-color: #fff;
-      color: $darkGrey;
-      cursor: not-allowed;
+    > img {
+      margin-right: 0.5em;
     }
   }
 }
