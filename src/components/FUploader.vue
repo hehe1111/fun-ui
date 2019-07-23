@@ -13,7 +13,6 @@
       ref="inputRef"
       :accept="accept"
     />
-    <p class="progress-bar" :class="barStatus">{{ barText }}</p>
     <ul>
       <li
         class="url-of-uploaded-file"
@@ -21,7 +20,7 @@
         v-for="file in mutableFileList"
         :key="file.url"
       >
-        <f-icon name="loading" v-if="isUploading && !file.url" />
+        <f-icon name="loading" v-if="file.status === 'uploading'" />
         <img :src="file.url" />
         <span class="file-name">{{ file.name }}</span>
         <f-icon
@@ -44,7 +43,6 @@ export default {
       barText: '',
       barStatus: '',
       mutableFileList: [],
-      isUploading: false,
     };
   },
   props: {
@@ -98,84 +96,77 @@ export default {
       this.$refs.inputRef.click();
     },
     onChange() {
-      this.updateProgressBar();
       const formData = new FormData();
-      const fileToUpload = this.$refs.inputRef.files[0];
-      formData.append(this.name, fileToUpload);
-      this.handleBeforeUpload(fileToUpload);
-      this.handleUpload(formData, fileToUpload);
+      const fileReal = this.$refs.inputRef.files[0];
+      formData.append(this.name, fileReal);
+      this.handleUpload(formData, this.handleBeforeUpload(fileReal));
     },
-    handleBeforeUpload(fileToUpload) {
-      if (!this.checkFileSize(fileToUpload.size)) return;
-      this.mutableFileList.push({ name: fileToUpload.name });
-      this.isUploading = true;
+    handleBeforeUpload(fileReal) {
+      if (!this.checkFileSize(fileReal.size)) return;
+      const alias = `${parseInt(Math.random() * 100000000)}`;
+      this.mutableFileList.push({
+        name: fileReal.name,
+        status: 'uploading',
+        alias,
+      });
+      return alias;
     },
-    handleUpload(formData) {
+    requiredParam() {
+      throw new Error('alias is required');
+    },
+    handleUpload(formData, alias = this.requiredParam()) {
       const xhr = new XMLHttpRequest();
+      xhr.alias = alias;
       xhr.onload = event => this.handleLoad(xhr, event);
       xhr.upload.onprogress = event => this.handleUploadProgress(xhr, event);
+      xhr.onabort = event => this.handleAbort(xhr, event);
       xhr.onerror = event => this.handleError(xhr, event);
       xhr.onloadend = event => this.handleLoadEnd(xhr, event);
       xhr.open(this.method.toUpperCase(), this.action);
       xhr.send(formData);
     },
-    updateProgressBar({ barText = '', barStatus = '' } = {}) {
-      this.barText = barText;
-      this.barStatus = barStatus;
-    },
     handleOnRemove(file) {
-      const index = this.mutableFileList.map(f => f.url).indexOf(file.url);
-      if (index >= 0) {
-        this.mutableFileList.splice(index, 1);
-        this.$emit('update:file-list', this.mutableFileList);
-        this.onRemove && this.onRemove();
-      }
+      const { alias: abortAlias } = file;
+      this.$emit('abortUpload', abortAlias);
+      const index = this.mutableFileList.map(f => f.alias).indexOf(abortAlias);
+      if (index < 0) return;
+      this.mutableFileList.splice(index, 1);
+      this.$emit('update:file-list', this.mutableFileList);
+      this.onRemove && this.onRemove();
     },
     handleLoad(xhr, event) {
-      // receive response. A type of download
-      this.updateProgressBar({
-        barText: 'Upload successed.',
-        barStatus: 'successed',
-      });
-
       const fileInfo = this.parseResponse(xhr.response);
       const list = this.mutableFileList;
-      list[list.length - 1].url = fileInfo.url;
+      list.filter(f => f.alias === xhr.alias)[0].url = fileInfo.url;
       this.$emit('update:file-list', [...list]);
     },
     handleUploadProgress(xhr, event) {
       // https://developer.mozilla.org/en-US/docs/Web/API/XMLHttpRequest/Using_XMLHttpRequest#Monitoring_progress
       // https://developer.mozilla.org/en-US/docs/Web/API/ProgressEvent
       if (!event.lengthComputable) return;
-      this.updateProgressBar({
-        barText:
-          'Uploading: ' + (event.loaded / event.total).toFixed(3) * 100 + '%',
+      this.$on('abortUpload', abortAlias => {
+        xhr.alias === abortAlias && xhr.abort();
       });
+    },
+    handleAbort(xhr, event) {
+      this.popOutFailedObject(xhr);
     },
     handleError(xhr, event) {
-      this.updateProgressBar({
-        barText: 'Upload failed.',
-        barStatus: 'failed',
-      });
-      this.popOutFailedObject();
+      this.popOutFailedObject(xhr);
     },
     handleLoadEnd(xhr, event) {
-      this.isUploading = false;
+      const target = this.mutableFileList.filter(f => f.alias === xhr.alias)[0];
+      target && (target.status = 'done');
     },
     checkFileSize(fileSize) {
       if (this.maxSize && fileSize / 1024 > this.maxSize) {
-        this.updateProgressBar({
-          barText: 'File too large. Please compress it before uploading.',
-          barStatus: 'warning',
-        });
         return false;
       }
       return true;
     },
-    popOutFailedObject() {
-      const list = this.mutableFileList;
-      const lastObject = list[list.length - 1];
-      lastObject.name && !lastObject.url && list.pop();
+    popOutFailedObject(xhr) {
+      const index = this.mutableFileList.map(f => f.alias).indexOf(xhr.alias);
+      index >= 0 && this.mutableFileList.splice(index, 1);
     },
   },
   components: { FIcon },
