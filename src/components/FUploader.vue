@@ -77,6 +77,7 @@ export default {
       },
     },
     onRemove: Function,
+    maxSize: Number,
   },
   computed: {
     liClasses() {
@@ -98,11 +99,13 @@ export default {
       this.updateProgressBar();
       const formData = new FormData();
       const fileToUpload = this.$refs.inputRef.files[0];
-      this.mutableFileList.push({ name: fileToUpload.name });
       formData.append(this.name, fileToUpload);
       this.handleUpload(formData, fileToUpload);
     },
-    handleUpload(formData) {
+    handleUpload(formData, fileToUpload) {
+      if (!this.checkFileSize(fileToUpload.size)) return;
+      this.mutableFileList.push({ name: fileToUpload.name });
+
       const xhr = new XMLHttpRequest();
       xhr.onload = event => this.handleLoad(xhr, event);
       xhr.upload.onprogress = event => this.handleUploadProgress(xhr, event);
@@ -138,13 +141,6 @@ export default {
       // https://developer.mozilla.org/en-US/docs/Web/API/XMLHttpRequest/Using_XMLHttpRequest#Monitoring_progress
       // https://developer.mozilla.org/en-US/docs/Web/API/ProgressEvent
       if (!event.lengthComputable) return;
-      if (event.total / 1024 > 300) {
-        xhr.abort();
-        return this.updateProgressBar({
-          barText: 'File too large. Please compress it before uploading.',
-          barStatus: 'warning',
-        });
-      }
       this.updateProgressBar({
         barText:
           'Uploading: ' + (event.loaded / event.total).toFixed(3) * 100 + '%',
@@ -155,6 +151,16 @@ export default {
         barText: 'Upload failed.',
         barStatus: 'failed',
       });
+    },
+    checkFileSize(fileSize) {
+      if (this.maxSize && fileSize / 1024 > this.maxSize) {
+        this.updateProgressBar({
+          barText: 'File too large. Please compress it before uploading.',
+          barStatus: 'warning',
+        });
+        return false;
+      }
+      return true;
     },
   },
   components: { FIcon },
