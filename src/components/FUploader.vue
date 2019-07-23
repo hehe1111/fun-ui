@@ -157,6 +157,7 @@ export default {
         barText: 'Upload failed.',
         barStatus: 'failed',
       });
+      this.popOutFailedObject();
     },
     handleLoadEnd(xhr, event) {
       this.isUploading = false;
@@ -170,6 +171,11 @@ export default {
         return false;
       }
       return true;
+    },
+    popOutFailedObject() {
+      const list = this.mutableFileList;
+      const lastObject = list[list.length - 1];
+      lastObject.name && !lastObject.url && list.pop();
     },
   },
   components: { FIcon },
