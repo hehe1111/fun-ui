@@ -8,12 +8,14 @@
       :parse-response="parseResponse"
       :file-list.sync="fileList"
       list-type="picture"
+      :on-remove="onRemove"
+      :max-size="300"
+      @error="onError"
     >
-      <f-button>上传</f-button>
+      <f-button icon="upload">上传</f-button>
       <!-- eslint-disable-next-line prettier/prettier -->
-      <template slot="tips">Maximum image size: 300 kb</template>
+      <template slot="tips">Maximum image size: 300 kb.</template>
     </f-uploader>
-    <f-button>保存</f-button>
   </div>
 </template>
 
@@ -37,6 +39,12 @@ export default {
         name: fileInfo.originalname,
         url: `${this.baseUrl}preview/${fileInfo.filename}`,
       };
+    },
+    onRemove() {
+      console.log('send onRemove request');
+    },
+    onError(x) {
+      console.log('error message: ', x);
     },
   },
 };

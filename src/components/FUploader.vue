@@ -3,11 +3,8 @@
     <div @click="onClickToSelectFile">
       <slot />
     </div>
-    <div v-if="$slots.tips">
+    <div>
       <slot name="tips" />
-      <span class="f-uploader-exceed-max-size-alert" v-if="isExceeded">
-        {{ exceedMaxSizeAlert }}
-      </span>
     </div>
     <input
       type="file"
@@ -41,46 +38,23 @@
 </template>
 
 <script>
-import Vue from 'vue';
 import FIcon from './FIcon.vue';
-import toast from '../plugins/toast.js';
 import { getTypeOf } from '../assets/utils.js';
-
-Vue.use(toast);
 
 export default {
   name: 'FunUIUploader',
   data() {
     return {
       mutableFileList: [],
-      exceedMaxSizeAlert: 'File too large.',
-      isExceeded: false,
     };
   },
   props: {
-    accept: {
-      type: String,
-    },
-    method: {
-      type: String,
-      default: 'POST',
-    },
-    action: {
-      type: String,
-      required: true,
-    },
-    name: {
-      type: String,
-      required: true,
-    },
-    parseResponse: {
-      type: Function,
-      required: true,
-    },
-    fileList: {
-      type: Array,
-      default: () => [],
-    },
+    accept: String,
+    method: { type: String, default: 'POST' },
+    action: { type: String, required: true },
+    name: { type: String, required: true },
+    parseResponse: { type: Function, required: true },
+    fileList: { type: Array, default: () => [] },
     listType: {
       type: String,
       default: 'text',
@@ -104,7 +78,6 @@ export default {
     onClickToSelectFile() {
       // Reset FileList object to enable upload the same file multiple times
       this.$refs.inputRef.value = null;
-      this.isExceeded = false;
       this.$refs.inputRef.click();
     },
     onChange() {
@@ -172,9 +145,7 @@ export default {
       if (object) {
         object.status = 'failed';
         this.$emit('update:file-list', [...this.mutableFileList]);
-      }
-      if (xhr.status === 0) {
-        this.$toast('网络无法连接', { position: 'middle' });
+        this.$emit('error', xhr);
       }
     },
     handleOnRemove(fileFake) {
@@ -184,12 +155,12 @@ export default {
       }
 
       this.removeItemFromMutableFileList(abortAlias);
-      this.onRemove && this.onRemove();
+      this.onRemove && fileFake.status === 'successed' && this.onRemove();
     },
     checkFileSize(fileSize) {
-      this.isExceeded = this.maxSize && fileSize / 1024 > this.maxSize;
-      setTimeout(() => (this.isExceeded = false), 3000);
-      return this.isExceeded;
+      const isExceeded = this.maxSize && fileSize / 1024 > this.maxSize;
+      isExceeded && this.$emit('error', { isExceeded: true });
+      return isExceeded;
     },
     removeItemFromMutableFileList(targetValue) {
       const { index } = this.findObjectInArray(
@@ -261,7 +232,7 @@ export default {
 
       > .f-uploader-remove-icon {
         top: 50%;
-        // transform: translateY(-50%); 对 SVG 无效
+        // transform: translateY(-50%); not work on SVG element
         margin-top: -0.5em;
         margin-right: 0.5em;
       }
