@@ -12,6 +12,7 @@
       @change="onChange"
       ref="inputRef"
       :accept="accept"
+      :multiple="multiple"
     />
     <ul>
       <li
@@ -64,6 +65,7 @@ export default {
     },
     onRemove: Function,
     maxSize: Number,
+    multiple: { type: Boolean, default: false },
   },
   created() {
     this.mutableFileList = this.fileList;
@@ -81,11 +83,13 @@ export default {
       this.$refs.inputRef.click();
     },
     onChange() {
-      const formData = new FormData();
-      const fileReal = this.$refs.inputRef.files[0];
-      formData.append(this.name, fileReal);
-      const alias = this.handleBeforeUpload(fileReal);
-      alias && this.handleUpload(formData, alias);
+      const files = this.$refs.inputRef.files;
+      for (let i = 0; i < files.length; i++) {
+        const formData = new FormData();
+        formData.append(this.name, files[i]);
+        const alias = this.handleBeforeUpload(files[i]);
+        alias && this.handleUpload(formData, alias);
+      }
     },
     handleBeforeUpload(fileReal) {
       if (this.checkFileSize(fileReal.size)) return;
