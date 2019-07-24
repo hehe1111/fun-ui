@@ -41,8 +41,12 @@
 </template>
 
 <script>
+import Vue from 'vue';
 import FIcon from './FIcon.vue';
+import toast from '../plugins/toast.js';
 import { getTypeOf } from '../assets/utils.js';
+
+Vue.use(toast);
 
 export default {
   name: 'FunUIUploader',
@@ -169,6 +173,9 @@ export default {
         object.status = 'failed';
         this.$emit('update:file-list', [...this.mutableFileList]);
       }
+      if (xhr.status === 0) {
+        this.$toast('网络无法连接', { position: 'middle' });
+      }
     },
     handleOnRemove(fileFake) {
       const { alias: abortAlias } = fileFake;
@@ -285,8 +292,8 @@ export default {
       }
 
       > img {
-        width: 200px;
-        height: 200px;
+        width: 100px;
+        height: 100px;
         margin-right: 0;
       }
 
