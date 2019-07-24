@@ -225,6 +225,7 @@ export default {
     border: 1px solid $borderColor;
     padding: 0.5em;
     margin: 0.3em;
+    margin-left: 0;
     cursor: pointer;
     word-break: break-all;
     position: relative;
@@ -247,6 +248,7 @@ export default {
         top: 50%;
         // transform: translateY(-50%); 对 SVG 无效
         margin-top: -0.5em;
+        margin-right: 0.5em;
       }
     }
 
