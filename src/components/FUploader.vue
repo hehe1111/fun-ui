@@ -1,10 +1,10 @@
 <template>
   <div class="f-uploader">
     <div @click="onClickToSelectFile">
-      <slot></slot>
+      <slot />
     </div>
     <div>
-      <slot name="tips"></slot>
+      <slot name="tips" />
     </div>
     <input
       type="file"
@@ -15,10 +15,10 @@
     />
     <ul>
       <li
-        class="url-of-uploaded-file"
+        class="f-uploader-list-li"
         :class="liClasses"
         v-for="file in mutableFileList"
-        :key="file.url"
+        :key="file.alias"
       >
         <f-icon name="loading" v-if="file.status === 'uploading'" />
         <img :src="file.url" />
@@ -35,13 +35,12 @@
 
 <script>
 import FIcon from './FIcon.vue';
+import { getTypeOf } from '../assets/utils.js';
 
 export default {
   name: 'FunUIUploader',
   data() {
     return {
-      barText: '',
-      barStatus: '',
       mutableFileList: [],
     };
   },
@@ -103,12 +102,13 @@ export default {
     },
     handleBeforeUpload(fileReal) {
       if (!this.checkFileSize(fileReal.size)) return;
-      const alias = `${parseInt(Math.random() * 100000000)}`;
+      const alias = `${parseInt(Math.random() * Math.pow(10, 8))}`;
       this.mutableFileList.push({
         name: fileReal.name,
         status: 'uploading',
         alias,
       });
+      this.$emit('update:file-list', [...this.mutableFileList]);
       return alias;
     },
     requiredParam() {
@@ -121,32 +121,30 @@ export default {
       xhr.upload.onprogress = event => this.handleUploadProgress(xhr, event);
       xhr.onabort = event => this.handleAbort(xhr, event);
       xhr.onerror = event => this.handleError(xhr, event);
-      xhr.onloadend = event => this.handleLoadEnd(xhr, event);
       xhr.open(this.method.toUpperCase(), this.action);
       xhr.send(formData);
     },
-    handleOnRemove(file) {
-      const { alias: abortAlias } = file;
-      this.$emit('abortUpload', abortAlias);
-      const index = this.mutableFileList.map(f => f.alias).indexOf(abortAlias);
-      if (index < 0) return;
-      this.mutableFileList.splice(index, 1);
-      this.$emit('update:file-list', this.mutableFileList);
-      this.onRemove && this.onRemove();
-    },
     handleLoad(xhr, event) {
       const fileInfo = this.parseResponse(xhr.response);
-      const list = this.mutableFileList;
-      list.filter(f => f.alias === xhr.alias)[0].url = fileInfo.url;
-      this.$emit('update:file-list', [...list]);
+      const { object } = this.findObjectInArray(
+        xhr.alias,
+        'alias',
+        this.mutableFileList
+      );
+      if (object) {
+        object.url = fileInfo.url;
+        object.status = 'done';
+        this.$emit('update:file-list', [...this.mutableFileList]);
+      }
     },
     handleUploadProgress(xhr, event) {
+      this.$on('abortUpload', abortAlias => {
+        return xhr.alias === abortAlias && xhr.abort();
+      });
+
       // https://developer.mozilla.org/en-US/docs/Web/API/XMLHttpRequest/Using_XMLHttpRequest#Monitoring_progress
       // https://developer.mozilla.org/en-US/docs/Web/API/ProgressEvent
       if (!event.lengthComputable) return;
-      this.$on('abortUpload', abortAlias => {
-        xhr.alias === abortAlias && xhr.abort();
-      });
     },
     handleAbort(xhr, event) {
       this.popOutFailedObject(xhr);
@@ -154,9 +152,14 @@ export default {
     handleError(xhr, event) {
       this.popOutFailedObject(xhr);
     },
-    handleLoadEnd(xhr, event) {
-      const target = this.mutableFileList.filter(f => f.alias === xhr.alias)[0];
-      target && (target.status = 'done');
+    handleOnRemove(fileFake) {
+      const { alias: abortAlias } = fileFake;
+      if (!fileFake.url) {
+        return this.$emit('abortUpload', abortAlias);
+      }
+
+      this.removeItemFromMutableFileList(abortAlias);
+      this.onRemove && this.onRemove();
     },
     checkFileSize(fileSize) {
       if (this.maxSize && fileSize / 1024 > this.maxSize) {
@@ -165,8 +168,30 @@ export default {
       return true;
     },
     popOutFailedObject(xhr) {
-      const index = this.mutableFileList.map(f => f.alias).indexOf(xhr.alias);
-      index >= 0 && this.mutableFileList.splice(index, 1);
+      this.removeItemFromMutableFileList(xhr.alias);
+    },
+    removeItemFromMutableFileList(targetValue) {
+      const { index } = this.findObjectInArray(
+        targetValue,
+        'alias',
+        this.mutableFileList
+      );
+      if (index < 0) return;
+      this.mutableFileList.splice(index, 1);
+      this.$emit('update:file-list', [...this.mutableFileList]);
+    },
+    findObjectInArray(targetValue, property, array) {
+      if (typeof property !== 'string') {
+        throw new Error('Given property should be a string');
+      }
+      if (!array.every(n => getTypeOf(n) === 'object')) {
+        throw new Error('Given array contains non-object element.');
+      }
+      const index = array.map(n => n[property]).indexOf(targetValue);
+      return {
+        index,
+        object: array[index],
+      };
     },
   },
   components: { FIcon },
@@ -195,7 +220,7 @@ export default {
     }
   }
 
-  > ul > .url-of-uploaded-file {
+  > ul > .f-uploader-list-li {
     @extend .flex-center;
     justify-content: flex-start;
     background-color: #fff;
