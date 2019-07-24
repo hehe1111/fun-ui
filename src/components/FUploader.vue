@@ -5,9 +5,9 @@
     </div>
     <div v-if="$slots.tips">
       <slot name="tips" />
-      <span class="f-uploader-exceed-max-size-alert" v-if="isExceeded">{{
-        exceedMaxSizeAlert
-      }}</span>
+      <span class="f-uploader-exceed-max-size-alert" v-if="isExceeded">
+        {{ exceedMaxSizeAlert }}
+      </span>
     </div>
     <input
       type="file"
@@ -19,7 +19,7 @@
     <ul>
       <li
         class="f-uploader-list-li"
-        :class="liClasses"
+        :class="liClasses(file.status)"
         v-for="file in mutableFileList"
         :key="file.alias"
       >
@@ -83,17 +83,16 @@ export default {
     onRemove: Function,
     maxSize: Number,
   },
-  computed: {
-    liClasses() {
-      return {
-        [`${this.listType}`]: this.listType,
-      };
-    },
-  },
   created() {
     this.mutableFileList = this.fileList;
   },
   methods: {
+    liClasses(status) {
+      return {
+        [`${this.listType}`]: this.listType,
+        [`${status}`]: status,
+      };
+    },
     onClickToSelectFile() {
       // Reset FileList object to enable upload the same file multiple times
       this.$refs.inputRef.value = null;
@@ -140,7 +139,7 @@ export default {
       );
       if (object) {
         object.url = fileInfo.url;
-        object.status = 'done';
+        object.status = 'successed';
         this.$emit('update:file-list', [...this.mutableFileList]);
       }
     },
@@ -154,14 +153,22 @@ export default {
       if (!event.lengthComputable) return;
     },
     handleAbort(xhr, event) {
-      this.popOutFailedObject(xhr);
+      this.removeItemFromMutableFileList(xhr.alias);
     },
     handleError(xhr, event) {
-      this.popOutFailedObject(xhr);
+      const { object } = this.findObjectInArray(
+        xhr.alias,
+        'alias',
+        this.mutableFileList
+      );
+      if (object) {
+        object.status = 'failed';
+        this.$emit('update:file-list', [...this.mutableFileList]);
+      }
     },
     handleOnRemove(fileFake) {
       const { alias: abortAlias } = fileFake;
-      if (!fileFake.url) {
+      if (!fileFake.url && fileFake.status === 'uploading') {
         return this.$emit('abortUpload', abortAlias);
       }
 
@@ -172,9 +179,6 @@ export default {
       this.isExceeded = this.maxSize && fileSize / 1024 > this.maxSize;
       setTimeout(() => (this.isExceeded = false), 3000);
       return this.isExceeded;
-    },
-    popOutFailedObject(xhr) {
-      this.removeItemFromMutableFileList(xhr.alias);
     },
     removeItemFromMutableFileList(targetValue) {
       const { index } = this.findObjectInArray(
@@ -263,6 +267,12 @@ export default {
         height: 200px;
         margin-right: 0;
       }
+    }
+
+    &.failed,
+    &.failed:hover {
+      color: $red;
+      border-color: $red;
     }
 
     > img {
