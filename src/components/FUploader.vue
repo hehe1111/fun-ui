@@ -23,12 +23,16 @@
         v-for="file in mutableFileList"
         :key="file.alias"
       >
-        <f-icon name="loading" v-if="file.status === 'uploading'" />
+        <f-icon
+          name="loading"
+          class="f-uploader-loading-icon"
+          v-if="file.status === 'uploading'"
+        />
         <img :src="file.url" />
         <span class="f-uploader-file-name">{{ file.name }}</span>
         <f-icon
           class="f-uploader-remove-icon"
-          name="error"
+          :name="listType === 'picture-card' ? 'trash-can' : 'cross'"
           @click="handleOnRemove(file)"
         />
       </li>
@@ -258,14 +262,46 @@ export default {
 
     &.picture-card {
       display: inline-flex;
+      position: relative;
+
+      &:hover {
+        &::after {
+          content: '';
+          position: absolute;
+          top: 0;
+          left: 0;
+          width: 100%;
+          height: 100%;
+          background-color: $maskColor;
+        }
+
+        > .f-uploader-loading-icon {
+          display: none;
+        }
+      }
 
       > .f-uploader-file-name {
         display: none;
       }
 
       > img {
+        width: 200px;
         height: 200px;
         margin-right: 0;
+      }
+
+      > .f-uploader-loading-icon,
+      > .f-uploader-remove-icon {
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        margin-top: -0.5em;
+        margin-left: -0.5em;
+      }
+
+      > .f-uploader-remove-icon {
+        z-index: 1;
+        transform: scale(2);
       }
     }
 
@@ -277,6 +313,10 @@ export default {
 
     > img {
       height: 50px;
+      margin-right: 0.5em;
+    }
+
+    > .f-uploader-loading-icon {
       margin-right: 0.5em;
     }
 
