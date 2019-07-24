@@ -3,8 +3,11 @@
     <div @click="onClickToSelectFile">
       <slot />
     </div>
-    <div>
+    <div v-if="$slots.tips">
       <slot name="tips" />
+      <span class="f-uploader-exceed-max-size-alert" v-if="isExceeded">{{
+        exceedMaxSizeAlert
+      }}</span>
     </div>
     <input
       type="file"
@@ -22,7 +25,7 @@
       >
         <f-icon name="loading" v-if="file.status === 'uploading'" />
         <img :src="file.url" />
-        <span class="file-name">{{ file.name }}</span>
+        <span class="f-uploader-file-name">{{ file.name }}</span>
         <f-icon
           class="f-uploader-remove-icon"
           name="error"
@@ -42,6 +45,8 @@ export default {
   data() {
     return {
       mutableFileList: [],
+      exceedMaxSizeAlert: 'File too large.',
+      isExceeded: false,
     };
   },
   props: {
@@ -92,16 +97,18 @@ export default {
     onClickToSelectFile() {
       // Reset FileList object to enable upload the same file multiple times
       this.$refs.inputRef.value = null;
+      this.isExceeded = false;
       this.$refs.inputRef.click();
     },
     onChange() {
       const formData = new FormData();
       const fileReal = this.$refs.inputRef.files[0];
       formData.append(this.name, fileReal);
-      this.handleUpload(formData, this.handleBeforeUpload(fileReal));
+      const alias = this.handleBeforeUpload(fileReal);
+      alias && this.handleUpload(formData, alias);
     },
     handleBeforeUpload(fileReal) {
-      if (!this.checkFileSize(fileReal.size)) return;
+      if (this.checkFileSize(fileReal.size)) return;
       const alias = `${parseInt(Math.random() * Math.pow(10, 8))}`;
       this.mutableFileList.push({
         name: fileReal.name,
@@ -162,10 +169,9 @@ export default {
       this.onRemove && this.onRemove();
     },
     checkFileSize(fileSize) {
-      if (this.maxSize && fileSize / 1024 > this.maxSize) {
-        return false;
-      }
-      return true;
+      this.isExceeded = this.maxSize && fileSize / 1024 > this.maxSize;
+      setTimeout(() => (this.isExceeded = false), 3000);
+      return this.isExceeded;
     },
     popOutFailedObject(xhr) {
       this.removeItemFromMutableFileList(xhr.alias);
@@ -206,21 +212,12 @@ export default {
     display: none;
   }
 
-  > .progress-bar {
-    height: 3em;
-
-    &.successed {
-      color: $green;
-    }
-    &.warning {
-      color: $orange;
-    }
-    &.failed {
-      color: $red;
-    }
+  &-exceed-max-size-alert {
+    margin-left: 1em;
+    color: $red;
   }
 
-  > ul > .f-uploader-list-li {
+  &-list-li {
     @extend .flex-center;
     justify-content: flex-start;
     background-color: #fff;
@@ -256,7 +253,7 @@ export default {
     &.picture-card {
       display: inline-flex;
 
-      > .file-name {
+      > .f-uploader-file-name {
         display: none;
       }
 
