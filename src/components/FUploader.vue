@@ -247,14 +247,18 @@ export default {
       position: relative;
 
       &:hover {
+        border-color: $borderColorHover;
         &::after {
           content: '';
           position: absolute;
           top: 0;
           left: 0;
-          width: 100%;
-          height: 100%;
+          width: calc(100% + 2px);
+          height: calc(100% + 2px);
+          margin-left: -1px;
+          margin-top: -1px;
           background-color: $maskColor;
+          border-radius: $borderRadius;
         }
 
         > .f-uploader-loading-icon {
@@ -283,7 +287,8 @@ export default {
 
       > .f-uploader-remove-icon {
         z-index: 1;
-        transform: scale(2);
+        transform: scale(1.2);
+        fill: #fff;
       }
     }
 
