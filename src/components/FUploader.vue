@@ -118,8 +118,7 @@ export default {
     handleLoad(xhr, event) {
       const fileInfo = this.parseResponse(xhr.response);
       const { object } = this.findObjectInArray(
-        xhr.alias,
-        'alias',
+        { alias: xhr.alias },
         this.mutableFileList
       );
       if (object) {
@@ -142,8 +141,7 @@ export default {
     },
     handleError(xhr, event) {
       const { object } = this.findObjectInArray(
-        xhr.alias,
-        'alias',
+        { alias: xhr.alias },
         this.mutableFileList
       );
       if (object) {
@@ -152,14 +150,13 @@ export default {
         this.$emit('error', xhr);
       }
     },
-    handleOnRemove(fileFake) {
-      const { alias: abortAlias } = fileFake;
-      if (!fileFake.url && fileFake.status === 'uploading') {
+    handleOnRemove({ alias: abortAlias, url, status }) {
+      if (!url && status === 'uploading') {
         return this.$emit('abortUpload', abortAlias);
       }
 
       this.removeItemFromMutableFileList(abortAlias);
-      this.onRemove && fileFake.status === 'successed' && this.onRemove();
+      this.onRemove && status === 'successed' && this.onRemove();
     },
     checkFileSize({ name, size, type }) {
       const isExceeded = this.maxSize && size / 1024 > this.maxSize;
@@ -169,22 +166,22 @@ export default {
     },
     removeItemFromMutableFileList(targetValue) {
       const { index } = this.findObjectInArray(
-        targetValue,
-        'alias',
+        { alias: targetValue },
         this.mutableFileList
       );
       if (index < 0) return;
       this.mutableFileList.splice(index, 1);
       this.$emit('update:file-list', [...this.mutableFileList]);
     },
-    findObjectInArray(targetValue, property, array) {
+    findObjectInArray(targetObject, array) {
+      const property = Object.keys(targetObject)[0];
       if (typeof property !== 'string') {
-        throw new Error('Given property should be a string');
+        throw new Error('Key of param 1 should be a string');
       }
       if (!array.every(n => getTypeOf(n) === 'object')) {
-        throw new Error('Given array contains non-object element.');
+        throw new Error('Param 2 contains non-object element.');
       }
-      const index = array.map(n => n[property]).indexOf(targetValue);
+      const index = array.map(n => n[property]).indexOf(targetObject[property]);
       return {
         index,
         object: array[index],
@@ -219,11 +216,6 @@ export default {
 .f-uploader {
   input {
     display: none;
-  }
-
-  &-exceed-max-size-alert {
-    margin-left: 1em;
-    color: $red;
   }
 
   &-list-li {
