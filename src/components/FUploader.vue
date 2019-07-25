@@ -14,7 +14,7 @@
       :accept="accept"
       :multiple="multiple"
     />
-    <ul>
+    <transition-group name="bounce" tag="ul">
       <li
         class="f-uploader-list-li"
         :class="liClasses(file.status)"
@@ -34,7 +34,7 @@
           @click="handleOnRemove(file)"
         />
       </li>
-    </ul>
+    </transition-group>
   </div>
 </template>
 
@@ -196,6 +196,24 @@ export default {
 
 <style lang="scss" scoped>
 @import '../assets/_var.scss';
+
+.bounce-enter-active {
+  animation: bounce-in $duration;
+}
+.bounce-leave-active {
+  animation: bounce-in $duration reverse;
+}
+@keyframes bounce-in {
+  0% {
+    transform: scale(0);
+  }
+  50% {
+    transform: scale(1.2);
+  }
+  100% {
+    transform: scale(1);
+  }
+}
 
 .f-uploader {
   input {
