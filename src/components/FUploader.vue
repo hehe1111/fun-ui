@@ -182,7 +182,7 @@ export default {
       );
       if (object) {
         object.url = fileInfo.url;
-        object.status = 'successed';
+        object.status = 'succeeded';
         this.$emit('update:file-list', [...this.mutableFileList]);
       }
     },
@@ -216,7 +216,7 @@ export default {
 
       status === 'waiting' && delete this.waitingForSubmit[abortAlias];
       this.removeItemFromMutableFileList(abortAlias);
-      this.onRemove && status === 'successed' && this.onRemove();
+      this.onRemove && status === 'succeeded' && this.onRemove();
     },
     checkFileSize({ name, size, type }) {
       const isExceeded = this.maxSize && size / 1024 > this.maxSize;
