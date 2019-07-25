@@ -1,10 +1,17 @@
 <template>
   <div class="f-uploader">
-    <div @click="onClickToSelectFile" ref="triggerAreaRef">
+    <div
+      class="f-uploader-trigger-area"
+      @click="onClickToSelectFile"
+      ref="triggerAreaRef"
+    >
       <slot />
     </div>
     <div>
       <slot name="tips" />
+    </div>
+    <div v-if="!autoUpload" @click="submit" class="f-uploader-submit-area">
+      <slot name="submit" />
     </div>
     <input
       type="file"
@@ -47,6 +54,7 @@ export default {
   data() {
     return {
       mutableFileList: [],
+      waitingForSubmit: {},
     };
   },
   props: {
@@ -67,9 +75,11 @@ export default {
     maxSize: Number,
     multiple: { type: Boolean, default: false },
     draggable: { type: Boolean, default: false },
+    autoUpload: { type: Boolean, default: true },
   },
   created() {
     this.mutableFileList = this.fileList;
+    this.mutableAutoUpload = this.autoUpload;
   },
   mounted() {
     this.draggable && this.drapAndDropToSelectFile();
@@ -120,6 +130,10 @@ export default {
         const formData = new FormData();
         formData.append(this.name, files[i]);
         const alias = this.handleBeforeUpload(files[i]);
+        if (alias && !this.mutableAutoUpload) {
+          this.waitingForSubmit[alias] = formData;
+          continue;
+        }
         alias && this.handleUpload(formData, alias);
       }
     },
@@ -128,7 +142,7 @@ export default {
       const alias = `${parseInt(Math.random() * Math.pow(10, 8))}`;
       this.mutableFileList.push({
         name: fileReal.name,
-        status: 'uploading',
+        status: this.mutableAutoUpload ? 'uploading' : 'waiting',
         alias,
       });
       this.$emit('update:file-list', [...this.mutableFileList]);
@@ -137,7 +151,20 @@ export default {
     requiredParam() {
       throw new Error('alias is required');
     },
+    submit() {
+      if (JSON.stringify(this.waitingForSubmit) === '{}') return;
+      this.mutableAutoUpload = true;
+      this.mutableFileList
+        .filter(f => f.status === 'waiting')
+        .map(f => (f.status = 'uploading'));
+      Object.keys(this.waitingForSubmit).map(k =>
+        this.handleUpload(this.waitingForSubmit[k], k)
+      );
+      this.mutableAutoUpload = false;
+      this.waitingForSubmit = {};
+    },
     handleUpload(formData, alias = this.requiredParam()) {
+      if (!this.mutableAutoUpload) return;
       const xhr = new XMLHttpRequest();
       xhr.alias = alias;
       xhr.onload = event => this.handleLoad(xhr, event);
@@ -187,6 +214,7 @@ export default {
         return this.$emit('abortUpload', abortAlias);
       }
 
+      status === 'waiting' && delete this.waitingForSubmit[abortAlias];
       this.removeItemFromMutableFileList(abortAlias);
       this.onRemove && status === 'successed' && this.onRemove();
     },
@@ -248,6 +276,11 @@ export default {
 .f-uploader {
   input {
     display: none;
+  }
+
+  &-trigger-area,
+  &-submit-area {
+    display: inline-flex;
   }
 
   &-list-li {
