@@ -1,6 +1,6 @@
 <template>
   <div class="f-uploader">
-    <div @click="onClickToSelectFile">
+    <div @click="onClickToSelectFile" ref="triggerAreaRef">
       <slot />
     </div>
     <div>
@@ -66,9 +66,19 @@ export default {
     onRemove: Function,
     maxSize: Number,
     multiple: { type: Boolean, default: false },
+    draggable: { type: Boolean, default: false },
   },
   created() {
     this.mutableFileList = this.fileList;
+  },
+  mounted() {
+    this.draggable && this.drapAndDropToSelectFile();
+  },
+  beforeDestroy() {
+    const { triggerAreaRef } = this.$refs;
+    triggerAreaRef.removeEventListener('dragenter', this.onDragEnter);
+    triggerAreaRef.removeEventListener('dragover', this.onDragOver);
+    triggerAreaRef.removeEventListener('drop', this.onDrop);
   },
   methods: {
     liClasses(status) {
@@ -82,8 +92,30 @@ export default {
       this.$refs.inputRef.value = null;
       this.$refs.inputRef.click();
     },
+    drapAndDropToSelectFile() {
+      // https://developer.mozilla.org/en-US/docs/Web/API/File/Using_files_from_web_applications#Selecting_files_using_drag_and_drop
+      const { triggerAreaRef } = this.$refs;
+      triggerAreaRef.addEventListener('dragenter', this.onDragEnter);
+      triggerAreaRef.addEventListener('dragover', this.onDragOver);
+      triggerAreaRef.addEventListener('drop', this.onDrop);
+    },
+    onDragEnter(event) {
+      event.stopPropagation();
+      event.preventDefault();
+    },
+    onDragOver(event) {
+      event.stopPropagation();
+      event.preventDefault();
+    },
+    onDrop(event) {
+      event.stopPropagation();
+      event.preventDefault();
+      this.createFormDataAndUpload(event.dataTransfer.files);
+    },
     onChange() {
-      const files = this.$refs.inputRef.files;
+      this.createFormDataAndUpload(this.$refs.inputRef.files);
+    },
+    createFormDataAndUpload(files) {
       for (let i = 0; i < files.length; i++) {
         const formData = new FormData();
         formData.append(this.name, files[i]);
