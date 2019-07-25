@@ -92,7 +92,7 @@ export default {
       }
     },
     handleBeforeUpload(fileReal) {
-      if (this.checkFileSize(fileReal.size)) return;
+      if (this.checkFileSize(fileReal)) return;
       const alias = `${parseInt(Math.random() * Math.pow(10, 8))}`;
       this.mutableFileList.push({
         name: fileReal.name,
@@ -161,9 +161,10 @@ export default {
       this.removeItemFromMutableFileList(abortAlias);
       this.onRemove && fileFake.status === 'successed' && this.onRemove();
     },
-    checkFileSize(fileSize) {
-      const isExceeded = this.maxSize && fileSize / 1024 > this.maxSize;
-      isExceeded && this.$emit('error', { isExceeded: true });
+    checkFileSize({ name, size, type }) {
+      const isExceeded = this.maxSize && size / 1024 > this.maxSize;
+      isExceeded &&
+        this.$emit('error', { file: { name, size, type }, isExceeded: true });
       return isExceeded;
     },
     removeItemFromMutableFileList(targetValue) {
