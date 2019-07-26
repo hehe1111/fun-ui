@@ -38,7 +38,7 @@
         <f-icon
           class="f-uploader-remove-icon"
           :name="listType === 'picture-card' ? 'trash-can' : 'cross'"
-          @click="handleOnRemove(file)"
+          @click="handleRemove(file)"
         />
       </li>
     </transition-group>
@@ -71,7 +71,6 @@ export default {
         return ['text', 'picture', 'picture-card'].indexOf(value) >= 0;
       },
     },
-    onRemove: Function,
     maxSize: Number,
     multiple: { type: Boolean, default: false },
     draggable: { type: Boolean, default: false },
@@ -138,18 +137,32 @@ export default {
       }
     },
     handleBeforeUpload(fileReal) {
+      const { name, size, type } = fileReal;
       if (this.checkFileSize(fileReal)) return;
       const alias = `${parseInt(Math.random() * Math.pow(10, 8))}`;
       this.mutableFileList.push({
-        name: fileReal.name,
-        status: this.mutableAutoUpload ? 'uploading' : 'waiting',
+        name,
+        size,
+        type,
         alias,
+        status: this.mutableAutoUpload ? 'uploading' : 'waiting',
       });
       this.$emit('update:file-list', [...this.mutableFileList]);
       return alias;
     },
     requiredParam() {
       throw new Error('alias is required');
+    },
+    handleUpload(formData, alias = this.requiredParam()) {
+      if (!this.mutableAutoUpload) return;
+      const xhr = new XMLHttpRequest();
+      xhr.alias = alias;
+      xhr.onload = event => this.handleLoad(xhr, event);
+      xhr.upload.onprogress = event => this.handleUploadProgress(xhr, event);
+      xhr.onabort = event => this.handleAbort(xhr, event);
+      xhr.onerror = event => this.handleError(xhr, event);
+      xhr.open(this.method.toUpperCase(), this.action);
+      xhr.send(formData);
     },
     submit() {
       if (JSON.stringify(this.waitingForSubmit) === '{}') return;
@@ -163,26 +176,16 @@ export default {
       this.mutableAutoUpload = false;
       this.waitingForSubmit = {};
     },
-    handleUpload(formData, alias = this.requiredParam()) {
-      if (!this.mutableAutoUpload) return;
-      const xhr = new XMLHttpRequest();
-      xhr.alias = alias;
-      xhr.onload = event => this.handleLoad(xhr, event);
-      xhr.upload.onprogress = event => this.handleUploadProgress(xhr, event);
-      xhr.onabort = event => this.handleAbort(xhr, event);
-      xhr.onerror = event => this.handleError(xhr, event);
-      xhr.open(this.method.toUpperCase(), this.action);
-      xhr.send(formData);
-    },
     handleLoad(xhr, event) {
-      const fileInfo = this.parseResponse(xhr.response);
+      const fileInfoFromResponse = this.parseResponse(xhr.response);
       const { object } = this.findObjectInArray(
         { alias: xhr.alias },
         this.mutableFileList
       );
       if (object) {
-        object.url = fileInfo.url;
+        object.url = fileInfoFromResponse.url;
         object.status = 'succeeded';
+        this.$emit('success', { fileInfo: object });
         this.$emit('update:file-list', [...this.mutableFileList]);
       }
     },
@@ -190,10 +193,6 @@ export default {
       this.$on('abortUpload', abortAlias => {
         return xhr.alias === abortAlias && xhr.abort();
       });
-
-      // https://developer.mozilla.org/en-US/docs/Web/API/XMLHttpRequest/Using_XMLHttpRequest#Monitoring_progress
-      // https://developer.mozilla.org/en-US/docs/Web/API/ProgressEvent
-      if (!event.lengthComputable) return;
     },
     handleAbort(xhr, event) {
       this.removeItemFromMutableFileList(xhr.alias);
@@ -205,23 +204,26 @@ export default {
       );
       if (object) {
         object.status = 'failed';
+        this.$emit('error', { fileInfo: object, xhr });
         this.$emit('update:file-list', [...this.mutableFileList]);
-        this.$emit('error', xhr);
       }
     },
-    handleOnRemove({ alias: abortAlias, url, status }) {
+    handleRemove(fileFake) {
+      const { alias: abortAlias, url, status } = fileFake;
       if (!url && status === 'uploading') {
         return this.$emit('abortUpload', abortAlias);
       }
-
       status === 'waiting' && delete this.waitingForSubmit[abortAlias];
+      status === 'succeeded' && this.$emit('remove', { fileInfo: fileFake });
       this.removeItemFromMutableFileList(abortAlias);
-      this.onRemove && status === 'succeeded' && this.onRemove();
     },
     checkFileSize({ name, size, type }) {
       const isExceeded = this.maxSize && size / 1024 > this.maxSize;
       isExceeded &&
-        this.$emit('error', { file: { name, size, type }, isExceeded: true });
+        this.$emit('error', {
+          fileInfo: { name, size, type },
+          isExceeded: true,
+        });
       return isExceeded;
     },
     removeItemFromMutableFileList(targetValue) {
