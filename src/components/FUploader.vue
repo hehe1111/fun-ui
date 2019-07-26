@@ -47,7 +47,7 @@
 
 <script>
 import FIcon from './FIcon.vue';
-import { getTypeOf } from '../assets/utils.js';
+import { getTypeOf, ajax } from '../assets/utils.js';
 
 export default {
   name: 'FunUIUploader',
@@ -59,7 +59,7 @@ export default {
   },
   props: {
     accept: String,
-    method: { type: String, default: 'POST' },
+    method: { type: String, default: 'post' },
     action: { type: String, required: true },
     name: { type: String, required: true },
     parseResponse: { type: Function, required: true },
@@ -155,14 +155,14 @@ export default {
     },
     handleUpload(formData, alias = this.requiredParam()) {
       if (!this.mutableAutoUpload) return;
-      const xhr = new XMLHttpRequest();
-      xhr.alias = alias;
-      xhr.onload = event => this.handleLoad(xhr, event);
-      xhr.upload.onprogress = event => this.handleUploadProgress(xhr, event);
-      xhr.onabort = event => this.handleAbort(xhr, event);
-      xhr.onerror = event => this.handleError(xhr, event);
-      xhr.open(this.method.toUpperCase(), this.action);
-      xhr.send(formData);
+      ajax[this.method.toLowerCase()](this.action, {
+        formData,
+        alias,
+        handleLoad: this.handleLoad,
+        handleUploadProgress: this.handleUploadProgress,
+        handleAbort: this.handleAbort,
+        handleError: this.handleError,
+      });
     },
     submit() {
       if (JSON.stringify(this.waitingForSubmit) === '{}') return;
@@ -176,7 +176,7 @@ export default {
       this.mutableAutoUpload = false;
       this.waitingForSubmit = {};
     },
-    handleLoad(xhr, event) {
+    handleLoad(xhr) {
       const fileInfoFromResponse = this.parseResponse(xhr.response);
       const { object } = this.findObjectInArray(
         { alias: xhr.alias },
@@ -189,15 +189,15 @@ export default {
         this.$emit('update:file-list', [...this.mutableFileList]);
       }
     },
-    handleUploadProgress(xhr, event) {
+    handleUploadProgress(xhr) {
       this.$on('abortUpload', abortAlias => {
         return xhr.alias === abortAlias && xhr.abort();
       });
     },
-    handleAbort(xhr, event) {
+    handleAbort(xhr) {
       this.removeItemFromMutableFileList(xhr.alias);
     },
-    handleError(xhr, event) {
+    handleError(xhr) {
       const { object } = this.findObjectInArray(
         { alias: xhr.alias },
         this.mutableFileList
