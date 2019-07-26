@@ -44,7 +44,7 @@ describe('FPagination.vue', () => {
       expect(prevButton.classes()).to.include('disabled');
       prevButton.trigger('click');
       wrapper.vm.$nextTick().then(() => {
-        expect(fake).to.have.not.been.called;
+        expect(fake).to.not.have.been.called;
         expect(wrapper.find(selector).classes()).to.include('high-light');
         expect(prevButton.classes()).to.include('disabled');
         wrapper.destroy();
@@ -86,7 +86,7 @@ describe('FPagination.vue', () => {
       expect(nextButton.classes()).to.include('disabled');
       nextButton.trigger('click');
       wrapper.vm.$nextTick().then(() => {
-        expect(fake).to.have.not.been.called;
+        expect(fake).to.not.have.been.called;
         expect(wrapper.find(selector).classes()).to.include('high-light');
         expect(nextButton.classes()).to.include('disabled');
         wrapper.destroy();
@@ -144,7 +144,7 @@ describe('FPagination.vue', () => {
         .at(0)
         .trigger('click');
       wrapper.vm.$nextTick().then(() => {
-        expect(fake).to.have.not.been.called;
+        expect(fake).to.not.have.been.called;
         wrapper.destroy();
       });
     });

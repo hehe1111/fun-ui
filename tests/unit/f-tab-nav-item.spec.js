@@ -44,7 +44,7 @@ describe('FTabNavItem.vue', () => {
     });
     expect(wrapper.classes()).include('disabled');
     wrapper.trigger('click');
-    expect(fake).to.have.not.been.called;
+    expect(fake).to.not.have.been.called;
     wrapper.destroy();
   });
 });

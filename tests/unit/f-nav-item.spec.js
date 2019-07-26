@@ -36,7 +36,7 @@ describe('FNavIem.vue', () => {
     });
     const fake = sinon.fake();
     wrapper1.find('.f-nav-item').trigger('click');
-    expect(fake).to.have.not.been.called;
+    expect(fake).to.not.have.been.called;
     wrapper1.find('span').element.addEventListener('click', fake);
     wrapper1.find('.f-nav-item').trigger('click');
     expect(fake).to.have.been.calledOnce;
@@ -59,7 +59,7 @@ describe('FNavIem.vue', () => {
       .findAll('span')
       .wrappers.map(w => w.element.addEventListener('click', fake2));
     wrapper2.find('.f-nav-item').trigger('click');
-    expect(fake2).to.have.not.been.called;
+    expect(fake2).to.not.have.been.called;
     wrapper2
       .findAll('span')
       .wrappers.map(w => w.element.removeEventListener('click', fake2));
