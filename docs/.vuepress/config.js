@@ -53,6 +53,7 @@ module.exports = {
           '/components/tab',
           '/components/table',
           '/components/toast',
+          '/components/upload',
         ],
       },
     ],
