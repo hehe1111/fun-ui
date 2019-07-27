@@ -1,7 +1,7 @@
 <template>
-  <div class="f-uploader">
+  <div class="f-upload">
     <div
-      class="f-uploader-trigger-area"
+      class="f-upload-trigger-area"
       @click="onClickToSelectFile"
       ref="triggerAreaRef"
     >
@@ -10,7 +10,7 @@
     <div>
       <slot name="tips" />
     </div>
-    <div v-if="!autoUpload" @click="submit" class="f-uploader-submit-area">
+    <div v-if="!autoUpload" @click="submit" class="f-upload-submit-area">
       <slot name="submit" />
     </div>
     <input
@@ -23,20 +23,20 @@
     />
     <transition-group name="bounce" tag="ul">
       <li
-        class="f-uploader-list-li"
+        class="f-upload-list-li"
         :class="liClasses(file.status)"
         v-for="file in mutableFileList"
         :key="file.alias"
       >
         <f-icon
           name="loading"
-          class="f-uploader-loading-icon"
+          class="f-upload-loading-icon"
           v-if="file.status === 'uploading'"
         />
         <img :src="file.url" />
-        <span class="f-uploader-file-name">{{ file.name }}</span>
+        <span class="f-upload-file-name">{{ file.name }}</span>
         <f-icon
-          class="f-uploader-remove-icon"
+          class="f-upload-remove-icon"
           :name="listType === 'picture-card' ? 'trash-can' : 'cross'"
           @click="handleRemove(file)"
         />
@@ -50,7 +50,7 @@ import FIcon from './FIcon.vue';
 import { getTypeOf, ajax } from '../assets/utils.js';
 
 export default {
-  name: 'FunUIUploader',
+  name: 'FunUIUpload',
   data() {
     return {
       mutableFileList: [],
@@ -275,7 +275,7 @@ export default {
   }
 }
 
-.f-uploader {
+.f-upload {
   input {
     display: none;
   }
@@ -302,7 +302,7 @@ export default {
       color: $blue;
       border-color: $blue;
 
-      > .f-uploader-remove-icon {
+      > .f-upload-remove-icon {
         display: block;
       }
     }
@@ -312,7 +312,7 @@ export default {
         display: none;
       }
 
-      > .f-uploader-remove-icon {
+      > .f-upload-remove-icon {
         top: 50%;
         // transform: translateY(-50%); not work on SVG element
         margin-top: -0.5em;
@@ -339,12 +339,12 @@ export default {
           border-radius: $borderRadius;
         }
 
-        > .f-uploader-loading-icon {
+        > .f-upload-loading-icon {
           display: none;
         }
       }
 
-      > .f-uploader-file-name {
+      > .f-upload-file-name {
         display: none;
       }
 
@@ -354,8 +354,8 @@ export default {
         margin-right: 0;
       }
 
-      > .f-uploader-loading-icon,
-      > .f-uploader-remove-icon {
+      > .f-upload-loading-icon,
+      > .f-upload-remove-icon {
         position: absolute;
         top: 50%;
         left: 50%;
@@ -363,7 +363,7 @@ export default {
         margin-left: -0.5em;
       }
 
-      > .f-uploader-remove-icon {
+      > .f-upload-remove-icon {
         z-index: 1;
         transform: scale(1.2);
         fill: #fff;
@@ -381,11 +381,11 @@ export default {
       margin-right: 0.5em;
     }
 
-    > .f-uploader-loading-icon {
+    > .f-upload-loading-icon {
       margin-right: 0.5em;
     }
 
-    > .f-uploader-remove-icon {
+    > .f-upload-remove-icon {
       display: none;
       position: absolute;
       top: 0;

@@ -2,7 +2,7 @@ import chai, { expect } from 'chai';
 import sinon from 'sinon';
 import sinonChai from 'sinon-chai';
 import { mount } from '@vue/test-utils';
-import FUploader from '../../src/components/FUploader.vue';
+import FUpload from '../../src/components/FUpload.vue';
 import { ajax } from '../../src/assets/utils.js';
 chai.use(sinonChai);
 
@@ -10,7 +10,7 @@ chai.use(sinonChai);
  * util functions and variables
  */
 const init = ({ propsData = {}, otherOptions = {} } = {}) => {
-  const wrapper = mount(FUploader, {
+  const wrapper = mount(FUpload, {
     propsData: { name: 'myFile', action: '/xxx', parseResponse, ...propsData },
     ...otherOptions,
   });
@@ -66,7 +66,7 @@ const parseResponse = response => ({ url: JSON.parse(response).url });
 /**
  * tests
  */
-describe('FUploader.vue', () => {
+describe('FUpload.vue', () => {
   it('存在，且可以接受 name action parseResponse 属性', () => {
     const { wrapper, stub } = init();
     expect(wrapper.exists()).to.eq(true);
@@ -79,25 +79,23 @@ describe('FUploader.vue', () => {
     const { wrapper, stub } = init({
       otherOptions: { listeners: { success: fake } },
     });
-    expect(wrapper.find('.f-uploader-list-li').element).to.not.exist;
+    expect(wrapper.find('.f-upload-list-li').element).to.not.exist;
 
     // add file and trigger change event
     const input = wrapper.find('input[type="file"]');
     input.element.files = createFilesObject(['文件内容'], fileName);
     input.trigger('change');
 
-    expect(wrapper.find('.f-uploader-list-li').element).to.exist;
+    expect(wrapper.find('.f-upload-list-li').element).to.exist;
 
     // fake xhr
     const xhr = fakeXhr(wrapper, previewUrl);
 
-    expect(wrapper.find('.f-uploader-list-li').classes()).to.include(
-      'succeeded'
-    );
-    expect(wrapper.find('.f-uploader-list-li > img').attributes('src')).to.eq(
+    expect(wrapper.find('.f-upload-list-li').classes()).to.include('succeeded');
+    expect(wrapper.find('.f-upload-list-li > img').attributes('src')).to.eq(
       previewUrl
     );
-    expect(wrapper.find('.f-uploader-file-name').text()).to.eq(fileName);
+    expect(wrapper.find('.f-upload-file-name').text()).to.eq(fileName);
     expect(fake).to.have.been.calledOnce;
     // fake.lastArg: get the last param that passed to fake
     // https://sinonjs.org/releases/latest/fakes/
@@ -114,15 +112,11 @@ describe('FUploader.vue', () => {
     input.element.files = createFilesObject(['文件内容'], fileName);
     input.trigger('change');
 
-    expect(wrapper.find('.f-uploader-list-li').classes()).to.include(
-      'uploading'
-    );
-    expect(wrapper.find('.f-uploader-loading-icon').element).to.exist;
+    expect(wrapper.find('.f-upload-list-li').classes()).to.include('uploading');
+    expect(wrapper.find('.f-upload-loading-icon').element).to.exist;
     const xhr = fakeXhr(wrapper, previewUrl);
-    expect(wrapper.find('.f-uploader-list-li').classes()).to.include(
-      'succeeded'
-    );
-    expect(wrapper.find('.f-uploader-loading-icon').element).to.not.exist;
+    expect(wrapper.find('.f-upload-list-li').classes()).to.include('succeeded');
+    expect(wrapper.find('.f-upload-loading-icon').element).to.not.exist;
 
     xhr.restore();
     stub.restore();
@@ -164,18 +158,18 @@ describe('FUploader.vue', () => {
     input.trigger('change');
     const xhr = fakeXhr(wrapper, previewUrl);
 
-    const classList1 = wrapper.find('.f-uploader-list-li').classes();
+    const classList1 = wrapper.find('.f-upload-list-li').classes();
     const style1 = getComputedStyle(
-      wrapper.find('.f-uploader-list-li > img').element
+      wrapper.find('.f-upload-list-li > img').element
     );
     expect(classList1).to.include('text');
     expect(classList1).to.not.include('picture-card');
     expect(style1.display).to.eq('none');
 
     wrapper.setProps({ listType: 'picture-card' });
-    const classList2 = wrapper.find('.f-uploader-list-li').classes();
+    const classList2 = wrapper.find('.f-upload-list-li').classes();
     const style2 = getComputedStyle(
-      wrapper.find('.f-uploader-list-li > img').element
+      wrapper.find('.f-upload-list-li > img').element
     );
     expect(classList2).to.not.include('text');
     expect(classList2).to.include('picture-card');
@@ -256,10 +250,10 @@ describe('FUploader.vue', () => {
     input.trigger('change');
     const xhr = fakeXhr(wrapper, previewUrl);
 
-    expect(wrapper.find('.f-uploader-list-li').element).to.exist;
+    expect(wrapper.find('.f-upload-list-li').element).to.exist;
     expect(fake).to.not.have.been.called;
-    wrapper.find('.f-uploader-remove-icon').trigger('click');
-    expect(wrapper.find('.f-uploader-list-li').element).to.not.exist;
+    wrapper.find('.f-upload-remove-icon').trigger('click');
+    expect(wrapper.find('.f-upload-list-li').element).to.not.exist;
     expect(fake).to.have.been.calledOnce;
 
     xhr.restore();
@@ -274,11 +268,11 @@ describe('FUploader.vue', () => {
     const dataTransfer = new DataTransfer();
     dataTransfer.items.add(new File(['xx'], fileName, { type: 'text/plain' }));
 
-    const liWrapper1 = wrapper.find('.f-uploader-list-li');
+    const liWrapper1 = wrapper.find('.f-upload-list-li');
     expect(liWrapper1.element).to.not.exist;
     // https://vue-test-utils.vuejs.org/zh/api/wrapper/#trigger
-    wrapper.find('.f-uploader-trigger-area').trigger('drop', { dataTransfer });
-    const liWrapper2 = wrapper.find('.f-uploader-list-li');
+    wrapper.find('.f-upload-trigger-area').trigger('drop', { dataTransfer });
+    const liWrapper2 = wrapper.find('.f-upload-list-li');
     expect(liWrapper2.element).to.exist;
     const xhr = fakeXhr(wrapper, previewUrl);
     expect(liWrapper2.classes()).to.include('succeeded');
