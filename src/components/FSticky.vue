@@ -19,9 +19,8 @@ export default {
     };
   },
   mounted() {
-    // reset to make sure getting right initStickyTop
-    window.scrollY !== 0 && window.scroll(0, 0);
-    this.initStickyTop = this.$refs.stickyRef.getBoundingClientRect().top;
+    this.initStickyTop =
+      this.$refs.stickyRef.getBoundingClientRect().top + window.scrollY;
     window.addEventListener('scroll', this.toggleFixedClass);
   },
   beforeDestroy() {
