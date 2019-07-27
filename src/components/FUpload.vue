@@ -36,6 +36,11 @@
         <img :src="file.url" />
         <span class="f-upload-file-name">{{ file.name }}</span>
         <f-icon
+          class="f-upload-check-icon"
+          name="check"
+          v-if="file.status === 'succeeded'"
+        />
+        <f-icon
           class="f-upload-remove-icon"
           :name="listType === 'picture-card' ? 'trash-can' : 'cross'"
           @click="handleRemove(file)"
@@ -302,6 +307,10 @@ export default {
       color: $blue;
       border-color: $blue;
 
+      > .f-upload-check-icon {
+        display: none;
+      }
+
       > .f-upload-remove-icon {
         display: block;
       }
@@ -312,6 +321,7 @@ export default {
         display: none;
       }
 
+      > .f-upload-check-icon,
       > .f-upload-remove-icon {
         top: 50%;
         // transform: translateY(-50%); not work on SVG element
@@ -385,13 +395,21 @@ export default {
       margin-right: 0.5em;
     }
 
+    > .f-upload-check-icon,
     > .f-upload-remove-icon {
-      display: none;
       position: absolute;
       top: 0;
       right: 0;
       margin-top: 0.2em;
       margin-right: 0.2em;
+    }
+
+    > .f-upload-check-icon {
+      fill: $blue;
+    }
+
+    > .f-upload-remove-icon {
+      display: none;
     }
   }
 }
