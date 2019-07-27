@@ -31,8 +31,8 @@ export default {
     },
   },
   methods: {
-    onClick() {
-      !this.disabled && this.$emit('click');
+    onClick($event) {
+      !this.disabled && this.$emit('click', $event);
     },
   },
   components: { FIcon },
