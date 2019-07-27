@@ -1,6 +1,6 @@
 <template>
   <div class="demo-upload-1 extra-margin">
-    <code-box>
+    <code-box showCode>
       <pre>
         <code class="html">{{htmlCode}}</code>
         <code class="javascript">{{javascriptCode}}</code>

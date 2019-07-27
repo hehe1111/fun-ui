@@ -37,6 +37,15 @@ export default {
       codeBoxHeight: null,
     };
   },
+  props: {
+    showCode: {
+      type: Boolean,
+      default: false,
+    },
+  },
+  created() {
+    this.isCodeVisible = this.showCode;
+  },
   methods: {
     toggle() {
       this.isCodeVisible = !this.isCodeVisible;
@@ -91,6 +100,7 @@ export default {
     color: $blue;
     cursor: pointer;
     transition: all $duration ease-in-out;
+    user-select: none;
     // vuepress 默认主题的 h1 至 h6 均有 padding-top: 4.6rem;
     // 后面的标题元素的 padding-top 太大以至于覆盖到了前面的 HTML 元素上
     // 导致点击前面的元素时，实际上是点击在了后面标题元素的 padding-top 上
