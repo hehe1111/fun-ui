@@ -1,6 +1,14 @@
 <template>
-  <div class="f-sticky-container" ref="containerRef">
-    <div class="f-sticky" :class="toggleFixedClass">
+  <div
+    class="f-sticky-container"
+    ref="containerRef"
+    :style="{ height: containerHeight }"
+  >
+    <div
+      class="f-sticky"
+      :class="toggleFixedClass"
+      :style="{ width: stickyWidth, left: stickyLeft }"
+    >
       <slot />
     </div>
   </div>
@@ -18,7 +26,10 @@ export default {
   data() {
     return {
       isFixed: false,
-      initStickyTop: 0,
+      initContainerTop: 0,
+      containerHeight: undefined,
+      stickyLeft: undefined,
+      stickyWidth: undefined,
     };
   },
   computed: {
@@ -29,8 +40,8 @@ export default {
     },
   },
   mounted() {
-    const { top } = this.$refs.containerRef.getBoundingClientRect();
-    this.initStickyTop = top + window.scrollY;
+    this.initContainerTop =
+      this.$refs.containerRef.getBoundingClientRect().top + window.scrollY;
     window.addEventListener('scroll', this.updateValueOfIsFixed);
   },
   beforeDestroy() {
@@ -38,13 +49,17 @@ export default {
   },
   methods: {
     updateValueOfIsFixed(event) {
-      const { containerRef } = this.$refs;
-      containerRef.style.height = `${
-        containerRef.getBoundingClientRect().height
-      }px`;
-      window.scrollY > this.initStickyTop
+      this.updateStyle();
+      window.scrollY > this.initContainerTop
         ? (this.isFixed = true)
         : (this.isFixed = false);
+    },
+    updateStyle() {
+      const { containerRef } = this.$refs;
+      const { left, width, height } = containerRef.getBoundingClientRect();
+      this.stickyLeft = `${left}px`;
+      this.stickyWidth = `${width}px`;
+      this.containerHeight = `${height}px`;
     },
   },
 };
@@ -56,8 +71,6 @@ export default {
     &.fixed {
       position: fixed;
       top: 0;
-      left: 0;
-      width: 100%;
     }
   }
 }
