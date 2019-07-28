@@ -1,6 +1,8 @@
 <template>
-  <div class="f-sticky" ref="stickyRef" :class="toggleFixedClass">
-    <slot />
+  <div class="f-sticky-container" ref="containerRef">
+    <div class="f-sticky" :class="toggleFixedClass">
+      <slot />
+    </div>
   </div>
 </template>
 
@@ -27,8 +29,9 @@ export default {
     },
   },
   mounted() {
-    this.initStickyTop =
-      this.$refs.stickyRef.getBoundingClientRect().top + window.scrollY;
+    const { top, height } = this.$refs.containerRef.getBoundingClientRect();
+    this.$refs.containerRef.style.height = `${height}px`;
+    this.initStickyTop = top + window.scrollY;
     window.addEventListener('scroll', this.updateValueOfIsFixed);
   },
   beforeDestroy() {
@@ -45,12 +48,14 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-.f-sticky {
-  &.fixed {
-    position: fixed;
-    top: 0;
-    left: 0;
-    width: 100%;
+.f-sticky-container {
+  .f-sticky {
+    &.fixed {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+    }
   }
 }
 </style>
