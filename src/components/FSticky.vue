@@ -1,5 +1,5 @@
 <template>
-  <div class="f-sticky" ref="stickyRef">
+  <div class="f-sticky" ref="stickyRef" :class="toggleFixedClass">
     <slot />
   </div>
 </template>
@@ -15,23 +15,30 @@ export default {
   },
   data() {
     return {
+      isFixed: false,
       initStickyTop: 0,
     };
+  },
+  computed: {
+    toggleFixedClass() {
+      return {
+        fixed: this.isFixed,
+      };
+    },
   },
   mounted() {
     this.initStickyTop =
       this.$refs.stickyRef.getBoundingClientRect().top + window.scrollY;
-    window.addEventListener('scroll', this.toggleFixedClass);
+    window.addEventListener('scroll', this.updateValueOfIsFixed);
   },
   beforeDestroy() {
-    window.removeEventListener('scroll', this.toggleFixedClass);
+    window.removeEventListener('scroll', this.updateValueOfIsFixed);
   },
   methods: {
-    toggleFixedClass(event) {
-      const { classList } = this.$refs.stickyRef;
+    updateValueOfIsFixed(event) {
       window.scrollY > this.initStickyTop
-        ? classList.add('fixed')
-        : classList.remove('fixed');
+        ? (this.isFixed = true)
+        : (this.isFixed = false);
     },
   },
 };
