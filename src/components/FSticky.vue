@@ -29,8 +29,7 @@ export default {
     },
   },
   mounted() {
-    const { top, height } = this.$refs.containerRef.getBoundingClientRect();
-    this.$refs.containerRef.style.height = `${height}px`;
+    const { top } = this.$refs.containerRef.getBoundingClientRect();
     this.initStickyTop = top + window.scrollY;
     window.addEventListener('scroll', this.updateValueOfIsFixed);
   },
@@ -39,6 +38,10 @@ export default {
   },
   methods: {
     updateValueOfIsFixed(event) {
+      const { containerRef } = this.$refs;
+      containerRef.style.height = `${
+        containerRef.getBoundingClientRect().height
+      }px`;
       window.scrollY > this.initStickyTop
         ? (this.isFixed = true)
         : (this.isFixed = false);

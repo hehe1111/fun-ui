@@ -2,6 +2,7 @@
   <div id="app" style="padding: 10px;">
     <f-sticky>
       <div style="border: 1px solid red;">
+        <img src="https://dummyimage.com/600x400/f59a11/ffffff.png" />
         sticky hahahahahahahahahahahahaha
       </div>
     </f-sticky>
