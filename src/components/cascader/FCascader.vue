@@ -25,7 +25,10 @@
 <script>
 import FIcon from '../FIcon.vue';
 import FCascaderItems from './FCascaderItems.vue';
-import clickOutside from '../../directives/click-outside.js';
+import {
+  clickOutside,
+  removeClickOutsideListener,
+} from '../../directives/click-outside.js';
 
 export default {
   name: 'FunUIFCascader',
@@ -55,6 +58,9 @@ export default {
     result() {
       return this.selected.map(i => i.name).join(' / ');
     },
+  },
+  beforeDestroy() {
+    removeClickOutsideListener();
   },
   methods: {
     togglePopover($event) {

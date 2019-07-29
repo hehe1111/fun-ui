@@ -42,7 +42,10 @@
 <script>
 import FIcon from '../FIcon.vue';
 import FNavItem from './FNavItem.vue';
-import clickOutside from '../../directives/click-outside.js';
+import {
+  clickOutside,
+  removeClickOutsideListener,
+} from '../../directives/click-outside.js';
 
 export default {
   name: 'FunUISubNav',
@@ -87,6 +90,9 @@ export default {
   },
   mounted() {
     this.updateRootTitleNavItems();
+  },
+  beforeDestroy() {
+    removeClickOutsideListener();
   },
   methods: {
     updateRootTitleNavItems() {

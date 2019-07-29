@@ -5,7 +5,7 @@ const onClickDocument = event => {
     n.callback();
   });
 };
-const removeListener = () => {
+const removeClickOutsideListener = () => {
   document.removeEventListener('click', onClickDocument);
 };
 const clickOutside = {
@@ -17,4 +17,4 @@ const clickOutside = {
 document.addEventListener('click', onClickDocument);
 
 export default clickOutside;
-export { removeListener };
+export { removeClickOutsideListener };
