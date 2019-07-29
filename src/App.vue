@@ -32,7 +32,7 @@
         <p>第 28 段落</p>
         <p>第 29 段落</p>
       </div>
-      <f-sticky>
+      <f-sticky :distance="100">
         <div style="border: 1px solid red;">
           <img src="https://dummyimage.com/600x400/f59a11/ffffff.png" />
           sticky hahahahahahahahahahahahaha

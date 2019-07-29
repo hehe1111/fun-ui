@@ -7,7 +7,8 @@
     <div
       class="f-sticky"
       :class="toggleFixedClass"
-      :style="{ width: stickyWidth, left: stickyLeft }"
+      :style="{ width: stickyWidth, left: stickyLeft, top: stickyTop }"
+      ref="stickyRef"
     >
       <slot />
     </div>
@@ -29,6 +30,7 @@ export default {
       initContainerTop: 0,
       containerHeight: undefined,
       stickyLeft: undefined,
+      stickyTop: undefined,
       stickyWidth: undefined,
     };
   },
@@ -50,14 +52,22 @@ export default {
   methods: {
     updateValueOfIsFixed(event) {
       this.updateStyle();
-      window.scrollY > this.initContainerTop
+      window.scrollY > this.initContainerTop - this.distance
         ? (this.isFixed = true)
         : (this.isFixed = false);
     },
     updateStyle() {
+      if (window.getComputedStyle(this.$refs.stickyRef).position === 'static') {
+        // restore style property
+        this.stickyLeft = undefined;
+        this.stickyTop = undefined;
+        this.stickyWidth = undefined;
+        this.containerHeight = undefined;
+      }
       const { containerRef } = this.$refs;
       const { left, width, height } = containerRef.getBoundingClientRect();
       this.stickyLeft = `${left}px`;
+      this.stickyTop = `${this.distance}px`;
       this.stickyWidth = `${width}px`;
       this.containerHeight = `${height}px`;
     },
@@ -70,7 +80,6 @@ export default {
   .f-sticky {
     &.fixed {
       position: fixed;
-      top: 0;
     }
   }
 }
