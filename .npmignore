@@ -1,0 +1,14 @@
+.idea/
+.vscode/
+/dist/demo.html
+/node_modules/
+/docs/
+/src/
+/tests/
+/.eslintignore
+/.gitnore
+/.travis.yml
+/babel.config.js
+/deploy.sh
+/karma.conf.js
+/yarn.lock
