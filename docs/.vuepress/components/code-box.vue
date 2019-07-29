@@ -101,12 +101,7 @@ export default {
     cursor: pointer;
     transition: all $duration ease-in-out;
     user-select: none;
-    // vuepress 默认主题的 h1 至 h6 均有 padding-top: 4.6rem;
-    // 后面的标题元素的 padding-top 太大以至于覆盖到了前面的 HTML 元素上
-    // 导致点击前面的元素时，实际上是点击在了后面标题元素的 padding-top 上
-    // 暂时的快速解决方法：让前面的元素的 z-index 高于后面的标题
     position: relative;
-    z-index: 1;
 
     &:hover {
       color: #fff;
