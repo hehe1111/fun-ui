@@ -89,7 +89,18 @@
                       >{{ action.text }}</f-button
                     >
                   </template>
-                  <template v-else>{{ item[column.field] }}</template>
+                  <template v-else>
+                    <template v-if="column.render">
+                      <vnodes
+                        :tag="column.render.tag"
+                        :class="column.render.class"
+                        :style="column.render.style"
+                        :attrs="column.render.attrs"
+                        :value="item[column.field]"
+                      />
+                    </template>
+                    <template v-else>{{ item[column.field] }}</template>
+                  </template>
                 </span>
               </td>
             </tr>
@@ -387,7 +398,21 @@ export default {
       this.isCheckBoxVisible && this.updateMainCheckBoxState();
     },
   },
-  components: { FIcon, FButton },
+  components: {
+    FIcon,
+    FButton,
+    vnodes: {
+      functional: true,
+      render: (h, context) => {
+        const { attrs, style, class: classObject } = context.data;
+        return h(
+          attrs.tag,
+          { attrs: attrs.attrs, style, class: classObject },
+          attrs.value
+        );
+      },
+    },
+  },
 };
 </script>
 
