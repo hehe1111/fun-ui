@@ -8,6 +8,8 @@
 export default {
   name: 'FunUITableColumn',
   props: {
+    // TODO: Bug to fix
+    // prop validation not working properly
     text: {
       type: String,
       required: true,
