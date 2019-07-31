@@ -1,7 +1,6 @@
 <template>
   <div id="app" style="display: flex; justify-content: center;">
     <f-table
-      :columns="columns"
       :data-source="dataSource"
       :selected-ids="selectedIds"
       :sort-rules="sortRules"
@@ -10,37 +9,47 @@
       :is-id-visible="true"
       :is-check-box-visible="true"
       bordered
-    />
+    >
+      <f-table-column text="姓名" field="name">
+        <template slot-scope="props">
+          <f-popover>
+            <!-- eslint-disable-next-line prettier/prettier -->
+            <template slot="content">弹出内容</template>
+            <f-button>点我弹出</f-button>
+          </f-popover>
+          <a
+            href="https://www.google.com/"
+            style="color: red; font-weight: bold"
+            >{{ props.value }}</a
+          >
+        </template>
+      </f-table-column>
+      <f-table-column text="成绩" field="score" />
+      <f-table-column text="班级" field="class" />
+      <f-table-column text="座右铭" field="moto">
+        <template slot-scope="props">
+          <span style="color: gold;">{{ props.value }}</span>
+        </template>
+      </f-table-column>
+      <f-table-column text="操作" field="actions">
+        <template slot-scope="props">
+          <f-button @click="onAlert(props.item)">ALERT</f-button>
+        </template>
+      </f-table-column>
+    </f-table>
   </div>
 </template>
 
 <script>
 import FTable from './components/FTable.vue';
+import FTableColumn from './components/FTableColumn.vue';
+import FPopover from './components/FPopover.vue';
+import FButton from './components/button/FButton.vue';
 
 export default {
   name: 'App',
   data() {
     return {
-      columns: [
-        {
-          text: '姓名',
-          field: 'name',
-          render: {
-            tag: 'a',
-            style: { color: 'red', fontWeight: 'bold' },
-            attrs: { href: 'https://www.google.com' },
-            class: { xxx: true, yyy: true },
-          },
-        },
-        { text: '成绩', field: 'score' },
-        { text: '班级', field: 'class' },
-        { text: '座右铭', field: 'moto' },
-        {
-          text: '操作',
-          field: 'actions',
-          actions: [{ text: 'ALERT', callback: this.onAlert }],
-        },
-      ],
       dataSource: [
         {
           id: '1',
@@ -175,7 +184,7 @@ export default {
       }, 3000);
     },
   },
-  components: { FTable },
+  components: { FTable, FTableColumn, FPopover, FButton },
 };
 </script>
 

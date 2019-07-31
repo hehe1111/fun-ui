@@ -80,27 +80,17 @@
                 :data-name="column.field"
               >
                 <span class="cell-inner">
-                  <template v-if="column.actions">
-                    <f-button
-                      v-for="action in column.actions"
-                      :key="action.text"
-                      @click="action.callback(item)"
-                      class="f-table-action-button"
-                      >{{ action.text }}</f-button
-                    >
+                  <template v-if="column._template">
+                    <custom-column-template
+                      :vnodes="
+                        column._template({
+                          value: item[column.field],
+                          item: { ...item },
+                        })
+                      "
+                    />
                   </template>
-                  <template v-else>
-                    <template v-if="column.render">
-                      <vnodes
-                        :tag="column.render.tag"
-                        :class="column.render.class"
-                        :style="column.render.style"
-                        :attrs="column.render.attrs"
-                        :value="item[column.field]"
-                      />
-                    </template>
-                    <template v-else>{{ item[column.field] }}</template>
-                  </template>
+                  <template v-else>{{ item[column.field] }}</template>
                 </span>
               </td>
             </tr>
@@ -127,12 +117,10 @@
 
 <script>
 import FIcon from './FIcon.vue';
-import FButton from './button/FButton.vue';
 
 export default {
   name: 'FunUITable',
   props: {
-    columns: Array,
     dataSource: {
       type: Array,
       validator: array => {
@@ -174,6 +162,7 @@ export default {
   },
   data() {
     return {
+      columns: [],
       mutableSelectedIds: [],
       isMainCheckBoxChecked: false,
       mutableSortRules: {},
@@ -214,6 +203,7 @@ export default {
     this.mutableSortRules = { ...this.sortRules };
   },
   mounted() {
+    this.converSlotsToColumns();
     this.height && this.fixTHead();
     this.updateLoadingMaskStyle();
   },
@@ -226,6 +216,14 @@ export default {
     window.removeEventListener('resize', onResize);
   },
   methods: {
+    converSlotsToColumns() {
+      this.columns = this.$slots.default.map(node => {
+        const { text, field } = node.componentOptions.propsData;
+        const _template =
+          node.data.scopedSlots && node.data.scopedSlots.default;
+        return { text, field, _template };
+      });
+    },
     updateLoadingMaskStyle() {
       const { tableRef, loadingMaskRef } = this.$refs;
       const { width: tableWidth, height: tableHeight } = getComputedStyle(
@@ -400,17 +398,9 @@ export default {
   },
   components: {
     FIcon,
-    FButton,
-    vnodes: {
+    customColumnTemplate: {
       functional: true,
-      render: (h, context) => {
-        const { attrs, style, class: classObject } = context.data;
-        return h(
-          attrs.tag,
-          { attrs: attrs.attrs, style, class: classObject },
-          attrs.value
-        );
-      },
+      render: (h, context) => context.props.vnodes,
     },
   },
 };
@@ -545,12 +535,6 @@ export default {
       > tbody > tr {
         @extend .tbody-row-common;
         background-color: #fff;
-
-        > td > .cell-inner > .f-table-action-button {
-          &:not(:last-child) {
-            margin-right: 6px;
-          }
-        }
 
         &.f-table-collapsible-row {
           background-color: #fff !important;
