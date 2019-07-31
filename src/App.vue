@@ -1,5 +1,5 @@
 <template>
-  <div id="app" style="display: flex; justify-content: center;">
+  <div id="app">
     <f-table
       :data-source="dataSource"
       :selected-ids="selectedIds"

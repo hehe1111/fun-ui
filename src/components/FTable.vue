@@ -167,6 +167,10 @@ export default {
       isMainCheckBoxChecked: false,
       mutableSortRules: {},
       openedRowIds: [],
+      ths: [],
+      tds: [],
+      thCellInners: [],
+      tdCellInners: [],
     };
   },
   computed: {
@@ -201,11 +205,15 @@ export default {
   created() {
     this.mutableSelectedIds = [...this.selectedIds];
     this.mutableSortRules = { ...this.sortRules };
+    this.converSlotsToColumns();
   },
   mounted() {
-    this.converSlotsToColumns();
+    this.getElements();
     this.height && this.fixTHead();
-    this.updateLoadingMaskStyle();
+  },
+  updated() {
+    this.height && this.onResize();
+    this.loading && this.updateLoadingMaskStyle();
   },
   beforeDestroy() {
     if (!this.height) return;
@@ -224,13 +232,23 @@ export default {
         return { text, field, _template };
       });
     },
+    getElements() {
+      this.ths = Array.from(document.querySelectorAll('thead > tr > th'));
+      this.thCellInners = Array.from(
+        document.querySelectorAll('thead > tr > th > .cell-inner')
+      );
+      this.tds = Array.from(
+        document.querySelectorAll('tbody > tr:first-child > td')
+      );
+      this.tdCellInners = Array.from(
+        document.querySelectorAll('tbody > tr:first-child > td > .cell-inner')
+      );
+    },
     updateLoadingMaskStyle() {
       const { tableRef, loadingMaskRef } = this.$refs;
-      const { width: tableWidth, height: tableHeight } = getComputedStyle(
-        tableRef
-      );
-      loadingMaskRef.style.width = tableWidth;
-      loadingMaskRef.style.height = tableHeight;
+      const { width, height } = window.getComputedStyle(tableRef);
+      loadingMaskRef.style.width = width;
+      loadingMaskRef.style.height = height;
     },
     highlightClass(item) {
       return { highlight: this.mutableSelectedIds.indexOf(item.id) >= 0 };
@@ -345,13 +363,9 @@ export default {
       oldTC.style.marginTop = offsetHeight > clientHeight ? '-17px' : 0;
     },
     onResize() {
-      const ths = Array.from(document.querySelectorAll('thead > tr > th'));
-      const tds = Array.from(
-        document.querySelectorAll('tbody > tr:first-child > td')
-      );
       this.reSizeCells({
-        thWidthArray: this.getCellsWidthArray(ths),
-        tdWidthArray: this.getCellsWidthArray(tds),
+        thWidthArray: this.getCellsWidthArray(this.ths),
+        tdWidthArray: this.getCellsWidthArray(this.tds),
       });
       this.hideNewTCHorizontalScrollbar();
     },
@@ -361,22 +375,16 @@ export default {
         return (
           el.getBoundingClientRect().width -
           1 -
-          2 * parseInt(getComputedStyle(el).paddingLeft, 10) -
-          2 * parseInt(getComputedStyle(el).borderLeftWidth, 10)
+          2 * window.parseInt(window.getComputedStyle(el).paddingLeft, 10) -
+          2 * window.parseInt(window.getComputedStyle(el).borderLeftWidth, 10)
         );
       });
     },
     reSizeCells({ thWidthArray, tdWidthArray }) {
-      const thCellInners = Array.from(
-        document.querySelectorAll('thead > tr > th > .cell-inner')
-      );
-      const tdCellInners = Array.from(
-        document.querySelectorAll('tbody > tr:first-child > td > .cell-inner')
-      );
-      thCellInners.map((el, i) => {
+      this.thCellInners.map((el, i) => {
         const cellMaxWidth = Math.max(thWidthArray[i], tdWidthArray[i]);
         el.style.width = `${cellMaxWidth}px`;
-        tdCellInners[i].style.width = `${cellMaxWidth}px`;
+        this.tdCellInners[i].style.width = `${cellMaxWidth}px`;
       });
     },
     syncScroll() {
