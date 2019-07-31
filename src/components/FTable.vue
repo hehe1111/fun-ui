@@ -500,7 +500,7 @@ export default {
       td {
         padding: 0.4em 0.8em;
         border-bottom: 1px solid $borderColorLight;
-        white-space: nowrap;
+        word-break: break-all;
       }
 
       > thead > tr > th {
