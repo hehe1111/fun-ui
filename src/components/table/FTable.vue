@@ -448,18 +448,21 @@ export default {
 
 .f-table {
   &.align-left {
-    .cell-inner {
-      justify-content: flex-start;
+    th,
+    td {
+      text-align: left;
     }
   }
   &.align-center {
-    .cell-inner {
-      justify-content: center;
+    th,
+    td {
+      text-align: center;
     }
   }
   &.align-right {
-    .cell-inner {
-      justify-content: flex-end;
+    th,
+    td {
+      text-align: right;
     }
   }
 }
