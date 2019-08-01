@@ -28,7 +28,8 @@
 </template>
 
 <script>
-import FTable from '../../../src/components/FTable.vue';
+import FTable from '../../../src/components/table/FTable.vue';
+import FTableColumn from '../../../src/components/table/FTableColumn.vue';
 import CodeBox from './code-box.vue';
 import removePrefixSpace from '../assets/js/remove-prefix-space.js';
 

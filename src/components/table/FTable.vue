@@ -116,7 +116,7 @@
 </template>
 
 <script>
-import FIcon from './FIcon.vue';
+import FIcon from '../FIcon.vue';
 
 export default {
   name: 'FunUITable',
@@ -415,7 +415,7 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-@import '../assets/_var.scss';
+@import '../../assets/_var.scss';
 
 .icon-exits-to-keep-align {
   opacity: 0;
