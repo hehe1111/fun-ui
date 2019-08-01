@@ -1,19 +1,21 @@
 <template>
-  <div class="input-wrapper" :class="classes">
+  <div class="f-input-wrapper" :class="wrapperClasses">
     <input
       type="text"
-      :value="value"
+      :value="mutableValue"
+      ref="inputRef"
       :disabled="disabled"
       :readonly="readonly"
-      @change="$emit('change', $event.target.value)"
-      @input="$emit('input', $event.target.value)"
-      @focus="$emit('focus', $event.target.value)"
-      @blur="$emit('blur', $event.target.value)"
+      @input="onInput"
+      @change="onChange"
+      @focus="onFocus"
+      @blur="onBlur"
+      @mousedown="onMouseDown"
     />
     <f-icon
       name="error"
-      class="clear-text-icon"
-      @click="$emit('click', $event)"
+      class="f-input-clear-icon"
+      @click="onClickClearIcon"
       v-if="clearable"
     />
     <template v-if="error">
@@ -45,24 +47,56 @@ export default {
     },
     clearable: {
       type: Boolean,
-      default: false,
+      default: true,
     },
   },
-  components: {
-    FIcon,
+  data() {
+    return {
+      mutableValue: '',
+    };
   },
   computed: {
-    classes() {
+    wrapperClasses() {
       return { error: this.error };
     },
   },
+  created() {
+    this.mutableValue = this.value;
+  },
+  methods: {
+    onInput($event) {
+      this.mutableValue = $event.target.value;
+      this.$emit('input', $event.target.value);
+    },
+    onChange($event) {
+      this.$emit('change', $event.target.value);
+    },
+    onFocus($event) {
+      this.$emit('focus', $event.target.value);
+    },
+    onBlur($event) {
+      this.$emit('blur', $event.target.value);
+    },
+    onMouseDown($event) {
+      this._unselectableIfReadonly($event);
+    },
+    _unselectableIfReadonly($event) {
+      this.readonly && $event.preventDefault();
+    },
+    onClickClearIcon() {
+      this.mutableValue = '';
+      this.$refs.inputRef.value = '';
+      this.$emit('clear', '');
+    },
+  },
+  components: { FIcon },
 };
 </script>
 
 <style lang="scss" scoped>
 @import '../assets/_var.scss';
 
-.input-wrapper {
+.f-input-wrapper {
   font-size: $fontSize;
   display: inline-flex;
   align-items: center;
@@ -74,7 +108,7 @@ export default {
   > input {
     width: $inputWidth;
     height: $height;
-    padding: 0 0.5em;
+    padding: 0 1.4em 0 0.5em;
     border: 1px solid $borderColor;
     border-radius: $borderRadius;
     font-size: inherit;
@@ -88,11 +122,16 @@ export default {
     }
     &[disabled],
     &[readonly] {
-      color: #bbb;
-      border-color: #bbb;
+      color: $darkGrey;
+      border-color: $darkGrey;
       cursor: not-allowed;
+
+      + .f-input-clear-icon {
+        display: none;
+      }
     }
   }
+
   &.error {
     color: $red;
     > input {
@@ -105,11 +144,20 @@ export default {
       }
     }
   }
-  > .clear-text-icon {
+
+  > .f-input-clear-icon {
     position: absolute;
     top: 50%;
-    right: 0.8em;
-    transform: translateY(-50%);
+    right: 1em;
+    transform: translateY(-50%) scale(1.2);
+    display: none;
+  }
+
+  &:hover,
+  &:focus {
+    > .f-input-clear-icon {
+      display: block;
+    }
   }
 }
 </style>
