@@ -187,7 +187,7 @@ export default {
     margin-top: -10px;
     &::before,
     &::after {
-      left: 10px;
+      left: 1em;
       top: 100%;
       border-top-color: $borderColor;
       border-bottom: none; /* 防止闪烁 */
@@ -201,7 +201,7 @@ export default {
     margin-top: 10px;
     &::before,
     &::after {
-      left: 10px;
+      left: 1em;
       bottom: 100%;
       border-bottom-color: $borderColor;
       border-top: none; /* 防止闪烁 */
