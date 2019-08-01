@@ -2,7 +2,6 @@
   <div class="demo-table-1 extra-margin">
     <div class="component-container">
       <f-table
-        :columns="columns"
         :data-source="dataSource"
         :selected-ids="selectedIds"
         :sort-rules="sortRules"
@@ -10,7 +9,32 @@
         :loading="loading"
         :is-id-visible="true"
         :is-check-box-visible="true"
-      />
+      >
+        <f-table-column text="姓名" field="name">
+          <template slot-scope="props">
+            <f-popover>
+              <template slot="content">弹出内容</template>
+              <f-button>点我弹出</f-button>
+            </f-popover>
+            <a
+              href="https://www.google.com/"
+              style="color: red; font-weight: bold"
+            >{{ props.value }}</a>
+          </template>
+        </f-table-column>
+        <f-table-column text="成绩" field="score" />
+        <f-table-column text="班级" field="class" />
+        <f-table-column text="座右铭" field="moto">
+          <template slot-scope="props">
+            <span style="color: gold;">{{ props.value }}</span>
+          </template>
+        </f-table-column>
+        <f-table-column text="操作" field="actions">
+          <template slot-scope="props">
+            <f-button @click="onAlert(props.item)">ALERT</f-button>
+          </template>
+        </f-table-column>
+      </f-table>
       <!-- :bordered="true" -->
       <!-- :striped="true" -->
       <!-- :height="200" -->
@@ -30,6 +54,8 @@
 <script>
 import FTable from '../../../src/components/table/FTable.vue';
 import FTableColumn from '../../../src/components/table/FTableColumn.vue';
+import FPopover from '../../../src/components/FPopover.vue';
+import FButton from '../../../src/components/button/FButton.vue';
 import CodeBox from './code-box.vue';
 import removePrefixSpace from '../assets/js/remove-prefix-space.js';
 
@@ -37,17 +63,6 @@ export default {
   name: 'demo-table-1',
   data() {
     return {
-      columns: [
-        { text: '姓名', field: 'name' },
-        { text: '成绩', field: 'score' },
-        { text: '班级', field: 'class' },
-        { text: '座右铭', field: 'moto' },
-        {
-          text: '操作',
-          field: 'actions',
-          actions: [{ text: 'ALERT', callback: this.onAlert }],
-        },
-      ],
       dataSource: [
         {
           id: '1',
@@ -157,7 +172,6 @@ export default {
 
       htmlCode: removePrefixSpace(`
         <f-table
-          :columns="columns"
           :data-source="dataSource"
           :selected-ids="selectedIds"
           :sort-rules="sortRules"
@@ -165,24 +179,36 @@ export default {
           :loading="loading"
           :is-id-visible="true"
           :is-check-box-visible="true"
-        />
+        >
+          <f-table-column text="姓名" field="name">
+            <template slot-scope="props">
+              <f-popover>
+                <template slot="content">弹出内容</template>
+                <f-button>点我弹出</f-button>
+              </f-popover>
+              <a
+                href="https://www.google.com/"
+                style="color: red; font-weight: bold"
+              >{{ props.value }}</a>
+            </template>
+          </f-table-column>
+          <f-table-column text="成绩" field="score" />
+          <f-table-column text="班级" field="class" />
+          <f-table-column text="座右铭" field="moto">
+            <template slot-scope="props">
+              <span style="color: gold;">{{ props.value }}</span>
+            </template>
+          </f-table-column>
+          <f-table-column text="操作" field="actions">
+            <template slot-scope="props">
+              <f-button @click="onAlert(props.item)">ALERT</f-button>
+            </template>
+          </f-table-column>
+        </f-table>
       `),
       javascriptCode: removePrefixSpace(`
         data() {
           return {
-            columns: [
-              { text: '姓名', field: 'name' },
-              { text: '成绩', field: 'score' },
-              { text: '班级', field: 'class' },
-              { text: '座右铭', field: 'moto' },
-              {
-                text: '操作',
-                field: 'actions',
-                actions: [
-                  { text: 'ALERT', callback: this.onAlert },
-                ],
-              },
-            ],
             dataSource: [
               {
                 id: '1',
@@ -346,7 +372,7 @@ export default {
       }, 3000);
     },
   },
-  components: { FTable, CodeBox },
+  components: { FTable, FTableColumn, FPopover, FButton, CodeBox },
 };
 </script>
 

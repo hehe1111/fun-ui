@@ -225,12 +225,14 @@ export default {
   },
   methods: {
     converSlotsToColumns() {
-      this.columns = this.$slots.default.map(node => {
-        const { text, field } = node.componentOptions.propsData;
-        const _template =
-          node.data.scopedSlots && node.data.scopedSlots.default;
-        return { text, field, _template };
-      });
+      this.columns = this.$slots.default
+        .filter(node => !!node.tag) // node maybe a empty string TEXT NODE
+        .map(node => {
+          const { text, field } = node.componentOptions.propsData;
+          const _template =
+            node.data.scopedSlots && node.data.scopedSlots.default;
+          return { text, field, _template };
+        });
     },
     getElements() {
       this.ths = Array.from(document.querySelectorAll('thead > tr > th'));
@@ -579,5 +581,14 @@ export default {
       margin-left: -1em;
     }
   }
+}
+
+/*
+ * invalidate default style of table/th/td in vupress
+ */
+table,
+th,
+td {
+  border: none;
 }
 </style>
