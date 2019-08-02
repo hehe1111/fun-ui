@@ -5,11 +5,12 @@
       :class="classes"
       v-if="visible"
       ref="contentContainer"
+      :style="contentStyle"
     >
       <!-- slot-scope 把组件内部的东西暴露给插槽，从而可以在父组件作用域中调用 -->
       <slot name="content" :close="close" />
     </div>
-    <div class="trigger-container" ref="triggerContainer">
+    <div class="trigger-container" ref="triggerContainer" :style="triggerStyle">
       <slot />
     </div>
   </div>
@@ -36,6 +37,15 @@ export default {
       default: 'click',
       validator(value) {
         return ['click', 'hover'].indexOf(value) >= 0;
+      },
+    },
+    triggerStyle: {
+      type: Object,
+    },
+    contentStyle: {
+      type: Object,
+      default: () => {
+        return { maxWidth: '20em' };
       },
     },
   },
@@ -162,7 +172,6 @@ export default {
 }
 .content-container {
   @extend .flex-center;
-  max-width: 20em;
   line-height: 1.4;
   border: 1px solid $borderColor;
   border-radius: $borderRadius;
