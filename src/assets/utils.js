@@ -63,21 +63,22 @@ const isDateObject = dateObj => {
 const getYearMonthDate = dateObj => {
   isDateObject(dateObj);
   // Attention: month has been increased by one
-  return [dateObj.getFullYear(), dateObj.getMonth() + 1, dateObj.getDate()];
+  return [dateObj.getFullYear(), dateObj.getMonth(), dateObj.getDate()];
 };
 
 const getFirstDateOfMonth = dateObj => {
   const [year, month] = getYearMonthDate(dateObj);
-  return new Date(year, month - 1, 1);
+  return new Date(year, month, 1);
 };
 
 const getLastDateOfMonth = dateObj => {
   const [year, month] = getYearMonthDate(dateObj);
-  return new Date(year, month, 0);
+  return new Date(year, month + 1, 0);
 };
 
 const getFormattedDate = (dateObj, separator = '/') => {
   const array = getYearMonthDate(dateObj || new Date());
+  array[1] += 1;
   array.forEach((n, i) => n < 10 && (array[i] = `0${n}`));
   return array.join(separator);
 };

@@ -5,13 +5,29 @@
       <template slot="content">
         <div :class="n2c('panel')">
           <div :class="n2c('nav')">
-            <f-icon :class="n2c('icon', 'last-year')" name="double-left" />
-            <f-icon :class="n2c('icon', 'last-month')" name="left" />
+            <f-icon
+              :class="n2c('icon')"
+              name="double-left"
+              @click="onClickLastYear"
+            />
+            <f-icon
+              :class="n2c('icon')"
+              name="left"
+              @click="onClickLastMonth"
+            />
             <span :class="n2c('year-month')" @click="onToggleYearMonth"
               >{{ value.getFullYear() }} 年 {{ value.getMonth() + 1 }} 月</span
             >
-            <f-icon :class="n2c('icon', 'next-month')" name="right" />
-            <f-icon :class="n2c('icon', 'next-year')" name="double-right" />
+            <f-icon
+              :class="n2c('icon')"
+              name="right"
+              @click="onClickNextMonth"
+            />
+            <f-icon
+              :class="n2c('icon')"
+              name="double-right"
+              @click="onClickNextYear"
+            />
           </div>
           <div :class="n2c('body')">
             <!-- eslint-disable-next-line prettier/prettier -->
@@ -60,6 +76,7 @@ import {
   optionsName2ClassPrefix,
   getFormattedDate,
   getFirstDateOfMonth,
+  getYearMonthDate,
   oneOf,
 } from '../assets/utils.js';
 
@@ -146,6 +163,50 @@ export default {
             getFormattedDate(dateObj) === getFormattedDate(this.value),
         },
       ];
+    },
+    onClickLastYear() {
+      const [year, month, date] = getYearMonthDate(this.value);
+      this.$emit(
+        'input',
+        new Date(
+          year - 1,
+          month,
+          Math.min(date, new Date(year - 1, month + 1, 0).getDate())
+        )
+      );
+    },
+    onClickLastMonth() {
+      const [year, month, date] = getYearMonthDate(this.value);
+      this.$emit(
+        'input',
+        new Date(
+          year,
+          month - 1,
+          Math.min(date, new Date(year, month, 0).getDate())
+        )
+      );
+    },
+    onClickNextMonth() {
+      const [year, month, date] = getYearMonthDate(this.value);
+      this.$emit(
+        'input',
+        new Date(
+          year,
+          month + 1,
+          Math.min(date, new Date(year, month + 2, 0).getDate())
+        )
+      );
+    },
+    onClickNextYear() {
+      const [year, month, date] = getYearMonthDate(this.value);
+      this.$emit(
+        'input',
+        new Date(
+          year + 1,
+          month,
+          Math.min(date, new Date(year + 1, month + 1, 0).getDate())
+        )
+      );
     },
     onToggleYearMonth() {
       this.mode = this.mode === 'date' ? 'yearMonth' : 'date';
