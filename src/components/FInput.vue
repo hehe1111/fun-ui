@@ -2,7 +2,7 @@
   <div class="f-input-wrapper" :class="wrapperClasses">
     <input
       type="text"
-      :value="mutableValue"
+      :value="value"
       ref="inputRef"
       :disabled="disabled"
       :readonly="readonly"
@@ -13,10 +13,10 @@
       @mousedown="onMouseDown"
     />
     <f-icon
+      v-if="clearable"
       name="error"
       class="f-input-clear-icon"
       @click="onClickClearIcon"
-      v-if="clearable"
     />
     <template v-if="error">
       <f-icon name="error" />
@@ -50,22 +50,14 @@ export default {
       default: true,
     },
   },
-  data() {
-    return {
-      mutableValue: '',
-    };
-  },
   computed: {
     wrapperClasses() {
       return { error: this.error };
     },
   },
-  created() {
-    this.mutableValue = this.value;
-  },
   methods: {
     onInput($event) {
-      this.mutableValue = $event.target.value;
+      this.$refs.inputRef.value = $event.target.value;
       this.$emit('input', $event.target.value);
     },
     onChange($event) {
@@ -84,7 +76,6 @@ export default {
       this.readonly && $event.preventDefault();
     },
     onClickClearIcon() {
-      this.mutableValue = '';
       this.$refs.inputRef.value = '';
       this.$emit('clear', '');
     },
