@@ -1,190 +1,25 @@
 <template>
-  <div id="app">
-    <f-table
-      :data-source="dataSource"
-      :selected-ids="selectedIds"
-      :sort-rules="sortRules"
-      @re-sort="reSort"
-      :loading="loading"
-      :is-id-visible="true"
-      :is-check-box-visible="true"
-      bordered
-    >
-      <f-table-column text="姓名" field="name">
-        <template slot-scope="props">
-          <f-popover>
-            <!-- eslint-disable-next-line prettier/prettier -->
-            <template slot="content">弹出内容</template>
-            <f-button>点我弹出</f-button>
-          </f-popover>
-          <a
-            href="https://www.google.com/"
-            style="color: red; font-weight: bold"
-            >{{ props.value }}</a
-          >
-        </template>
-      </f-table-column>
-      <f-table-column text="成绩" field="score" />
-      <f-table-column text="班级" field="class" />
-      <f-table-column text="座右铭" field="moto">
-        <template slot-scope="props">
-          <span style="color: gold;">{{ props.value }}</span>
-        </template>
-      </f-table-column>
-      <f-table-column text="操作" field="actions">
-        <template slot-scope="props">
-          <f-button @click="onAlert(props.item)">ALERT</f-button>
-        </template>
-      </f-table-column>
-    </f-table>
+  <div id="app" style="padding: 10px;">
+    <f-date-picker :value="value" @input="getNewestDate" />
   </div>
 </template>
 
 <script>
-import FTable from './components/FTable.vue';
-import FTableColumn from './components/FTableColumn.vue';
-import FPopover from './components/FPopover.vue';
-import FButton from './components/button/FButton.vue';
+import FDatePicker from './components/FDatePicker.vue';
 
 export default {
   name: 'App',
   data() {
     return {
-      dataSource: [
-        {
-          id: '1',
-          name: '01 ',
-          score: 100,
-          class: '1 班',
-          collapsibleContent: '弹出折叠内容1',
-          moto: 'Obcaecati sequi similique, m est libero suscipit esse odit.',
-        },
-        {
-          id: '22222222222222',
-          name: '02 小黄人',
-          score: 90,
-          class: '2 班',
-          collapsibleContent: '弹出折叠内容2',
-          moto: '',
-        },
-        {
-          id: '3',
-          name: '03 小黄人',
-          score: 100,
-          class: '3 班',
-        },
-        {
-          id: '4',
-          name: '04 小黄人',
-          score: 800,
-          class: '3 班',
-        },
-        {
-          id: '5',
-          name: '05 小黄人',
-          score: 50,
-          class: '4 班',
-        },
-        {
-          id: '6',
-          name: '06 小黄人',
-          score: 70,
-          class: '1 班',
-          collapsibleContent: '弹出折叠内容6',
-          moto: 'Obcaecati sequi similique',
-        },
-        {
-          id: '7',
-          name: '07 小黄人',
-          score: 30,
-          class: '3 班',
-          collapsibleContent: '弹出折叠内容7',
-          moto: 'Obcaecati sequi',
-        },
-        {
-          id: '8',
-          name: '08 小黄人',
-          score: 10,
-          class: '2 班',
-          collapsibleContent: '弹出折叠内容8',
-          moto: 'Obcaecati sequi similique, m est libero suscipit esse',
-        },
-        {
-          id: '9',
-          name: '09 小黄人',
-          score: 60,
-          class: '1 班',
-          collapsibleContent: '弹出折叠内容9',
-          moto: 'Obcaecati sequi ',
-        },
-        {
-          id: '10',
-          name: '10 小黄人',
-          score: 90,
-          class: '4 班',
-          collapsibleContent: '弹出折叠内容10',
-          moto: 'Obcaecati sequi ',
-        },
-        {
-          id: '11',
-          name: '11 小黄人',
-          score: 20,
-          class: '2 班',
-          collapsibleContent: '弹出折叠内容11',
-          moto: 'Lorem ipsum dolor sit amet con',
-        },
-        {
-          id: '12',
-          name: '12 小黄人',
-          score: 100,
-          class: '4 班',
-          collapsibleContent: '弹出折叠内容12',
-          moto: 'Obcaecati sequi similique, m est libero suscipit esse odit.',
-        },
-        {
-          id: '13',
-          name: '13 小黄人',
-          score: 50,
-          class: '3 班',
-          collapsibleContent: '弹出折叠内容13',
-          moto: 'Obcaecati sequi similique, molestiae voluptate eaque',
-        },
-      ],
-      selectedIds: ['3'],
-      // 可传一或多个规则，或不传
-      // sortRules: { name: 'ascend' },
-      // sortRules: { name: 'ascend', score: 'descend' },
-      sortRules: { name: 'ascend', score: 'descend', class: true },
-      loading: false,
+      value: new Date(),
     };
   },
   methods: {
-    onAlert(item) {
-      alert('当前行数据：' + JSON.stringify(item));
-    },
-    reSort(rules) {
-      this.loading = true;
-      // 模拟后端排序
-      setTimeout(() => {
-        Object.keys(rules).forEach(k => {
-          rules[k] === 'ascend' &&
-            this.dataSource.sort((a, b) => {
-              if (a[k] < b[k]) return -1;
-              if (a[k] > b[k]) return 1;
-              return 0;
-            });
-          rules[k] === 'descend' &&
-            this.dataSource.sort((a, b) => {
-              if (a[k] < b[k]) return 1;
-              if (a[k] > b[k]) return -1;
-              return 0;
-            });
-        });
-        this.loading = false;
-      }, 3000);
+    getNewestDate($event) {
+      this.value = $event;
     },
   },
-  components: { FTable, FTableColumn, FPopover, FButton },
+  components: { FDatePicker },
 };
 </script>
 

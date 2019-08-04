@@ -1,7 +1,31 @@
+const optionsName2ClassPrefix = input => {
+  // https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String/replace#Using_an_inline_function_that_modifies_the_matched_characters
+  const middle = input
+    .match(/^FunUI([A-Za-z]+)$/)[1]
+    .replace(/[A-Z]/g, match => {
+      return `-${match.toLowerCase()}`;
+    });
+
+  return (...appendix) => {
+    if (!appendix.length) return '';
+    return appendix
+      .filter(Boolean)
+      .map(n => `f${middle}-${n}`)
+      .join(' ');
+  };
+};
+
 const getTypeOf = target => {
   const regex = /\[object (.*)\]/;
   const typeString = Object.prototype.toString.call(target);
   return typeString.match(regex)[1].toLowerCase();
+};
+
+const oneOf = (value, optionalValues) => {
+  if (getTypeOf(optionalValues) !== 'array') {
+    throw new Error('Param 2 should be an array.');
+  }
+  return optionalValues.indexOf(value) >= 0;
 };
 
 const ajax = {
@@ -30,4 +54,57 @@ const ajax = {
   },
 };
 
-export { getTypeOf, ajax };
+const isDateObject = dateObj => {
+  if (getTypeOf(dateObj) !== 'date') {
+    throw new Error('Param should be a instance of Date.');
+  }
+};
+
+const getYearMonthDate = dateObj => {
+  isDateObject(dateObj);
+  // Attention: month has been increased by one
+  return [dateObj.getFullYear(), dateObj.getMonth() + 1, dateObj.getDate()];
+};
+
+const getFirstDateOfMonth = dateObj => {
+  const [year, month] = getYearMonthDate(dateObj);
+  return new Date(year, month - 1, 1);
+};
+
+const getLastDateOfMonth = dateObj => {
+  const [year, month] = getYearMonthDate(dateObj);
+  return new Date(year, month, 0);
+};
+
+const getFormattedDate = (dateObj, separator = '/') => {
+  return getYearMonthDate(dateObj || new Date()).join(separator);
+};
+
+const range = (begin, end) => {
+  if (getTypeOf(begin) !== 'number' || getTypeOf(end) !== 'number') {
+    throw new Error('Param should be a number.');
+  }
+  const result = [];
+  if (begin < end) {
+    for (let i = begin; i <= end; i++) {
+      result.push(i);
+    }
+  } else {
+    for (let i = begin; i >= end; i--) {
+      result.push(i);
+    }
+  }
+  return result;
+};
+
+export {
+  ajax,
+  getFirstDateOfMonth,
+  getFormattedDate,
+  getLastDateOfMonth,
+  getTypeOf,
+  getYearMonthDate,
+  oneOf,
+  optionsName2ClassPrefix,
+  range,
+};
