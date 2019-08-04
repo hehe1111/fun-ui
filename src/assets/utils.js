@@ -77,7 +77,9 @@ const getLastDateOfMonth = dateObj => {
 };
 
 const getFormattedDate = (dateObj, separator = '/') => {
-  return getYearMonthDate(dateObj || new Date()).join(separator);
+  const array = getYearMonthDate(dateObj || new Date());
+  array.forEach((n, i) => n < 10 && (array[i] = `0${n}`));
+  return array.join(separator);
 };
 
 const range = (begin, end) => {
