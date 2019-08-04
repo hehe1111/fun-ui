@@ -27,7 +27,7 @@
               </div>
               <div :class="n2c('panel-row')" v-for="i in 6" :key="`row-${i}`">
                 <span
-                  :class="n2c('panel-cell')"
+                  :class="cellClasses(getDateObjectFromDates(i, j))"
                   v-for="j in 7"
                   :key="`row-${i}-cell-${j}`"
                   @click="onClickCell(getDateObjectFromDates(i, j))"
@@ -133,6 +133,16 @@ export default {
     getDateObjectFromDates(row, cell) {
       return this.computeDates[7 * (row - 1) + cell - 1];
     },
+    cellClasses(dateObj) {
+      return [
+        this.n2c('panel-cell'),
+        {
+          [this.n2c('current-month')]:
+            dateObj.getFullYear() === this.value.getFullYear() &&
+            dateObj.getMonth() === this.value.getMonth(),
+        },
+      ];
+    },
     onToggleYearMonth() {
       this.mode = this.mode === 'date' ? 'yearMonth' : 'date';
     },
@@ -160,9 +170,9 @@ export default {
       width: 3em;
       height: 3em;
       padding: 1em;
-      border: 1px solid $borderColor;
       white-space: nowrap;
       user-select: none;
+      color: $darkGrey;
 
       &:hover {
         border: 2px solid $blue;
@@ -173,6 +183,11 @@ export default {
   &-weekday-cell,
   &-weekday-cell:hover {
     border: none;
+  }
+
+  &-weekday-cell,
+  &-current-month {
+    color: $black;
   }
 
   &-nav {
