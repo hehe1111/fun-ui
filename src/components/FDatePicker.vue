@@ -130,14 +130,11 @@ export default {
     },
     computeDates() {
       const firstDateOfMonth = getFirstDateOfMonth(this.value);
-      const weekdayOfFirstDateOfMonth = firstDateOfMonth.getDay();
       let delta;
-      if (this.startWeekOnMonday) {
-        delta =
-          weekdayOfFirstDateOfMonth === 0 ? 6 : weekdayOfFirstDateOfMonth - 1;
-      } else {
-        delta = weekdayOfFirstDateOfMonth === 0 ? 0 : weekdayOfFirstDateOfMonth;
-      }
+      const w = firstDateOfMonth.getDay();
+      this.startWeekOnMonday
+        ? (delta = w === 0 ? 6 : w - 1)
+        : (delta = w === 0 ? 0 : w);
       const firstDate = new Date(firstDateOfMonth - delta * 3600 * 24 * 1000);
       const dates = [];
       for (let i = 0; i < 42; i++) {
@@ -151,62 +148,41 @@ export default {
       return this.computeDates[7 * (row - 1) + cell - 1];
     },
     cellClasses(dateObj) {
+      const { n2c, value } = this;
+      const f = getFormattedDate;
       return [
-        this.n2c('panel-cell'),
+        n2c('panel-cell'),
         {
-          [this.n2c('current-month')]:
-            dateObj.getFullYear() === this.value.getFullYear() &&
-            dateObj.getMonth() === this.value.getMonth(),
-          [this.n2c('today')]:
-            getFormattedDate(dateObj) === getFormattedDate(new Date()),
-          [this.n2c('selected-date')]:
-            getFormattedDate(dateObj) === getFormattedDate(this.value),
+          [n2c('today')]: f(dateObj) === f(new Date()),
+          [n2c('selected-date')]: f(dateObj) === f(value),
+          [n2c('current-month')]:
+            dateObj.getFullYear() === value.getFullYear() &&
+            dateObj.getMonth() === value.getMonth(),
         },
       ];
     },
-    onClickLastYear() {
-      const [year, month, date] = getYearMonthDate(this.value);
-      this.$emit(
-        'input',
-        new Date(
-          year - 1,
-          month,
-          Math.min(date, new Date(year - 1, month + 1, 0).getDate())
-        )
+    getNewDate({ y1 = 0, y2 = 0, m1 = 0, m2 = 0, oldDate = this.value } = {}) {
+      // y1 | y2: {number} last or next year
+      // m1: {number} last or next month
+      // m2: {number} to get the number of days of last or next month
+      const [year, month, date] = getYearMonthDate(oldDate);
+      return new Date(
+        year + y1,
+        month + m1,
+        Math.min(date, new Date(year + y2, month + m2, 0).getDate())
       );
+    },
+    onClickLastYear() {
+      this.$emit('input', this.getNewDate({ y1: -1, y2: -1, m2: 1 }));
     },
     onClickLastMonth() {
-      const [year, month, date] = getYearMonthDate(this.value);
-      this.$emit(
-        'input',
-        new Date(
-          year,
-          month - 1,
-          Math.min(date, new Date(year, month, 0).getDate())
-        )
-      );
+      this.$emit('input', this.getNewDate({ m1: -1 }));
     },
     onClickNextMonth() {
-      const [year, month, date] = getYearMonthDate(this.value);
-      this.$emit(
-        'input',
-        new Date(
-          year,
-          month + 1,
-          Math.min(date, new Date(year, month + 2, 0).getDate())
-        )
-      );
+      this.$emit('input', this.getNewDate({ m1: 1, m2: 2 }));
     },
     onClickNextYear() {
-      const [year, month, date] = getYearMonthDate(this.value);
-      this.$emit(
-        'input',
-        new Date(
-          year + 1,
-          month,
-          Math.min(date, new Date(year + 1, month + 1, 0).getDate())
-        )
-      );
+      this.$emit('input', this.getNewDate({ y1: 1, y2: 1, m2: 1 }));
     },
     onToggleYearMonth() {
       this.mode = this.mode === 'date' ? 'yearMonth' : 'date';
