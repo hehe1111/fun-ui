@@ -8,7 +8,7 @@
             <f-icon :class="n2c('icon', 'last-year')" name="double-left" />
             <f-icon :class="n2c('icon', 'last-month')" name="left" />
             <span :class="n2c('year-month')" @click="onToggleYearMonth"
-              >年和月</span
+              >{{ value.getFullYear() }} 年 {{ value.getMonth() + 1 }} 月</span
             >
             <f-icon :class="n2c('icon', 'next-month')" name="right" />
             <f-icon :class="n2c('icon', 'next-year')" name="double-right" />
@@ -140,6 +140,10 @@ export default {
           [this.n2c('current-month')]:
             dateObj.getFullYear() === this.value.getFullYear() &&
             dateObj.getMonth() === this.value.getMonth(),
+          [this.n2c('today')]:
+            getFormattedDate(dateObj) === getFormattedDate(new Date()),
+          [this.n2c('selected-date')]:
+            getFormattedDate(dateObj) === getFormattedDate(this.value),
         },
       ];
     },
@@ -188,6 +192,15 @@ export default {
   &-weekday-cell,
   &-current-month {
     color: $black;
+  }
+
+  &-today {
+    color: #fff;
+    background-color: $blue;
+  }
+
+  &-selected-date {
+    border: 2px solid $blue;
   }
 
   &-nav {
