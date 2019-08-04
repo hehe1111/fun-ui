@@ -25,8 +25,7 @@
 <script>
 import FIcon from '../FIcon.vue';
 import FCascaderItems from './FCascaderItems.vue';
-import {
-  clickOutside,
+import clickOutside, {
   removeClickOutsideListener,
 } from '../../directives/click-outside.js';
 

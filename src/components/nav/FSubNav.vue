@@ -42,8 +42,7 @@
 <script>
 import FIcon from '../FIcon.vue';
 import FNavItem from './FNavItem.vue';
-import {
-  clickOutside,
+import clickOutside, {
   removeClickOutsideListener,
 } from '../../directives/click-outside.js';
 

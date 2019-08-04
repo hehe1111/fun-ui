@@ -42,3 +42,4 @@ export { default as FTableColumn } from './components/table/FTableColumn.vue';
 export { default as FToast } from './plugins/toast.js';
 export { default as FUpload } from './components/FUpload.vue';
 export { default as clickOutside } from './directives/click-outside.js';
+export { removeClickOutsideListener } from './directives/click-outside.js';
