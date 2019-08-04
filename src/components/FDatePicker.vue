@@ -71,6 +71,11 @@ export default {
       contentStyle: { width: '', padding: 0 },
     };
   },
+  model: {
+    // https://cn.vuejs.org/v2/guide/components-custom-events.html#自定义组件的-v-model
+    prop: 'value',
+    event: 'input',
+  },
   props: {
     value: {
       type: Date,

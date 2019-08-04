@@ -1,6 +1,6 @@
 <template>
   <div id="app" style="padding: 10px;">
-    <f-date-picker :value="value" @input="getNewestDate" />
+    <f-date-picker v-model="value" />
   </div>
 </template>
 
@@ -13,11 +13,6 @@ export default {
     return {
       value: new Date(),
     };
-  },
-  methods: {
-    getNewestDate($event) {
-      this.value = $event;
-    },
   },
   components: { FDatePicker },
 };
