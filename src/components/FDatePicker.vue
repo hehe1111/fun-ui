@@ -1,7 +1,7 @@
 <template>
   <div :class="n2c()">
     <f-popover position="bottom" :contentStyle="contentStyle">
-      <f-input :value="selectedDate" />
+      <f-input :value="selectedDate" @focus="onFocus" />
       <template slot="content">
         <div :class="n2c('panel')">
           <div :class="n2c('nav')">
@@ -184,6 +184,9 @@ export default {
         month + m1,
         Math.min(date, new Date(year + y2, month + m2, 0).getDate())
       );
+    },
+    onFocus() {
+      this.mode = 'date';
     },
     onClickLastYear() {
       this.$emit('input', this.getNewDate({ y1: -1, y2: -1, m2: 1 }));
