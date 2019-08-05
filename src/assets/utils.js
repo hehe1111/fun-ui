@@ -7,7 +7,7 @@ const optionsName2ClassPrefix = input => {
     });
 
   return (...appendix) => {
-    if (!appendix.length) return '';
+    if (!appendix.length) return `f${middle}`;
     return appendix
       .filter(Boolean)
       .map(n => `f${middle}-${n}`)
