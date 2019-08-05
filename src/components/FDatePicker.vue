@@ -1,7 +1,7 @@
 <template>
   <div :class="n2c()">
-    <f-popover position="bottom" :contentStyle="contentStyle">
-      <f-input :value="selectedDate" @focus="onFocus" />
+    <f-popover position="bottom" :contentStyle="{ width: '' }">
+      <f-input :value="selectedDateString" @focus="onFocus" />
       <template slot="content">
         <div :class="n2c('panel')">
           <div :class="n2c('nav')">
@@ -34,14 +34,46 @@
             <template v-if="mode === 'yearMonth'">
               <div :class="n2c('year-month-selector')">
                 <div :class="n2c('selector-container')">
+                  <f-icon
+                    :class="n2c('selector-arrow')"
+                    name="up"
+                    @click="onClickLastYear"
+                  />
                   <div :class="n2c('year-selector')" v-hide-scrollbar>
-                    <span v-for="n in 150" :key="n">{{ 1900 + n }}</span>
+                    <span
+                      v-for="n in yearArray"
+                      :key="n"
+                      @click="onClickYear(n)"
+                      :class="selectedYearClass(n)"
+                      >{{ n }}</span
+                    >
                   </div>
+                  <f-icon
+                    :class="n2c('selector-arrow')"
+                    name="down"
+                    @click="onClickNextYear"
+                  />
                 </div>
                 <div :class="n2c('selector-container')">
+                  <f-icon
+                    :class="n2c('selector-arrow')"
+                    name="up"
+                    @click="onClickLastMonth"
+                  />
                   <div :class="n2c('month-selector')" v-hide-scrollbar>
-                    <span v-for="n in 12" :key="n">{{ n }}</span>
+                    <span
+                      v-for="n in 12"
+                      :key="n"
+                      @click="onClickMonth(n)"
+                      :class="selectedMonthClass(n)"
+                      >{{ n }}</span
+                    >
                   </div>
+                  <f-icon
+                    :class="n2c('selector-arrow')"
+                    name="down"
+                    @click="onClickNextMonth"
+                  />
                 </div>
               </div>
             </template>
@@ -59,7 +91,7 @@
                   :class="cellClasses(getDateObjectFromDates(i, j))"
                   v-for="j in 7"
                   :key="`row-${i}-cell-${j}`"
-                  @click="onClickCell(getDateObjectFromDates(i, j))"
+                  @click="onClickDate(getDateObjectFromDates(i, j))"
                   >{{ getDateObjectFromDates(i, j).getDate() }}</span
                 >
               </div>
@@ -84,27 +116,23 @@ import FIcon from './FIcon.vue';
 import FInput from './FInput.vue';
 import FPopover from './FPopover.vue';
 import FButton from './button/FButton.vue';
+import hideScrollbar from '../directives/hide-scrollbar.js';
 import {
   optionsName2ClassPrefix,
   getFormattedDate,
   getFirstDateOfMonth,
   getYearMonthDate,
   oneOf,
+  getTypeOf,
+  range,
 } from '../assets/utils.js';
-import hideScrollbar from '../directives/hide-scrollbar.js';
 
 export default {
   name: 'FunUIDatePicker',
   data() {
     return {
       mode: 'yearMonth', // date || yearMonth
-      contentStyle: { width: '', padding: 0 },
     };
-  },
-  model: {
-    // https://cn.vuejs.org/v2/guide/components-custom-events.html#自定义组件的-v-model
-    prop: 'value',
-    event: 'input',
   },
   props: {
     value: {
@@ -125,13 +153,27 @@ export default {
         return oneOf(value, ['-', '/', ' / ', ' - ']);
       },
     },
+    yearRange: {
+      type: Array,
+      default: () => [1900, new Date().getFullYear() + 100],
+      validator(value) {
+        return value.every(n => getTypeOf(n) === 'number');
+      },
+    },
   },
   computed: {
-    selectedDate() {
-      return getFormattedDate(this.value);
-    },
     n2c() {
       return optionsName2ClassPrefix(this.$options.name);
+    },
+    yearArray() {
+      return range(...this.yearRange);
+    },
+    selectedYMD() {
+      const [year, month, date] = getYearMonthDate(this.value);
+      return { year, month, date };
+    },
+    selectedDateString() {
+      return getFormattedDate(this.value);
     },
     startWeekOnMonday() {
       return `${this.startWeekOn}` === '1';
@@ -157,6 +199,9 @@ export default {
     },
   },
   methods: {
+    onFocus() {
+      this.mode = 'date';
+    },
     getDateObjectFromDates(row, cell) {
       return this.computeDates[7 * (row - 1) + cell - 1];
     },
@@ -168,49 +213,74 @@ export default {
         {
           [n2c('today')]: f(dateObj) === f(new Date()),
           [n2c('selected-date')]: f(dateObj) === f(value),
-          [n2c('current-month')]:
+          [n2c('displaying-month')]:
             dateObj.getFullYear() === value.getFullYear() &&
             dateObj.getMonth() === value.getMonth(),
         },
       ];
     },
-    getNewDate({ y1 = 0, y2 = 0, m1 = 0, m2 = 0, oldDate = this.value } = {}) {
-      // y1 | y2: {number} last or next year
-      // m1: {number} last or next month
-      // m2: {number} to get the number of days of last or next month
-      const [year, month, date] = getYearMonthDate(oldDate);
-      return new Date(
-        year + y1,
-        month + m1,
-        Math.min(date, new Date(year + y2, month + m2, 0).getDate())
-      );
+    selectedYearClass(year) {
+      return {
+        [`${this.n2c('selected-year')}`]: year === this.selectedYMD.year,
+      };
     },
-    onFocus() {
-      this.mode = 'date';
+    selectedMonthClass(month) {
+      return {
+        [`${this.n2c('selected-month')}`]: month === this.selectedYMD.month + 1,
+      };
+    },
+    emitNewDate({ year, month, date }) {
+      const year2 = year || year === 0 ? year : this.selectedYMD.year;
+      const month2 = month || month === 0 ? month : this.selectedYMD.month;
+      const date2 = date ? date : this.selectedYMD.date;
+      const newDateObj = new Date(
+        year2,
+        month2,
+        Math.min(date2, new Date(year2, month2 + 1, 0).getDate())
+      );
+      this.$emit('input', newDateObj);
+      return newDateObj;
     },
     onClickLastYear() {
-      this.$emit('input', this.getNewDate({ y1: -1, y2: -1, m2: 1 }));
+      this.emitNewDate({ year: this.selectedYMD.year - 1 });
     },
     onClickLastMonth() {
-      this.$emit('input', this.getNewDate({ m1: -1 }));
+      this.emitNewDate({ month: this.selectedYMD.month - 1 });
     },
     onClickNextMonth() {
-      this.$emit('input', this.getNewDate({ m1: 1, m2: 2 }));
+      this.emitNewDate({ month: this.selectedYMD.month + 1 });
     },
     onClickNextYear() {
-      this.$emit('input', this.getNewDate({ y1: 1, y2: 1, m2: 1 }));
+      this.emitNewDate({ year: this.selectedYMD.year + 1 });
+    },
+    onClickYear(year) {
+      if (getTypeOf(year) !== 'number') {
+        throw new Error('Param should be a number');
+      }
+      this.emitNewDate({ year });
+    },
+    onClickMonth(month) {
+      if (getTypeOf(month) !== 'number') {
+        throw new Error('Param should be a number');
+      }
+      this.emitNewDate({ month });
+    },
+    onClickDate($event) {
+      this.$emit('input', $event);
     },
     onToggleYearMonth() {
       this.mode = this.mode === 'date' ? 'yearMonth' : 'date';
-    },
-    onClickCell($event) {
-      this.$emit('input', $event);
     },
     onClickToday() {},
     onClickClear() {},
   },
   components: { FIcon, FInput, FPopover, FButton },
   directives: { hideScrollbar },
+  model: {
+    // https://cn.vuejs.org/v2/guide/components-custom-events.html#自定义组件的-v-model
+    prop: 'value',
+    event: 'input',
+  },
 };
 </script>
 
@@ -231,6 +301,7 @@ export default {
       white-space: nowrap;
       user-select: none;
       color: $darkGrey;
+      border-radius: $borderRadius;
 
       &:hover {
         border: 2px solid $blue;
@@ -244,17 +315,25 @@ export default {
   }
 
   &-weekday-cell,
-  &-current-month {
+  &-displaying-month {
     color: $black;
   }
 
+  &-selected-year,
+  &-selected-month,
+  &-selected-date,
   &-today {
     color: #fff;
+  }
+
+  &-selected-year,
+  &-selected-month,
+  &-selected-date {
     background-color: $blue;
   }
 
-  &-selected-date {
-    border: 2px solid $blue;
+  &-today {
+    background-color: $darkGrey;
   }
 
   &-nav {
@@ -267,13 +346,13 @@ export default {
     margin: 0 1em;
   }
 
+  &-year-month {
+    margin: auto;
+  }
+
   &-body {
     width: 21em;
     height: 21em;
-  }
-
-  &-year-month {
-    margin: auto;
   }
 
   &-year-month-selector {
@@ -281,21 +360,35 @@ export default {
     height: 100%;
   }
 
+  &-selector-container {
+    @extend .flex-center;
+    flex-direction: column;
+
+    &:nth-child(1) {
+      margin-right: 1em;
+    }
+  }
+
+  &-selector-arrow {
+    margin: 1em 0;
+  }
+
   &-year-selector,
   &-month-selector {
-    height: 18em;
+    height: 14em;
     // https://developer.mozilla.org/en-US/docs/Web/Guide/CSS/Block_formatting_context
     display: inline-block; // trigger BFC
     vertical-align: top;
-
     > span {
       @extend .flex-center;
       width: 4em;
       padding: 0.2em 0;
+      border: 2px solid transparent;
+      border-radius: $borderRadius;
       cursor: pointer;
       &:hover {
-        color: #fff;
-        background-color: $blue;
+        border-color: $blue;
+        border-radius: $borderRadius;
       }
     }
   }
