@@ -30,16 +30,19 @@
             />
           </div>
           <div :class="n2c('body')">
-            <!-- eslint-disable-next-line prettier/prettier -->
             <template v-if="mode === 'yearMonth'">
               <div :class="n2c('year-month-selector')">
-                <div :class="n2c('selector-container')">
+                <div :class="n2c('selector-container')" ref="yearSCRef">
                   <f-icon
                     :class="n2c('selector-arrow')"
                     name="up"
                     @click="onClickLastYear"
                   />
-                  <div :class="n2c('year-selector')" v-hide-scrollbar>
+                  <div
+                    :class="n2c('year-selector')"
+                    v-hide-scrollbar
+                    ref="yearSRef"
+                  >
                     <span
                       v-for="n in yearArray"
                       :key="n"
@@ -54,13 +57,17 @@
                     @click="onClickNextYear"
                   />
                 </div>
-                <div :class="n2c('selector-container')">
+                <div :class="n2c('selector-container')" ref="monthSCRef">
                   <f-icon
                     :class="n2c('selector-arrow')"
                     name="up"
                     @click="onClickLastMonth"
                   />
-                  <div :class="n2c('month-selector')" v-hide-scrollbar>
+                  <div
+                    :class="n2c('month-selector')"
+                    v-hide-scrollbar
+                    ref="monthSRef"
+                  >
                     <span
                       v-for="n in 12"
                       :key="n"
@@ -155,7 +162,7 @@ export default {
     },
     yearRange: {
       type: Array,
-      default: () => [1900, new Date().getFullYear() + 100],
+      default: () => [2010, new Date().getFullYear() + 10],
       validator(value) {
         return value.every(n => getTypeOf(n) === 'number');
       },
@@ -198,6 +205,11 @@ export default {
       return dates;
     },
   },
+  updated() {
+    const { yearSCRef, yearSRef, monthSCRef, monthSRef } = this.$refs;
+    this.updateSelectorScrollTop(yearSCRef, yearSRef, 'selected-year');
+    this.updateSelectorScrollTop(monthSCRef, monthSRef, 'selected-month');
+  },
   methods: {
     onFocus() {
       this.mode = 'date';
@@ -233,6 +245,8 @@ export default {
       const year2 = year || year === 0 ? year : this.selectedYMD.year;
       const month2 = month || month === 0 ? month : this.selectedYMD.month;
       const date2 = date ? date : this.selectedYMD.date;
+      if (this.yearOutOfRange(year2)) return;
+      if (this.monthOutOfRange(year2, month2)) return;
       const newDateObj = new Date(
         year2,
         month2,
@@ -266,6 +280,7 @@ export default {
       this.emitNewDate({ month });
     },
     onClickDate($event) {
+      if (this.yearOutOfRange($event.getFullYear())) return;
       this.$emit('input', $event);
     },
     onToggleYearMonth() {
@@ -273,6 +288,25 @@ export default {
     },
     onClickToday() {},
     onClickClear() {},
+    updateSelectorScrollTop(viewport, parent, childCssSelector) {
+      if (!viewport || !parent) return;
+      const oldScrollTop = parent.scrollTop;
+      const { height: vHeight, top: vTop } = viewport.getBoundingClientRect();
+      const { height: pHeight, top: pTop } = parent
+        .querySelector(`.${this.n2c(childCssSelector)}`)
+        .getBoundingClientRect();
+
+      parent.scrollTop = pTop - vTop - vHeight / 2 + pHeight / 2 + oldScrollTop;
+    },
+    yearOutOfRange(year) {
+      return year < this.yearRange[0] || year > this.yearRange[1];
+    },
+    monthOutOfRange(year, month) {
+      return (
+        (year === this.yearRange[1] && month > 11) ||
+        (year === this.yearRange[0] && month < 0)
+      );
+    },
   },
   components: { FIcon, FInput, FPopover, FButton },
   directives: { hideScrollbar },
@@ -386,6 +420,7 @@ export default {
       border: 2px solid transparent;
       border-radius: $borderRadius;
       cursor: pointer;
+      user-select: none;
       &:hover {
         border-color: $blue;
         border-radius: $borderRadius;
