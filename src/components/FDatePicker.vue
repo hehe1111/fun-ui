@@ -31,7 +31,20 @@
           </div>
           <div :class="n2c('body')">
             <!-- eslint-disable-next-line prettier/prettier -->
-            <template v-if="mode === 'yearMonth'">选择年和月</template>
+            <template v-if="mode === 'yearMonth'">
+              <div :class="n2c('year-month-selector')">
+                <div :class="n2c('selector-container')">
+                  <div :class="n2c('year-selector')" v-hide-scrollbar>
+                    <span v-for="n in 150" :key="n">{{ 1900 + n }}</span>
+                  </div>
+                </div>
+                <div :class="n2c('selector-container')">
+                  <div :class="n2c('month-selector')" v-hide-scrollbar>
+                    <span v-for="n in 12" :key="n">{{ n }}</span>
+                  </div>
+                </div>
+              </div>
+            </template>
             <template v-if="mode === 'date'">
               <div :class="n2c('panel-row', 'weekdays')">
                 <span
@@ -71,7 +84,6 @@ import FIcon from './FIcon.vue';
 import FInput from './FInput.vue';
 import FPopover from './FPopover.vue';
 import FButton from './button/FButton.vue';
-
 import {
   optionsName2ClassPrefix,
   getFormattedDate,
@@ -79,12 +91,13 @@ import {
   getYearMonthDate,
   oneOf,
 } from '../assets/utils.js';
+import hideScrollbar from '../directives/hide-scrollbar.js';
 
 export default {
   name: 'FunUIDatePicker',
   data() {
     return {
-      mode: 'date', // date || yearMonth
+      mode: 'yearMonth', // date || yearMonth
       contentStyle: { width: '', padding: 0 },
     };
   },
@@ -194,6 +207,7 @@ export default {
     onClickClear() {},
   },
   components: { FIcon, FInput, FPopover, FButton },
+  directives: { hideScrollbar },
 };
 </script>
 
@@ -257,6 +271,29 @@ export default {
 
   &-year-month {
     margin: auto;
+  }
+
+  &-year-month-selector {
+    @extend .flex-center;
+    height: 100%;
+  }
+
+  &-year-selector,
+  &-month-selector {
+    height: 18em;
+    display: inline-block; // trigger BFC
+    vertical-align: top;
+
+    > span {
+      @extend .flex-center;
+      width: 4em;
+      padding: 0.2em 0;
+      cursor: pointer;
+      &:hover {
+        color: #fff;
+        background-color: $blue;
+      }
+    }
   }
 
   &-footer {
