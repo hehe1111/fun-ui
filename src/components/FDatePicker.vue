@@ -281,6 +281,7 @@ export default {
   &-year-selector,
   &-month-selector {
     height: 18em;
+    // https://developer.mozilla.org/en-US/docs/Web/Guide/CSS/Block_formatting_context
     display: inline-block; // trigger BFC
     vertical-align: top;
 
