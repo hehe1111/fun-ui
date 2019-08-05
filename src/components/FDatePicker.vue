@@ -107,9 +107,9 @@ export default {
     },
     separator: {
       type: String,
-      default: '/',
+      default: ' / ',
       validator(value) {
-        return oneOf(value, ['-', '/']);
+        return oneOf(value, ['-', '/', ' / ', ' - ']);
       },
     },
   },

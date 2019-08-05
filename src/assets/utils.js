@@ -76,7 +76,7 @@ const getLastDateOfMonth = dateObj => {
   return new Date(year, month + 1, 0);
 };
 
-const getFormattedDate = (dateObj, separator = '/') => {
+const getFormattedDate = (dateObj, separator = ' / ') => {
   const array = getYearMonthDate(dateObj || new Date());
   array[1] += 1;
   array.forEach((n, i) => n < 10 && (array[i] = `0${n}`));
