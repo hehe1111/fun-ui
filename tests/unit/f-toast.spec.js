@@ -27,20 +27,30 @@ describe('FToast.vue', () => {
     expect(wrapper).to.exist;
   });
 
-  it('可以接受 closeButton 属性', () => {
-    const text = '关闭啦啦啦啦啦';
+  it('可以接受 onClose 属性', done => {
+    const timeout = 0.01;
     const fake = sinon.fake();
     const wrapper = mount(FToast, {
-      propsData: {
-        closeButton: {
-          text,
-          callback: fake,
-        },
-      },
+      propsData: { autoCloseDelay: timeout, onClose: fake },
     });
-    const button = wrapper.find('.close-button-text');
-    expect(button.text().trim()).to.eq(text);
-    button.trigger('click');
+    expect(fake).to.not.have.been.called;
+    setTimeout(() => {
+      expect(fake).to.have.been.called;
+      done();
+      wrapper.destroy();
+    }, timeout * 1000 + 10);
+  });
+
+  it('可以接受 closeIcon 属性', () => {
+    const fake = sinon.fake();
+    const wrapper = mount(FToast, {
+      propsData: { onClose: fake, closeIcon: true },
+    });
+    const iconContainer = wrapper.find('.f-toast-close-icon-container');
+    const icon = wrapper.find('.f-toast-close-icon');
+    expect(iconContainer.exists()).to.eq(true);
+    expect(icon.exists()).to.eq(true);
+    iconContainer.trigger('click');
     expect(fake).to.have.been.called;
     wrapper.destroy();
   });
@@ -62,6 +72,19 @@ describe('FToast.vue', () => {
       propsData: { position: 'middle' },
     });
     expect(wrapper.classes()).include('position-middle');
+    wrapper.destroy();
+  });
+
+  it('可以接受 state 属性', () => {
+    const wrapper = mount(FToast, {
+      attachToDocument: true,
+      propsData: { state: 'success' },
+    });
+    expect(wrapper.find('.f-toast').classes()).include('success');
+    // rgb(65, 184, 131) === #41B883 === $green
+    expect(
+      window.getComputedStyle(wrapper.find('.f-toast').element).backgroundColor
+    ).to.eq('rgb(65, 184, 131)');
     wrapper.destroy();
   });
 });
