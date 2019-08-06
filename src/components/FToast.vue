@@ -153,7 +153,7 @@ export default {
     font-size: $fontSize;
     line-height: 1.6;
     border-radius: 6px;
-    box-shadow: 0 1px 3px 0 $boxShadowColor;
+    box-shadow: 0 0 5px 0 $boxShadowColor;
     color: #fff;
     display: flex;
     align-items: center;
