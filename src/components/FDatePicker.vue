@@ -1,7 +1,11 @@
 <template>
   <div :class="n2c()">
     <f-popover position="bottom" :contentStyle="{ width: '' }">
-      <f-input :value="selectedDateString" @focus="onFocus" />
+      <f-input
+        :value="selectedDateString"
+        @focus="onFocus"
+        :clearable="false"
+      />
       <template slot="content">
         <div :class="n2c('panel')">
           <div :class="n2c('nav')">
@@ -15,9 +19,10 @@
               name="left"
               @click="onClickLastMonth"
             />
-            <span :class="n2c('year-month')" @click="onToggleYearMonth"
-              >{{ value.getFullYear() }} 年 {{ value.getMonth() + 1 }} 月</span
-            >
+            <span :class="n2c('year-month')" @click="onToggleYearMonth">
+              <span>{{ lazyValue.getFullYear() }} 年</span>
+              <span>{{ lazyValue.getMonth() + 1 }} 月</span>
+            </span>
             <f-icon
               :class="n2c('icon')"
               name="right"
@@ -143,28 +148,31 @@ export default {
   },
   props: {
     value: {
-      type: Date,
+      type: [Date, Object],
       default: () => new Date(),
+      validator(prop) {
+        return getTypeOf(prop) === 'date' || getTypeOf(prop) === 'null';
+      },
     },
     startWeekOn: {
       type: [Number, String],
       default: 1,
-      validator(value) {
-        return oneOf(value, [0, 1, '0', '1']);
+      validator(prop) {
+        return oneOf(prop, [0, 1, '0', '1']);
       },
     },
     separator: {
       type: String,
       default: ' / ',
-      validator(value) {
-        return oneOf(value, ['-', '/', ' / ', ' - ']);
+      validator(prop) {
+        return oneOf(prop, ['-', '/', ' / ', ' - ']);
       },
     },
     scope: {
       type: Array,
       default: () => [new Date(2010, 3, 10), new Date(2030, 8, 20)],
-      validator(value) {
-        return value.every(n => getTypeOf(n) === 'date');
+      validator(prop) {
+        return prop.every(n => getTypeOf(n) === 'date');
       },
     },
   },
@@ -172,14 +180,18 @@ export default {
     n2c() {
       return optionsName2ClassPrefix(this.$options.name);
     },
+    lazyValue() {
+      return this.value ? this.value : new Date();
+    },
     yearScope() {
       return range(this.scope[0].getFullYear(), this.scope[1].getFullYear());
     },
     selectedYMD() {
-      const [year, month, date] = getYearMonthDate(this.value);
+      const [year, month, date] = getYearMonthDate(this.lazyValue);
       return { year, month, date };
     },
     selectedDateString() {
+      if (!this.value) return '';
       return getFormattedDate(this.value);
     },
     startWeekOnMonday() {
@@ -191,7 +203,7 @@ export default {
       return this.startWeekOnMonday ? tmp.concat(sunday) : sunday.concat(tmp);
     },
     computeDates() {
-      const firstDateOfMonth = getFirstDateOfMonth(this.value);
+      const firstDateOfMonth = getFirstDateOfMonth(this.lazyValue);
       let delta;
       const w = firstDateOfMonth.getDay();
       this.startWeekOnMonday
@@ -218,16 +230,16 @@ export default {
       return this.computeDates[7 * (row - 1) + cell - 1];
     },
     cellClasses(dateObj) {
-      const { n2c, value } = this;
+      const { n2c } = this;
       const f = getFormattedDate;
+      const [dYear, dMonth] = getYearMonthDate(dateObj);
+      const [year, month] = getYearMonthDate(this.lazyValue);
       return [
         n2c('panel-cell'),
         {
           [n2c('today')]: f(dateObj) === f(new Date()),
-          [n2c('selected-date')]: f(dateObj) === f(value),
-          [n2c('displaying-month')]:
-            dateObj.getFullYear() === value.getFullYear() &&
-            dateObj.getMonth() === value.getMonth(),
+          [n2c('selected-date')]: f(dateObj) === f(this.value),
+          [n2c('displaying-month')]: dYear === year && dMonth === month,
         },
       ];
     },
@@ -272,7 +284,9 @@ export default {
       if (this.dateOutOfRange(year, month, date)) flag = true;
       return flag;
     },
-    emitNewDate({ year, month, date }) {
+    emitNewDate(obj) {
+      if (!obj) return this.$emit('input', null);
+      const { year, month, date } = obj;
       const year2 = year || year === 0 ? year : this.selectedYMD.year;
       const month2 = month || month === 0 ? month : this.selectedYMD.month;
       const date2 = date ? date : this.selectedYMD.date;
@@ -320,7 +334,9 @@ export default {
       const [year, month, date] = getYearMonthDate(new Date());
       this.emitNewDate({ year, month, date });
     },
-    onClickClear() {},
+    onClickClear() {
+      this.emitNewDate(null);
+    },
     updateSelectorScrollTop(viewport, parent, childCssSelector) {
       if (!viewport || !parent) return;
       const oldScrollTop = parent.scrollTop;

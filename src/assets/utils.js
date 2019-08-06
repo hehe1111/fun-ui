@@ -86,6 +86,7 @@ const isDateObject = dateObj => {
  * @param {Date} dateObj
  */
 const getYearMonthDate = dateObj => {
+  if (!dateObj) return [];
   isDateObject(dateObj);
   // Attention: month has been increased by one
   return [dateObj.getFullYear(), dateObj.getMonth(), dateObj.getDate()];
