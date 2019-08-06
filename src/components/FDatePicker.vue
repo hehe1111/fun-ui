@@ -6,7 +6,7 @@
         @focus="onFocus"
         :clearable="false"
       />
-      <template slot="content">
+      <template slot="content" slot-scope="{ close }">
         <div :class="n2c('panel')">
           <div :class="n2c('nav')">
             <f-icon
@@ -103,17 +103,17 @@
                   :class="cellClasses(getDateObjectFromDates(i, j))"
                   v-for="j in 7"
                   :key="`row-${i}-cell-${j}`"
-                  @click="onClickDate(getDateObjectFromDates(i, j))"
+                  @click="onClickDate(getDateObjectFromDates(i, j), close)"
                   >{{ getDateObjectFromDates(i, j).getDate() }}</span
                 >
               </div>
             </template>
           </div>
           <div :class="n2c('footer')">
-            <f-button :class="n2c('action')" @click="onClickToday"
+            <f-button :class="n2c('action')" @click="onClickToday(close)"
               >今天</f-button
             >
-            <f-button :class="n2c('action')" @click="onClickClear"
+            <f-button :class="n2c('action')" @click="onClickClear(close)"
               >清除</f-button
             >
           </div>
@@ -327,18 +327,21 @@ export default {
       }
       this.emitNewDate({ month });
     },
-    onClickDate($event) {
-      if (this.outOfRange(...getYearMonthDate($event))) return;
-      this.$emit('input', $event);
+    onClickDate(dateObj, close) {
+      if (this.outOfRange(...getYearMonthDate(dateObj))) return;
+      close();
+      this.$emit('input', dateObj);
     },
     onToggleYearMonth() {
       this.mode = this.mode === 'date' ? 'yearMonth' : 'date';
     },
-    onClickToday() {
+    onClickToday(close) {
       const [year, month, date] = getYearMonthDate(new Date());
+      close();
       this.emitNewDate({ year, month, date });
     },
-    onClickClear() {
+    onClickClear(close) {
+      close();
       this.emitNewDate(null);
     },
     updateSelectorScrollTop(viewport, parent, childCssSelector) {
