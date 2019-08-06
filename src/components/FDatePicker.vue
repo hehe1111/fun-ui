@@ -44,7 +44,7 @@
                     ref="yearSRef"
                   >
                     <span
-                      v-for="n in yearArray"
+                      v-for="n in yearScope"
                       :key="n"
                       @click="onClickYear(n)"
                       :class="selectedYearClass(n)"
@@ -71,7 +71,7 @@
                     <span
                       v-for="n in 12"
                       :key="n"
-                      @click="onClickMonth(n)"
+                      @click="onClickMonth(n - 1)"
                       :class="selectedMonthClass(n)"
                       >{{ n }}</span
                     >
@@ -160,11 +160,11 @@ export default {
         return oneOf(value, ['-', '/', ' / ', ' - ']);
       },
     },
-    yearRange: {
+    scope: {
       type: Array,
-      default: () => [2010, new Date().getFullYear() + 10],
+      default: () => [new Date(2010, 3, 10), new Date(2030, 8, 20)],
       validator(value) {
-        return value.every(n => getTypeOf(n) === 'number');
+        return value.every(n => getTypeOf(n) === 'date');
       },
     },
   },
@@ -172,8 +172,8 @@ export default {
     n2c() {
       return optionsName2ClassPrefix(this.$options.name);
     },
-    yearArray() {
-      return range(...this.yearRange);
+    yearScope() {
+      return range(this.scope[0].getFullYear(), this.scope[1].getFullYear());
     },
     selectedYMD() {
       const [year, month, date] = getYearMonthDate(this.value);
@@ -241,12 +241,42 @@ export default {
         [`${this.n2c('selected-month')}`]: month === this.selectedYMD.month + 1,
       };
     },
+    yearOutOfRange(year) {
+      const isBottomReached = year < this.scope[0].getFullYear();
+      const isTopReached = year > this.scope[1].getFullYear();
+      return isBottomReached || isTopReached;
+    },
+    monthOutOfRange(year, month) {
+      const [year0, month0] = getYearMonthDate(this.scope[0]);
+      const [year1, month1] = getYearMonthDate(this.scope[1]);
+      const isBottomReached = year === year0 && month < month0;
+      const isTopReached = year === year1 && month > month1;
+      isBottomReached && this.emitNewDate({ year: year0, month: month0 });
+      isTopReached && this.emitNewDate({ year: year1, month: month1 });
+      return isBottomReached || isTopReached;
+    },
+    dateOutOfRange(year, month, date) {
+      const [year0, month0, date0] = getYearMonthDate(this.scope[0]);
+      const [year1, month1, date1] = getYearMonthDate(this.scope[1]);
+      const isBottomReached =
+        year === year0 && month === month0 && date < date0;
+      const isTopReached = year === year1 && month === month1 && date > date1;
+      isBottomReached && this.emitNewDate({ month: month0, date: date0 });
+      isTopReached && this.emitNewDate({ month: month1, date: date1 });
+      return isBottomReached || isTopReached;
+    },
+    outOfRange(year, month, date) {
+      let flag = false;
+      if (this.yearOutOfRange(year)) flag = true;
+      if (this.monthOutOfRange(year, month)) flag = true;
+      if (this.dateOutOfRange(year, month, date)) flag = true;
+      return flag;
+    },
     emitNewDate({ year, month, date }) {
       const year2 = year || year === 0 ? year : this.selectedYMD.year;
       const month2 = month || month === 0 ? month : this.selectedYMD.month;
       const date2 = date ? date : this.selectedYMD.date;
-      if (this.yearOutOfRange(year2)) return;
-      if (this.monthOutOfRange(year2, month2)) return;
+      if (this.outOfRange(year2, month2, date2)) return;
       const newDateObj = new Date(
         year2,
         month2,
@@ -280,7 +310,7 @@ export default {
       this.emitNewDate({ month });
     },
     onClickDate($event) {
-      if (this.yearOutOfRange($event.getFullYear())) return;
+      if (this.outOfRange(...getYearMonthDate($event))) return;
       this.$emit('input', $event);
     },
     onToggleYearMonth() {
@@ -297,15 +327,6 @@ export default {
         .getBoundingClientRect();
 
       parent.scrollTop = pTop - vTop - vHeight / 2 + pHeight / 2 + oldScrollTop;
-    },
-    yearOutOfRange(year) {
-      return year < this.yearRange[0] || year > this.yearRange[1];
-    },
-    monthOutOfRange(year, month) {
-      return (
-        (year === this.yearRange[1] && month > 11) ||
-        (year === this.yearRange[0] && month < 0)
-      );
     },
   },
   components: { FIcon, FInput, FPopover, FButton },
