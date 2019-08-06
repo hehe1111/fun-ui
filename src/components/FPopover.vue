@@ -1,15 +1,23 @@
 <template>
   <div class="popover" ref="popover">
-    <div
-      class="content-container"
-      :class="classes"
-      v-if="visible"
-      ref="contentContainer"
-      :style="contentStyle"
+    <transition
+      @before-enter="beforeEnter"
+      @enter="enter"
+      @after-enter="afterEnter"
+      @leave="leave"
+      @after-leave="afterLeave"
     >
-      <!-- slot-scope 把组件内部的东西暴露给插槽，从而可以在父组件作用域中调用 -->
-      <slot name="content" :close="close" />
-    </div>
+      <div
+        class="content-container"
+        :class="classes"
+        v-if="visible"
+        ref="contentContainer"
+        :style="contentStyle"
+      >
+        <!-- slot-scope 把组件内部的东西暴露给插槽，从而可以在父组件作用域中调用 -->
+        <slot name="content" :close="close" />
+      </div>
+    </transition>
     <div class="trigger-container" ref="triggerContainer" :style="triggerStyle">
       <slot />
     </div>
@@ -22,6 +30,7 @@ export default {
   data() {
     return {
       visible: false,
+      popoverHeight: 0,
     };
   },
   props: {
@@ -158,6 +167,33 @@ export default {
       }
       this.close();
     },
+    beforeEnter(el) {
+      el.style.opacity = 0;
+    },
+    enter(el, done) {
+      this.popoverHeight = el.getBoundingClientRect().height;
+      el.style.height = 0;
+      el.getBoundingClientRect(); // 强制浏览器渲染上一次操作的结果
+      setTimeout(() => {
+        el.style.height = `${this.popoverHeight}px`;
+        el.style.opacity = 1;
+        // 等待过渡完成
+        el.addEventListener('transitionend', () => done());
+      }, 0);
+    },
+    afterEnter(el) {
+      el.style.height = 'auto';
+    },
+    leave(el, done) {
+      el.style.height = `${this.popoverHeight}px`;
+      el.getBoundingClientRect();
+      el.style.height = 0;
+      el.style.opacity = 0;
+      el.addEventListener('transitionend', () => done());
+    },
+    afterLeave(el) {
+      el.style.height = 'auto';
+    },
   },
 };
 </script>
@@ -181,6 +217,8 @@ export default {
   // box-shadow: 0 0 3px $boxShadowColor;
   filter: drop-shadow(0 0 3px $boxShadowColor);
   background-color: #fff;
+  transition: all $duration / 2 linear;
+  overflow: hidden; // 避免动画过程中出现元素的重叠现象
 
   &::before,
   &::after {
