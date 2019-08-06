@@ -316,7 +316,10 @@ export default {
     onToggleYearMonth() {
       this.mode = this.mode === 'date' ? 'yearMonth' : 'date';
     },
-    onClickToday() {},
+    onClickToday() {
+      const [year, month, date] = getYearMonthDate(new Date());
+      this.emitNewDate({ year, month, date });
+    },
     onClickClear() {},
     updateSelectorScrollTop(viewport, parent, childCssSelector) {
       if (!viewport || !parent) return;
@@ -383,7 +386,8 @@ export default {
 
   &-selected-year,
   &-selected-month,
-  &-selected-date {
+  &-selected-date,
+  &-selected-date.f-date-picker-selected-date {
     background-color: $blue;
   }
 
