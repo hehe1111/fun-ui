@@ -124,11 +124,13 @@
 </template>
 
 <script>
+import Vue from 'vue';
 import FIcon from './FIcon.vue';
 import FInput from './FInput.vue';
 import FPopover from './FPopover.vue';
 import FButton from './button/FButton.vue';
 import hideScrollbar from '../directives/hide-scrollbar.js';
+import toast from '../plugins/toast.js';
 import {
   optionsName2ClassPrefix,
   getFormattedDate,
@@ -138,6 +140,7 @@ import {
   getTypeOf,
   range,
 } from '../assets/utils.js';
+Vue.use(toast);
 
 export default {
   name: 'FunUIDatePicker',
@@ -282,6 +285,7 @@ export default {
       if (this.yearOutOfRange(year)) flag = true;
       if (this.monthOutOfRange(year, month)) flag = true;
       if (this.dateOutOfRange(year, month, date)) flag = true;
+      if (flag) this.$toast('超出范围不可选', { state: 'error' });
       return flag;
     },
     emitNewDate(obj) {
