@@ -31,7 +31,7 @@ const hasScrollbar = el => {
  */
 export default {
   inserted: (el, binding, vnode, oldnode) => {
-    const { width, height } = binding.value;
+    const { width, height } = binding.value || binding.arg;
     if (!width || !height) throw new Error('width and height are required.');
 
     const oldParent = el.parentElement;

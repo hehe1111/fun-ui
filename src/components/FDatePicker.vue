@@ -20,8 +20,8 @@
               @click="onClickLastMonth"
             />
             <span :class="n2c('year-month')" @click="onToggleYearMonth">
-              <span>{{ lazyValue.getFullYear() }} 年</span>
-              <span>{{ lazyValue.getMonth() + 1 }} 月</span>
+              <span>{{ lazyValue.getFullYear() }}&nbsp;年&nbsp;</span>
+              <span>{{ lazyValue.getMonth() + 1 }}&nbsp;月</span>
             </span>
             <f-icon
               :class="n2c('icon')"
@@ -36,63 +36,21 @@
           </div>
           <div :class="n2c('body')">
             <template v-if="mode === YEAR_MONTH_MODE">
-              <div :class="n2c('year-month-selector')">
-                <div :class="n2c('selector-container')" ref="yearSCRef">
-                  <f-icon
-                    :class="n2c('selector-arrow')"
-                    name="up"
-                    @click="onClickLastYear"
-                  />
-                  <div
-                    :class="n2c('year-selector')"
-                    v-hide-scrollbar="{
-                      width: 'calc(4em + 2px)',
-                      height: '14em',
-                    }"
-                    ref="yearSRef"
-                  >
-                    <span
-                      v-for="n in yearScope"
-                      :key="n"
-                      @click="onClickYear(n)"
-                      :class="selectedYearClass(n)"
-                      >{{ n }}</span
-                    >
-                  </div>
-                  <f-icon
-                    :class="n2c('selector-arrow')"
-                    name="down"
-                    @click="onClickNextYear"
-                  />
-                </div>
-                <div :class="n2c('selector-container')" ref="monthSCRef">
-                  <f-icon
-                    :class="n2c('selector-arrow')"
-                    name="up"
-                    @click="onClickLastMonth"
-                  />
-                  <div
-                    :class="n2c('month-selector')"
-                    v-hide-scrollbar="{
-                      width: 'calc(4em + 2px)',
-                      height: '14em',
-                    }"
-                    ref="monthSRef"
-                  >
-                    <span
-                      v-for="n in 12"
-                      :key="n"
-                      @click="onClickMonth(n - 1)"
-                      :class="selectedMonthClass(n)"
-                      >{{ n }}</span
-                    >
-                  </div>
-                  <f-icon
-                    :class="n2c('selector-arrow')"
-                    name="down"
-                    @click="onClickNextMonth"
-                  />
-                </div>
+              <div :class="n2c('year-month-picker')">
+                <f-scrollable-picker
+                  :width-and-height="widthAndHeight"
+                  :values="yearScope"
+                  :selected="selectedYMD.year"
+                  @update:selected="onUpdateYear"
+                  :error-message="errorMessage"
+                />
+                <f-scrollable-picker
+                  :width-and-height="widthAndHeight"
+                  :values="range(1, 12)"
+                  :selected="selectedYMD.month + 1"
+                  @update:selected="onUpdateMonth"
+                  loop
+                />
               </div>
             </template>
             <template v-if="mode === DATE_MODE">
@@ -135,7 +93,7 @@ import FIcon from './FIcon.vue';
 import FInput from './FInput.vue';
 import FPopover from './FPopover.vue';
 import FButton from './button/FButton.vue';
-import hideScrollbar from '../directives/hide-scrollbar.js';
+import FScrollablePicker from './FScrollablePicker.vue';
 import toast from '../plugins/toast.js';
 import {
   optionsName2ClassPrefix,
@@ -155,9 +113,11 @@ export default {
   name: 'FunUIDatePicker',
   data() {
     return {
-      mode: DATE_MODE, // dateMode || yearMonthMode
+      mode: DATE_MODE, // DATE_MODE || YEAR_MONTH_MODE
       DATE_MODE,
       YEAR_MONTH_MODE,
+      range,
+      widthAndHeight: { width: '4em', height: '14em' },
     };
   },
   props: {
@@ -230,15 +190,10 @@ export default {
       }
       return dates;
     },
-  },
-  updated() {
-    this.updateSelectorScrollTop();
-  },
-  watch: {
-    mode(newValue, oldValue) {
-      if (newValue === YEAR_MONTH_MODE) {
-        this.$nextTick(() => this.updateSelectorScrollTop());
-      }
+    errorMessage() {
+      const start = getFormattedDate(this.scope[0]);
+      const end = getFormattedDate(this.scope[1]);
+      return `<span>可选时间：</span><br/><span>${start} - ${end}</span>`;
     },
   },
   methods: {
@@ -261,16 +216,6 @@ export default {
           [n2c('displaying-month')]: dYear === year && dMonth === month,
         },
       ];
-    },
-    selectedYearClass(year) {
-      return {
-        [`${this.n2c('selected-year')}`]: year === this.selectedYMD.year,
-      };
-    },
-    selectedMonthClass(month) {
-      return {
-        [`${this.n2c('selected-month')}`]: month === this.selectedYMD.month + 1,
-      };
     },
     yearOutOfRange(year) {
       const isBottomReached = year < this.scope[0].getFullYear();
@@ -301,7 +246,13 @@ export default {
       if (this.yearOutOfRange(year)) flag = true;
       if (this.monthOutOfRange(year, month)) flag = true;
       if (this.dateOutOfRange(year, month, date)) flag = true;
-      if (flag) this.$toast('超出范围不可选', { state: 'error' });
+      if (flag && this.errorMessage) {
+        this.$toast(this.errorMessage, {
+          state: 'error',
+          enableHTML: true,
+          closeIcon: true,
+        });
+      }
       return flag;
     },
     emitNewDate(obj) {
@@ -331,17 +282,17 @@ export default {
     onClickNextYear() {
       this.emitNewDate({ year: this.selectedYMD.year + 1 });
     },
-    onClickYear(year) {
+    onUpdateYear(year) {
       if (getTypeOf(year) !== 'number') {
         throw new Error('Param should be a number');
       }
       this.emitNewDate({ year });
     },
-    onClickMonth(month) {
+    onUpdateMonth(month) {
       if (getTypeOf(month) !== 'number') {
         throw new Error('Param should be a number');
       }
-      this.emitNewDate({ month });
+      this.emitNewDate({ month: month - 1 });
     },
     onClickDate(dateObj, close) {
       if (this.outOfRange(...getYearMonthDate(dateObj))) return;
@@ -360,24 +311,8 @@ export default {
       close();
       this.emitNewDate(null);
     },
-    updateSelectorScrollTop() {
-      const { yearSCRef, yearSRef, monthSCRef, monthSRef } = this.$refs;
-      this._updateSelectorScrollTop(yearSCRef, yearSRef, 'selected-year');
-      this._updateSelectorScrollTop(monthSCRef, monthSRef, 'selected-month');
-    },
-    _updateSelectorScrollTop(viewport, parent, childCssSelector) {
-      if (!viewport || !parent) return;
-      const oldScrollTop = parent.scrollTop;
-      const { height: vHeight, top: vTop } = viewport.getBoundingClientRect();
-      const { height: pHeight, top: pTop } = parent
-        .querySelector(`.${this.n2c(childCssSelector)}`)
-        .getBoundingClientRect();
-
-      parent.scrollTop = pTop - vTop - vHeight / 2 + pHeight / 2 + oldScrollTop;
-    },
   },
-  components: { FIcon, FInput, FPopover, FButton },
-  directives: { hideScrollbar },
+  components: { FIcon, FInput, FPopover, FButton, FScrollablePicker },
   model: {
     // https://cn.vuejs.org/v2/guide/components-custom-events.html#自定义组件的-v-model
     prop: 'value',
@@ -421,22 +356,17 @@ export default {
     color: $black;
   }
 
-  &-selected-year,
-  &-selected-month,
   &-selected-date,
   &-today {
     color: #fff;
   }
 
-  &-selected-year,
-  &-selected-month,
-  &-selected-date,
-  &-selected-date.f-date-picker-selected-date {
-    background-color: $blue;
-  }
-
   &-today {
     background-color: $darkGrey;
+  }
+
+  &-selected-date {
+    background-color: $blue;
   }
 
   &-nav {
@@ -458,42 +388,9 @@ export default {
     height: 21em;
   }
 
-  &-year-month-selector {
+  &-year-month-picker {
     @extend .flex-center;
     height: 100%;
-  }
-
-  &-selector-container {
-    @extend .flex-center;
-    flex-direction: column;
-
-    &:nth-child(1) {
-      margin-right: 1em;
-    }
-  }
-
-  &-selector-arrow {
-    margin: 1em 0;
-  }
-
-  &-year-selector,
-  &-month-selector {
-    // https://developer.mozilla.org/en-US/docs/Web/Guide/CSS/Block_formatting_context
-    display: inline-block; // trigger BFC
-    vertical-align: top;
-    > span {
-      @extend .flex-center;
-      width: 4em;
-      padding: 0.2em 0;
-      border: 2px solid transparent;
-      border-radius: $borderRadius;
-      cursor: pointer;
-      user-select: none;
-      &:hover {
-        border-color: $blue;
-        border-radius: $borderRadius;
-      }
-    }
   }
 
   &-footer {
