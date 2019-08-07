@@ -232,9 +232,14 @@ export default {
     },
   },
   updated() {
-    const { yearSCRef, yearSRef, monthSCRef, monthSRef } = this.$refs;
-    this.updateSelectorScrollTop(yearSCRef, yearSRef, 'selected-year');
-    this.updateSelectorScrollTop(monthSCRef, monthSRef, 'selected-month');
+    this.updateSelectorScrollTop();
+  },
+  watch: {
+    mode(newValue, oldValue) {
+      if (newValue === YEAR_MONTH_MODE) {
+        this.$nextTick(() => this.updateSelectorScrollTop());
+      }
+    },
   },
   methods: {
     onFocus() {
@@ -355,7 +360,12 @@ export default {
       close();
       this.emitNewDate(null);
     },
-    updateSelectorScrollTop(viewport, parent, childCssSelector) {
+    updateSelectorScrollTop() {
+      const { yearSCRef, yearSRef, monthSCRef, monthSRef } = this.$refs;
+      this._updateSelectorScrollTop(yearSCRef, yearSRef, 'selected-year');
+      this._updateSelectorScrollTop(monthSCRef, monthSRef, 'selected-month');
+    },
+    _updateSelectorScrollTop(viewport, parent, childCssSelector) {
       if (!viewport || !parent) return;
       const oldScrollTop = parent.scrollTop;
       const { height: vHeight, top: vTop } = viewport.getBoundingClientRect();
