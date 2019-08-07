@@ -145,25 +145,6 @@ const range = (start, end) => {
   return result;
 };
 
-/**
- * @param {Element} el - A HTML element
- * @param {string} direction - Optional value: vertical | horizontal
- */
-const hasScrollbar = (el, direction) => {
-  if (!oneOf(direction, ['vertical', 'horizontal'])) {
-    throw new Error('Param 2 should be either "vertical" or "horizontal"');
-  }
-  let property;
-  direction === 'vertical' && (property = 'Width');
-  direction === 'horizontal' && (property = 'Height');
-  return (
-    el[`offset${property}`] -
-      el[`client${property}`] -
-      window.parseInt(window.getComputedStyle(el).borderLeftWidth) * 2 >=
-    17
-  );
-};
-
 export {
   ajax,
   getFirstDateOfMonth,
@@ -171,7 +152,6 @@ export {
   getLastDateOfMonth,
   getTypeOf,
   getYearMonthDate,
-  hasScrollbar,
   oneOf,
   optionsName2ClassPrefix,
   range,

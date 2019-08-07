@@ -45,7 +45,10 @@
                   />
                   <div
                     :class="n2c('year-selector')"
-                    v-hide-scrollbar
+                    v-hide-scrollbar="{
+                      width: 'calc(4em + 2px)',
+                      height: '14em',
+                    }"
                     ref="yearSRef"
                   >
                     <span
@@ -70,7 +73,10 @@
                   />
                   <div
                     :class="n2c('month-selector')"
-                    v-hide-scrollbar
+                    v-hide-scrollbar="{
+                      width: 'calc(4em + 2px)',
+                      height: '14em',
+                    }"
                     ref="monthSRef"
                   >
                     <span
@@ -457,7 +463,6 @@ export default {
 
   &-year-selector,
   &-month-selector {
-    height: 14em;
     // https://developer.mozilla.org/en-US/docs/Web/Guide/CSS/Block_formatting_context
     display: inline-block; // trigger BFC
     vertical-align: top;
