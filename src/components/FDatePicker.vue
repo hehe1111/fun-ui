@@ -211,14 +211,20 @@ export default {
         return (this.$refs.inputRef.$refs.inputRef.value = oldValue);
       }
 
+      // split return an array of strings
       const [year, month, date] = result[1].split(/\s[-/]\s/);
-      // typeof year/month/date === 'string'
-
-      if (this.outOfRange(year, month, date)) {
+      const { parseInt: p } = window;
+      const [y1, m1, d1] = [p(year), p(month), p(date)];
+      const [y2, m2, d2] = getYearMonthDate(new Date(y1, m1 - 1, d1));
+      if (
+        y2 !== y1 ||
+        m2 + 1 !== m1 ||
+        d2 !== d1 ||
+        this.outOfRange(y1, m1 - 1, d1)
+      ) {
         return (this.$refs.inputRef.$refs.inputRef.value = oldValue);
       }
-      const { parseInt: p } = window;
-      this.emitNewDate({ year: p(year), month: p(month) - 1, date: p(date) });
+      this.emitNewDate({ year: y1, month: m1 - 1, date: d1 });
     },
     getDateObjectFromDates(row, cell) {
       return this.computeDates[7 * (row - 1) + cell - 1];
