@@ -3,8 +3,10 @@
     <f-popover position="bottom" :contentStyle="{ width: '' }">
       <f-input
         :value="selectedDateString"
-        @focus="onFocus"
         :clearable="false"
+        ref="inputRef"
+        @focus="onFocus"
+        @change="onChange"
       />
       <template slot="content" slot-scope="{ close }">
         <div :class="n2c('panel')">
@@ -199,6 +201,24 @@ export default {
   methods: {
     onFocus() {
       this.mode = DATE_MODE;
+    },
+    onChange(value) {
+      // valid value: xxxx - xx - xx  or  xxxx / xx / xx
+      const oldValue = this.selectedDateString;
+      const regexp = /^(\d{4}\s[-/]\s\d{2}\s[-/]\s\d{2})$/;
+      const result = value.match(regexp);
+      if (!result) {
+        return (this.$refs.inputRef.$refs.inputRef.value = oldValue);
+      }
+
+      const [year, month, date] = result[1].split(/\s[-/]\s/);
+      // typeof year/month/date === 'string'
+
+      if (this.outOfRange(year, month, date)) {
+        return (this.$refs.inputRef.$refs.inputRef.value = oldValue);
+      }
+      const { parseInt: p } = window;
+      this.emitNewDate({ year: p(year), month: p(month) - 1, date: p(date) });
     },
     getDateObjectFromDates(row, cell) {
       return this.computeDates[7 * (row - 1) + cell - 1];
