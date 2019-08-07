@@ -35,7 +35,7 @@
             />
           </div>
           <div :class="n2c('body')">
-            <template v-if="mode === 'yearMonth'">
+            <template v-if="mode === YEAR_MONTH_MODE">
               <div :class="n2c('year-month-selector')">
                 <div :class="n2c('selector-container')" ref="yearSCRef">
                   <f-icon
@@ -95,7 +95,7 @@
                 </div>
               </div>
             </template>
-            <template v-if="mode === 'date'">
+            <template v-if="mode === DATE_MODE">
               <div :class="n2c('panel-row', 'weekdays')">
                 <span
                   :class="n2c('panel-cell', 'weekday-cell')"
@@ -148,11 +148,16 @@ import {
 } from '../assets/utils.js';
 Vue.use(toast);
 
+const DATE_MODE = 'dateMode';
+const YEAR_MONTH_MODE = 'yearMonthMode';
+
 export default {
   name: 'FunUIDatePicker',
   data() {
     return {
-      mode: 'yearMonth', // date || yearMonth
+      mode: DATE_MODE, // dateMode || yearMonthMode
+      DATE_MODE,
+      YEAR_MONTH_MODE,
     };
   },
   props: {
@@ -233,7 +238,7 @@ export default {
   },
   methods: {
     onFocus() {
-      this.mode = 'date';
+      this.mode = DATE_MODE;
     },
     getDateObjectFromDates(row, cell) {
       return this.computeDates[7 * (row - 1) + cell - 1];
@@ -339,7 +344,7 @@ export default {
       this.$emit('input', dateObj);
     },
     onToggleYearMonth() {
-      this.mode = this.mode === 'date' ? 'yearMonth' : 'date';
+      this.mode = this.mode === DATE_MODE ? YEAR_MONTH_MODE : DATE_MODE;
     },
     onClickToday(close) {
       const [year, month, date] = getYearMonthDate(new Date());
