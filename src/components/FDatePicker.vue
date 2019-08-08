@@ -4,6 +4,7 @@
       <f-input
         :value="selectedDateString"
         :clearable="false"
+        placeholder="请选择日期"
         ref="inputRef"
         @focus="onFocus"
         @change="onChange"
