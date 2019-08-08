@@ -1,5 +1,5 @@
 <template>
-  <div :class="n2c()" ref="pickerRef">
+  <div :class="[n2c(), n2c(direction)]" ref="pickerRef">
     <f-icon :class="n2c('arrow')" name="up" @click="onClickPrevious" />
     <div :class="n2c('inner')" v-hide-scrollbar:[widthAndHeight] ref="innerRef">
       <span
@@ -19,7 +19,7 @@ import Vue from 'vue';
 import FIcon from './FIcon.vue';
 import hideScrollbar from '../directives/hide-scrollbar.js';
 import toast from '../plugins/toast.js';
-import { optionsName2ClassPrefix, getTypeOf } from '../assets/utils.js';
+import { optionsName2ClassPrefix, getTypeOf, oneOf } from '../assets/utils.js';
 Vue.use(toast);
 
 export default {
@@ -45,8 +45,16 @@ export default {
         );
       },
     },
+    direction: {
+      type: String,
+      default: 'vertical',
+      validator(prop) {
+        return oneOf(prop, ['vertical', 'horizontal']);
+      },
+    },
     errorMessage: {
       type: String,
+      default: '没有了',
     },
     loop: {
       type: Boolean,
@@ -59,10 +67,12 @@ export default {
     },
   },
   mounted() {
-    this.updatePickerScrollTop();
+    this.direction === 'vertical' && this.updatePickerScrollTop();
+    this.direction === 'horizontal' && this.updatePickerScrollLeft();
   },
   updated() {
-    this.updatePickerScrollTop();
+    this.direction === 'vertical' && this.updatePickerScrollTop();
+    this.direction === 'horizontal' && this.updatePickerScrollLeft();
   },
   methods: {
     getIndex(value) {
@@ -117,6 +127,18 @@ export default {
 
       parent.scrollTop = pTop - vTop - vHeight / 2 + pHeight / 2 + oldScrollTop;
     },
+    updatePickerScrollLeft() {
+      const { pickerRef: viewport, innerRef: parent } = this.$refs;
+      if (!viewport || !parent) return;
+      const oldScrollLeft = parent.scrollLeft;
+      const { width: vWidth, left: vLeft } = viewport.getBoundingClientRect();
+      const { width: pWidth, left: pLeft } = parent
+        .querySelector(`.${this.n2c('selected')}`)
+        .getBoundingClientRect();
+
+      parent.scrollLeft =
+        pLeft - vLeft - vWidth / 2 + pWidth / 2 + oldScrollLeft;
+    },
   },
   components: { FIcon },
   directives: { hideScrollbar },
@@ -127,6 +149,7 @@ export default {
 @import '../assets/_var.scss';
 
 .f-scrollable-picker {
+  // style for vertical
   @extend .flex-center;
   flex-direction: column;
   margin: 0 0.5em;
@@ -153,6 +176,21 @@ export default {
   &-selected {
     color: #fff;
     background-color: $blue;
+  }
+
+  // style for horizontal
+  &-horizontal {
+    flex-direction: row;
+    .f-scrollable-picker-inner {
+      display: flex;
+      > span {
+        padding: 0 1em;
+      }
+    }
+    .f-scrollable-picker-arrow {
+      margin: 0 1em; // to be fixed
+      transform: rotate(-90deg);
+    }
   }
 }
 </style>
