@@ -6,6 +6,7 @@
       ref="inputRef"
       :disabled="disabled"
       :readonly="readonly"
+      :placeholder="placeholder"
       @input="onInput"
       @change="onChange"
       @focus="onFocus"
@@ -48,6 +49,9 @@ export default {
     clearable: {
       type: Boolean,
       default: true,
+    },
+    placeholder: {
+      type: String,
     },
   },
   computed: {
