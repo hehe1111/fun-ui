@@ -6,7 +6,7 @@
     @touchstart="onTouchStart"
     @touchmove="onTouchMove"
   >
-    <div :class="n2c('child')" ref="childRef" @transitionend="hideScrollbar">
+    <div :class="n2c('child')" ref="childRef">
       <slot />
     </div>
     <div :class="n2c('scrollbar-container')" ref="scrollbarContainerRef">
@@ -35,8 +35,8 @@ export default {
       scrollbarMaxScrollableHeight: null,
       cTY: null, // translateY of child element
       sTY: null, // translateY of scrollbar
-      startPosition: { x: null, y: null },
-      endPosition: { x: null, y: null },
+      startPosition: { y: null },
+      endPosition: { y: null },
       isDraging: false,
       timerId: null,
     };
@@ -81,15 +81,15 @@ export default {
     },
     onMouseDown($event) {
       this.isDraging = true;
-      this.startPosition = { x: $event.screenX, y: $event.screenY };
+      this.startPosition = { y: $event.screenY };
     },
     onMouseUp($event) {
       this.isDraging = false;
-      this.endPosition = { x: $event.screenX, y: $event.screenY };
+      this.endPosition = { y: $event.screenY };
     },
     onMouseMove($event) {
       if (!this.isDraging) return;
-      this.endPosition = { x: $event.screenX, y: $event.screenY };
+      this.endPosition = { y: $event.screenY };
       this.sTY += this.endPosition.y - this.startPosition.y;
 
       this.checkScrollbarTranslateY();
@@ -100,16 +100,11 @@ export default {
       this.startPosition = this.endPosition;
     },
     onTouchStart($event) {
-      this.startPosition = {
-        x: $event.touches[0].screenX,
-        y: $event.touches[0].screenY,
-      };
+      this.startPosition = { y: $event.touches[0].screenY };
     },
     onTouchMove($event) {
-      this.endPosition = {
-        x: $event.touches[0].screenX,
-        y: $event.touches[0].screenY,
-      };
+      this.endPosition = { y: $event.touches[0].screenY };
+      // longer duration needed on mobile
       [this.$refs.childRef, this.$refs.scrollbarRef].map(
         el => (el.style.transitionDuration = '0.5s')
       );
@@ -147,10 +142,8 @@ export default {
       // Can't get cTY in advanced like pH/cH etc.
       // otherwise this.cTY will not be updated correctly
       if (this.cTY > 0) {
-        this.hideScrollbar();
         return (this.cTY = 0);
       } else if (this.cTY <= -this.maxScrollableHeight) {
-        this.hideScrollbar();
         return (this.cTY = -this.maxScrollableHeight);
       } else {
         callback && callback();
@@ -171,18 +164,6 @@ export default {
       this.sTY =
         newValue || (-this.cTY / this.cH) * this.scrollbarMaxScrollableHeight;
       this.$refs.scrollbarRef.style.transform = `translateY(${this.sTY}px)`;
-      this.isScrollbarVisible(true);
-    },
-    isScrollbarVisible(visibility) {
-      visibility
-        ? (this.$refs.scrollbarRef.style.display = 'block')
-        : (this.$refs.scrollbarRef.style.display = 'none');
-    },
-    hideScrollbar($event) {
-      this.timerId && window.clearTimeout(this.timerId);
-      this.timerId = setTimeout(() => {
-        this.isScrollbarVisible(false);
-      }, 1000);
     },
   },
 };
@@ -220,15 +201,8 @@ export default {
     width: 100%;
     background-color: $darkGrey;
     opacity: 0.8;
-    display: none;
     &:hover {
       background-color: darken($darkGrey, 10%);
-    }
-  }
-
-  &:hover {
-    .f-scroll-scrollbar {
-      display: block;
     }
   }
 }
