@@ -9,7 +9,11 @@
     <div :class="n2c('child')" ref="childRef">
       <slot />
     </div>
-    <div :class="n2c('scrollbar-container')" ref="scrollbarContainerRef">
+    <div
+      v-show="hasScrollbarY"
+      :class="n2c('scrollbar-container')"
+      ref="scrollbarContainerRef"
+    >
       <div
         :class="n2c('scrollbar')"
         ref="scrollbarRef"
@@ -39,6 +43,7 @@ export default {
       endPosition: { y: null },
       isDraging: false,
       timerId: null,
+      hasScrollbarY: false,
     };
   },
   computed: {
@@ -72,8 +77,10 @@ export default {
         (this.parentViewportHeight / this.cH) *
         this.scrollbarMaxScrollableHeight;
       this.$refs.scrollbarRef.style.height = `${this.sH}px`;
+      if (this.maxScrollableHeight > 0) this.hasScrollbarY = true;
     },
     onWheel($event) {
+      if (!this.hasScrollbarY) return;
       this.limitSpeed(-$event.deltaY);
       this.checkChildTranslateY(() => $event.preventDefault());
       this.updateChildTranslateY();
@@ -88,7 +95,7 @@ export default {
       this.endPosition = { y: $event.screenY };
     },
     onMouseMove($event) {
-      if (!this.isDraging) return;
+      if (!this.isDraging || !this.hasScrollbarY) return;
       this.endPosition = { y: $event.screenY };
       this.sTY += this.endPosition.y - this.startPosition.y;
 
@@ -103,6 +110,7 @@ export default {
       this.startPosition = { y: $event.touches[0].screenY };
     },
     onTouchMove($event) {
+      if (!this.hasScrollbarY) return;
       this.endPosition = { y: $event.touches[0].screenY };
       // longer duration needed on mobile
       [this.$refs.childRef, this.$refs.scrollbarRef].map(
