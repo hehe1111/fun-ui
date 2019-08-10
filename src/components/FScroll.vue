@@ -25,7 +25,7 @@
 </template>
 
 <script>
-import { optionsName2ClassPrefix } from '../assets/utils.js';
+import { optionsName2ClassPrefix, oneOf } from '../assets/utils.js';
 
 export default {
   name: 'FunUIScroll',
@@ -55,10 +55,12 @@ export default {
     this.init();
     document.addEventListener('mousemove', this.onMouseMove);
     document.addEventListener('mouseup', this.onMouseUp);
+    document.addEventListener('keydown', this.onKeyDown);
   },
   beforeDestroy() {
     document.removeEventListener('mousemove', this.onMouseMove);
     document.removeEventListener('mouseup', this.onMouseUp);
+    document.removeEventListener('keydown', this.onKeyDown);
   },
   methods: {
     init() {
@@ -106,6 +108,19 @@ export default {
       );
       this.startPosition = this.endPosition;
     },
+    onKeyDown($event) {
+      // https://developer.mozilla.org/zh-CN/docs/Web/API/Document/keydown_event
+      if (!oneOf($event.code.toLowerCase(), ['arrowdown', 'arrowup'])) return;
+      if (!this.hasScrollbarY) return;
+      if ($event.code.toLowerCase() === 'arrowdown') {
+        this.limitSpeed(-50);
+      } else if ($event.code.toLowerCase() === 'arrowup') {
+        this.limitSpeed(50);
+      }
+      this.checkChildTranslateY(() => $event.preventDefault());
+      this.updateChildTranslateY();
+      this.updateScrollbarTranslateY();
+    },
     onTouchStart($event) {
       this.startPosition = { y: $event.touches[0].screenY };
     },
@@ -129,21 +144,23 @@ export default {
       isMobile ? this._limitSpeedOnMobile(delta) : this._limitSpeedOnPC(delta);
     },
     _limitSpeedOnMobile(delta) {
-      if (Math.abs(delta) <= 30) {
+      const absDelta = Math.abs(delta);
+      if (absDelta <= 30) {
         this.cTY += delta * 2;
-      } else if (Math.abs(delta) <= 60) {
-        this.cTY += (delta / Math.abs(delta)) * 250;
+      } else if (absDelta <= 60) {
+        this.cTY += (delta / absDelta) * 250;
       } else {
-        this.cTY += (delta / Math.abs(delta)) * 500;
+        this.cTY += (delta / absDelta) * 500;
       }
     },
     _limitSpeedOnPC(delta) {
-      if (Math.abs(delta) <= 20) {
+      const absDelta = Math.abs(delta);
+      if (absDelta <= 20) {
         this.cTY += delta;
-      } else if (Math.abs(delta) > 20 && Math.abs(delta) <= 50) {
-        this.cTY += (delta / Math.abs(delta)) * 50;
+      } else if (absDelta > 20 && absDelta <= 50) {
+        this.cTY += (delta / absDelta) * 50;
       } else {
-        this.cTY += (delta / Math.abs(delta)) * 200;
+        this.cTY += (delta / absDelta) * 200;
       }
     },
     checkChildTranslateY(callback) {
