@@ -100,18 +100,19 @@ export default {
       this.cH = childRef.getBoundingClientRect().height;
       this.parentViewportHeight = this.pH - pPT - pPB - pBTW - pBBW;
       this.maxScrollableHeight = this.cH - this.parentViewportHeight;
-      this.scrollbarMaxScrollableHeight = this.pH - pBTW - pBBW;
-      this.sH =
-        (this.parentViewportHeight / this.cH) *
-        this.scrollbarMaxScrollableHeight;
+      const scrollbarContainerHeight = this.pH - pBTW - pBBW;
+      this.sH = Math.max(
+        (this.parentViewportHeight / this.cH) * scrollbarContainerHeight,
+        16
+      );
       this.$refs.scrollbarRef.style.height = `${this.sH}px`;
+      this.scrollbarMaxScrollableHeight = scrollbarContainerHeight - this.sH;
       if (this.maxScrollableHeight > 0) this.hasScrollbarY = true;
     },
     onWheel($event) {
       if (!this.hasScrollbarY) return;
       this.limitSpeed(-$event.deltaY);
-      this.checkChildTranslateY(() => $event.preventDefault());
-      this.updateChildTranslateY();
+      this.updateChildTranslateY({ callback: () => $event.preventDefault() });
       this.updateScrollbarTranslateY();
     },
     onMouseDown($event) {
@@ -127,11 +128,12 @@ export default {
       this.endPosition = { y: $event.screenY };
       this.sTY += this.endPosition.y - this.startPosition.y;
 
-      this.checkScrollbarTranslateY();
       this.updateScrollbarTranslateY(this.sTY);
-      this.updateChildTranslateY(
-        (-this.sTY / this.scrollbarMaxScrollableHeight) * this.cH
-      );
+      this.updateChildTranslateY({
+        value:
+          (-this.sTY / this.scrollbarMaxScrollableHeight) *
+          this.maxScrollableHeight,
+      });
       this.startPosition = this.endPosition;
     },
     onKeyDown($event) {
@@ -143,8 +145,7 @@ export default {
       } else if ($event.code.toLowerCase() === 'arrowup') {
         this.limitSpeed(50);
       }
-      this.checkChildTranslateY(() => $event.preventDefault());
-      this.updateChildTranslateY();
+      this.updateChildTranslateY({ callback: () => $event.preventDefault() });
       this.updateScrollbarTranslateY();
     },
     onTouchStart($event) {
@@ -161,8 +162,7 @@ export default {
       this.limitSpeed(this.endPosition.y - this.startPosition.y, {
         isMobile: true,
       });
-      this.checkChildTranslateY(() => $event.preventDefault());
-      this.updateChildTranslateY();
+      this.updateChildTranslateY({ callback: () => $event.preventDefault() });
       this.updateScrollbarTranslateY();
       this.startPosition = this.endPosition;
     },
@@ -203,24 +203,28 @@ export default {
     checkScrollbarTranslateY() {
       if (this.sTY < 0) {
         return (this.sTY = 0);
-      } else if (this.sTY > this.scrollbarMaxScrollableHeight - this.sH) {
-        return (this.sTY = this.scrollbarMaxScrollableHeight - this.sH);
+      } else if (this.sTY > this.scrollbarMaxScrollableHeight) {
+        return (this.sTY = this.scrollbarMaxScrollableHeight);
       }
     },
-    updateChildTranslateY(newValue) {
-      this.cTY = newValue || this.cTY;
+    updateChildTranslateY({ value, callback }) {
+      this.cTY = value || this.cTY;
+      this.checkChildTranslateY(callback);
       this.$refs.childRef.style.transform = `translateY(${this.cTY}px)`;
     },
-    updateScrollbarTranslateY(newValue) {
+    updateScrollbarTranslateY(value) {
       this.sTY =
-        newValue || (-this.cTY / this.cH) * this.scrollbarMaxScrollableHeight;
+        value ||
+        (-this.cTY / this.maxScrollableHeight) *
+          this.scrollbarMaxScrollableHeight;
+      this.checkScrollbarTranslateY();
       this.$refs.scrollbarRef.style.transform = `translateY(${this.sTY}px)`;
+
       this.loadDataHandler();
     },
     loadDataHandler() {
       if (
-        this.sTY >=
-          this.scrollbarMaxScrollableHeight - this.sH - this.distance &&
+        this.sTY >= this.scrollbarMaxScrollableHeight - this.distance &&
         !this.loading
       ) {
         this.loading = true;

@@ -70,17 +70,20 @@ export default {
       this.cW = childRef.getBoundingClientRect().width;
       this.parentViewportWidth = this.pW - pPL - pPR - pBLW - pBRW;
       this.maxScrollableWidth = this.cW - this.parentViewportWidth;
-      this.scrollbarMaxScrollableWidth = this.pW - pBLW - pBRW;
-      this.sW =
-        (this.parentViewportWidth / this.cW) * this.scrollbarMaxScrollableWidth;
+
+      const scrollbarContainerWidth = this.pW - pBLW - pBRW;
+      this.sW = Math.max(
+        (this.parentViewportWidth / this.cW) * scrollbarContainerWidth,
+        16
+      );
       this.$refs.scrollbarRef.style.width = `${this.sW}px`;
+      this.scrollbarMaxScrollableWidth = scrollbarContainerWidth - this.sW;
       if (this.maxScrollableWidth !== 0) this.hasScrollbarX = true;
     },
     onWheel($event) {
       if (!this.hasScrollbarX) return;
       this.limitSpeed(-$event.deltaX);
-      this.checkChildTranslateX(() => $event.preventDefault());
-      this.updateChildTranslateX();
+      this.updateChildTranslateX({ callback: () => $event.preventDefault() });
       this.updateScrollbarTranslateX();
     },
     onMouseDown($event) {
@@ -96,11 +99,12 @@ export default {
       this.endPosition = { x: $event.screenX };
       this.sTX += this.endPosition.x - this.startPosition.x;
 
-      this.checkScrollbarTranslateX();
       this.updateScrollbarTranslateX(this.sTX);
-      this.updateChildTranslateX(
-        (-this.sTX / this.scrollbarMaxScrollableWidth) * this.cW
-      );
+      this.updateChildTranslateX({
+        value:
+          (-this.sTX / this.scrollbarMaxScrollableWidth) *
+          this.maxScrollableWidth,
+      });
       this.startPosition = this.endPosition;
     },
     onKeyDown($event) {
@@ -114,8 +118,7 @@ export default {
       } else if ($event.code.toLowerCase() === 'arrowright') {
         this.limitSpeed(-50);
       }
-      this.checkChildTranslateX(() => $event.preventDefault());
-      this.updateChildTranslateX();
+      this.updateChildTranslateX({ callback: () => $event.preventDefault() });
       this.updateScrollbarTranslateX();
     },
     onTouchStart($event) {
@@ -131,8 +134,7 @@ export default {
       this.limitSpeed(this.endPosition.x - this.startPosition.x, {
         isMobile: true,
       });
-      this.checkChildTranslateX(() => $event.preventDefault());
-      this.updateChildTranslateX();
+      this.updateChildTranslateX(() => $event.preventDefault());
       this.updateScrollbarTranslateX();
       this.startPosition = this.endPosition;
     },
@@ -140,21 +142,23 @@ export default {
       isMobile ? this._limitSpeedOnMobile(delta) : this._limitSpeedOnPC(delta);
     },
     _limitSpeedOnMobile(delta) {
-      if (Math.abs(delta) <= 30) {
+      const absDelta = Math.abs(delta);
+      if (absDelta <= 30) {
         this.cTX += delta * 2;
-      } else if (Math.abs(delta) <= 60) {
-        this.cTX += (delta / Math.abs(delta)) * 250;
+      } else if (absDelta <= 60) {
+        this.cTX += (delta / absDelta) * 250;
       } else {
-        this.cTX += (delta / Math.abs(delta)) * 500;
+        this.cTX += (delta / absDelta) * 500;
       }
     },
     _limitSpeedOnPC(delta) {
-      if (Math.abs(delta) <= 20) {
+      const absDelta = Math.abs(delta);
+      if (absDelta <= 20) {
         this.cTX += delta;
-      } else if (Math.abs(delta) > 20 && Math.abs(delta) <= 50) {
-        this.cTX += (delta / Math.abs(delta)) * 50;
+      } else if (absDelta > 20 && absDelta <= 50) {
+        this.cTX += (delta / absDelta) * 50;
       } else {
-        this.cTX += (delta / Math.abs(delta)) * 200;
+        this.cTX += (delta / absDelta) * 200;
       }
     },
     checkChildTranslateX(callback) {
@@ -171,17 +175,21 @@ export default {
     checkScrollbarTranslateX() {
       if (this.sTX < 0) {
         return (this.sTX = 0);
-      } else if (this.sTX > this.scrollbarMaxScrollableWidth - this.sW) {
-        return (this.sTX = this.scrollbarMaxScrollableWidth - this.sW);
+      } else if (this.sTX > this.scrollbarMaxScrollableWidth) {
+        return (this.sTX = this.scrollbarMaxScrollableWidth);
       }
     },
-    updateChildTranslateX(newValue) {
-      this.cTX = newValue || this.cTX;
+    updateChildTranslateX({ value, callback }) {
+      this.cTX = value || this.cTX;
+      this.checkChildTranslateX(callback);
       this.$refs.childRef.style.transform = `translateX(${this.cTX}px)`;
     },
-    updateScrollbarTranslateX(newValue) {
+    updateScrollbarTranslateX(value) {
       this.sTX =
-        newValue || (-this.cTX / this.cW) * this.scrollbarMaxScrollableWidth;
+        value ||
+        (-this.cTX / this.maxScrollableWidth) *
+          this.scrollbarMaxScrollableWidth;
+      this.checkScrollbarTranslateX();
       this.$refs.scrollbarRef.style.transform = `translateX(${this.sTX}px)`;
     },
   },
