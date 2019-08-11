@@ -9,11 +9,7 @@
     <div :class="n2c('child')" ref="childRef">
       <slot />
     </div>
-    <div
-      v-show="hasScrollbarY"
-      :class="n2c('scrollbar-container')"
-      ref="scrollbarContainerRef"
-    >
+    <div v-show="hasScrollbarY" :class="n2c('scrollbar-container')">
       <div
         :class="n2c('scrollbar')"
         ref="scrollbarRef"
@@ -25,10 +21,10 @@
 </template>
 
 <script>
-import { optionsName2ClassPrefix, oneOf } from '../assets/utils.js';
+import { optionsName2ClassPrefix, oneOf } from '../../assets/utils.js';
 
 export default {
-  name: 'FunUIScroll',
+  name: 'FunUIScrollVertical',
   data() {
     return {
       pH: null, // height of parent element
@@ -195,9 +191,9 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-@import '../assets/_var.scss';
+@import '../../assets/_var.scss';
 
-.f-scroll {
+.f-scroll-vertical {
   &-parent {
     overflow: hidden;
     position: relative;
