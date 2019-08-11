@@ -48,7 +48,7 @@ export default {
     },
   },
   mounted() {
-    this.init();
+    this.getWidth();
     document.addEventListener('mousemove', this.onMouseMove);
     document.addEventListener('mouseup', this.onMouseUp);
     document.addEventListener('keydown', this.onKeyDown);
@@ -59,7 +59,7 @@ export default {
     document.removeEventListener('keydown', this.onKeyDown);
   },
   methods: {
-    init() {
+    getWidth() {
       const { parseInt: p, getComputedStyle: c } = window;
       const { parentRef, childRef } = this.$refs;
       const pPL = p(c(parentRef).paddingLeft);
