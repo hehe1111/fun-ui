@@ -66,7 +66,7 @@ export default {
     },
     distance: {
       type: Number,
-      default: 1,
+      default: 0,
     },
     delay: {
       type: Number,
