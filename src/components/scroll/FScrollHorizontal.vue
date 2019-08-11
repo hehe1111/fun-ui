@@ -77,6 +77,7 @@ export default {
       if (this.maxScrollableWidth !== 0) this.hasScrollbarX = true;
     },
     onWheel($event) {
+      if (!this.hasScrollbarX) return;
       this.limitSpeed(-$event.deltaX);
       this.checkChildTranslateX(() => $event.preventDefault());
       this.updateChildTranslateX();
@@ -91,7 +92,7 @@ export default {
       this.endPosition = { x: $event.screenX };
     },
     onMouseMove($event) {
-      if (!this.isDraging) return;
+      if (!this.isDraging || !this.hasScrollbarX) return;
       this.endPosition = { x: $event.screenX };
       this.sTX += this.endPosition.x - this.startPosition.x;
 
@@ -121,6 +122,7 @@ export default {
       this.startPosition = { x: $event.touches[0].screenX };
     },
     onTouchMove($event) {
+      if (!this.hasScrollbarX) return;
       this.endPosition = { x: $event.touches[0].screenX };
       [this.$refs.childRef, this.$refs.scrollbarRef].map(
         el => (el.style.transitionDuration = '0.5s')
