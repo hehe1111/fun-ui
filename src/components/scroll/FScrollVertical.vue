@@ -8,6 +8,9 @@
   >
     <div :class="n2c('child')" ref="childRef">
       <slot />
+      <div v-show="loading" :class="n2c('loading-container')">
+        <f-icon name="loading" />
+      </div>
     </div>
     <div v-show="hasScrollbarY" :class="n2c('scrollbar-container')">
       <div
@@ -21,10 +24,12 @@
 </template>
 
 <script>
+import FIcon from '../FIcon.vue';
 import { optionsName2ClassPrefix, oneOf } from '../../assets/utils.js';
 
 export default {
   name: 'FunUIScrollVertical',
+  components: { FIcon },
   data() {
     return {
       pH: null, // height of parent element
@@ -40,18 +45,43 @@ export default {
       isDraging: false,
       timerId: null,
       hasScrollbarY: false,
+      loading: false,
     };
+  },
+  props: {
+    loadData: {
+      type: Function,
+    },
+    distance: {
+      type: Number,
+      default: 1,
+    },
+    delay: {
+      type: Number,
+      dafault: 300,
+    },
+    loadDataImmediately: {
+      type: Boolean,
+      default: false,
+    },
   },
   computed: {
     n2c() {
       return optionsName2ClassPrefix(this.$options.name);
     },
   },
+  created() {
+    // avoid the case that hasScrollbarY is false because data source is empty at first
+    this.loadDataImmediately && this.loadData && this.loadData();
+  },
   mounted() {
-    this.init();
+    this.getHeight();
     document.addEventListener('mousemove', this.onMouseMove);
     document.addEventListener('mouseup', this.onMouseUp);
     document.addEventListener('keydown', this.onKeyDown);
+  },
+  updated() {
+    this.getHeight();
   },
   beforeDestroy() {
     document.removeEventListener('mousemove', this.onMouseMove);
@@ -59,7 +89,7 @@ export default {
     document.removeEventListener('keydown', this.onKeyDown);
   },
   methods: {
-    init() {
+    getHeight() {
       const { parseInt: p, getComputedStyle: c } = window;
       const { parentRef, childRef } = this.$refs;
       const pPT = p(c(parentRef).paddingTop);
@@ -185,6 +215,20 @@ export default {
       this.sTY =
         newValue || (-this.cTY / this.cH) * this.scrollbarMaxScrollableHeight;
       this.$refs.scrollbarRef.style.transform = `translateY(${this.sTY}px)`;
+      this.loadDataHandler();
+    },
+    loadDataHandler() {
+      if (
+        this.sTY >=
+          this.scrollbarMaxScrollableHeight - this.sH - this.distance &&
+        !this.loading
+      ) {
+        this.loading = true;
+        setTimeout(() => {
+          this.loadData && this.loadData();
+          this.loading = false;
+        }, this.delay);
+      }
     },
   },
 };
@@ -225,6 +269,11 @@ export default {
     &:hover {
       background-color: darken($darkGrey, 10%);
     }
+  }
+
+  &-loading-container {
+    @extend .flex-center;
+    padding: 10px;
   }
 }
 </style>
