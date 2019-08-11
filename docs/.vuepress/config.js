@@ -51,6 +51,7 @@ module.exports = {
           '/components/nav',
           '/components/pagination',
           '/components/popover',
+          '/components/scroll',
           '/components/scrollable-picker',
           '/components/tab',
           '/components/table',
