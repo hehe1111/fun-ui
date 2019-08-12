@@ -1,5 +1,5 @@
 <template>
-  <div  class="demo-carousel-4-container">
+  <div>
     <div class="demo-carousel-4">
       <div class="demo-button-group-and-carousel">
         <f-button-group class="demo-button-group">
@@ -63,13 +63,29 @@ import removePrefixSpace from '../assets/js/remove-prefix-space.js';
 
 export default {
   name: 'demo-carousel-4',
+  components: { FButton, FButtonGroup, FCarousel, FCarouselItem, CodeBox },
   data() {
     return {
       dotPosition1: 'left',
       dotPosition2: 'top',
+
       htmlCode: removePrefixSpace(`
-        [html]
         <f-carousel :dot-position="dotPosition" :enable-arrow="true">
+          <f-carousel-item name="x1">
+            <div class="image">1</div>
+          </f-carousel-item>
+          <f-carousel-item name="x2">
+            <div class="image">2</div>
+          </f-carousel-item>
+          <f-carousel-item name="x3">
+            <div class="image">3</div>
+          </f-carousel-item>
+          <f-carousel-item name="x4">
+            <div class="image">4</div>
+          </f-carousel-item>
+        </f-carousel>
+
+        <f-carousel class="demo-carousel" :dot-position="dotPosition2" :enable-arrow="true">
           <f-carousel-item name="x1">
             <div class="image">1</div>
           </f-carousel-item>
@@ -85,16 +101,15 @@ export default {
         </f-carousel>
       `),
       javascriptCode: removePrefixSpace(`
-        [javascript]
         data() {
           return {
             dotPosition: "left",
+            dotPosition2: 'top',
           }
         }
       `),
     };
   },
-  components: { FButton, FButtonGroup, FCarousel, FCarouselItem, CodeBox },
 };
 </script>
 

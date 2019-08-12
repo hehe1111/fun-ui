@@ -31,6 +31,7 @@ import FIcon from './FIcon.vue';
 
 export default {
   name: 'FunUIInput',
+  components: { FIcon },
   props: {
     value: {
       type: String,
@@ -84,7 +85,6 @@ export default {
       this.$emit('clear', '');
     },
   },
-  components: { FIcon },
 };
 </script>
 
@@ -117,8 +117,8 @@ export default {
     }
     &[disabled],
     &[readonly] {
-      color: $darkGrey;
-      border-color: $darkGrey;
+      color: $grey;
+      border-color: $grey;
       cursor: not-allowed;
 
       + .f-input-clear-icon {

@@ -38,6 +38,7 @@ import removePrefixSpace from '../assets/js/remove-prefix-space.js';
 
 export default {
   name: 'demo-popover-2',
+  components: { FPopover, FButton, CodeBox },
   data() {
     return {
       htmlCode: removePrefixSpace(`
@@ -67,7 +68,6 @@ export default {
       `),
     };
   },
-  components: { FPopover, FButton, CodeBox },
 };
 </script>
 

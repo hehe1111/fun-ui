@@ -31,6 +31,7 @@ import removePrefixSpace from '../assets/js/remove-prefix-space.js';
 
 export default {
   name: 'demo-carousel-2',
+  components: { FCarousel, FCarouselItem, CodeBox },
   data() {
     return {
       htmlCode: removePrefixSpace(`
@@ -51,7 +52,6 @@ export default {
       `),
     };
   },
-  components: { FCarousel, FCarouselItem, CodeBox },
 };
 </script>
 

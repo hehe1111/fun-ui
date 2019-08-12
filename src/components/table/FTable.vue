@@ -120,6 +120,13 @@ import FIcon from '../FIcon.vue';
 
 export default {
   name: 'FunUITable',
+  components: {
+    FIcon,
+    customColumnTemplate: {
+      functional: true,
+      render: (h, context) => context.props.vnodes,
+    },
+  },
   props: {
     dataSource: {
       type: Array,
@@ -406,13 +413,6 @@ export default {
       this.isCheckBoxVisible && this.updateMainCheckBoxState();
     },
   },
-  components: {
-    FIcon,
-    customColumnTemplate: {
-      functional: true,
-      render: (h, context) => context.props.vnodes,
-    },
-  },
 };
 </script>
 
@@ -470,7 +470,7 @@ export default {
 // row highlight
 .tbody-row-common {
   &:hover {
-    background-color: $greyHover;
+    background-color: $hoverGrey;
   }
 
   &.highlight {
@@ -518,7 +518,7 @@ export default {
             padding: 0 6px;
 
             > .icon {
-              fill: $darkGrey;
+              fill: $grey;
 
               &.up {
                 margin-bottom: -2px;
@@ -540,7 +540,7 @@ export default {
       &.striped > tbody > tr {
         @extend .tbody-row-common;
         &:nth-child(odd) {
-          background-color: $grey;
+          background-color: $lightGrey;
           @extend .tbody-row-common;
         }
       }

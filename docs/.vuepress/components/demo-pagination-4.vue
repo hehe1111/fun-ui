@@ -9,12 +9,12 @@ import FPagination from '../../../src/components/pagination/FPagination.vue';
 
 export default {
   name: 'demo-pagination-4',
+  components: { FPagination },
   data() {
     return {
       total: 10,
     };
   },
-  components: { FPagination },
 };
 </script>
 

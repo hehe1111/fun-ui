@@ -24,6 +24,8 @@ Vue.use(toast);
 
 export default {
   name: 'FunUIScrollablePicker',
+  components: { FIcon },
+  directives: { hideScrollbar },
   props: {
     widthAndHeight: {
       type: Object,
@@ -140,8 +142,6 @@ export default {
         pLeft - vLeft - vWidth / 2 + pWidth / 2 + oldScrollLeft;
     },
   },
-  components: { FIcon },
-  directives: { hideScrollbar },
 };
 </script>
 
@@ -156,6 +156,7 @@ export default {
 
   &-arrow {
     margin: 1em 0;
+    user-select: none;
   }
 
   &-inner {

@@ -11,6 +11,8 @@ export default {
 </script>
 
 <style lang="scss" scoped>
+@import '../../assets/_var.scss';
+
 .content {
   flex: 1;
 }

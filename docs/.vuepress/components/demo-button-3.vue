@@ -1,6 +1,7 @@
 <template>
-  <div class="demo-button-2 extra-margin">
-    <f-button disabled>禁用按钮</f-button>
+  <div class="demo-button-3 extra-margin">
+    <f-button icon="setting">默认图标位于左边</f-button>
+    <f-button icon="setting" icon-position="right">图标可以位于右边</f-button>
 
     <code-box>
       <pre>
@@ -17,12 +18,13 @@ import CodeBox from './code-box.vue';
 import removePrefixSpace from '../assets/js/remove-prefix-space.js';
 
 export default {
-  name: 'demo-button-2',
+  name: 'demo-button-3',
   components: { FButton, CodeBox },
   data() {
     return {
       htmlCode: removePrefixSpace(`
-        <f-button disabled>禁用按钮</f-button>
+        <f-button icon="setting">默认图标位于左边</f-button>
+        <f-button icon="setting" icon-position="right">图标可以位于右边</f-button>
       `),
     };
   },

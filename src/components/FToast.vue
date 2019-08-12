@@ -22,6 +22,7 @@ import { optionsName2ClassPrefix, oneOf } from '../assets/utils.js';
 
 export default {
   name: 'FunUIToast',
+  components: { FIcon },
   props: {
     message: {
       type: String,
@@ -84,7 +85,6 @@ export default {
       this.close();
     },
   },
-  components: { FIcon },
 };
 </script>
 
@@ -168,7 +168,7 @@ export default {
       background-color: $red;
     }
     &.warning {
-      background-color: $orange;
+      background-color: $yellow;
     }
     &.info {
       background-color: $blue;

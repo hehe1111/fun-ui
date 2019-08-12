@@ -20,7 +20,7 @@ import removePrefixSpace from '../assets/js/remove-prefix-space.js';
 
 export default {
   name: 'demo-scroll-2',
-  components: { FScrollHorizontal },
+  components: { FScrollHorizontal, CodeBox },
   data() {
     return {
       htmlCode: removePrefixSpace(`
@@ -37,7 +37,6 @@ export default {
       `),
     };
   },
-  components: { FScrollHorizontal, CodeBox },
 };
 </script>
 

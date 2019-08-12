@@ -32,10 +32,10 @@ import removePrefixSpace from '../assets/js/remove-prefix-space.js';
 
 export default {
   name: 'demo-carousel-1',
+  components: { FCarousel, FCarouselItem, CodeBox },
   data() {
     return {
       htmlCode: removePrefixSpace(`
-        [html]
         <f-carousel>
           <f-carousel-item name="x1">
             <div class="image">1</div>
@@ -52,16 +52,16 @@ export default {
         </f-carousel>
       `),
       scssCode: removePrefixSpace(`
-        [scss]
         .image {
+          @extend .flex-center;
           width: 300px;
           height: 150px;
-          background-color: #aaa;
+          background-color: #1890ff;
+          color: #fff;
         }
       `),
     };
   },
-  components: { FCarousel, FCarouselItem, CodeBox },
 };
 </script>
 

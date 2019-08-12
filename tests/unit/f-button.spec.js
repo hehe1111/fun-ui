@@ -23,7 +23,7 @@ describe('FButton.vue', () => {
     const href = wrapper.find('use').attributes('href');
     const classValue = wrapper.find('svg').attributes('class');
     expect(href).to.eq('#icon-loading');
-    expect(classValue).to.eq('icon loading icon-left');
+    expect(classValue).to.eq('f-icon f-icon-loading icon-left');
     wrapper.destroy();
   });
 
@@ -40,7 +40,7 @@ describe('FButton.vue', () => {
     const svg = wrapper.find('svg');
     const classValue = svg.attributes()['class'];
     expect(href).to.eq('#icon-setting');
-    expect(classValue).to.eq('icon icon-right');
+    expect(classValue).to.eq('f-icon icon-right');
     const { order } = window.getComputedStyle(svg.element);
     expect(typeof order).to.eq('string');
     expect(order).to.eq('1');

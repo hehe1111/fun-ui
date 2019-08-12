@@ -33,6 +33,7 @@ Vue.use(toast);
 
 export default {
   name: 'demo-upload-2',
+  components: { FUpload, FButton, CodeBox },
   data() {
     return {
       htmlCode: removePrefixSpace(`
@@ -91,7 +92,6 @@ export default {
       x.isExceeded && this.$toast('文件太大');
     },
   },
-  components: { FUpload, FButton, CodeBox },
 };
 </script>
 

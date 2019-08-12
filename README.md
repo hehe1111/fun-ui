@@ -1,6 +1,6 @@
 # fun-ui
 
-> A UI toolkit base on Vue 2.6.
+> A UI toolkit base on Vue 2.
 
 ## Install
 

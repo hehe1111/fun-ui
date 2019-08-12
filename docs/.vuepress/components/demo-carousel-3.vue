@@ -24,13 +24,14 @@
 </template>
 
 <script>
-import FCarousel from "../../../src/components/carousel/FCarousel.vue";
-import FCarouselItem from "../../../src/components/carousel/FCarouselItem.vue";
+import FCarousel from '../../../src/components/carousel/FCarousel.vue';
+import FCarouselItem from '../../../src/components/carousel/FCarouselItem.vue';
 import CodeBox from './code-box.vue';
 import removePrefixSpace from '../assets/js/remove-prefix-space.js';
 
 export default {
-   name: 'demo-carousel-3',
+  name: 'demo-carousel-3',
+  components: { FCarousel, FCarouselItem, CodeBox },
   data() {
     return {
       htmlCode: removePrefixSpace(`
@@ -51,7 +52,6 @@ export default {
       `),
     };
   },
-  components: { FCarousel, FCarouselItem, CodeBox }
 };
 </script>
 

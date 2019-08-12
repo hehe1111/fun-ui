@@ -1,13 +1,20 @@
 <template>
   <!-- slot 不能作为组件根元素 -->
-  <div class="f-button-group">
+  <div :class="n2c()">
     <slot />
   </div>
 </template>
 
 <script>
+import { optionsName2ClassPrefix } from '../../assets/utils.js';
+
 export default {
   name: 'FunUIButtonGroup',
+  computed: {
+    n2c() {
+      return optionsName2ClassPrefix(this.$options.name);
+    },
+  },
 };
 </script>
 

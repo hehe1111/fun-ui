@@ -15,6 +15,7 @@ import FPaginationButtons from './FPaginationButtons.vue';
 
 export default {
   name: 'FunUIPagination',
+  components: { FPaginationButtons },
   props: {
     current: {
       type: Number,
@@ -48,8 +49,9 @@ export default {
       this.$emit('update:current', newValue);
     },
   },
-  components: { FPaginationButtons },
 };
 </script>
 
-<style lang="scss" scoped></style>
+<style lang="scss" scoped>
+@import '../../assets/_var.scss';
+</style>

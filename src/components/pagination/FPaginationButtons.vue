@@ -24,6 +24,7 @@ const separator = '...';
 
 export default {
   name: 'FunUIPaginationButtons',
+  components: { FButton },
   props: {
     current: {
       type: Number,
@@ -109,12 +110,12 @@ export default {
       };
     },
   },
-  components: { FButton },
 };
 </script>
 
 <style lang="scss" scoped>
 @import '../../assets/_var.scss';
+
 .f-pagination-buttons {
   &.f-button-group {
     @extend .f-button-group-common;

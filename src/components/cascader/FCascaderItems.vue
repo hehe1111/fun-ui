@@ -35,6 +35,7 @@ import FIcon from '../FIcon.vue';
 
 export default {
   name: 'FunUICascaderItems',
+  components: { FIcon },
   props: {
     items: {
       type: Array,
@@ -150,7 +151,6 @@ export default {
       }
     },
   },
-  components: { FIcon },
 };
 </script>
 
@@ -180,7 +180,7 @@ export default {
         cursor: pointer;
         &.active,
         &:hover {
-          background-color: $grey;
+          background-color: $lightGrey;
         }
         > .label {
           justify-content: flex-start;
@@ -195,7 +195,7 @@ export default {
   }
 
   > .level.right {
-    border-left: 1px solid darken($grey, 8%);
+    border-left: 1px solid darken($lightGrey, 8%);
   }
 }
 </style>

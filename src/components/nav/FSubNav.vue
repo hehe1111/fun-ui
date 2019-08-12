@@ -1,9 +1,5 @@
 <template>
-  <div
-    class="f-sub-nav-container"
-    :class="{ vertical }"
-    v-click-outside="closeIfNotVertical"
-  >
+  <div class="f-sub-nav-container" :class="{ vertical }" v-click-outside="closeIfNotVertical">
     <div
       class="f-sub-nav-title-container"
       @click="toggle"
@@ -48,6 +44,8 @@ import clickOutside, {
 
 export default {
   name: 'FunUISubNav',
+  components: { FNavItem, FIcon },
+  directives: { clickOutside },
   props: {
     name: {
       type: String,
@@ -162,8 +160,6 @@ export default {
       el.style.height = 'auto';
     },
   },
-  components: { FNavItem, FIcon },
-  directives: { clickOutside },
 };
 </script>
 

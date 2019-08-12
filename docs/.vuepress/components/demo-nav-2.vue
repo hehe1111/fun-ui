@@ -34,11 +34,11 @@ import FSubNav from '../../../src/components/nav/FSubNav.vue';
 import FNavItem from '../../../src/components/nav/FNavItem.vue';
 
 export default {
+  components: { FNav, FSubNav, FNavItem },
   data() {
     return {
       selected: 'yellow',
     };
   },
-  components: { FNav, FSubNav, FNavItem },
 };
 </script>

@@ -1,34 +1,34 @@
 # 走马灯 Carousel
 
+- 鼠标移入时会停止自动播放，移出时恢复自动播放
+
 ## 代码演示
 
-- 自动播放
+### 自动播放
 
-  <ClientOnly>
-    <demo-carousel-1 />
-  </ClientOnly>
+<ClientOnly>
+  <demo-carousel-1 />
+</ClientOnly>
 
-- 禁止自动播放
+### 禁止自动播放
 
-  <ClientOnly>
-    <demo-carousel-2 />
-  </ClientOnly>
+<ClientOnly>
+  <demo-carousel-2 />
+</ClientOnly>
 
-- 允许用箭头指示器切换
+### 允许用箭头指示器切换
 
-  <ClientOnly>
-    <demo-carousel-3 />
-  </ClientOnly>
+<ClientOnly>
+  <demo-carousel-3 />
+</ClientOnly>
 
-- 允许配置圆点的位置
+### 允许配置圆点的位置
 
-  - 可选值：`top`/`bottom`/`left`/`right`
-  - 默认值：`bottom`
-  - **注意：`left`/`right` 时 `enableArrow` 无效**
+- `left`/`right` 时 `enableArrow` 无效
 
-  <ClientOnly>
-    <demo-carousel-4 />
-  </ClientOnly>
+<ClientOnly>
+  <demo-carousel-4 />
+</ClientOnly>
 
 ## API
 

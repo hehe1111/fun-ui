@@ -321,10 +321,10 @@ export default {
   }
 
   &-scrollbar {
-    background-color: $darkGrey;
+    background-color: $grey;
     opacity: 0.8;
     &:hover {
-      background-color: darken($darkGrey, 10%);
+      background-color: darken($grey, 10%);
     }
   }
 

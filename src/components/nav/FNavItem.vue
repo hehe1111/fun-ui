@@ -106,7 +106,7 @@ export default {
   }
 
   &:hover {
-    background-color: $grey;
+    background-color: $lightGrey;
   }
 
   // 纵向时，选中项「不加」高亮下划线

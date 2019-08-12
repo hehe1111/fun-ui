@@ -1,11 +1,9 @@
-$black: #000;
+$grey: #909399;
+$lightGrey: #eee;
+$hoverGrey: #ddd;
 $blue: #1890ff;
-$darkGrey: #bfbfbf;
-$disabledGrey: #ddd;
-$green: #41B883;
-$grey: #eee;
-$greyHover: #ddd;
-$orange: #f0ad4e;
+$green: #41b883;
+$yellow: #f0ad4e;
 $red: #f1453d;
 
 $borderColor: #999;
@@ -13,7 +11,6 @@ $borderColorHover: #666;
 $borderColorLight: #ddd;
 $borderRadius: 4px;
 $boxShadowColor: rgba(0, 0, 0, 0.5);
-$buttonActiveBgColor: #eee;
 $buttonBgColor: white;
 $duration: 0.4s;
 $fontSize: 16px;
@@ -67,10 +64,15 @@ a {
   vertical-align: middle;
 
   .f-button {
+    margin: 0;
     margin-left: -1px;
     border-radius: 0;
 
-    &.disabled {
+    &:active {
+      transform: scale(1);
+    }
+
+    &-disabled {
       border-color: $borderColor;
       &:hover {
         border-color: $borderColor;

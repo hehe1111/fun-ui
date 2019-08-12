@@ -18,6 +18,7 @@ import removePrefixSpace from '../assets/js/remove-prefix-space.js';
 
 export default {
   name: 'demo-date-picker-1',
+  components: { FDatePicker },
   data() {
     return {
       value: new Date(),
@@ -34,7 +35,6 @@ export default {
       `),
     };
   },
-  components: { FDatePicker },
 };
 </script>
 

@@ -14,7 +14,7 @@
           <div :class="n2c('nav')">
             <f-icon
               :class="n2c('icon')"
-              name="double-left"
+              name="fast-left"
               @click="onClickLastYear"
             />
             <f-icon
@@ -33,7 +33,7 @@
             />
             <f-icon
               :class="n2c('icon')"
-              name="double-right"
+              name="fast-right"
               @click="onClickNextYear"
             />
           </div>
@@ -114,6 +114,7 @@ const YEAR_MONTH_MODE = 'yearMonthMode';
 
 export default {
   name: 'FunUIDatePicker',
+  components: { FIcon, FInput, FPopover, FButton, FScrollablePicker },
   data() {
     return {
       mode: DATE_MODE, // DATE_MODE || YEAR_MONTH_MODE
@@ -339,7 +340,6 @@ export default {
       this.emitNewDate(null);
     },
   },
-  components: { FIcon, FInput, FPopover, FButton, FScrollablePicker },
   model: {
     // https://cn.vuejs.org/v2/guide/components-custom-events.html#自定义组件的-v-model
     prop: 'value',
@@ -364,7 +364,7 @@ export default {
       padding: 1em;
       white-space: nowrap;
       user-select: none;
-      color: $darkGrey;
+      color: $grey;
       border-radius: $borderRadius;
 
       &:hover {
@@ -380,7 +380,7 @@ export default {
 
   &-weekday-cell,
   &-displaying-month {
-    color: $black;
+    color: #000;
   }
 
   &-selected-date,
@@ -389,7 +389,7 @@ export default {
   }
 
   &-today {
-    background-color: $darkGrey;
+    background-color: $grey;
   }
 
   &-selected-date {
@@ -404,6 +404,7 @@ export default {
 
   &-icon {
     margin: 0 1em;
+    user-select: none;
   }
 
   &-year-month {

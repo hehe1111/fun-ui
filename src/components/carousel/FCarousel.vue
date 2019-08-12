@@ -1,20 +1,17 @@
 <template>
   <div
-    class="f-carousel"
+    :class="n2c()"
     @mouseenter="onMouseEnter"
     @mouseleave="onMouseLeave"
     @touchstart="onTouchStart"
     @touchend="onTouchend"
   >
-    <div class="f-carousel-window">
+    <div :class="n2c('window')">
       <slot />
     </div>
-    <div class="f-carousel-dots" :class="dotsClasses">
+    <div :class="dotsContainerClasses">
       <span
-        class="dot"
-        :class="{
-          active: n - 1 === (newSelectedIndex || getSelected().index),
-        }"
+        :class="dotClasses(n)"
         v-for="n in childrenLength"
         :key="n"
         @click="onClickDots(n - 1)"
@@ -23,10 +20,10 @@
     <template
       v-if="enableArrow && ['left', 'right'].indexOf(dotPosition) === -1"
     >
-      <div class="f-carousel-arrow f-carousel-prev" @click="onClickPrevious">
+      <div :class="n2c('arrow', 'prev')" @click="onClickPrevious">
         <f-icon name="left" class="icon" />
       </div>
-      <div class="f-carousel-arrow f-carousel-next" @click="onClickNext">
+      <div :class="n2c('arrow', 'next')" @click="onClickNext">
         <f-icon name="right" class="icon" />
       </div>
     </template>
@@ -35,9 +32,11 @@
 
 <script>
 import FIcon from '../FIcon.vue';
+import { optionsName2ClassPrefix } from '../../assets/utils.js';
 
 export default {
   name: 'FunUICarousel',
+  components: { FIcon },
   props: {
     selected: {
       type: String,
@@ -67,22 +66,36 @@ export default {
     };
   },
   computed: {
-    dotsClasses() {
-      return {
-        [`position-${this.dotPosition}`]: this.dotPosition,
-      };
+    n2c() {
+      return optionsName2ClassPrefix(this.$options.name);
+    },
+    dotsContainerClasses() {
+      const { n2c, dotPosition } = this;
+      return [
+        n2c('dots-container'),
+        { [`position-${dotPosition}`]: dotPosition },
+      ];
     },
   },
   mounted() {
     this.initialize();
     this.updateChildrenStyle();
     this.updateChildren();
-    this.autoPlayHandler();
+    this.handleAutoPlay();
   },
   beforeDestroy() {
     this.stopAutoPlay();
   },
   methods: {
+    dotClasses(n) {
+      const { n2c, newSelectedIndex, getSelected } = this;
+      return [
+        n2c('dot'),
+        {
+          active: n - 1 === (newSelectedIndex || getSelected().index),
+        },
+      ];
+    },
     initialize() {
       if (!this.$children.length) {
         throw new Error('FCarousel 组件必须接收 FCarouselItem 作为子组件');
@@ -130,7 +143,7 @@ export default {
     stopAutoPlay() {
       this.timerId && window.clearTimeout(this.timerId);
     },
-    autoPlayHandler() {
+    handleAutoPlay() {
       this.stopAutoPlay();
       this.autoPlay && (this.timerId = this.setTimer());
     },
@@ -154,7 +167,7 @@ export default {
       this.stopAutoPlay();
     },
     onMouseLeave(event) {
-      this.autoPlayHandler();
+      this.handleAutoPlay();
     },
     onTouchStart(event) {
       this.stopAutoPlay();
@@ -170,10 +183,9 @@ export default {
           ? this.getNewSelected(this.getSelected().index + 1)
           : this.getNewSelected(this.getSelected().index - 1);
       }
-      this.autoPlayHandler();
+      this.handleAutoPlay();
     },
   },
-  components: { FIcon },
 };
 </script>
 
@@ -188,7 +200,7 @@ export default {
     position: relative;
   }
 
-  &-dots {
+  &-dots-container {
     display: inline-flex;
     align-items: center;
     flex-wrap: nowrap;
@@ -222,26 +234,26 @@ export default {
     &.position-right {
       right: 0.6em;
     }
+  }
 
-    > .dot {
-      width: 0.8em;
-      height: 0.8em;
-      border-radius: 50%;
-      margin: 0.4em;
-      background-color: #ccc;
-      display: inline-block;
-      vertical-align: top;
-      transition: all 0.3s;
+  &-dot {
+    width: 0.8em;
+    height: 0.8em;
+    border-radius: 50%;
+    margin: 0.4em;
+    background-color: #ccc;
+    display: inline-block;
+    vertical-align: top;
+    transition: all 0.3s;
 
-      &.active {
-        background-color: #fff;
-      }
+    &.active {
+      background-color: #fff;
+    }
 
-      &:hover {
-        transform: scale(1.4);
-        background-color: #fff;
-        cursor: pointer;
-      }
+    &:hover {
+      transform: scale(1.4);
+      background-color: #fff;
+      cursor: pointer;
     }
   }
 
@@ -255,22 +267,26 @@ export default {
     align-items: center;
     position: absolute;
     top: 50%;
-
+    user-select: none;
+    transition: scale $duration linear;
     &:hover {
-      background-color: $greyHover;
+      background-color: lighten($grey, 10%);
+    }
+    &:active {
+      transform: scale(0.9);
     }
 
     > .icon {
       fill: #fff;
     }
+  }
 
-    &.f-carousel-prev {
-      left: 1em;
-    }
+  &-prev {
+    left: 1em;
+  }
 
-    &.f-carousel-next {
-      right: 1em;
-    }
+  &-next {
+    right: 1em;
   }
 }
 </style>

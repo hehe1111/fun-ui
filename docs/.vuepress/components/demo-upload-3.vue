@@ -34,6 +34,7 @@ Vue.use(toast);
 
 export default {
   name: 'demo-upload-3',
+  components: { FUpload, FButton, CodeBox },
   data() {
     return {
       htmlCode: removePrefixSpace(`
@@ -78,7 +79,9 @@ export default {
       const fileInfo = JSON.parse(response);
       return {
         name: fileInfo.originalname,
-        url: 'https://upload-file-demo-on-heroku.herokuapp.com/preview/' + fileInfo.filename,
+        url:
+          'https://upload-file-demo-on-heroku.herokuapp.com/preview/' +
+          fileInfo.filename,
       };
     },
     onSuccess(x) {
@@ -91,7 +94,6 @@ export default {
       x.isExceeded && this.$toast('文件太大');
     },
   },
-  components: { FUpload, FButton, CodeBox },
 };
 </script>
 

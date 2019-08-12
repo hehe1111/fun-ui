@@ -21,13 +21,13 @@ import FButton from '../../../src/components/button/FButton.vue';
 
 export default {
   name: 'demo-pagination-3',
+  components: { FPagination, FButton },
   data() {
     return {
       total: 1,
       hideOnSinglePage: false,
     };
   },
-  components: { FPagination, FButton },
 };
 </script>
 

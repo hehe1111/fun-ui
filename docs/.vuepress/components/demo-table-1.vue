@@ -61,6 +61,7 @@ import removePrefixSpace from '../assets/js/remove-prefix-space.js';
 
 export default {
   name: 'demo-table-1',
+  components: { FTable, FTableColumn, FPopover, FButton, CodeBox },
   data() {
     return {
       dataSource: [
@@ -372,7 +373,6 @@ export default {
       }, 3000);
     },
   },
-  components: { FTable, FTableColumn, FPopover, FButton, CodeBox },
 };
 </script>
 

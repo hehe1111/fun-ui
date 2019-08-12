@@ -1,18 +1,18 @@
 <template>
   <div id="app" style="padding: 10px;">
-    <f-scroll-vertical
-      style="border: 10px solid green; height: 200px;"
-      :load-data="loadData"
-      :load-data-immediately="true"
+    <f-scroll-horizontal
+      style="border: 10px solid green; height: 200px; padding: 10px;"
     >
-      <div class="item" v-for="div in divs" :key="div">{{ div }}</div>
-    </f-scroll-vertical>
+      <p>
+        loremloremloremloremloremloremloremloremloremloremloremloremloremloremloremloremloremloremloremloremloremloremloremloremloremloremloremloremloremloremloremloremloremloremloremloremloremloremloremloremloremloremloremloremloremloremloremloremloremloremloremloremloremloremloremloremloremloremloremloremloremloremloremloremloremloremloremloremloremloremloremloremloremloremloremloremloremloremloremloremloremloremloremloremloremloremloremloremloremloremloremloremloremloremloremloremloremloremloremloremloremloremloremloremloremloremloremloremloremloremloremloremloremloremloremloremloremloremloremloremloremloremloremloremloremloremloremloremloremloremloremloremloremloremloremloremloremloremloremloremloremloremloremloremloremloremloremloremloremlorem
+      </p>
+    </f-scroll-horizontal>
     {{ divs }}
   </div>
 </template>
 
 <script>
-import FScrollVertical from './components/scroll/FScrollVertical.vue';
+import FScrollHorizontal from './components/scroll/FScrollHorizontal.vue';
 import { range } from './assets/utils.js';
 
 export default {
@@ -30,7 +30,7 @@ export default {
       this.divs.push(this.divs.length + 1);
     },
   },
-  components: { FScrollVertical },
+  components: { FScrollVertical, FScrollHorizontal },
 };
 </script>
 

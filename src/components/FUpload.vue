@@ -36,8 +36,8 @@
         <img :src="file.url" />
         <span class="f-upload-file-name">{{ file.name }}</span>
         <f-icon
-          class="f-upload-check-icon"
-          name="check"
+          class="f-upload-circle-check-icon"
+          name="circle-check"
           v-if="file.status === 'succeeded'"
         />
         <f-icon
@@ -56,6 +56,7 @@ import { getTypeOf, ajax } from '../assets/utils.js';
 
 export default {
   name: 'FunUIUpload',
+  components: { FIcon },
   data() {
     return {
       mutableFileList: [],
@@ -255,7 +256,6 @@ export default {
       };
     },
   },
-  components: { FIcon },
 };
 </script>
 
@@ -307,7 +307,7 @@ export default {
       color: $blue;
       border-color: $blue;
 
-      > .f-upload-check-icon {
+      > .f-upload-circle-check-icon {
         display: none;
       }
 
@@ -321,7 +321,7 @@ export default {
         display: none;
       }
 
-      > .f-upload-check-icon,
+      > .f-upload-circle-check-icon,
       > .f-upload-remove-icon {
         top: 50%;
         // transform: translateY(-50%); not work on SVG element
@@ -395,7 +395,7 @@ export default {
       margin-right: 0.5em;
     }
 
-    > .f-upload-check-icon,
+    > .f-upload-circle-check-icon,
     > .f-upload-remove-icon {
       position: absolute;
       top: 0;
@@ -404,7 +404,7 @@ export default {
       margin-right: 0.2em;
     }
 
-    > .f-upload-check-icon {
+    > .f-upload-circle-check-icon {
       fill: $blue;
     }
 

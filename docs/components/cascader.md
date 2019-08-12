@@ -53,9 +53,7 @@
   ];
 
   export default {
-    components: {
-      FCascader,
-    },
+    components: { FCascader },
     data() {
       return {
         selected: [],
@@ -103,9 +101,7 @@
   }
 
   export default {
-    components: {
-      FCascader,
-    },
+    components: { FCascader },
     data() {
       return {
         selected: [],

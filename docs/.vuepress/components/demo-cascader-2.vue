@@ -11,17 +11,17 @@
 </template>
 
 <script>
-import FCascader from "../../../src/components/cascader/FCascader.vue";
-import db from "../../../tests/fixture/db.js";
+import FCascader from '../../../src/components/cascader/FCascader.vue';
+import db from '../../../tests/fixture/db.js';
 
 function ajax(id = 0) {
   return new Promise((resolve, reject) => {
     setTimeout(() => {
       const result = JSON.parse(
-        JSON.stringify(db.filter(n => n["parent_id"] === id))
+        JSON.stringify(db.filter(n => n['parent_id'] === id))
       );
       result.forEach(a => {
-        const hasChild = db.some(b => b["parent_id"] === a.id);
+        const hasChild = db.some(b => b['parent_id'] === a.id);
         a.isLeaf = !hasChild;
       });
       resolve(result);
@@ -30,9 +30,7 @@ function ajax(id = 0) {
 }
 
 export default {
-  components: {
-    FCascader,
-  },
+  components: { FCascader },
   data() {
     return {
       selected: [],

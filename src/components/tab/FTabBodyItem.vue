@@ -41,6 +41,8 @@ export default {
 </script>
 
 <style lang="scss" scoped>
+@import '../../assets/_var.scss';
+
 .tab-body-item {
   padding: 1em;
   height: 100%;

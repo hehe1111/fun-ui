@@ -76,7 +76,7 @@ export default {
     color: $blue;
   }
   &.disabled {
-    color: grey;
+    color: lightGrey;
     cursor: not-allowed;
   }
 }

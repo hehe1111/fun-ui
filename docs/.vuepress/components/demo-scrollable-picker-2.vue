@@ -24,6 +24,7 @@ import removePrefixSpace from '../assets/js/remove-prefix-space.js';
 
 export default {
   name: 'demo-scrollable-picker-2',
+  components: { FScrollablePicker },
   data() {
     return {
       selected: 10,
@@ -47,7 +48,6 @@ export default {
       `),
     };
   },
-  components: { FScrollablePicker },
 };
 </script>
 

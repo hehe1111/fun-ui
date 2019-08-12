@@ -31,6 +31,7 @@ import clickOutside, {
 
 export default {
   name: 'FunUIFCascader',
+  components: { FCascaderItems, FIcon },
   props: {
     source: {
       type: Array,
@@ -116,7 +117,6 @@ export default {
       this.$emit('update:selected', []);
     },
   },
-  components: { FCascaderItems, FIcon },
   directives: { clickOutside },
 };
 </script>
