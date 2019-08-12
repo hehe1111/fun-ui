@@ -2,9 +2,9 @@
   <div
     :class="[n2c(), n2c('parent')]"
     ref="parentRef"
-    @wheel="onWheel"
-    @touchstart="onTouchStart"
-    @touchmove="onTouchMove"
+    @wheel.prevent="onWheel"
+    @touchstart.prevent="onTouchStart"
+    @touchmove.prevent="onTouchMove"
   >
     <div
       :class="[n2c('child'), { ['trigger-BFC']: direction === 'x' }]"
@@ -20,8 +20,6 @@
         :class="n2c('scrollbar')"
         ref="scrollbarRef"
         @mousedown="onMouseDown"
-        @touchstart="onTouchStart"
-        @touchmove="onTouchMove"
         @selectstart.prevent
       ></div>
     </div>
