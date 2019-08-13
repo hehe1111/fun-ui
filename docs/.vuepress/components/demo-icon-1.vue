@@ -19,7 +19,6 @@
 <script>
 import FIcon from '../../../src/components/FIcon.vue';
 import iconNames from '../assets/js/icon-names.js';
-import CodeBox from './code-box.vue';
 import removePrefixSpace from '../assets/js/remove-prefix-space.js';
 
 export default {

@@ -29,12 +29,11 @@
 <script>
 import FPopover from '../../../src/components/FPopover.vue';
 import FButton from '../../../src/components/button/FButton.vue';
-import CodeBox from './code-box.vue';
 import removePrefixSpace from '../assets/js/remove-prefix-space.js';
 
 export default {
   name: 'demo-popover-4',
-  components: { FPopover, FButton, CodeBox },
+  components: { FPopover, FButton },
   data() {
     return {
       htmlCode: removePrefixSpace(`

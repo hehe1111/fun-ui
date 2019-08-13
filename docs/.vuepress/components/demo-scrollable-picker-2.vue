@@ -19,7 +19,6 @@
 <script>
 import FScrollablePicker from '../../../src/components/FScrollablePicker.vue';
 import { range } from '../../../src/assets/utils.js';
-import CodeBox from '../components/code-box.vue';
 import removePrefixSpace from '../assets/js/remove-prefix-space.js';
 
 export default {

@@ -18,12 +18,11 @@
 <script>
 import FButton from '../../../src/components/button/FButton.vue';
 import FButtonGroup from '../../../src/components/button/FButtonGroup.vue';
-import CodeBox from '../components/code-box.vue';
 import removePrefixSpace from '../assets/js/remove-prefix-space.js';
 
 export default {
   name: 'demo-button-group',
-  components: { FButton, FButtonGroup, CodeBox },
+  components: { FButton, FButtonGroup },
   data() {
     return {
       htmlCode: removePrefixSpace(`

@@ -5,6 +5,7 @@
     @after-enter="afterEnter"
     @leave="leave"
     @after-leave="afterLeave"
+    :css="false"
   >
     <slot />
   </transition>

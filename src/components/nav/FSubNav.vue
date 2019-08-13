@@ -1,5 +1,9 @@
 <template>
-  <div class="f-sub-nav-container" :class="{ vertical }" v-click-outside="closeIfNotVertical">
+  <div
+    class="f-sub-nav-container"
+    :class="{ vertical }"
+    v-click-outside="closeIfNotVertical"
+  >
     <div
       class="f-sub-nav-title-container"
       @click="toggle"
@@ -22,6 +26,7 @@
       @after-enter="afterEnter"
       @leave="leave"
       @after-leave="afterLeave"
+      :css="false"
     >
       <div
         class="f-sub-nav"

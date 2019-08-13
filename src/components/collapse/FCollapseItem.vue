@@ -76,9 +76,9 @@ export default {
 @import '../../assets/_var.scss';
 
 .f-collapse-item {
-  &-title-container,
+  &-title,
   &-content {
-    padding: 0.5em;
+    margin: 0.5em;
   }
 
   &-title-container {
@@ -98,6 +98,7 @@ export default {
 
   &-icon {
     margin-left: auto;
+    margin-right: 0.5em;
     flex-shrink: 0;
     transition: transform $duration linear;
   }

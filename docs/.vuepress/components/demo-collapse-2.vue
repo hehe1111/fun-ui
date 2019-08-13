@@ -1,0 +1,42 @@
+<template>
+  <div class="demo-collapse-2 extra-margin">
+    <f-collapse :multiple="false">
+      <f-collapse-item title="标题1" name="c1">内容1</f-collapse-item>
+      <f-collapse-item title="标题2" name="c2">内容2</f-collapse-item>
+      <f-collapse-item title="标题3" name="c3">内容3</f-collapse-item>
+    </f-collapse>
+
+    <code-box>
+      <pre>
+        <code class="html">{{htmlCode}}</code>
+      </pre>
+    </code-box>
+  </div>
+</template>
+
+
+<script>
+import FCollapse from '../../../src/components/collapse/FCollapse.vue';
+import FCollapseItem from '../../../src/components/collapse/FCollapseItem.vue';
+import removePrefixSpace from '../assets/js/remove-prefix-space.js';
+
+export default {
+  name: 'demo-collapse-2',
+  components: { FCollapse, FCollapseItem },
+  data() {
+    return {
+      htmlCode: removePrefixSpace(`
+        <f-collapse :multiple="false">
+          <f-collapse-item title="标题1" name="c1">内容1</f-collapse-item>
+          <f-collapse-item title="标题2" name="c2">内容2</f-collapse-item>
+          <f-collapse-item title="标题3" name="c3">内容3</f-collapse-item>
+        </f-collapse>
+      `),
+    };
+  },
+};
+</script>
+
+<style lang="scss" scoped>
+@import '../assets/style/_var.scss';
+</style>

@@ -33,4 +33,4 @@
 | -------- | ---------------------------------------------------------- | -------- | ------ | --------------------------- | -------- |
 | position | 气泡弹出位置                                               | string   | top    | top / bottom / left / right | 否       |
 | trigger  | 气泡弹出的触发方式                                         | string   | click  | click / hover               | 否       |
-| close    | 组件通过 slot-scope 提供的关闭函数，用于在气泡内部关闭气泡 | function | -      | -                           | 否       |
+| close    | 组件通过 slot-scope 提供的关闭函数，用于在气泡内部关闭气泡 | Function | -      | -                           | 否       |

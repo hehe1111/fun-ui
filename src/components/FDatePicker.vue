@@ -151,7 +151,7 @@ export default {
     },
     scope: {
       type: Array,
-      default: () => [new Date(2010, 3, 10), new Date(2030, 8, 20)],
+      default: () => [new Date(1900, 0, 1), new Date(2100, 11, 31)],
       validator(prop) {
         return prop.every(n => getTypeOf(n) === 'date');
       },

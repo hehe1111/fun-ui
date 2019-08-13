@@ -29,13 +29,12 @@ import Vue from 'vue';
 import FUpload from '../../../src/components/FUpload.vue';
 import FButton from '../../../src/components/button/FButton.vue';
 import toast from '../../../src/plugins/toast.js';
-import CodeBox from './code-box.vue';
 import removePrefixSpace from '../assets/js/remove-prefix-space.js';
 Vue.use(toast);
 
 export default {
   name: 'demo-upload-9',
-  components: { FUpload, FButton, CodeBox },
+  components: { FUpload, FButton },
   data() {
     return {
       htmlCode: removePrefixSpace(`

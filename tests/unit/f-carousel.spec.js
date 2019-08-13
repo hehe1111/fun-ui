@@ -28,7 +28,7 @@ describe('FCarousel.vue', () => {
       expect(wrapper.find('.f-carousel-item > div').text()).to.eq('x1');
       expect(
         wrapper
-          .findAll('.dot')
+          .findAll('.f-carousel-dot')
           .at(0)
           .classes()
       ).include('active');
@@ -46,7 +46,7 @@ describe('FCarousel.vue', () => {
       expect(wrapper.find('.f-carousel-item > div').text()).to.eq(selected);
       expect(
         wrapper
-          .findAll('.dot')
+          .findAll('.f-carousel-dot')
           .at(1)
           .classes()
       ).include('active');
@@ -66,7 +66,7 @@ describe('FCarousel.vue', () => {
       expect(wrapper.find('.f-carousel-item > div').text()).to.eq('x1');
       expect(
         wrapper
-          .findAll('.dot')
+          .findAll('.f-carousel-dot')
           .at(0)
           .classes()
       ).include('active');
@@ -76,13 +76,13 @@ describe('FCarousel.vue', () => {
         expect(wrapper.find('.f-carousel-item > div').text()).to.eq('x2');
         expect(
           wrapper
-            .findAll('.dot')
+            .findAll('.f-carousel-dot')
             .at(1)
             .classes()
         ).include('active');
 
-        wrapper.destroy();
         done();
+        wrapper.destroy();
       }, 25);
     });
   });
@@ -110,7 +110,7 @@ describe('FCarousel.vue', () => {
       })
     );
     wrapper.vm.$nextTick().then(() => {
-      expect(wrapper.find('.f-carousel-dots').classes()).include(
+      expect(wrapper.find('.f-carousel-dots-container').classes()).include(
         `position-${dotPosition}`
       );
       expect(wrapper.find('.f-carousel-prev').exists()).to.eq(true);
@@ -130,7 +130,7 @@ describe('FCarousel.vue', () => {
       })
     );
     wrapper.vm.$nextTick().then(() => {
-      expect(wrapper.find('.f-carousel-dots').classes()).include(
+      expect(wrapper.find('.f-carousel-dots-container').classes()).include(
         `position-${dotPosition}`
       );
       expect(wrapper.find('.f-carousel-prev').exists()).to.eq(false);
@@ -146,12 +146,12 @@ describe('FCarousel.vue', () => {
       expect(wrapper.find('.f-carousel-item > div').text()).to.eq('x1');
       expect(
         wrapper
-          .findAll('.dot')
+          .findAll('.f-carousel-dot')
           .at(0)
           .classes()
       ).include('active');
       wrapper
-        .findAll('.dot')
+        .findAll('.f-carousel-dot')
         .at(target)
         .trigger('click');
       wrapper.vm.$nextTick().then(() => {
@@ -160,7 +160,7 @@ describe('FCarousel.vue', () => {
         );
         expect(
           wrapper
-            .findAll('.dot')
+            .findAll('.f-carousel-dot')
             .at(target)
             .classes()
         ).include('active');
@@ -179,7 +179,7 @@ describe('FCarousel.vue', () => {
       expect(wrapper.find('.f-carousel-item > div').text()).to.eq('x1');
       expect(
         wrapper
-          .findAll('.dot')
+          .findAll('.f-carousel-dot')
           .at(0)
           .classes()
       ).include('active');
@@ -190,7 +190,7 @@ describe('FCarousel.vue', () => {
         expect(wrapper.find('.f-carousel-item > div').text()).to.eq('x3');
         expect(
           wrapper
-            .findAll('.dot')
+            .findAll('.f-carousel-dot')
             .at(2)
             .classes()
         ).include('active');
@@ -201,7 +201,7 @@ describe('FCarousel.vue', () => {
           expect(wrapper.find('.f-carousel-item > div').text()).to.eq('x1');
           expect(
             wrapper
-              .findAll('.dot')
+              .findAll('.f-carousel-dot')
               .at(0)
               .classes()
           ).include('active');

@@ -15,12 +15,11 @@
 
 <script>
 import FScrollHorizontal from '../../../src/components/scroll/FScrollHorizontal.vue';
-import CodeBox from './code-box.vue';
 import removePrefixSpace from '../assets/js/remove-prefix-space.js';
 
 export default {
   name: 'demo-scroll-2',
-  components: { FScrollHorizontal, CodeBox },
+  components: { FScrollHorizontal },
   data() {
     return {
       htmlCode: removePrefixSpace(`

@@ -15,12 +15,12 @@
     />
     <f-icon
       v-if="clearable"
-      name="error"
+      name="circle-cross"
       class="f-input-clear-icon"
       @click="onClickClearIcon"
     />
     <template v-if="error">
-      <f-icon name="error" />
+      <f-icon name="circle-cross" />
       <span>{{ error }}</span>
     </template>
   </div>

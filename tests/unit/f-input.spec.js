@@ -45,7 +45,7 @@ describe('FInput.vue', () => {
       });
       const href = wrapper.find('use').attributes('href');
       const span = wrapper.find('span').text();
-      expect(href).to.eq('#icon-error');
+      expect(href).to.eq('#icon-circle-cross');
       expect(span).to.eq(tip);
       wrapper.destroy();
     });

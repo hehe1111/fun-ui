@@ -13,7 +13,6 @@
 
 <script>
 import FIcon from '../../../src/components/FIcon.vue';
-import CodeBox from './code-box.vue';
 import removePrefixSpace from '../assets/js/remove-prefix-space.js';
 
 export default {

@@ -23,4 +23,4 @@
 | value         | 当前被选中项           | Date 或者是 null | new Date()                                     | Date / null                  | 否       |
 | start-week-on | 星期从周一还是周日开始 | number / string  | 1（周一）                                      | 1 / 0 / '1' / '0'            | 否       |
 | separator     | 年月日之间的分隔符     | string           | ' / '                                          | '-' 或 '/' 或 ' / ' 或 ' - ' | 否       |
-| scope         | 可选的时间范围         | Array            | [new Date(2010, 3, 10), new Date(2030, 8, 20)] | -                            | 否       |
+| scope         | 可选的时间范围         | Array            | [new Date(1900, 0, 1), new Date(2100, 11, 31)] | -                            | 否       |

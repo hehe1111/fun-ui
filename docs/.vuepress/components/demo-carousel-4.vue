@@ -58,12 +58,11 @@ import FButton from '../../../src/components/button/FButton.vue';
 import FButtonGroup from '../../../src/components/button/FButtonGroup.vue';
 import FCarousel from '../../../src/components/carousel/FCarousel.vue';
 import FCarouselItem from '../../../src/components/carousel/FCarouselItem.vue';
-import CodeBox from './code-box.vue';
 import removePrefixSpace from '../assets/js/remove-prefix-space.js';
 
 export default {
   name: 'demo-carousel-4',
-  components: { FButton, FButtonGroup, FCarousel, FCarouselItem, CodeBox },
+  components: { FButton, FButtonGroup, FCarousel, FCarouselItem },
   data() {
     return {
       dotPosition1: 'left',

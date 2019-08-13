@@ -56,12 +56,11 @@ import FTable from '../../../src/components/table/FTable.vue';
 import FTableColumn from '../../../src/components/table/FTableColumn.vue';
 import FPopover from '../../../src/components/FPopover.vue';
 import FButton from '../../../src/components/button/FButton.vue';
-import CodeBox from './code-box.vue';
 import removePrefixSpace from '../assets/js/remove-prefix-space.js';
 
 export default {
   name: 'demo-table-1',
-  components: { FTable, FTableColumn, FPopover, FButton, CodeBox },
+  components: { FTable, FTableColumn, FPopover, FButton },
   data() {
     return {
       dataSource: [
