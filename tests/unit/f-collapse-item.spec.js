@@ -23,7 +23,7 @@ describe('FCollapseItem.vue', () => {
       },
     });
     expect(wrapper.find('header').text()).to.eq(text);
-    expect(wrapper.find('.collapse-item').attributes('data-name')).to.eq(name);
+    expect(wrapper.find('.f-collapse-item').attributes('data-name')).to.eq(name);
     wrapper.destroy();
   });
 });

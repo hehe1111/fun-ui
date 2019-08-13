@@ -41,12 +41,12 @@ describe('FCollapse.vue', () => {
     });
   });
 
-  it('可以接受 single 属性', () => {
+  it('可以接受 multiple 属性，默认是 true', () => {
     const wrapper = mount(
       FCollapse,
       returnOptionsObj({
         opened: ['c2'],
-        single: true,
+        multiple: false,
       })
     );
 

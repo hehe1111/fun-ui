@@ -1,24 +1,26 @@
 <template>
-  <div class="collapse">
+  <div :class="n2c()">
     <slot />
   </div>
 </template>
 
 <script>
 import Vue from 'vue';
+import { optionsName2ClassPrefix } from '../../assets/utils.js';
 
 export default {
   name: 'FunUICollapse',
   props: {
     opened: {
       type: Array,
+      default: () => [''],
       validator(value) {
         return value.every(n => typeof n === 'string');
       },
     },
-    single: {
+    multiple: {
       type: Boolean,
-      default: false,
+      default: true,
     },
   },
   data() {
@@ -31,6 +33,11 @@ export default {
       eventBus: this.eventBus,
     };
   },
+  computed: {
+    n2c() {
+      return optionsName2ClassPrefix(this.$options.name);
+    },
+  },
   mounted() {
     this.openedCopy = this.checkOpened();
     this.eventBus.$emit('update:opened', this.openedCopy);
@@ -40,12 +47,10 @@ export default {
   methods: {
     checkOpened() {
       const openedCopy = JSON.parse(JSON.stringify(this.opened));
-      if (this.single && this.opened.length > 1) {
+      if (!this.multiple && this.opened.length > 1) {
         console &&
           console.warn &&
-          console.warn(
-            '由于 single prop 为 true，因此 opened prop 应该是一个单元素数组'
-          );
+          console.warn('Prop "opened" should be a one-element array');
         return openedCopy.slice(0, 1);
       }
       return openedCopy;
@@ -53,7 +58,7 @@ export default {
     onRemoveOpenedItem() {
       const { openedCopy } = this;
       this.eventBus.$on('removeOpenedItem', item => {
-        if (this.single) openedCopy.splice(0);
+        if (!this.multiple) openedCopy.splice(0);
         const index = openedCopy.indexOf(item);
         index >= 0 && openedCopy.splice(index, 1);
         this.emitNewOpenedItems(openedCopy);
@@ -62,7 +67,7 @@ export default {
     onAddOpenedItem() {
       const { openedCopy } = this;
       this.eventBus.$on('addOpenedItem', item => {
-        if (this.single) openedCopy.splice(0);
+        if (!this.multiple) openedCopy.splice(0);
         openedCopy.push(item);
         this.emitNewOpenedItems(openedCopy);
       });
@@ -79,7 +84,7 @@ export default {
 <style lang="scss" scoped>
 @import '../../assets/_var.scss';
 
-.collapse {
+.f-collapse {
   border: 1px solid $borderColorLight;
   border-radius: $borderRadius;
 }

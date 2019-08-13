@@ -1,17 +1,25 @@
 <template>
-  <div class="collapse-item" :data-name="name">
-    <header class="title" :class="classes" @click="toggleContent">
-      {{ title }}
+  <div :class="n2c()" :data-name="name">
+    <header :class="headerClasses" @click="toggleContent">
+      <div :class="titleClasses">{{ title }}</div>
+      <f-icon name="up" :class="n2c('icon')" />
     </header>
-    <div class="content" v-if="isOpened">
-      <slot />
-    </div>
+    <f-transition :duration="200">
+      <div :class="n2c('content')" v-if="isOpened">
+        <slot />
+      </div>
+    </f-transition>
   </div>
 </template>
 
 <script>
+import FIcon from '../FIcon.vue';
+import FTransition from '../FTransition.vue';
+import { optionsName2ClassPrefix } from '../../assets/utils.js';
+
 export default {
   name: 'FunUICollapseItem',
+  components: { FIcon, FTransition },
   props: {
     title: {
       type: String,
@@ -34,10 +42,17 @@ export default {
     };
   },
   computed: {
-    classes() {
-      return {
-        'zero-border-bottom-radius': this.isOpened,
-      };
+    n2c() {
+      return optionsName2ClassPrefix(this.$options.name);
+    },
+    headerClasses() {
+      return [
+        this.n2c('title-container'),
+        { 'zero-border-bottom-radius': this.isOpened },
+      ];
+    },
+    titleClasses() {
+      return [this.n2c('title'), { [`${this.n2c('open')}`]: this.isOpened }];
     },
   },
   mounted() {
@@ -60,33 +75,50 @@ export default {
 <style lang="scss" scoped>
 @import '../../assets/_var.scss';
 
-.collapse-item {
-  > .title,
-  > .content {
+.f-collapse-item {
+  &-title-container,
+  &-content {
     padding: 0.5em;
   }
-  > .title:hover {
-    background-color: $hoverGrey;
-  }
-  > .title {
+
+  &-title-container {
     border: 1px solid $borderColorLight;
     margin: -1px;
     display: flex;
     align-items: center;
     background-color: $lightGrey;
+    &:hover {
+      background-color: $hoverGrey;
+    }
   }
+
+  &-title {
+    margin-right: 0.5em;
+  }
+
+  &-icon {
+    margin-left: auto;
+    flex-shrink: 0;
+    transition: transform $duration linear;
+  }
+
+  &-open + &-icon {
+    transform: rotate(180deg);
+  }
+
   &:first-child {
-    > .title {
+    > .f-collapse-item-title-container {
       border-top-left-radius: $borderRadius;
       border-top-right-radius: $borderRadius;
     }
   }
+
   &:last-child {
-    > .title {
+    > .f-collapse-item-title-container {
       border-bottom-left-radius: $borderRadius;
       border-bottom-right-radius: $borderRadius;
     }
-    > .title.zero-border-bottom-radius {
+    > .f-collapse-item-title-container.zero-border-bottom-radius {
       border-bottom-left-radius: 0;
       border-bottom-right-radius: 0;
     }
