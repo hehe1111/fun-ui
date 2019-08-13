@@ -1,6 +1,9 @@
 <template>
   <div :class="n2c()">
-    <f-popover position="bottom" :contentStyle="{ width: '' }">
+    <f-popover
+      position="bottom"
+      :content-style="{ width: '', 'margin-left': 0 }"
+    >
       <f-input
         :value="selectedDateString"
         :clearable="false"
