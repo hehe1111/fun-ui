@@ -9,24 +9,26 @@
         ref="clearIconRef"
       />
     </div>
-    <!-- <transition></transition> -->
-    <div :class="n2c('popover')" v-if="isPopoverVisible">
-      <f-cascader-items
-        :items="source"
-        :selected="selected"
-        @update:selected="onUpdateSelected"
-        :width="columnWidth"
-        :height="columnHeight"
-        :load-data="loadData"
-        :loading-item="loadingItem"
-      />
-    </div>
+    <f-transition>
+      <div :class="n2c('popover')" v-if="isPopoverVisible">
+        <f-cascader-items
+          :items="source"
+          :selected="selected"
+          @update:selected="onUpdateSelected"
+          :width="columnWidth"
+          :height="columnHeight"
+          :load-data="loadData"
+          :loading-item="loadingItem"
+        />
+      </div>
+    </f-transition>
   </div>
 </template>
 
 <script>
 import FIcon from '../FIcon.vue';
 import FCascaderItems from './FCascaderItems.vue';
+import FTransition from '../FTransition.vue';
 import { optionsName2ClassPrefix } from '../../assets/utils.js';
 import clickOutside, {
   removeClickOutsideListener,
@@ -34,7 +36,7 @@ import clickOutside, {
 
 export default {
   name: 'FunUICascader',
-  components: { FCascaderItems, FIcon },
+  components: { FCascaderItems, FIcon, FTransition },
   directives: { clickOutside },
   props: {
     source: {
@@ -167,7 +169,6 @@ export default {
     box-shadow: 0 0 5px 0 lighten($boxShadowColor, 34%);
     border-radius: $borderRadius;
     z-index: 1;
-    overflow: hidden;
   }
 }
 </style>
