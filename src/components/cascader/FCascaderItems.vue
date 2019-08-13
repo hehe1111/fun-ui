@@ -1,27 +1,33 @@
 <template>
-  <div class="cascader-items" ref="cascaderItems">
-    <div class="level left" ref="leftLevelRef">
-      <div class="left-inner" :style="leftInnerStyle" ref="leftInnerRef">
-        <div
-          class="label-container"
-          :class="activeClass(item)"
-          v-for="item in items"
-          :key="item.name"
-          @click="onSelected(item)"
-        >
-          <span class="label">{{ item.name }}</span>
-          <f-icon name="right" v-if="isRightIconVisible(item)" />
-          <f-icon name="loading" v-if="isLoadingIconVisible(item)" />
-        </div>
+  <div :class="n2c()" ref="cascaderItems">
+    <div :class="n2c('left')" v-hide-scrollbar:[widthAndHeight]>
+      <div
+        :class="activeClass(item)"
+        v-for="item in items"
+        :key="item.name"
+        @click="onSelected(item)"
+      >
+        <span :class="n2c('label')">{{ item.name }}</span>
+        <f-icon
+          :class="n2c('icon')"
+          name="right"
+          v-if="isRightIconVisible(item)"
+        />
+        <f-icon
+          :class="n2c('icon')"
+          name="loading"
+          v-if="isLoadingIconVisible(item)"
+        />
       </div>
     </div>
-    <div class="level right" v-if="rightItems">
+    <div :class="n2c('right')" v-if="rightItems">
       <!-- 可以用 fun-u-i-cascader-items 也可以用 FunUICascaderItems -->
       <FunUICascaderItems
         :level="level + 1"
         :items="rightItems"
         :selected="selected"
         @update:selected="onUpdateSelected"
+        :width="width"
         :height="height"
         :load-data="loadData"
         :loading-item="loadingItem"
@@ -32,13 +38,19 @@
 
 <script>
 import FIcon from '../FIcon.vue';
+import { optionsName2ClassPrefix } from '../../assets/utils.js';
+import hideScrollbar from '../../directives/hide-scrollbar.js';
 
 export default {
   name: 'FunUICascaderItems',
   components: { FIcon },
+  directives: { hideScrollbar },
   props: {
     items: {
       type: Array,
+    },
+    width: {
+      type: String,
     },
     height: {
       type: String,
@@ -64,19 +76,15 @@ export default {
     };
   },
   mounted() {
-    // 隐藏第二层及后面层级的垂直滚动条
-    this.hideVerticalScrollbar();
     this.scrollToSelectedItem();
   },
-  updated() {
-    // 隐藏第一层的垂直滚动条
-    this.hideVerticalScrollbar();
-  },
   computed: {
-    leftInnerStyle() {
-      return {
-        height: this.height,
-      };
+    n2c() {
+      return optionsName2ClassPrefix(this.$options.name);
+    },
+    widthAndHeight() {
+      const { width, height } = this;
+      return { width, height };
     },
     rightItems() {
       // this.selected 只记录每一层选中的值，其元素不会有 children 属性
@@ -96,12 +104,15 @@ export default {
   },
   methods: {
     activeClass(item) {
-      const { actived, selected, level } = this;
-      return {
-        active:
-          item.name === actived ||
-          (selected[level] && item.name === selected[level].name),
-      };
+      const { n2c, actived, selected, level } = this;
+      return [
+        n2c('label-container'),
+        {
+          active:
+            item.name === actived ||
+            (selected[level] && item.name === selected[level].name),
+        },
+      ];
     },
     onSelected(item) {
       this.actived = item.name;
@@ -123,28 +134,20 @@ export default {
       // item.id === loadingItem.id 剔除掉区名跟市名相同的情况，做到只高亮市名 省-市-区
       return item.name === loadingItem.name && item.id === loadingItem.id;
     },
-    hideVerticalScrollbar() {
-      const { leftInnerRef, leftLevelRef } = this.$refs;
-      if (leftInnerRef.offsetWidth > leftInnerRef.clientWidth) {
-        leftLevelRef.classList.add('hide-vertical-scrollbar');
-        leftInnerRef.classList.add('hide-vertical-scrollbar');
-      }
-    },
     scrollToSelectedItem() {
-      const { cascaderItems } = this.$refs;
-      const leftInner = cascaderItems.querySelector('.left-inner');
-      const activeItem = cascaderItems.querySelector('.label-container.active');
-      if (leftInner && activeItem) {
-        const leftInnerTop =
-          leftInner.getBoundingClientRect &&
-          leftInner.getBoundingClientRect().top;
-        const activeItemTop =
-          activeItem.getBoundingClientRect &&
-          activeItem.getBoundingClientRect().top;
-        if (activeItemTop > leftInnerTop) {
-          leftInner.scrollBy &&
-            leftInner.scrollBy({
-              top: activeItemTop - leftInnerTop,
+      const left = this.$refs.cascaderItems.querySelector(
+        '.f-cascader-items-left'
+      );
+      const activeItem = this.$refs.cascaderItems.querySelector(
+        '.f-cascader-items-label-container.active'
+      );
+      if (left && activeItem) {
+        const leftTop = left.getBoundingClientRect().top;
+        const activeItemTop = activeItem.getBoundingClientRect().top;
+        if (activeItemTop > leftTop) {
+          left.scrollBy &&
+            left.scrollBy({
+              top: activeItemTop - leftTop,
               behavior: 'smooth',
             });
         }
@@ -157,45 +160,39 @@ export default {
 <style lang="scss" scoped>
 @import '../../assets/_var.scss';
 
-.cascader-items {
+.f-cascader-items {
   display: flex;
-  > .level.left {
-    &.hide-vertical-scrollbar {
-      overflow: hidden;
-    }
 
-    > .left-inner {
-      &.hide-vertical-scrollbar {
-        margin-right: -17px;
-      }
-      overflow: auto;
+  &-left {
+    order: 0;
+  }
 
-      > .label-container {
-        min-width: 6em;
-        padding: 0.5em;
-        display: flex;
-        align-items: center;
-        user-select: none;
-        white-space: nowrap;
-        cursor: pointer;
-        &.active,
-        &:hover {
-          background-color: $lightGrey;
-        }
-        > .label {
-          justify-content: flex-start;
-          flex: 1;
-        }
-        > .icon {
-          transform: scale(0.7);
-          margin-left: 1em;
-        }
-      }
+  &-right {
+    order: 1;
+    border-left: 1px solid darken($lightGrey, 8%);
+  }
+
+  &-label-container {
+    padding: 0.5em;
+    display: flex;
+    align-items: center;
+    user-select: none;
+    white-space: nowrap;
+    cursor: pointer;
+    &.active,
+    &:hover {
+      background-color: $lightGrey;
     }
   }
 
-  > .level.right {
-    border-left: 1px solid darken($lightGrey, 8%);
+  &-label {
+    justify-content: flex-start;
+    flex: 1;
+  }
+
+  &-icon {
+    transform: scale(0.7);
+    margin-left: 1em;
   }
 }
 </style>

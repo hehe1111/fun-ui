@@ -1,20 +1,22 @@
 <template>
-  <div class="cascader" ref="cascader" v-click-outside="close">
-    <div class="trigger" @click="togglePopover" ref="popoverRef">
+  <div :class="n2c()" v-click-outside="close" ref="cascader">
+    <div :class="n2c('trigger')" @click="togglePopover" ref="popoverRef">
       {{ result || `&nbsp;` }}
       <f-icon
-        name="error"
-        class="icon"
+        name="circle-cross"
+        :class="n2c('icon')"
         @click="clearSelected"
         ref="clearIconRef"
       />
     </div>
-    <div class="popover" v-if="isPopoverVisible">
+    <!-- <transition></transition> -->
+    <div :class="n2c('popover')" v-if="isPopoverVisible">
       <f-cascader-items
         :items="source"
         :selected="selected"
         @update:selected="onUpdateSelected"
-        :height="popoverHeight"
+        :width="columnWidth"
+        :height="columnHeight"
         :load-data="loadData"
         :loading-item="loadingItem"
       />
@@ -25,13 +27,15 @@
 <script>
 import FIcon from '../FIcon.vue';
 import FCascaderItems from './FCascaderItems.vue';
+import { optionsName2ClassPrefix } from '../../assets/utils.js';
 import clickOutside, {
   removeClickOutsideListener,
 } from '../../directives/click-outside.js';
 
 export default {
-  name: 'FunUIFCascader',
+  name: 'FunUICascader',
   components: { FCascaderItems, FIcon },
+  directives: { clickOutside },
   props: {
     source: {
       type: Array,
@@ -40,9 +44,13 @@ export default {
       type: Array,
       default: () => [],
     },
-    popoverHeight: {
+    columnWidth: {
       type: String,
-      default: '14em',
+      default: '8em',
+    },
+    columnHeight: {
+      type: String,
+      default: '16em',
     },
     loadData: {
       type: Function,
@@ -55,6 +63,9 @@ export default {
     };
   },
   computed: {
+    n2c() {
+      return optionsName2ClassPrefix(this.$options.name);
+    },
     result() {
       return this.selected.map(i => i.name).join(' / ');
     },
@@ -101,9 +112,9 @@ export default {
     },
     onUpdateSelected($event) {
       this.$emit('update:selected', $event);
-      this.execLoadData($event);
+      this.handleLoadData($event);
     },
-    execLoadData(newSelected) {
+    handleLoadData(newSelected) {
       const latestSelected = JSON.parse(
         JSON.stringify(newSelected[newSelected.length - 1])
       );
@@ -117,17 +128,17 @@ export default {
       this.$emit('update:selected', []);
     },
   },
-  directives: { clickOutside },
 };
 </script>
 
 <style lang="scss" scoped>
 @import '../../assets/_var.scss';
 
-.cascader {
+.f-cascader {
   display: inline-block;
   position: relative;
-  .trigger {
+
+  &-trigger {
     width: 20em;
     height: 2em;
     padding: 0 0.5em;
@@ -135,19 +146,19 @@ export default {
     border-radius: $borderRadius;
     display: flex;
     align-items: center;
-
-    > .icon {
-      margin-left: auto;
-      display: none;
-    }
-
     &:hover {
-      > .icon {
+      > .f-cascader-icon {
         display: inline-block;
       }
     }
   }
-  .popover {
+
+  &-icon {
+    margin-left: auto;
+    display: none;
+  }
+
+  &-popover {
     margin-top: 0.2em;
     display: flex;
     position: absolute;
