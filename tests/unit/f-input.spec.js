@@ -38,15 +38,52 @@ describe('FInput.vue', () => {
       wrapper.destroy();
     });
 
-    it('可以接受 error 属性', () => {
-      const tip = '这是一条来自测试用例的错误提示';
+    it('可以接受 hint 属性', () => {
+      const hint = { type: 'success', message: '这是一条成功提示' };
       const wrapper = mount(FInput, {
-        propsData: { error: tip },
+        propsData: { hint },
       });
-      const href = wrapper.find('use').attributes('href');
-      const span = wrapper.find('span').text();
-      expect(href).to.eq('#icon-circle-cross');
-      expect(span).to.eq(tip);
+      expect(wrapper.find('.f-input').classes()).to.include('f-input-success');
+      const href = wrapper
+        .find('.f-input-success-icon > use')
+        .attributes('href');
+      const span = wrapper.find('.f-input-success-hint').text();
+      expect(href).to.eq('#icon-check');
+      expect(span).to.eq(hint.message);
+      wrapper.destroy();
+    });
+
+    it('可以接受 clearable 属性', () => {
+      const value = '待清除';
+      const wrapper = mount(FInput, {
+        propsData: { value, clearable: true },
+      });
+      expect(wrapper.find('input').element.value).to.eq(value);
+      wrapper.find('.f-input-clear-icon').trigger('click');
+      expect(wrapper.find('input').element.value).to.eq('');
+      wrapper.destroy();
+    });
+
+    it('可以接受 autoFocus 属性', () => {
+      const fake = sinon.fake();
+      const wrapper = mount(FInput, {
+        propsData: { autoFocus: true },
+        listeners: { focus: fake },
+      });
+      wrapper.vm.$nextTick().then(() => {
+        expect(fake).to.have.been.calledOnce;
+        wrapper.destroy();
+      });
+    });
+
+    it('可以接受 placeholder 属性', () => {
+      const placeholder = 'hello world';
+      const wrapper = mount(FInput, {
+        propsData: { placeholder },
+      });
+      expect(wrapper.find('input').attributes('placeholder')).to.eq(
+        placeholder
+      );
       wrapper.destroy();
     });
   });
