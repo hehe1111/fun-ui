@@ -1,9 +1,6 @@
 <template>
   <div :class="n2c()">
-    <f-popover
-      position="bottom"
-      :content-style="{ width: '', 'margin-left': 0 }"
-    >
+    <f-popover position="bottom" :content-style="popoverContentStyle">
       <f-input
         :value="selectedDateString"
         :clearable="false"
@@ -125,6 +122,7 @@ export default {
       YEAR_MONTH_MODE,
       range,
       widthAndHeight: { width: '4em', height: '14em' },
+      popoverContentStyle: { width: '', 'margin-left': 0, overflow: 'hidden' },
     };
   },
   props: {

@@ -8,8 +8,11 @@
         ref="contentContainer"
         :style="contentStyle"
       >
-        <!-- slot-scope 把组件内部的东西暴露给插槽，从而可以在父组件作用域中调用 -->
-        <slot name="content" :close="close" />
+        <!-- for smoother transition -->
+        <div style="padding: 0.5em 1em;">
+          <!-- slot-scope 把组件内部的东西暴露给插槽，从而可以在父组件作用域中调用 -->
+          <slot name="content" :close="close" />
+        </div>
       </div>
     </f-transition>
     <div class="trigger-container" ref="triggerContainer" :style="triggerStyle">
@@ -180,7 +183,6 @@ export default {
   line-height: 1.4;
   border: 1px solid $borderColor;
   border-radius: $borderRadius;
-  padding: 0.5em 1em;
   margin-left: 4px;
   position: absolute;
   word-break: break-all;
