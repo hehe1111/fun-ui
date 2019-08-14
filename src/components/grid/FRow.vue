@@ -1,10 +1,12 @@
 <template>
-  <div class="row" :style="returnNegativeMargin">
+  <div :class="n2c()" :style="returnNegativeMargin">
     <slot />
   </div>
 </template>
 
 <script>
+import { optionsName2ClassPrefix } from '../../assets/utils.js';
+
 export default {
   name: 'FunUIRow',
   props: {
@@ -12,22 +14,11 @@ export default {
       type: [Number, String],
       default: 0,
     },
-    align: {
-      type: String,
-      default: 'left',
-      validator(value) {
-        return ['left', 'center', 'right'].indexOf(value) >= 0;
-      },
-    },
-  },
-  mounted() {
-    this.$children.forEach(child => {
-      const vm = child;
-      vm.gutter = this.gutter;
-      vm.align = this.align;
-    });
   },
   computed: {
+    n2c() {
+      return optionsName2ClassPrefix(this.$options.name);
+    },
     returnNegativeMargin() {
       return {
         marginLeft: `${-this.gutter / 2}px`,
@@ -35,13 +26,16 @@ export default {
       };
     },
   },
+  mounted() {
+    this.$children.forEach(child => (child.gutter = this.gutter));
+  },
 };
 </script>
 
 <style lang="scss" scoped>
 @import '../../assets/_var.scss';
 
-.row {
+.f-row {
   display: flex;
   flex-wrap: wrap;
 }

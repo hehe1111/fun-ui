@@ -1,20 +1,26 @@
 <template>
-  <div class="col" :class="classes" :style="returnGutterStyle">
-    <div class="col-inner">
-      <slot />
-    </div>
+  <div :class="colClasses" :style="returnGutterStyle">
+    <slot />
   </div>
 </template>
 
 <script>
+import {
+  optionsName2ClassPrefix,
+  oneOf,
+  getTypeOf,
+} from '../../assets/utils.js';
+
 const validator = paramObj => {
-  const keys = Object.keys(paramObj);
-  keys.forEach(k => {
-    if (!(['span', 'offset'].indexOf(k) >= 0)) {
+  return Object.keys(paramObj).every(k => {
+    if (
+      !oneOf(k, ['span', 'offset']) ||
+      !oneOf(getTypeOf(paramObj[k]), ['number', 'string'])
+    ) {
       return false;
     }
+    return true;
   });
-  return true;
 };
 
 export default {
@@ -27,40 +33,38 @@ export default {
       type: [Number, String],
       default: 0,
     },
-    colAlign: {
-      type: String,
-    },
-    ipad: { type: Object, validator },
-    samllPC: { type: Object, validator },
+    tablet: { type: Object, validator },
+    smallPc: { type: Object, validator },
     pc: { type: Object, validator },
-    largePC: { type: Object, validator },
+    largePc: { type: Object, validator },
   },
   data() {
     return {
       gutter: 0,
-      align: 'left',
     };
   },
   computed: {
-    classes() {
+    n2c() {
+      return optionsName2ClassPrefix(this.$options.name);
+    },
+    colClasses() {
       const {
+        n2c,
         span,
         offset,
-        ipad,
-        samllPC,
+        tablet,
+        smallPc,
         pc,
-        largePC,
+        largePc,
         createColClass,
-        colAlign,
-        align,
       } = this;
       return [
-        colAlign ? `align-${colAlign}` : `align-${align}`,
+        n2c(),
         ...createColClass({ span, offset }),
-        ...createColClass(ipad, 'ipad-'),
-        ...createColClass(samllPC, 'small-pc-'),
+        ...createColClass(tablet, 'tablet-'),
+        ...createColClass(smallPc, 'small-pc-'),
         ...createColClass(pc, 'pc-'),
-        ...createColClass(largePC, 'large-pc-'),
+        ...createColClass(largePc, 'large-pc-'),
       ];
     },
     returnGutterStyle() {
@@ -77,8 +81,8 @@ export default {
       }
       const { span, offset } = obj;
       return [
-        span && `col-${deviceType}${span}`,
-        offset && `col-offset-${deviceType}${offset}`,
+        `col-${deviceType}${span || 0}`,
+        `col-offset-${deviceType}${offset || 0}`,
       ];
     },
   },
@@ -89,7 +93,7 @@ export default {
 @import '../../assets/_var.scss';
 
 @mixin spanByDeviceType($classPrefix: 'col-') {
-  @for $n from 1 through 24 {
+  @for $n from 0 through 24 {
     &.#{$classPrefix}#{$n} {
       width: ($n / 24) * 100%;
     }
@@ -97,45 +101,31 @@ export default {
 }
 
 @mixin offsetByDeviceType($classPrefix: 'col-offset-') {
-  @for $n from 1 through 24 {
+  @for $n from 0 through 24 {
     &.#{$classPrefix}#{$n} {
       margin-left: ($n / 24) * 100%;
     }
   }
 }
 
-.col {
-  &.align-left {
-    text-align: left;
-  }
-  &.align-center {
-    text-align: center;
-  }
-  &.align-right {
-    text-align: right;
-  }
-
+.f-col {
   // https://ant.design/components/grid-cn/#Col
   // 0 - 576 - 768 - 992 - 1200
-  // 手机
+  // default: mobile phone
   @include spanByDeviceType();
   @include offsetByDeviceType();
-  // 平板
   @media (min-width: 577px) {
-    @include spanByDeviceType('col-ipad-');
-    @include offsetByDeviceType('col-offset-ipad-');
+    @include spanByDeviceType('col-tablet-');
+    @include offsetByDeviceType('col-offset-tablet-');
   }
-  // 小屏幕电脑
   @media (min-width: 769px) {
     @include spanByDeviceType('col-small-pc-');
     @include offsetByDeviceType('col-offset-small-pc-');
   }
-  // 电脑
   @media (min-width: 993px) {
     @include spanByDeviceType('col-pc-');
     @include offsetByDeviceType('col-offset-pc-');
   }
-  // 大屏幕电脑及超大屏幕
   @media (min-width: 1201px) {
     @include spanByDeviceType('col-large-pc-');
     @include offsetByDeviceType('col-offset-large-pc-');

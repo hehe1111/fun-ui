@@ -1,6 +1,5 @@
 import { expect } from 'chai';
 import { mount } from '@vue/test-utils';
-import FRow from '../../src/components/grid/FRow.vue';
 import FCol from '../../src/components/grid/FCol.vue';
 
 describe('FCol.vue', () => {
@@ -30,20 +29,20 @@ describe('FCol.vue', () => {
     wrapper.destroy();
   });
 
-  it('可以接受 ipad 属性', () => {
+  it('可以接受 tablet 属性', () => {
     const wrapper = mount(FCol, {
       propsData: {
-        ipad: { span: '7', offset: '7' },
+        tablet: { span: '7', offset: '7' },
       },
     });
-    expect(wrapper.classes()).include('col-ipad-7');
-    expect(wrapper.classes()).include('col-offset-ipad-7');
+    expect(wrapper.classes()).include('col-tablet-7');
+    expect(wrapper.classes()).include('col-offset-tablet-7');
     wrapper.destroy();
   });
-  it('可以接受 samllPC 属性', () => {
+  it('可以接受 smallPc 属性', () => {
     const wrapper = mount(FCol, {
       propsData: {
-        samllPC: { span: '7', offset: '7' },
+        smallPc: { span: '7', offset: '7' },
       },
     });
     expect(wrapper.classes()).include('col-small-pc-7');
@@ -60,32 +59,14 @@ describe('FCol.vue', () => {
     expect(wrapper.classes()).include('col-offset-pc-7');
     wrapper.destroy();
   });
-  it('可以接受 largePC 属性', () => {
+  it('可以接受 largePc 属性', () => {
     const wrapper = mount(FCol, {
       propsData: {
-        largePC: { span: '7', offset: '7' },
+        largePc: { span: '7', offset: '7' },
       },
     });
     expect(wrapper.classes()).include('col-large-pc-7');
     expect(wrapper.classes()).include('col-offset-large-pc-7');
-    wrapper.destroy();
-  });
-
-  it('可以接受 colAlign 属性', () => {
-    const colAlign = 'right';
-    const wrapper = mount(FRow, {
-      attachToDocument: true,
-      propsData: { align: 'center' },
-      // https://vue-test-utils.vuejs.org/zh/api/options.html#stubs
-      stubs: { FCol },
-      slots: {
-        default: `<f-col :span="1" col-align=${colAlign}>1</f-col>`,
-      },
-    });
-    expect(wrapper.find('.col').classes()).include(`align-${colAlign}`);
-    expect(
-      window.getComputedStyle(wrapper.find('.col').element).textAlign
-    ).to.eq(colAlign);
     wrapper.destroy();
   });
 });
