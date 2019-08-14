@@ -1,5 +1,5 @@
 <template>
-  <div class="f-input-wrapper" :class="wrapperClasses">
+  <div :class="classes">
     <input
       type="text"
       :value="value"
@@ -16,18 +16,19 @@
     <f-icon
       v-if="clearable"
       name="circle-cross"
-      class="f-input-clear-icon"
+      :class="n2c('clear-icon')"
       @click="onClickClearIcon"
     />
-    <template v-if="error">
-      <f-icon name="circle-cross" />
-      <span>{{ error }}</span>
-    </template>
+    <span :class="n2c('hint-container')" v-if="hint">
+      <f-icon :class="n2c(`${hint.type}-icon`)" :name="iconName" />
+      <span :class="n2c(`${hint.type}-hint`)">{{ hint.message }}</span>
+    </span>
   </div>
 </template>
 
 <script>
 import FIcon from './FIcon.vue';
+import { optionsName2ClassPrefix, oneOf, getTypeOf } from '../assets/utils.js';
 
 export default {
   name: 'FunUIInput',
@@ -44,21 +45,46 @@ export default {
       type: Boolean,
       default: false,
     },
-    error: {
-      type: String,
+    hint: {
+      type: Object,
+      validator(prop) {
+        return (
+          oneOf(prop.type, ['success', 'error', 'warning', 'info']) &&
+          getTypeOf(prop.message) === 'string'
+        );
+      },
     },
     clearable: {
       type: Boolean,
-      default: true,
+      default: false,
     },
     placeholder: {
       type: String,
     },
+    autoFocus: {
+      type: Boolean,
+      default: false,
+    },
   },
   computed: {
-    wrapperClasses() {
-      return { error: this.error };
+    n2c() {
+      return optionsName2ClassPrefix(this.$options.name);
     },
+    classes() {
+      return [this.n2c(), this.hint && this.n2c(this.hint.type)];
+    },
+    iconName() {
+      const map = {
+        success: 'check',
+        error: 'cross',
+        warning: 'warning',
+        info: 'info',
+      };
+      return map[this.hint.type];
+    },
+  },
+  mounted() {
+    this.autoFocus && this.$refs.inputRef.focus();
   },
   methods: {
     onInput($event) {
@@ -91,7 +117,23 @@ export default {
 <style lang="scss" scoped>
 @import '../assets/_var.scss';
 
-.f-input-wrapper {
+@mixin hintStyle($color) {
+  > input {
+    &,
+    &:hover,
+    &:focus {
+      border-color: $color;
+    }
+  }
+  &-icon {
+    fill: $color;
+  }
+  &-hint {
+    color: $color;
+  }
+}
+
+.f-input {
   font-size: $fontSize;
   display: inline-flex;
   align-items: center;
@@ -108,39 +150,28 @@ export default {
     border-radius: $borderRadius;
     font-size: inherit;
     position: relative;
-    &:hover {
-      border-color: $borderColorHover;
+    &:hover,
+    &:focus {
+      border-color: $blue;
     }
     &:focus {
-      box-shadow: inset 0 0 5px $boxShadowColor;
       outline: none;
     }
     &[disabled],
     &[readonly] {
-      color: $grey;
-      border-color: $grey;
+      border-color: lighten($grey, 30%);
       cursor: not-allowed;
 
       + .f-input-clear-icon {
         display: none;
       }
     }
-  }
-
-  &.error {
-    color: $red;
-    > input {
-      border-color: $red;
-      &:focus {
-        box-shadow: inset 0 0 5px $red;
-      }
-      &:hover {
-        border-color: red;
-      }
+    &[disabled] {
+      color: lighten($grey, 10%);
     }
   }
 
-  > .f-input-clear-icon {
+  &-clear-icon {
     position: absolute;
     top: 50%;
     right: 1em;
@@ -152,7 +183,25 @@ export default {
   &:focus {
     > .f-input-clear-icon {
       display: block;
+      fill: $blue;
     }
+  }
+
+  &-hint-container {
+    @extend .inline-flex-center;
+  }
+
+  &-success {
+    @include hintStyle($green);
+  }
+  &-error {
+    @include hintStyle($red);
+  }
+  &-warning {
+    @include hintStyle($yellow);
+  }
+  &-info {
+    @include hintStyle($blue);
   }
 }
 </style>
