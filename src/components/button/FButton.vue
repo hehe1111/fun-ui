@@ -114,9 +114,6 @@ export default {
   &:focus {
     outline: none;
   }
-  &:active {
-    transform: scale(0.9);
-  }
 
   &-default {
     background-color: $buttonBgColor;
@@ -167,7 +164,6 @@ export default {
     &:hover,
     &:focus,
     &:active {
-      transform: scale(1);
       background-color: lighten($grey, 30%);
       border-color: lighten($grey, 30%);
     }

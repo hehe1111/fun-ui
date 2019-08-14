@@ -68,10 +68,6 @@ a {
     margin-left: -1px;
     border-radius: 0;
 
-    &:active {
-      transform: scale(1);
-    }
-
     &-disabled {
       border-color: $borderColor;
       &:hover {

@@ -1,5 +1,5 @@
 <template>
-  <div class="demo-popover-1">
+  <div class="demo-popover-4">
     <f-popover trigger="hover">
       <template slot="content">弹出内容</template>
       <f-button>鼠标悬浮弹出</f-button>
