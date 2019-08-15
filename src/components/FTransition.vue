@@ -12,6 +12,8 @@
 </template>
 
 <script>
+import { oneOf } from '../assets/utils.js';
+
 export default {
   name: 'FunUITransition',
   props: {
@@ -19,11 +21,19 @@ export default {
       type: [Number, String],
       default: 300,
     },
+    direction: {
+      type: String,
+      default: 'vertical',
+      validator(prop) {
+        return oneOf(prop, ['vertical', 'horizontal']);
+      },
+    },
   },
   data() {
     return {
       oldOverflow: null,
-      oldHeight: null,
+      oldValue: null,
+      property: this.direction === 'vertical' ? 'height' : 'width',
     };
   },
   methods: {
@@ -32,32 +42,32 @@ export default {
       this.$nextTick(() => {
         // use this.nextTick() to get the real height of el
         this.oldOverflow = window.getComputedStyle(el).overflow;
-        this.oldHeight = window.getComputedStyle(el).height;
+        this.oldValue = window.getComputedStyle(el)[this.property];
       });
     },
     enter(el, done) {
       this.$nextTick(() => {
         // set to hidden to avoid el overlaping on other element during transition
         el.style.overflow = 'hidden';
-        el.style.height = 0;
+        el.style[this.property] = 0;
         el.getBoundingClientRect(); // force browser to render the newest style
-        el.style.height = this.oldHeight;
+        el.style[this.property] = this.oldValue;
         el.addEventListener('transitionend', () => done()); // wait for transition to finish
       });
     },
     afterEnter(el) {
-      el.style.height = 'auto';
+      el.style[this.property] = 'auto';
       el.style.overflow = this.oldOverflow;
     },
     leave(el, done) {
       el.style.overflow = 'hidden';
-      el.style.height = this.oldHeight;
+      el.style[this.property] = this.oldValue;
       el.getBoundingClientRect();
-      el.style.height = 0;
+      el.style[this.property] = 0;
       el.addEventListener('transitionend', () => done());
     },
     afterLeave(el) {
-      el.style.height = 'auto';
+      el.style[this.property] = 'auto';
       el.style.overflow = this.oldOverflow;
     },
   },
