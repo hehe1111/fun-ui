@@ -193,15 +193,12 @@ export default {
       this.updateScrollbarTranslateValue();
     },
     onTouchStart($event) {
-      console.log(111);
       const d = this.direction;
       this.startPosition = {
         [d]: $event.touches[0][`screen${d.toUpperCase()}`],
       };
     },
     onTouchMove($event) {
-      console.log(33);
-
       if (!this.hasScrollbar) return;
       const d = this.direction;
       this.endPosition = { [d]: $event.touches[0][`screen${d.toUpperCase()}`] };

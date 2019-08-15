@@ -138,7 +138,6 @@ describe('FNav.vue', () => {
     wrapper.find('.ccc > .f-sub-nav-title-container').trigger('click');
     wrapper.find('.f-nav-item[data-name="sub2-1"]').trigger('click');
     setTimeout(() => {
-      console.log(wrapper.html());
       wrapper.destroy();
       done();
     }, 1000);
