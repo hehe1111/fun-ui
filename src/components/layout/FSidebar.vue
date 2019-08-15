@@ -1,29 +1,39 @@
 <template>
-  <div class="sidebar-container">
+  <div :class="n2c('container')">
     <transition name="sidebar-slide">
-      <div class="sidebar" v-if="isSwitchOn">
+      <div v-if="isSwitchOn">
         <slot />
       </div>
     </transition>
-    <button class="sidebar-switch" @click="toggleSwitch">
-      {{ switchText }}
-    </button>
+    <div :class="n2c('switch')" @click="toggleSwitch">
+      <f-icon
+        name="right"
+        :class="n2c('switch-icon', isSwitchOn ? 'switch-icon-left' : '')"
+      />
+    </div>
   </div>
 </template>
 
 <script>
+import FIcon from '../FIcon.vue';
+import { optionsName2ClassPrefix } from '../../assets/utils.js';
+
 export default {
   name: 'FunUISidebar',
+  components: { FIcon },
   data() {
     return {
       isSwitchOn: true,
-      switchText: '<<',
     };
+  },
+  computed: {
+    n2c() {
+      return optionsName2ClassPrefix(this.$options.name);
+    },
   },
   methods: {
     toggleSwitch() {
       this.isSwitchOn = !this.isSwitchOn;
-      this.switchText = this.isSwitchOn ? '<<' : '>>';
     },
   },
 };
@@ -32,18 +42,6 @@ export default {
 <style lang="scss" scoped>
 @import '../../assets/_var.scss';
 
-.sidebar-container {
-  display: flex;
-}
-.sidebar-switch {
-  word-break: keep-all;
-  flex-shrink: 1;
-  height: 100%;
-  padding: 0 2px;
-  border: none;
-  border-left: 1px solid #ccc;
-  background-color: #fff;
-}
 .sidebar-slide-enter-active {
   /* 0 到 100% */
   animation: sidebar-slide $duration;
@@ -58,6 +56,35 @@ export default {
   }
   100% {
     margin-left: 0;
+  }
+}
+
+.f-sidebar {
+  &-container {
+    min-width: 2em;
+    display: flex;
+    position: relative;
+  }
+
+  &-switch {
+    @extend.flex-center;
+    flex-shrink: 1;
+    height: 100%;
+    background-color: rgba(255, 255, 255, 0.1);
+    word-break: keep-all;
+    position: absolute;
+    top: 0;
+    right: 0;
+
+    &-icon {
+      margin: 0 0.5em;
+      white-space: nowrap;
+      transition: transform $duration linear;
+
+      &-left {
+        transform: rotate(180deg);
+      }
+    }
   }
 }
 </style>
