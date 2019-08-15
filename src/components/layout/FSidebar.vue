@@ -1,10 +1,10 @@
 <template>
   <div :class="n2c('container')">
-    <transition :name="`sidebar-${position}-slide`">
+    <f-transition direction="horizontal">
       <div :class="n2c('sidebar')" v-if="isSwitchOn">
         <slot />
       </div>
-    </transition>
+    </f-transition>
     <div
       v-if="switchable"
       :class="n2c('switch', `switch-${position}`)"
@@ -17,11 +17,12 @@
 
 <script>
 import FIcon from '../FIcon.vue';
+import FTransition from '../FTransition.vue';
 import { optionsName2ClassPrefix, oneOf } from '../../assets/utils.js';
 
 export default {
   name: 'FunUISidebar',
-  components: { FIcon },
+  components: { FIcon, FTransition },
   data() {
     return {
       isSwitchOn: true,
@@ -64,40 +65,6 @@ export default {
 <style lang="scss" scoped>
 @import '../../assets/_var.scss';
 
-.sidebar-left-slide-enter-active {
-  /* 0 to 100% */
-  animation: sidebar-left-slide $duration;
-}
-.sidebar-left-slide-leave-active {
-  /* 100% to 0 */
-  animation: sidebar-left-slide $duration reverse;
-}
-@keyframes sidebar-left-slide {
-  0% {
-    margin-left: -100%;
-  }
-  100% {
-    margin-left: 0;
-  }
-}
-
-.sidebar-right-slide-enter-active {
-  /* 0 to 100% */
-  animation: sidebar-right-slide $duration;
-}
-.sidebar-right-slide-leave-active {
-  /* 100% to 0 */
-  animation: sidebar-right-slide $duration reverse;
-}
-@keyframes sidebar-right-slide {
-  0% {
-    margin-left: 100%;
-  }
-  100% {
-    margin-left: 0;
-  }
-}
-
 .f-sidebar {
   &-container {
     min-width: 2em;
@@ -124,7 +91,7 @@ export default {
 
     &-icon {
       margin: 0 0.5em;
-      white-space: nowrap;
+      flex-shrink: 0;
       transition: transform $duration linear;
 
       &-reversed {
