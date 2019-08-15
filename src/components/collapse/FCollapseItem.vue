@@ -4,9 +4,12 @@
       <div :class="titleClasses">{{ title }}</div>
       <f-icon name="up" :class="n2c('icon')" />
     </header>
-    <f-transition :duration="200">
-      <div :class="n2c('content')" v-if="isOpened">
-        <slot />
+    <f-transition>
+      <!-- for smoother transition -->
+      <div v-if="isOpened">
+        <div :class="n2c('content')">
+          <slot />
+        </div>
       </div>
     </f-transition>
   </div>
@@ -76,11 +79,6 @@ export default {
 @import '../../assets/_var.scss';
 
 .f-collapse-item {
-  &-title,
-  &-content {
-    margin: 0.5em;
-  }
-
   &-title-container {
     border: 1px solid $borderColorLight;
     margin: -1px;
@@ -92,13 +90,17 @@ export default {
     }
   }
 
+  &-title,
+  &-content {
+    padding: 0.5em;
+  }
+
   &-title {
-    margin-right: 0.5em;
+    flex: 1;
   }
 
   &-icon {
-    margin-left: auto;
-    margin-right: 0.5em;
+    margin: 0 0.5em;
     flex-shrink: 0;
     transition: transform $duration linear;
   }
