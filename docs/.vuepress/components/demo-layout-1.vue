@@ -1,47 +1,84 @@
 <template>
   <div class="demo-layout-1 extra-margin">
-    <h2>布局</h2>
     <h3>上中下</h3>
-    <f-layout>
+    <f-layout class="layout">
       <f-header class="demo header">header</f-header>
-        <f-content class="demo content">content</f-content>
-        <f-footer class="demo footer">footer</f-footer>
+      <f-content class="demo content">content</f-content>
+      <f-footer class="demo footer">footer</f-footer>
     </f-layout>
+
     <h3>左右（上中下）</h3>
-    <f-layout>
-      <f-sidebar class="demo">sidebarsidebar</f-sidebar>
+    <f-layout class="layout">
+      <f-sidebar class="demo demo-layout-1-sidebar">sidebar</f-sidebar>
       <f-layout>
         <f-header class="demo header">header</f-header>
         <f-content class="demo content">content</f-content>
         <f-footer class="demo footer">footer</f-footer>
       </f-layout>
     </f-layout>
+    <f-layout class="layout">
+      <f-layout>
+        <f-header class="demo header">header</f-header>
+        <f-content class="demo content">content</f-content>
+        <f-footer class="demo footer">footer</f-footer>
+      </f-layout>
+      <f-sidebar class="demo demo-layout-1-sidebar">sidebar</f-sidebar>
+    </f-layout>
+
     <h3>上中（左右）下</h3>
-    <!-- <f-layout>
+    <f-layout class="layout">
       <f-header class="demo header">header</f-header>
       <f-layout>
-        <f-sidebar class="demo x-sidebar">sidebarsidebar</f-sidebar>
+        <f-sidebar class="demo demo-layout-1-sidebar">sidebar</f-sidebar>
         <f-content class="demo content">content</f-content>
-        <f-sidebar class="demo x-sidebar">sidebarsidebar</f-sidebar>
+        <f-sidebar class="demo demo-layout-1-sidebar">sidebar</f-sidebar>
       </f-layout>
       <f-footer class="demo footer">footer</f-footer>
-    </f-layout> -->
+    </f-layout>
+
     <h3>上下（左右（上下））</h3>
-    <!-- <f-layout>
+    <f-layout class="layout">
       <f-header class="demo header">header</f-header>
       <f-layout>
-        <f-sidebar class="demo x-sidebar">sidebarsidebar</f-sidebar>
+        <f-sidebar class="demo demo-layout-1-sidebar">sidebar</f-sidebar>
         <f-layout>
           <f-content class="demo content">content</f-content>
           <f-footer class="demo footer">footer</f-footer>
         </f-layout>
       </f-layout>
+    </f-layout>
+
+    <f-layout class="layout">
+      <f-header class="demo header">header</f-header>
+      <f-layout>
+        <f-layout>
+          <f-content class="demo content">content</f-content>
+          <f-footer class="demo footer">footer</f-footer>
+        </f-layout>
+        <f-sidebar class="demo demo-layout-1-sidebar">sidebar</f-sidebar>
+      </f-layout>
+    </f-layout>
+
+    <!-- <h3>边栏可切换</h3>
+    <f-layout class="layout">
+      <f-header class="demo header">header</f-header>
+      <f-layout>
+        <f-sidebar switchable class="demo demo-layout-1-sidebar" style="overflow: auto; width: 100px; height: 100px;">sidebar Lorem ipsum dolor sit amet consectetur adipisicing elit. Est voluptatem rerum numquam. Perspiciatis atque, ad, illo alias voluptatum hic vel ex dolorum mollitia fuga porro est a laborum minus sint!</f-sidebar>
+        <f-content class="demo content">content</f-content>
+        <f-sidebar
+          switchable
+          position="right"
+          class="demo demo-layout-1-sidebar"
+          style="height: 100px;"
+        >sidebar</f-sidebar>
+      </f-layout>
+      <f-footer class="demo footer">footer</f-footer>
     </f-layout> -->
 
     <code-box>
       <pre>
         <code class="html">{{htmlCode}}</code>
-        <!-- <code class="javascript">{{javascriptCode}}</code> -->
+        <code class="scss">{{scssCode}}</code>
       </pre>
     </code-box>
   </div>
@@ -60,16 +97,90 @@ export default {
   components: { FLayout, FHeader, FSidebar, FContent, FFooter },
   data() {
     return {
-      value1: '',
-
       htmlCode: removePrefixSpace(`
+        <h3>上中下</h3>
+        <f-layout class="layout">
+          <f-header class="demo header">header</f-header>
+          <f-content class="demo content">content</f-content>
+          <f-footer class="demo footer">footer</f-footer>
+        </f-layout>
+
+        <h3>左右（上中下）</h3>
+        <f-layout class="layout">
+          <f-sidebar class="demo demo-layout-1-sidebar">sidebar</f-sidebar>
+          <f-layout>
+            <f-header class="demo header">header</f-header>
+            <f-content class="demo content">content</f-content>
+            <f-footer class="demo footer">footer</f-footer>
+          </f-layout>
+        </f-layout>
+        <f-layout class="layout">
+          <f-layout>
+            <f-header class="demo header">header</f-header>
+            <f-content class="demo content">content</f-content>
+            <f-footer class="demo footer">footer</f-footer>
+          </f-layout>
+          <f-sidebar class="demo demo-layout-1-sidebar">sidebar</f-sidebar>
+        </f-layout>
+
+        <h3>上中（左右）下</h3>
+        <f-layout class="layout">
+          <f-header class="demo header">header</f-header>
+          <f-layout>
+            <f-sidebar class="demo demo-layout-1-sidebar">sidebar</f-sidebar>
+            <f-content class="demo content">content</f-content>
+            <f-sidebar class="demo demo-layout-1-sidebar">sidebar</f-sidebar>
+          </f-layout>
+          <f-footer class="demo footer">footer</f-footer>
+        </f-layout>
+
+        <h3>上下（左右（上下））</h3>
+        <f-layout class="layout">
+          <f-header class="demo header">header</f-header>
+          <f-layout>
+            <f-sidebar class="demo demo-layout-1-sidebar">sidebar</f-sidebar>
+            <f-layout>
+              <f-content class="demo content">content</f-content>
+              <f-footer class="demo footer">footer</f-footer>
+            </f-layout>
+          </f-layout>
+        </f-layout>
+
+        <f-layout class="layout">
+          <f-header class="demo header">header</f-header>
+          <f-layout>
+            <f-layout>
+              <f-content class="demo content">content</f-content>
+              <f-footer class="demo footer">footer</f-footer>
+            </f-layout>
+            <f-sidebar class="demo demo-layout-1-sidebar">sidebar</f-sidebar>
+          </f-layout>
+        </f-layout>
       `),
-      javascriptCode: removePrefixSpace(`
-        data() {
-          return {
-          };
-        },
-      `),
+      scssCode: removePrefixSpace(`
+        .demo-layout-1 {
+          .layout {
+            margin: 1em 0;
+          }
+          .demo {
+            padding: 20px;
+            word-break: break-all;
+          }
+
+          .header,
+          .footer {
+            background-color: lighten($blue, 30%);
+          }
+
+          .content {
+            background-color: lighten($blue, 40%);
+          }
+
+          &-sidebar {
+            background-color: lighten($blue, 20%);
+          }
+        }
+      `)
     };
   },
 };
@@ -78,19 +189,26 @@ export default {
 <style lang="scss" scoped>
 @import '../assets/style/_var.scss';
 
-.layout {
-  border: 2px solid red;
-}
-.demo {
-  padding: 20px;
-  word-break: break-all;
-}
+.demo-layout-1 {
+  .layout {
+    margin: 1em 0;
+  }
+  .demo {
+    padding: 20px;
+    word-break: break-all;
+  }
 
-.header, .footer {
-  background-color: lighten($blue, 30%);
-}
+  .header,
+  .footer {
+    background-color: lighten($blue, 30%);
+  }
 
-.content {
-  background-color: lighten($blue, 40%);
+  .content {
+    background-color: lighten($blue, 40%);
+  }
+
+  &-sidebar {
+    background-color: lighten($blue, 20%);
+  }
 }
 </style>

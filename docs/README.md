@@ -7,8 +7,6 @@ actionLink: /guide/
 features:
   - title: 个人学习实践作品
     details: 仅供学习交流使用
-  - title: 参考自当下成熟的各 UI 库
-    details: Element UI、Ant Design of React、iView、Framework7、Mint-UI 等
 footer: MIT Licensed | Copyright © 2019-present hehe1111
 ---
 
