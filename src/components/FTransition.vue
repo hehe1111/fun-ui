@@ -16,44 +16,49 @@ export default {
   name: 'FunUITransition',
   props: {
     duration: {
-      type: Number,
-      default: 100,
+      type: [Number, String],
+      default: 300,
     },
   },
   data() {
     return {
-      elHeight: null,
+      oldOverflow: null,
+      oldHeight: null,
     };
   },
   methods: {
     beforeEnter(el) {
-      // el.style.overflow = 'hidden'; // 避免过渡过程中出现元素重叠现象
-      el.style.opacity = 0;
       el.style.transition = `all ${this.duration}ms linear`;
+      this.$nextTick(() => {
+        // use this.nextTick() to get the real height of el
+        this.oldOverflow = window.getComputedStyle(el).overflow;
+        this.oldHeight = window.getComputedStyle(el).height;
+      });
     },
     enter(el, done) {
-      setTimeout(() => {
-        this.elHeight = el.getBoundingClientRect().height;
+      this.$nextTick(() => {
+        // set to hidden to avoid el overlaping on other element during transition
+        el.style.overflow = 'hidden';
         el.style.height = 0;
-        el.getBoundingClientRect(); // 强制浏览器渲染上一次操作的结果
-        el.style.height = `${this.elHeight}px`;
-        el.style.opacity = 1;
-        // 等待过渡完成
-        el.addEventListener('transitionend', () => done());
+        el.getBoundingClientRect(); // force browser to render the newest style
+        el.style.height = this.oldHeight;
+        el.addEventListener('transitionend', () => done()); // wait for transition to finish
       });
     },
     afterEnter(el) {
       el.style.height = 'auto';
+      el.style.overflow = this.oldOverflow;
     },
     leave(el, done) {
-      el.style.height = `${this.elHeight}px`;
+      el.style.overflow = 'hidden';
+      el.style.height = this.oldHeight;
       el.getBoundingClientRect();
       el.style.height = 0;
-      el.style.opacity = 0;
       el.addEventListener('transitionend', () => done());
     },
     afterLeave(el) {
       el.style.height = 'auto';
+      el.style.overflow = this.oldOverflow;
     },
   },
 };
