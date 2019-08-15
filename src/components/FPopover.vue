@@ -62,6 +62,7 @@ export default {
   },
   beforeDestroy() {
     this.removeTriggerMouseListener();
+    this.$refs.contentContainer && this.$refs.contentContainer.remove();
   },
   computed: {
     classes() {
@@ -83,7 +84,7 @@ export default {
       });
     },
     close() {
-      // 这里语句执行顺序不能变，必须先移除监听器，再隐藏元素
+      // remove listener before set this.visible to false
       this.removeContentMouseListener();
       this.visible = false;
       document.removeEventListener('click', this.onClickDocument);
@@ -157,11 +158,17 @@ export default {
       style.left = `${locationParams[this.position].left + window.scrollX}px`;
     },
     onClickDocument(event) {
-      // 点击 popover 的按钮时，点击会冒泡到 document 上，此时应该阻止该点击事件
-      if (this.$refs.popover.contains(event.target)) return;
+      // stop click event bubble up to document when click trigger-container
+      if (this.$refs.popover && this.$refs.popover.contains(event.target)) {
+        return;
+      }
 
-      // 点击 popover 的内容部分时，内容部分不消失
-      if (this.visible && this.$refs.contentContainer.contains(event.target)) {
+      // when click content-container, it should remain visible
+      if (
+        this.visible &&
+        this.$refs.contentContainer &&
+        this.$refs.contentContainer.contains(event.target)
+      ) {
         return;
       }
       this.close();
