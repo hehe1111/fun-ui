@@ -61,14 +61,14 @@ export default {
               url: 'https://upload-file-demo-on-heroku.herokuapp.com/preview/' + fileInfo.filename,
             };
           },
-          onSuccess(x) {
-            this.$toast('上传成功');
+          onSuccess($event) {
+            this.$toast('上传成功', { state: 'success' });
           },
-          onRemove(x) {
-            this.$toast('删除成功');
+          onRemove($event) {
+            this.$toast('删除成功', { state: 'success' });
           },
-          onError(x) {
-            x.isExceeded && this.$toast('文件太大');
+          onError($event) {
+            $event.isExceeded && this.$toast('文件太大', { state: 'error' });
           },
         },
       `),
@@ -89,14 +89,14 @@ export default {
           fileInfo.filename,
       };
     },
-    onSuccess(x) {
-      this.$toast('上传成功');
+    onSuccess($event) {
+      this.$toast('上传成功', { state: 'success' });
     },
-    onRemove(x) {
-      this.$toast('删除成功');
+    onRemove($event) {
+      this.$toast('删除成功', { state: 'success' });
     },
-    onError(x) {
-      x.isExceeded && this.$toast('文件太大');
+    onError($event) {
+      $event.isExceeded && this.$toast('文件太大', { state: 'error' });
     },
   },
 };

@@ -1,5 +1,5 @@
 <template>
-  <div class="demo-popover-4">
+  <div class="demo-popover-4 extra-margin">
     <f-popover trigger="hover">
       <template slot="content">弹出内容</template>
       <f-button>鼠标悬浮弹出</f-button>

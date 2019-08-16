@@ -54,7 +54,13 @@ export default {
       type: String,
       default: 'default',
       validator(prop) {
-        return oneOf(prop, ['default', 'success', 'error', 'warning', 'info']);
+        return oneOf(prop, [
+          'default',
+          'success',
+          'error',
+          'warning',
+          'primary',
+        ]);
       },
     },
   },
@@ -71,9 +77,8 @@ export default {
   },
   methods: {
     handleAutoClose() {
-      setTimeout(() => {
-        this.close();
-      }, this.autoCloseDelay * 1000);
+      if (this.closeIcon) return;
+      setTimeout(() => this.close(), this.autoCloseDelay * 1000);
     },
     close() {
       this.$el.remove();
@@ -170,7 +175,7 @@ export default {
     &.warning {
       background-color: $yellow;
     }
-    &.info {
+    &.primary {
       background-color: $blue;
     }
   }

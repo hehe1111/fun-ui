@@ -1,5 +1,5 @@
 <template>
-  <div class="demo-popover-2">
+  <div class="demo-popover-2 extra-margin">
     <f-popover>
       <template slot="content">弹出内容</template>
       <f-button>默认向上弹出</f-button>

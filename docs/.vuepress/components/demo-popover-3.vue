@@ -1,5 +1,5 @@
 <template>
-  <div class="demo-popover-3">
+  <div class="demo-popover-3 extra-margin">
     <f-popover>
       <template slot="content" slot-scope="{ close }">
         弹出内容
