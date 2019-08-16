@@ -1,11 +1,6 @@
 <template>
   <div class="demo-upload-1 extra-margin">
-    <code-box showCode>
-      <pre>
-        <code class="html">{{htmlCode}}</code>
-        <code class="javascript">{{javascriptCode}}</code>
-      </pre>
-    </code-box>
+    <code-box :htmlCode="htmlCode" :javascriptCode="javascriptCode" show-code />
   </div>
 </template>
 
@@ -14,7 +9,7 @@ import Vue from 'vue';
 import FUpload from '../../../src/components/FUpload.vue';
 import FButton from '../../../src/components/button/FButton.vue';
 import toast from '../../../src/plugins/toast.js';
-import removePrefixSpace from '../assets/js/remove-prefix-space.js';
+
 Vue.use(toast);
 
 export default {
@@ -22,7 +17,7 @@ export default {
   components: { FUpload, FButton },
   data() {
     return {
-      htmlCode: removePrefixSpace(`
+      htmlCode: `
         <f-upload
           action="https://upload-file-demo-on-heroku.herokuapp.com/upload/"
           name="myFile"
@@ -33,8 +28,8 @@ export default {
         >
           <f-button icon="upload">上传</f-button>
         </f-upload>
-      `),
-      javascriptCode: removePrefixSpace(`
+      `,
+      javascriptCode: `
         methods: {
           parseResponse(response) {
             const fileInfo = JSON.parse(response);
@@ -53,7 +48,7 @@ export default {
             $event.isExceeded && this.$toast('文件太大', { state: 'error' });
           },
         },
-      `),
+      `,
     };
   },
   methods: {
@@ -61,7 +56,9 @@ export default {
       const fileInfo = JSON.parse(response);
       return {
         name: fileInfo.originalname,
-        url: 'https://upload-file-demo-on-heroku.herokuapp.com/preview/' + fileInfo.filename,
+        url:
+          'https://upload-file-demo-on-heroku.herokuapp.com/preview/' +
+          fileInfo.filename,
       };
     },
     onSuccess($event) {

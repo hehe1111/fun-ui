@@ -26,12 +26,7 @@
       <f-nav-item name="novel">小说</f-nav-item>
     </f-nav>
 
-    <code-box>
-      <pre>
-        <code class="html">{{htmlCode}}</code>
-        <code class="javascript">{{javascriptCode}}</code>
-      </pre>
-    </code-box>
+    <code-box :htmlCode="htmlCode" :javascriptCode="javascriptCode" />
   </div>
 </template>
 
@@ -39,7 +34,6 @@
 import FNav from '../../../src/components/nav/FNav.vue';
 import FSubNav from '../../../src/components/nav/FSubNav.vue';
 import FNavItem from '../../../src/components/nav/FNavItem.vue';
-import removePrefixSpace from '../assets/js/remove-prefix-space.js';
 
 export default {
   name: 'demo-nav-2',
@@ -48,7 +42,7 @@ export default {
     return {
       selected: 'the-outcast',
 
-      htmlCode: removePrefixSpace(`
+      htmlCode: `
         <f-nav :selected="selected" trigger="click">
           <f-nav-item name="movie">电影</f-nav-item>
           <f-sub-nav name="acg">
@@ -74,14 +68,14 @@ export default {
           </f-sub-nav>
           <f-nav-item name="novel">小说</f-nav-item>
         </f-nav>
-      `),
-      javascriptCode: removePrefixSpace(`
+      `,
+      javascriptCode: `
         data() {
           return {
             selected: 'the-outcast',
           };
         },
-      `),
+      `,
     };
   },
 };

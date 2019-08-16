@@ -4,30 +4,24 @@
       <div class="item" v-for="div in 20" :key="div">{{ div }}</div>
     </f-scroll-vertical>
 
-    <code-box>
-      <pre>
-        <code class="html">{{htmlCode}}</code>
-        <code class="scss">{{scssCode}}</code>
-      </pre>
-    </code-box>
+    <code-box :htmlCode="htmlCode" :scssCode="scssCode" />
   </div>
 </template>
 
 <script>
 import FScrollVertical from '../../../src/components/scroll/FScrollVertical.vue';
-import removePrefixSpace from '../assets/js/remove-prefix-space.js';
 
 export default {
   name: 'demo-scroll-1',
   components: { FScrollVertical },
   data() {
     return {
-      htmlCode: removePrefixSpace(`
+      htmlCode: `
         <f-scroll-vertical class="scroll">
           <div class="item" v-for="div in 20" :key="div">{{ div }}</div>
         </f-scroll-vertical>
-      `),
-      scssCode: removePrefixSpace(`
+      `,
+      scssCode: `
         .scroll {
           height: 400px;
           border: 1px solid $blue;
@@ -42,7 +36,7 @@ export default {
           color: #fff;
           font-size: 20px;
         }
-      `),
+      `,
     };
   },
 };

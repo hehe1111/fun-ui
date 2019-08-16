@@ -2,7 +2,11 @@
   <div class="code-box-container">
     <f-transition :duration="400">
       <div class="code-box" v-show="isCodeVisible" v-highlight>
-        <slot />
+        <pre>
+          <code v-if="htmlCode" class="html">{{htmlCodeFormatted}}</code>
+          <code v-if="javascriptCode" class="javascript">{{javascriptCodeFormatted}}</code>
+          <code v-if="scssCode" class="scss">{{scssCodeFormatted}}</code>
+        </pre>
       </div>
     </f-transition>
 
@@ -16,6 +20,7 @@ import FTransition from '../../../src/components/FTransition.vue';
 // https://github.com/highlightjs/highlight.js/#commonjs
 import hljs from 'highlight.js';
 import 'highlight.js/styles/github-gist.css';
+import removePrefixSpace from '../assets/js/remove-prefix-space.js';
 
 const highlightFunc = el => {
   const blocks = el.querySelectorAll('pre code');
@@ -35,6 +40,26 @@ export default {
     showCode: {
       type: Boolean,
       default: false,
+    },
+    htmlCode: {
+      type: String,
+    },
+    javascriptCode: {
+      type: String,
+    },
+    scssCode: {
+      type: String,
+    },
+  },
+  computed: {
+    htmlCodeFormatted() {
+      return this.htmlCode && removePrefixSpace(this.htmlCode);
+    },
+    javascriptCodeFormatted() {
+      return this.javascriptCode && removePrefixSpace(this.javascriptCode);
+    },
+    scssCodeFormatted() {
+      return this.scssCode && removePrefixSpace(this.scssCode);
     },
   },
   created() {

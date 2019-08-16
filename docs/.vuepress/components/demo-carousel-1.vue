@@ -15,26 +15,21 @@
       </f-carousel-item>
     </f-carousel>
 
-    <code-box>
-      <pre>
-        <code class="html">{{htmlCode}}</code>
-        <code class="scss">{{scssCode}}</code>
-      </pre>
-    </code-box>
+    <code-box :htmlCode="htmlCode" :scssCode="scssCode" />
   </div>
 </template>
 
 <script>
 import FCarousel from '../../../src/components/carousel/FCarousel.vue';
 import FCarouselItem from '../../../src/components/carousel/FCarouselItem.vue';
-import removePrefixSpace from '../assets/js/remove-prefix-space.js';
+
 
 export default {
   name: 'demo-carousel-1',
   components: { FCarousel, FCarouselItem },
   data() {
     return {
-      htmlCode: removePrefixSpace(`
+      htmlCode: `
         <f-carousel>
           <f-carousel-item name="x1">
             <div class="image">1</div>
@@ -49,8 +44,8 @@ export default {
             <div class="image">4</div>
           </f-carousel-item>
         </f-carousel>
-      `),
-      scssCode: removePrefixSpace(`
+      `,
+      scssCode: `
         .image {
           @extend .flex-center;
           width: 300px;
@@ -58,7 +53,7 @@ export default {
           background-color: #1890ff;
           color: #fff;
         }
-      `),
+      `,
     };
   },
 };

@@ -73,14 +73,9 @@
         >sidebar</f-sidebar>
       </f-layout>
       <f-footer class="demo footer">footer</f-footer>
-    </f-layout> -->
+    </f-layout>-->
 
-    <code-box>
-      <pre>
-        <code class="html">{{htmlCode}}</code>
-        <code class="scss">{{scssCode}}</code>
-      </pre>
-    </code-box>
+    <code-box :htmlCode="htmlCode" :scssCode="scssCode" />
   </div>
 </template>
 
@@ -90,14 +85,13 @@ import FHeader from '../../../src/components/layout/FHeader.vue';
 import FSidebar from '../../../src/components/layout/FSidebar.vue';
 import FContent from '../../../src/components/layout/FContent.vue';
 import FFooter from '../../../src/components/layout/FFooter.vue';
-import removePrefixSpace from '../assets/js/remove-prefix-space.js';
 
 export default {
   name: 'demo-grid-1',
   components: { FLayout, FHeader, FSidebar, FContent, FFooter },
   data() {
     return {
-      htmlCode: removePrefixSpace(`
+      htmlCode: `
         <h3>上中下</h3>
         <f-layout class="layout">
           <f-header class="demo header">header</f-header>
@@ -156,8 +150,8 @@ export default {
             <f-sidebar class="demo demo-layout-1-sidebar">sidebar</f-sidebar>
           </f-layout>
         </f-layout>
-      `),
-      scssCode: removePrefixSpace(`
+      `,
+      scssCode: `
         .demo-layout-1 {
           .layout {
             margin: 1em 0;
@@ -180,7 +174,7 @@ export default {
             background-color: lighten($blue, 20%);
           }
         }
-      `)
+      `,
     };
   },
 };

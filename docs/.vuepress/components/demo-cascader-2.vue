@@ -2,19 +2,13 @@
   <div class="demo-cascader-2 extra-margin">
     <f-cascader :source.sync="source" :selected.sync="selected" :load-data="loadData" />
 
-    <code-box>
-      <pre>
-        <code class="html">{{htmlCode}}</code>
-        <code class="javascript">{{javascriptCode}}</code>
-      </pre>
-    </code-box>
+    <code-box :htmlCode="htmlCode" :javascriptCode="javascriptCode" />
   </div>
 </template>
 
 <script>
 import FCascader from '../../../src/components/cascader/FCascader.vue';
 import db from '../../../tests/fixture/db.js';
-import removePrefixSpace from '../assets/js/remove-prefix-space.js';
 
 const ajax = (id = 0) => {
   return new Promise((resolve, reject) => {
@@ -39,10 +33,10 @@ export default {
       selected: [],
       source: [],
 
-      htmlCode: removePrefixSpace(`
+      htmlCode: `
         <f-cascader :source.sync="source" :selected.sync="selected" :load-data="loadData" />
-      `),
-      javascriptCode: removePrefixSpace(`
+      `,
+      javascriptCode: `
         const ajax = (id = 0) => {
           return new Promise((resolve, reject) => {
             setTimeout(() => {
@@ -72,7 +66,7 @@ export default {
             ajax(id).then(result => updateSource(result));
           },
         },
-      `),
+      `,
     };
   },
   created() {

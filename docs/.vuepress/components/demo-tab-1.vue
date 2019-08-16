@@ -39,12 +39,7 @@
       </f-tab-body>
     </f-tab>
 
-    <code-box>
-      <pre>
-        <code class="html">{{htmlCode}}</code>
-        <code class="javascript">{{javascriptCode}}</code>
-      </pre>
-    </code-box>
+    <code-box :htmlCode="htmlCode" :javascriptCode="javascriptCode" />
   </div>
 </template>
 
@@ -55,7 +50,6 @@ import FTabNav from '../../../src/components/tab/FTabNav.vue';
 import FTabNavItem from '../../../src/components/tab/FTabNavItem.vue';
 import FTabBody from '../../../src/components/tab/FTabBody.vue';
 import FTabBodyItem from '../../../src/components/tab/FTabBodyItem.vue';
-import removePrefixSpace from '../assets/js/remove-prefix-space.js';
 
 export default {
   name: 'demo-tab-1',
@@ -68,7 +62,7 @@ export default {
       action2: [{ callback: this.alert2, text: 'action' }],
       action3: [{ callback: this.alert3, text: 'action-small', small: true }],
 
-      htmlCode: removePrefixSpace(`
+      htmlCode: `
         <f-tab :selected.sync="selectedTab1">
           <f-tab-nav>
             <f-tab-nav-item name="1">1</f-tab-nav-item>
@@ -107,8 +101,8 @@ export default {
             <f-tab-body-item name="3">0003</f-tab-body-item>
           </f-tab-body>
         </f-tab>
-      `),
-      javascriptCode: removePrefixSpace(`
+      `,
+      javascriptCode: `
         data() {
           return {
             selectedTab1: '1',
@@ -128,7 +122,7 @@ export default {
             alert('I am action2');
           },
         },
-      `),
+      `,
     };
   },
   methods: {

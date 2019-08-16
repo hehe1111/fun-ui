@@ -6,11 +6,7 @@
       <f-button>按钮 3</f-button>
     </f-button-group>
 
-    <code-box>
-      <pre>
-        <code class="html">{{htmlCode}}</code>
-      </pre>
-    </code-box>
+    <code-box :htmlCode="htmlCode" />
   </div>
 </template>
 
@@ -18,20 +14,19 @@
 <script>
 import FButton from '../../../src/components/button/FButton.vue';
 import FButtonGroup from '../../../src/components/button/FButtonGroup.vue';
-import removePrefixSpace from '../assets/js/remove-prefix-space.js';
 
 export default {
   name: 'demo-button-group',
   components: { FButton, FButtonGroup },
   data() {
     return {
-      htmlCode: removePrefixSpace(`
+      htmlCode: `
         <f-button-group>
           <f-button>按钮 1</f-button>
           <f-button>按钮 2</f-button>
           <f-button>按钮 3</f-button>
         </f-button-group>
-      `),
+      `,
     };
   },
 };

@@ -11,18 +11,12 @@
     <f-input class="input" value="警告" :hint="{type: 'warning', message: '警告'}" />
     <f-input class="input" value="消息" :hint="{type: 'info', message: '消息'}" />
 
-    <code-box>
-      <pre>
-        <code class="html">{{htmlCode}}</code>
-        <code class="javascript">{{javascriptCode}}</code>
-      </pre>
-    </code-box>
+    <code-box :htmlCode="htmlCode" :javascriptCode="javascriptCode" />
   </div>
 </template>
 
 <script>
 import FInput from '../../../src/components/FInput.vue';
-import removePrefixSpace from '../assets/js/remove-prefix-space.js';
 
 export default {
   name: 'demo-input-1',
@@ -31,7 +25,7 @@ export default {
     return {
       value1: '',
 
-      htmlCode: removePrefixSpace(`
+      htmlCode: `
         <f-input class="input" v-model="value1" placeholder="请在此输入" />
         <div style="margin-bottom: 6px;">当前输入框内的内容：{{ value }}</div>
         <f-input class="input" placeholder="自动聚焦" auto-focus />
@@ -42,14 +36,14 @@ export default {
         <f-input class="input" value="失败" :hint="{type: 'error', message: '失败'}" />
         <f-input class="input" value="警告" :hint="{type: 'warning', message: '警告'}" />
         <f-input class="input" value="消息" :hint="{type: 'info', message: '消息'}" />
-      `),
-      javascriptCode: removePrefixSpace(`
+      `,
+      javascriptCode: `
         data() {
           return {
             value1: '',
           };
         },
-      `),
+      `,
     };
   },
 };

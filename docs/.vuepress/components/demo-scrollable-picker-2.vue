@@ -7,19 +7,13 @@
       direction="horizontal"
     />
 
-    <code-box>
-      <pre>
-        <code class="html">{{htmlCode}}</code>
-        <code class="javascript">{{javascriptCode}}</code>
-      </pre>
-    </code-box>
+    <code-box :htmlCode="htmlCode" :javascriptCode="javascriptCode" />
   </div>
 </template>
 
 <script>
 import FScrollablePicker from '../../../src/components/FScrollablePicker.vue';
 import { range } from '../../../src/assets/utils.js';
-import removePrefixSpace from '../assets/js/remove-prefix-space.js';
 
 export default {
   name: 'demo-scrollable-picker-2',
@@ -29,22 +23,22 @@ export default {
       selected: 10,
       range,
 
-      htmlCode: removePrefixSpace(`
+      htmlCode: `
         <f-scrollable-picker
           :width-and-height="{ width: '14em', height: '2em' }"
           :selected.sync="selected"
           :values="range(1, 20)"
           direction="horizontal"
         />
-      `),
-      javascriptCode: removePrefixSpace(`
+      `,
+      javascriptCode: `
         data() {
           return {
             selected: 10,
             range,
           };
         },
-      `),
+      `,
     };
   },
 };

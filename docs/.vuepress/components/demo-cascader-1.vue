@@ -2,18 +2,14 @@
   <div class="demo-cascader-1 extra-margin">
     <f-cascader :source.sync="source" :selected.sync="selected" />
 
-    <code-box>
-      <pre>
-        <code class="html">{{htmlCode}}</code>
-        <code class="javascript">{{javascriptCode}}</code>
-      </pre>
-    </code-box>
+        <code-box :htmlCode="htmlCode" :javascriptCode="javascriptCode" />
+
   </div>
 </template>
 
 <script>
 import FCascader from '../../../src/components/cascader/FCascader.vue';
-import removePrefixSpace from '../assets/js/remove-prefix-space.js';
+
 
 const db = [
   {
@@ -57,10 +53,10 @@ export default {
       selected: [],
       source: db,
 
-      htmlCode: removePrefixSpace(`
+      htmlCode: `
         <f-cascader :source.sync="source" :selected.sync="selected" />
-      `),
-      javascriptCode: removePrefixSpace(`
+      `,
+      javascriptCode: `
         const db = [
           {
             name: '浙江',
@@ -101,7 +97,7 @@ export default {
             source: db,
           };
         },
-      `),
+      `,
     };
   },
 };

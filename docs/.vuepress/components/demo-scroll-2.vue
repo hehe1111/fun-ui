@@ -4,36 +4,30 @@
       <p>LoremLoremLoremLoremLoremLoremLoremLoremLoremLoremLoremLoremLoremLoremLoremLoremLoremLoremLoremLoremLoremLoremLoremLoremLoremLoremLoremLoremLoremLoremLoremLoremLoremLoremLoremLoremLoremLoremLoremLore ipsum dolor sit amet consectetur adipisicing elit. Lorem ipsum dolor sit amet consectetur adipisicing elit. Atque, magnam, illo saepe recusandae asperiores commodi deserunt accusantium ducimus aperiam sint odio iste quo in possimus nisi cum? Aliquid, ipsum veritatis.</p>
     </f-scroll-horizontal>
 
-    <code-box>
-      <pre>
-        <code class="html">{{htmlCode}}</code>
-        <code class="scss">{{scssCode}}</code>
-      </pre>
-    </code-box>
+    <code-box :htmlCode="htmlCode" :scssCode="scssCode" />
   </div>
 </template>
 
 <script>
 import FScrollHorizontal from '../../../src/components/scroll/FScrollHorizontal.vue';
-import removePrefixSpace from '../assets/js/remove-prefix-space.js';
 
 export default {
   name: 'demo-scroll-2',
   components: { FScrollHorizontal },
   data() {
     return {
-      htmlCode: removePrefixSpace(`
+      htmlCode: `
         <f-scroll-horizontal class="scroll">
           <p>LoremLoremLoremLoremLoremLoremLoremLoremLoremLoremLoremLoremLoremLoremLoremLoremLoremLoremLoremLoremLoremLoremLoremLoremLoremLoremLoremLoremLoremLoremLoremLoremLoremLoremLoremLoremLoremLoremLoremLore ipsum dolor sit amet consectetur adipisicing elit. Lorem ipsum dolor sit amet consectetur adipisicing elit. Atque, magnam, illo saepe recusandae asperiores commodi deserunt accusantium ducimus aperiam sint odio iste quo in possimus nisi cum? Aliquid, ipsum veritatis.</p>
         </f-scroll-horizontal>
-      `),
-      scssCode: removePrefixSpace(`
+      `,
+      scssCode: `
         .scroll {
           width: 500px;
           border: 1px solid $blue;
           border-radius: $borderRadius;
         }
-      `),
+      `,
     };
   },
 };

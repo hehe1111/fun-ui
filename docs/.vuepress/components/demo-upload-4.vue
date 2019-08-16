@@ -14,12 +14,7 @@
       <f-button icon="upload">上传</f-button>
     </f-upload>
 
-    <code-box>
-      <pre>
-        <code class="html">{{htmlCode}}</code>
-        <code class="javascript">{{javascriptCode}}</code>
-      </pre>
-    </code-box>
+    <code-box :htmlCode="htmlCode" :javascriptCode="javascriptCode" />
   </div>
 </template>
 
@@ -28,7 +23,7 @@ import Vue from 'vue';
 import FUpload from '../../../src/components/FUpload.vue';
 import FButton from '../../../src/components/button/FButton.vue';
 import toast from '../../../src/plugins/toast.js';
-import removePrefixSpace from '../assets/js/remove-prefix-space.js';
+
 Vue.use(toast);
 
 export default {
@@ -38,7 +33,7 @@ export default {
     return {
       fileList: [],
 
-      htmlCode: removePrefixSpace(`
+      htmlCode: `
         <f-upload
           action="https://upload-file-demo-on-heroku.herokuapp.com/upload/"
           name="myFile"
@@ -51,8 +46,8 @@ export default {
         >
           <f-button icon="upload">上传</f-button>
         </f-upload>
-      `),
-      javascriptCode: removePrefixSpace(`
+      `,
+      javascriptCode: `
         data() {
           return {
             fileList: [],
@@ -76,7 +71,7 @@ export default {
             $event.isExceeded && this.$toast('文件太大', { state: 'error' });
           },
         },
-      `),
+      `,
     };
   },
   methods: {

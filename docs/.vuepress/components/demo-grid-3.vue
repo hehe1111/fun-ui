@@ -14,11 +14,7 @@
       </f-col>
     </f-row>
 
-    <code-box>
-      <pre>
-        <code class="html">{{htmlCode}}</code>
-      </pre>
-    </code-box>
+    <code-box :htmlCode="htmlCode" />
   </div>
 </template>
 
@@ -26,14 +22,13 @@
 <script>
 import FRow from '../../../src/components/grid/FRow.vue';
 import FCol from '../../../src/components/grid/FCol.vue';
-import removePrefixSpace from '../assets/js/remove-prefix-space.js';
 
 export default {
   name: 'demo-grid-3',
   components: { FRow, FCol },
   data() {
     return {
-      htmlCode: removePrefixSpace(`
+      htmlCode: `
         <f-row>
           <f-col span="8">
             <div class="item"></div>
@@ -47,7 +42,7 @@ export default {
             <div class="item"></div>
           </f-col>
         </f-row>
-      `),
+      `,
     };
   },
 };

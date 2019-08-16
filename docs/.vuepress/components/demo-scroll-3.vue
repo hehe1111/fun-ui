@@ -1,27 +1,16 @@
 <template>
   <div class="demo-scroll-3 extra-margin">
-    <f-scroll-vertical
-      class="scroll"
-      :load-data="loadData"
-      :load-data-immediately="true"
-    >
+    <f-scroll-vertical class="scroll" :load-data="loadData" :load-data-immediately="true">
       <div class="item" v-for="div in divs" :key="div">{{ div }}</div>
     </f-scroll-vertical>
 
-    <code-box>
-      <pre>
-        <code class="html">{{htmlCode}}</code>
-        <code class="javascript">{{javascriptCode}}</code>
-        <code class="scss">{{scssCode}}</code>
-      </pre>
-    </code-box>
+    <code-box :htmlCode="htmlCode" :javascriptCode="javascriptCode" :scssCode="scssCode" />
   </div>
 </template>
 
 <script>
 import FScrollVertical from '../../../src/components/scroll/FScrollVertical.vue';
 import { range } from '../../../src/assets/utils.js';
-import removePrefixSpace from '../assets/js/remove-prefix-space.js';
 
 export default {
   name: 'demo-scroll-3',
@@ -30,7 +19,7 @@ export default {
     return {
       divs: [],
 
-      htmlCode: removePrefixSpace(`
+      htmlCode: `
         <f-scroll-vertical
           class="scroll"
           :load-data="loadData"
@@ -38,8 +27,8 @@ export default {
         >
           <div class="item" v-for="div in divs" :key="div">{{ div }}</div>
         </f-scroll-vertical>
-      `),
-      javascriptCode: removePrefixSpace(`
+      `,
+      javascriptCode: `
         data() {
           return {
             divs: [],
@@ -53,8 +42,8 @@ export default {
             this.divs.push(this.divs.length + 1);
           },
         }
-      `),
-      scssCode: removePrefixSpace(`
+      `,
+      scssCode: `
         .scroll {
           height: 400px;
           border: 1px solid $blue;
@@ -69,7 +58,7 @@ export default {
           color: #fff;
           font-size: 20px;
         }
-      `),
+      `,
     };
   },
   methods: {

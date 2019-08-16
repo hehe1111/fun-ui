@@ -13,19 +13,15 @@
       </template>
     </div>
 
-    <code-box>
-      <pre>
-        <code class="html">{{htmlCode}}</code>
-        <code class="javascript">{{javascriptCode}}</code>
-      </pre>
-    </code-box>
+        <code-box :htmlCode="htmlCode" :javascriptCode="javascriptCode"/>
+
   </div>
 </template>
 
 <script>
 import FPagination from '../../../src/components/pagination/FPagination.vue';
 import FButton from '../../../src/components/button/FButton.vue';
-import removePrefixSpace from '../assets/js/remove-prefix-space.js';
+
 
 export default {
   name: 'demo-pagination-3',
@@ -35,16 +31,16 @@ export default {
       total: 1,
       hideOnSinglePage: false,
 
-      htmlCode: removePrefixSpace(`
+      htmlCode: `
         <f-pagination :total="total" hide-on-single-page />
-      `),
-      javascriptCode: removePrefixSpace(`
+      `,
+      javascriptCode: `
         data() {
           return {
             total: 1,
           }
         }
-      `),
+      `,
     };
   },
 };

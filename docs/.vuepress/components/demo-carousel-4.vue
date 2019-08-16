@@ -44,12 +44,7 @@
       </div>
     </div>
 
-    <code-box>
-      <pre>
-        <code class="html">{{htmlCode}}</code>
-        <code class="javascript">{{javascriptCode}}</code>
-      </pre>
-    </code-box>
+    <code-box :htmlCode="htmlCode" :javascriptCode="javascriptCode" />
   </div>
 </template>
 
@@ -58,7 +53,6 @@ import FButton from '../../../src/components/button/FButton.vue';
 import FButtonGroup from '../../../src/components/button/FButtonGroup.vue';
 import FCarousel from '../../../src/components/carousel/FCarousel.vue';
 import FCarouselItem from '../../../src/components/carousel/FCarouselItem.vue';
-import removePrefixSpace from '../assets/js/remove-prefix-space.js';
 
 export default {
   name: 'demo-carousel-4',
@@ -68,7 +62,7 @@ export default {
       dotPosition1: 'left',
       dotPosition2: 'top',
 
-      htmlCode: removePrefixSpace(`
+      htmlCode: `
         <f-carousel :dot-position="dotPosition" :enable-arrow="true">
           <f-carousel-item name="x1">
             <div class="image">1</div>
@@ -98,15 +92,15 @@ export default {
             <div class="image">4</div>
           </f-carousel-item>
         </f-carousel>
-      `),
-      javascriptCode: removePrefixSpace(`
+      `,
+      javascriptCode: `
         data() {
           return {
             dotPosition: "left",
             dotPosition2: 'top',
           }
         }
-      `),
+      `,
     };
   },
 };

@@ -7,11 +7,7 @@
       </li>
     </ul>
 
-    <code-box>
-      <pre>
-        <code class="html">{{htmlCode}}</code>
-      </pre>
-    </code-box>
+    <code-box :htmlCode="htmlCode" />
   </div>
 </template>
 
@@ -19,7 +15,6 @@
 <script>
 import FIcon from '../../../src/components/FIcon.vue';
 import iconNames from '../assets/js/icon-names.js';
-import removePrefixSpace from '../assets/js/remove-prefix-space.js';
 
 export default {
   name: 'demo-icon-1',
@@ -27,9 +22,9 @@ export default {
   data() {
     return {
       iconNames,
-      htmlCode: removePrefixSpace(`
+      htmlCode: `
         <f-icon :name="name" />
-      `),
+      `,
     };
   },
 };

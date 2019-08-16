@@ -2,12 +2,7 @@
   <div class="demo-toast-3 extra-margin">
     <f-button @click="showToast">{{n}}s 后关闭</f-button>
 
-    <code-box>
-      <pre>
-        <code class="html">{{htmlCode}}</code>
-        <code class="javascript">{{javascriptCode}}</code>
-      </pre>
-    </code-box>
+    <code-box :htmlCode="htmlCode" :javascriptCode="javascriptCode" />
   </div>
 </template>
 
@@ -16,7 +11,7 @@
 import Vue from 'vue';
 import FButton from '../../../src/components/button/FButton.vue';
 import toast from '../../../src/plugins/toast.js';
-import removePrefixSpace from '../assets/js/remove-prefix-space.js';
+
 Vue.use(toast);
 
 export default {
@@ -27,10 +22,10 @@ export default {
       n: 10,
       counting: false,
 
-      htmlCode: removePrefixSpace(`
+      htmlCode: `
         <f-button @click="showToast">{{n}}s 后关闭</f-button>
-      `),
-      javascriptCode: removePrefixSpace(`
+      `,
+      javascriptCode: `
         data() {
           return {
             n: 10,
@@ -57,7 +52,7 @@ export default {
             subtractOne();
           },
         },
-      `),
+      `,
     };
   },
   methods: {

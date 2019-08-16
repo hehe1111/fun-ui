@@ -2,18 +2,12 @@
   <div class="demo-date-picker-2 extra-margin">
     <f-date-picker v-model="value" start-week-on="0" />
 
-    <code-box>
-      <pre>
-        <code class="html">{{htmlCode}}</code>
-        <code class="javascript">{{javascriptCode}}</code>
-      </pre>
-    </code-box>
+    <code-box :htmlCode="htmlCode" :javascriptCode="javascriptCode" />
   </div>
 </template>
 
 <script>
 import FDatePicker from '../../../src/components/FDatePicker.vue';
-import removePrefixSpace from '../assets/js/remove-prefix-space.js';
 
 export default {
   name: 'demo-date-picker-2',
@@ -22,16 +16,16 @@ export default {
     return {
       value: new Date(),
 
-      htmlCode: removePrefixSpace(`
+      htmlCode: `
         <f-date-picker v-model="value" start-week-on="0" />
-      `),
-      javascriptCode: removePrefixSpace(`
+      `,
+      javascriptCode: `
         data() {
           return {
             value: new Date(),
           };
         },
-      `),
+      `,
     };
   },
 };

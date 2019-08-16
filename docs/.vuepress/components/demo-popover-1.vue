@@ -10,25 +10,20 @@
       <f-button>多行文本</f-button>
     </f-popover>
 
-    <code-box>
-      <pre>
-        <code class="html">{{htmlCode}}</code>
-      </pre>
-    </code-box>
+    <code-box :htmlCode="htmlCode" />
   </div>
 </template>
 
 <script>
 import FPopover from '../../../src/components/FPopover.vue';
 import FButton from '../../../src/components/button/FButton.vue';
-import removePrefixSpace from '../assets/js/remove-prefix-space.js';
 
 export default {
   name: 'demo-popover-1',
   components: { FPopover, FButton },
   data() {
     return {
-      htmlCode: removePrefixSpace(`
+      htmlCode: `
         <f-popover>
           <template slot="content">弹出内容</template>
           <f-button>点我弹出</f-button>
@@ -40,7 +35,7 @@ export default {
           </template>
           <f-button>多行文本</f-button>
         </f-popover>
-      `),
+      `,
     };
   },
 };
