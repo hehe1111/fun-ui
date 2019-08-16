@@ -12,7 +12,7 @@
               <span class="cell-inner">
                 <f-icon
                   name="right"
-                  class="icon-exits-to-keep-align right-icon"
+                  class="icon-exist-to-keep-align right-icon"
                 />
               </span>
             </th>
@@ -419,7 +419,7 @@ export default {
 <style lang="scss" scoped>
 @import '../../assets/_var.scss';
 
-.icon-exits-to-keep-align {
+.icon-exist-to-keep-align {
   opacity: 0;
 }
 
