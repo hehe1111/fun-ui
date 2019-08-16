@@ -1,5 +1,5 @@
 <template>
-  <div class="tab-body-item" :class="classes" v-if="active">
+  <div class="f-tab-body-item" v-if="active">
     <slot />
   </div>
 </template>
@@ -25,17 +25,11 @@ export default {
     },
   },
   created() {
+    // emit from FTab or FTabNavItem
     this.eventBus.$on &&
-      this.eventBus.$on('update:selected', value => {
-        this.active = this.name === value;
+      this.eventBus.$on('update:selected', ({ name }) => {
+        this.active = this.name === name;
       });
-  },
-  computed: {
-    classes() {
-      return {
-        active: this.active,
-      };
-    },
   },
 };
 </script>
@@ -43,7 +37,7 @@ export default {
 <style lang="scss" scoped>
 @import '../../assets/_var.scss';
 
-.tab-body-item {
+.f-tab-body-item {
   padding: 1em;
   height: 100%;
 }

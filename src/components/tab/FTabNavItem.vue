@@ -1,15 +1,12 @@
 <template>
-  <div
-    class="tab-nav-item"
-    :class="classes"
-    @click="switchTab"
-    :data-name="name"
-  >
+  <div :class="classes" @click="switchTab" :data-name="name">
     <slot />
   </div>
 </template>
 
 <script>
+import { optionsName2ClassPrefix } from '../../assets/utils.js';
+
 export default {
   name: 'FunUITabNavItem',
   data() {
@@ -36,25 +33,29 @@ export default {
       default: () => ({}),
     },
   },
+  computed: {
+    n2c() {
+      return optionsName2ClassPrefix(this.$options.name);
+    },
+    classes() {
+      const { n2c, active, disabled } = this;
+      return [
+        this.n2c(),
+        { [`${n2c('active')}`]: active, [`${n2c('disabled')}`]: disabled },
+      ];
+    },
+  },
   created() {
     this.eventBus.$on &&
-      this.eventBus.$on('update:selected', (value, vm) => {
-        this.active = this.name === value;
+      this.eventBus.$on('update:selected', ({ name, vm }) => {
+        this.active = this.name === name;
       });
-  },
-  computed: {
-    classes() {
-      return {
-        active: this.active,
-        disabled: this.disabled,
-      };
-    },
   },
   methods: {
     switchTab() {
       if (this.disabled) return;
       this.eventBus.$emit &&
-        this.eventBus.$emit('update:selected', this.name, this);
+        this.eventBus.$emit('update:selected', { name: this.name, vm: this });
       this.$emit('click', this);
     },
   },
@@ -64,7 +65,7 @@ export default {
 <style lang="scss" scoped>
 @import '../../assets/_var.scss';
 
-.tab-nav-item {
+.f-tab-nav-item {
   flex-shrink: 0;
   display: flex;
   justify-content: center;
@@ -72,10 +73,12 @@ export default {
   padding: 0.5em 1em;
   cursor: pointer;
   transition: all $duration;
-  &.active {
+
+  &-active {
     color: $blue;
   }
-  &.disabled {
+
+  &-disabled {
     color: lightGrey;
     cursor: not-allowed;
   }

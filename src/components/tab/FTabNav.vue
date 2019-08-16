@@ -1,20 +1,69 @@
 <template>
-  <div class="tab-nav">
+  <div :class="n2c()">
     <slot />
-    <div class="slideable-line" ref="slideableLine"></div>
-    <div class="actions-container">
-      <slot name="actions" />
+    <div :class="n2c('slideable-line')" ref="slideableLine"></div>
+    <div v-if="action.length !== 0" :class="n2c('actions-container')">
+      <f-button-group>
+        <f-button
+          v-for="obj in action"
+          :key="obj.text"
+          @click="obj.callback"
+          :small="obj.small"
+        >
+          <span>{{ obj.text }}</span>
+        </f-button>
+      </f-button-group>
     </div>
   </div>
 </template>
 
 <script>
+import FButtonGroup from '../button/FButtonGroup.vue';
+import FButton from '../button/FButton.vue';
+import {
+  optionsName2ClassPrefix,
+  oneOf,
+  getTypeOf,
+} from '../../assets/utils.js';
+
+const actionValidator = prop => {
+  return prop.every(obj => {
+    return Object.keys(obj).every(k => {
+      if (oneOf(k, ['callback', 'text', 'small'])) {
+        if (oneOf(k, ['callback', 'text'])) {
+          return (
+            getTypeOf(obj.callback) === 'function' &&
+            getTypeOf(obj.text) === 'string'
+          );
+        } else {
+          return true;
+        }
+      } else {
+        return false;
+      }
+    });
+  });
+};
+
 export default {
   name: 'FunUITabNav',
+  components: { FButtonGroup, FButton },
   inject: {
     eventBus: {
       from: 'eventBus',
       default: () => ({}),
+    },
+  },
+  props: {
+    action: {
+      type: Array,
+      default: () => [],
+      validator: actionValidator,
+    },
+  },
+  computed: {
+    n2c() {
+      return optionsName2ClassPrefix(this.$options.name);
     },
   },
   mounted() {
@@ -22,21 +71,24 @@ export default {
   },
   methods: {
     getSlideableLineStyle() {
+      // emit from FTab or FTabNavItem
       this.eventBus.$on &&
-        this.eventBus.$on('update:selected', (value, vm) => {
-          // const { width: wrongWidth, left: wrongLeft } = vm.$el.getBoundingClientRect();
-          // console.log(wrongWidth, wrongLeft); // 1366 0
+        this.eventBus.$on('update:selected', ({ vm }) => {
+          // wait for vm to finish updating
           this.$nextTick(() => {
             const { width, left, height, top } = vm.$el.getBoundingClientRect();
-            const isHorizontal = this.$el.classList.contains('horizontal');
+            const {
+              left: parentLeft,
+              top: parentTop,
+            } = this.$el.getBoundingClientRect();
             if (!this.$refs.slideableLine) return;
-            if (isHorizontal) {
-              // console.log(width, left); // 56.21875 0
-              this.$refs.slideableLine.style.width = `${width}px`;
-              this.$refs.slideableLine.style.left = `${left}px`;
+            const { style } = this.$refs.slideableLine;
+            if (this.$el.classList.contains('horizontal')) {
+              style.width = `${width}px`;
+              style.left = `${left - parentLeft}px`;
             } else {
-              this.$refs.slideableLine.style.height = `${height}px`;
-              this.$refs.slideableLine.style.top = `${top}px`;
+              style.height = `${height}px`;
+              style.top = `${top - parentTop}px`;
             }
           });
         });
@@ -48,44 +100,43 @@ export default {
 <style lang="scss" scoped>
 @import '../../assets/_var.scss';
 
-.tab-nav {
-  // 共用样式
+.f-tab-nav {
   position: relative;
   border-style: solid;
   border-color: $borderColorLight;
   border-width: 0;
-  > .slideable-line {
+
+  &-slideable-line {
     background-color: $blue;
     border-radius: $slideableLineWidth;
     transition: all $duration;
   }
-  > .actions-container {
-    padding: 0.5em 1em;
+  &-actions-container {
     flex-shrink: 0;
     display: flex;
     justify-content: center;
     align-items: center;
   }
-  // tab 横向排列样式
+  // tab horizontal (css class from FTab)
   &.horizontal {
     display: flex;
     align-items: center;
     flex-wrap: wrap;
     border-bottom-width: $slideableLineWidth;
-    > .slideable-line {
+    > .f-tab-nav-slideable-line {
       height: $slideableLineWidth;
       position: absolute;
       top: 100%;
     }
-    > .actions-container {
+    > .f-tab-nav-actions-container {
       margin-left: auto;
     }
   }
-  // tab 纵向排列样式
+  // tab vertical (css class from FTab)
   &.vertical {
     display: block;
     border-right-width: $slideableLineWidth;
-    > .slideable-line {
+    > .f-tab-nav-slideable-line {
       width: $slideableLineWidth;
       position: absolute;
       left: 100%;

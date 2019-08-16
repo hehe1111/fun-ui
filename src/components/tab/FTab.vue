@@ -1,5 +1,5 @@
 <template>
-  <div class="tab">
+  <div class="f-tab">
     <slot />
   </div>
 </template>
@@ -54,7 +54,10 @@ export default {
               navItem.$options.name === 'FunUITabNavItem' &&
               navItem.name === this.selected
             ) {
-              this.eventBus.$emit('update:selected', this.selected, navItem);
+              this.eventBus.$emit('update:selected', {
+                name: this.selected,
+                vm: navItem,
+              });
             }
           });
         }

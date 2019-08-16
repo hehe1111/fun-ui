@@ -1,5 +1,5 @@
 <template>
-  <div class="tab-body">
+  <div class="f-tab-body">
     <slot />
   </div>
 </template>
@@ -7,19 +7,13 @@
 <script>
 export default {
   name: 'FunUITabBody',
-  inject: {
-    eventBus: {
-      from: 'eventBus',
-      default: () => ({}),
-    },
-  },
 };
 </script>
 
 <style lang="scss" scoped>
 @import '../../assets/_var.scss';
 
-.tab-body {
+.f-tab-body {
   flex: 1;
 }
 </style>
