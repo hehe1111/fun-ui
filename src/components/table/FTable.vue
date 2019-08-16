@@ -30,9 +30,10 @@
               <span class="cell-inner">#</span>
             </th>
             <th
-              v-for="column in columns"
+              v-for="(column, index) in columns"
               :key="column.field"
               :data-name="column.field"
+              :data-index="index"
             >
               <span class="cell-inner">
                 <span>{{ column.text }}</span>
@@ -75,9 +76,10 @@
                 <span class="cell-inner">{{ item.id }}</span>
               </td>
               <td
-                v-for="column in columns"
+                v-for="(column, index) in columns"
                 :key="column.field"
                 :data-name="column.field"
+                :data-index="index"
               >
                 <span class="cell-inner">
                   <template v-if="column._template">
@@ -216,6 +218,7 @@ export default {
   },
   mounted() {
     this.getElements();
+    this.findResponsiveColumn();
     this.height && this.fixTHead();
   },
   updated() {
@@ -252,6 +255,19 @@ export default {
       this.tdCellInners = Array.from(
         document.querySelectorAll('tbody > tr:first-child > td > .cell-inner')
       );
+    },
+    findResponsiveColumn() {
+      let target;
+      if (this.columns[this.columns.length - 1].field === 'actions') {
+        target = 2;
+      } else {
+        target = 1;
+      }
+      Array.from(
+        document.querySelectorAll(
+          `[data-index="${this.columns.length - target}"]`
+        )
+      ).map(el => el.classList.add('responsive-column'));
     },
     updateLoadingMaskStyle() {
       const { tableRef, loadingMaskRef } = this.$refs;
@@ -505,7 +521,12 @@ export default {
       td {
         padding: 0.4em 0.8em;
         border-bottom: 1px solid $borderColorLight;
-        word-break: break-all;
+        white-space: nowrap;
+        &.responsive-column {
+          white-space: normal; // reset white-space
+          word-break: normal;
+          width: 100%;
+        }
       }
 
       > thead > tr > th {
