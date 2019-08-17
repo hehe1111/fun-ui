@@ -467,19 +467,25 @@ export default {
   &.align-left {
     th,
     td {
-      text-align: left;
+      > .cell-inner {
+        justify-content: flex-start;
+      }
     }
   }
   &.align-center {
     th,
     td {
-      text-align: center;
+      > .cell-inner {
+        justify-content: center;
+      }
     }
   }
   &.align-right {
     th,
     td {
-      text-align: right;
+      > .cell-inner {
+        justify-content: flex-end;
+      }
     }
   }
 }
