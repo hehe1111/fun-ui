@@ -77,7 +77,6 @@ export default {
   },
   methods: {
     handleAutoClose() {
-      if (this.closeIcon) return;
       setTimeout(() => this.close(), this.autoCloseDelay * 1000);
     },
     close() {
