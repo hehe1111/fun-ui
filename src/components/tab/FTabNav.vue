@@ -2,10 +2,10 @@
   <div :class="n2c()">
     <slot />
     <div :class="n2c('slideable-line')" ref="slideableLine"></div>
-    <div v-if="action.length !== 0" :class="n2c('actions-container')">
+    <div v-if="actions.length !== 0" :class="n2c('actions-container')">
       <f-button-group>
         <f-button
-          v-for="obj in action"
+          v-for="obj in actions"
           :key="obj.text"
           @click="obj.callback"
           :small="obj.small"
@@ -55,7 +55,7 @@ export default {
     },
   },
   props: {
-    action: {
+    actions: {
       type: Array,
       default: () => [],
       validator: actionValidator,

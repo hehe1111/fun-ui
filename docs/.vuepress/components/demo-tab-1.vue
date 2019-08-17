@@ -14,7 +14,7 @@
     </f-tab>
 
     <f-tab :selected.sync="selectedTab2">
-      <f-tab-nav :action="action2">
+    <f-tab-nav :actions="action2">
         <f-tab-nav-item name="1">1</f-tab-nav-item>
         <f-tab-nav-item name="2" disabled>2</f-tab-nav-item>
         <f-tab-nav-item name="3">3</f-tab-nav-item>
@@ -27,7 +27,7 @@
     </f-tab>
 
     <f-tab :selected.sync="selectedTab3">
-      <f-tab-nav :action="action3">
+      <f-tab-nav :actions="action3">
         <f-tab-nav-item name="1">1</f-tab-nav-item>
         <f-tab-nav-item name="2" disabled>2</f-tab-nav-item>
         <f-tab-nav-item name="3">3</f-tab-nav-item>
@@ -77,7 +77,7 @@ export default {
         </f-tab>
 
         <f-tab :selected.sync="selectedTab2">
-          <f-tab-nav :action="action2">
+          <f-tab-nav :actions="action2">
             <f-tab-nav-item name="1">1</f-tab-nav-item>
             <f-tab-nav-item name="2" disabled>2</f-tab-nav-item>
             <f-tab-nav-item name="3">3</f-tab-nav-item>
@@ -90,7 +90,7 @@ export default {
         </f-tab>
 
         <f-tab :selected.sync="selectedTab3">
-          <f-tab-nav :action="action3">
+          <f-tab-nav :actions="action3">
             <f-tab-nav-item name="1">1</f-tab-nav-item>
             <f-tab-nav-item name="2" disabled>2</f-tab-nav-item>
             <f-tab-nav-item name="3">3</f-tab-nav-item>
