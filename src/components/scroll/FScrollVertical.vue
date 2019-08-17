@@ -1,9 +1,7 @@
 <template>
-  <div>
-    <f-scroll direction="y" v-bind="$attrs">
-      <slot />
-    </f-scroll>
-  </div>
+  <f-scroll direction="y" v-bind="$attrs">
+    <slot />
+  </f-scroll>
 </template>
 
 <script>
