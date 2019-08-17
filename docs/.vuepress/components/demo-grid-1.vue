@@ -10,7 +10,6 @@
   </div>
 </template>
 
-
 <script>
 import FRow from '../../../src/components/grid/FRow.vue';
 import FCol from '../../../src/components/grid/FCol.vue';

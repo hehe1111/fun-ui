@@ -17,7 +17,6 @@
   </div>
 </template>
 
-
 <script>
 import FTab from '../../../src/components/tab/FTab.vue';
 import FTabNav from '../../../src/components/tab/FTabNav.vue';

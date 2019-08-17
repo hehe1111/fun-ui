@@ -13,15 +13,13 @@
       </template>
     </div>
 
-        <code-box :htmlCode="htmlCode" :javascriptCode="javascriptCode"/>
-
+    <code-box :htmlCode="htmlCode" :javascriptCode="javascriptCode" />
   </div>
 </template>
 
 <script>
 import FPagination from '../../../src/components/pagination/FPagination.vue';
 import FButton from '../../../src/components/button/FButton.vue';
-
 
 export default {
   name: 'demo-pagination-3',

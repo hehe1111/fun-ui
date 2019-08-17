@@ -23,7 +23,6 @@
 import FCarousel from '../../../src/components/carousel/FCarousel.vue';
 import FCarouselItem from '../../../src/components/carousel/FCarouselItem.vue';
 
-
 export default {
   name: 'demo-carousel-1',
   components: { FCarousel, FCarouselItem },

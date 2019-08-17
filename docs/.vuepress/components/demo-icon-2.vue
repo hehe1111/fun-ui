@@ -6,7 +6,6 @@
   </div>
 </template>
 
-
 <script>
 import FIcon from '../../../src/components/FIcon.vue';
 

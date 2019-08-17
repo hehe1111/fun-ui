@@ -2,14 +2,12 @@
   <div class="demo-cascader-1 extra-margin">
     <f-cascader :source.sync="source" :selected.sync="selected" />
 
-        <code-box :htmlCode="htmlCode" :javascriptCode="javascriptCode" />
-
+    <code-box :htmlCode="htmlCode" :javascriptCode="javascriptCode" />
   </div>
 </template>
 
 <script>
 import FCascader from '../../../src/components/cascader/FCascader.vue';
-
 
 const db = [
   {

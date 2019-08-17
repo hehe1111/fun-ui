@@ -10,7 +10,6 @@
   </div>
 </template>
 
-
 <script>
 import FButton from '../../../src/components/button/FButton.vue';
 import FButtonGroup from '../../../src/components/button/FButtonGroup.vue';

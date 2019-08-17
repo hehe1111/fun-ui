@@ -11,7 +11,6 @@
   </div>
 </template>
 
-
 <script>
 import FIcon from '../../../src/components/FIcon.vue';
 import iconNames from '../assets/js/icon-names.js';

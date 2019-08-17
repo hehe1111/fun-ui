@@ -10,7 +10,6 @@
   </div>
 </template>
 
-
 <script>
 import FCollapse from '../../../src/components/collapse/FCollapse.vue';
 import FCollapseItem from '../../../src/components/collapse/FCollapseItem.vue';

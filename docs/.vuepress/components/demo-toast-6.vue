@@ -10,7 +10,6 @@
   </div>
 </template>
 
-
 <script>
 import Vue from 'vue';
 import FButton from '../../../src/components/button/FButton.vue';

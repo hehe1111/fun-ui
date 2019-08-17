@@ -8,7 +8,6 @@
   </div>
 </template>
 
-
 <script>
 import FButton from '../../../src/components/button/FButton.vue';
 
