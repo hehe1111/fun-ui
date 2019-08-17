@@ -16,7 +16,7 @@
                 />
               </span>
             </th>
-            <th v-if="isCheckBoxVisible">
+            <th v-if="isCheckboxVisible">
               <span class="cell-inner">
                 <input
                   type="checkbox"
@@ -67,7 +67,7 @@
                   />
                 </span>
               </td>
-              <td v-if="isCheckBoxVisible">
+              <td v-if="isCheckboxVisible">
                 <span class="cell-inner">
                   <input
                     type="checkbox"
@@ -141,7 +141,7 @@ export default {
       },
     },
     isIdVisible: { type: Boolean, default: false },
-    isCheckBoxVisible: { type: Boolean, default: false },
+    isCheckboxVisible: { type: Boolean, default: false },
     selectedIds: {
       type: Array,
       default: () => [],
@@ -210,7 +210,7 @@ export default {
         1 +
         this.columns.length +
         (this.isIdVisible ? 1 : 0) +
-        (this.isCheckBoxVisible ? 1 : 0)
+        (this.isCheckboxVisible ? 1 : 0)
       );
     },
   },
@@ -430,7 +430,7 @@ export default {
   watch: {
     mutableSelectedIds(newValue, oldValue) {
       this.$emit('update:selectedIds', newValue);
-      this.isCheckBoxVisible && this.updateMainCheckBoxState();
+      this.isCheckboxVisible && this.updateMainCheckBoxState();
     },
   },
 };
