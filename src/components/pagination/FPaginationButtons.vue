@@ -4,7 +4,7 @@
     :class="buttonGroupClass"
     v-if="hideIfSinglePage"
   >
-    <f-button icon="left" :class="disabledClassLeft" @click="goToPrevious" />
+    <f-button icon="left" :disabled="current === 1" @click="goToPrevious" />
     <f-button
       v-for="(n, index) in pageNumberArray"
       :key="index"
@@ -13,7 +13,7 @@
       :data-name="n"
       >{{ n }}</f-button
     >
-    <f-button icon="right" :class="disabledClassRight" @click="goToNext" />
+    <f-button icon="right" :disabled="current === total" @click="goToNext" />
   </div>
 </template>
 
@@ -52,12 +52,6 @@ export default {
     },
     pageNumberArray() {
       return this.getPageNumberArray(this.current, this.total);
-    },
-    disabledClassLeft() {
-      return { disabled: this.current === 1 };
-    },
-    disabledClassRight() {
-      return { disabled: this.current === this.total };
     },
     hideIfSinglePage() {
       if (this.pageNumberArray.length > 1) return true;
@@ -126,7 +120,7 @@ export default {
   }
 
   .f-button {
-    &:not(.disabled):hover,
+    &:hover,
     &.high-light,
     &.high-light:hover,
     &.high-light:focus {
@@ -141,6 +135,11 @@ export default {
       background-color: #fff;
       cursor: not-allowed;
       z-index: 1;
+    }
+
+    &-disabled:hover {
+      color: #fff;
+      border-color: lighten($grey, 30%);
     }
 
     &.separator {
