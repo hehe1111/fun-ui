@@ -396,11 +396,11 @@ export default {
       this.hideNewTCHorizontalScrollbar();
     },
     getCellsWidthArray(array) {
+      const doubleCountedBorder = this.bordered ? 1 : 2;
       return array.map(el => {
-        // substract 1 for double count collapsed border
         return (
           el.getBoundingClientRect().width -
-          1 -
+          doubleCountedBorder -
           2 * window.parseInt(window.getComputedStyle(el).paddingLeft, 10) -
           2 * window.parseInt(window.getComputedStyle(el).borderLeftWidth, 10)
         );
