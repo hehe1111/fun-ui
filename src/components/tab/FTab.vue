@@ -14,12 +14,9 @@ export default {
       type: [String, Number],
       required: true,
     },
-    direction: {
-      type: String,
-      default: 'horizontal',
-      validator(value) {
-        return ['horizontal', 'vertical'].indexOf(value) >= 0;
-      },
+    vertical: {
+      type: Boolean,
+      default: false,
     },
   },
   data() {
@@ -65,13 +62,11 @@ export default {
     },
     addClassToChildComponent() {
       this.$children.forEach(vm => {
-        vm.$el.classList.add(this.direction);
+        vm.$el.classList.add(this.vertical ? 'vertical' : 'horizontal');
       });
     },
     updateStyle() {
-      if (this.direction === 'vertical') {
-        this.$el.style.display = 'flex';
-      }
+      this.vertical && (this.$el.style.display = 'flex');
     },
   },
 };

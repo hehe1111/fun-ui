@@ -1,6 +1,6 @@
 <template>
   <div class="demo-tab-2 extra-margin">
-    <f-tab :selected.sync="selectedTab" direction="vertical">
+    <f-tab :selected.sync="selectedTab" vertical>
       <f-tab-nav>
         <f-tab-nav-item name="1">1</f-tab-nav-item>
         <f-tab-nav-item name="2" disabled>2</f-tab-nav-item>
@@ -32,7 +32,7 @@ export default {
       selectedTab: '1',
 
       htmlCode: `
-        <f-tab :selected.sync="selectedTab" direction="vertical">
+        <f-tab :selected.sync="selectedTab" vertical>
           <f-tab-nav>
             <f-tab-nav-item name="1">1</f-tab-nav-item>
             <f-tab-nav-item name="2" disabled>2</f-tab-nav-item>

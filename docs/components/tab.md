@@ -18,10 +18,10 @@
 
 ## Tab API
 
-| 参数      | 说明                   | 类型            | 默认值     | 可选值                | 是否必选 |
-| --------- | ---------------------- | --------------- | ---------- | --------------------- | -------- |
-| selected  | 被选中的 tab item      | string / number | -          | -                     | 是       |
-| direction | 支持横向（默认）和纵向 | string          | horizontal | horizontal / vertical | 否       |
+| 参数     | 说明              | 类型            | 默认值 | 可选值       | 是否必选 |
+| -------- | ----------------- | --------------- | ------ | ------------ | -------- |
+| selected | 被选中的 tab item | string / number | -      | -            | 是       |
+| vertical | 支持纵向          | boolean         | false  | false / true | 否       |
 
 ## Tab-Nav API
 

@@ -44,12 +44,12 @@ describe('FTab.vue', () => {
     });
   });
 
-  it('可以接受 direction 属性', () => {
+  it('可以接受 vertical 属性', () => {
     const wrapper = mount(FTab, {
       attachToDocument: true,
       ...returnOptionsObj({
         selected: '11',
-        direction: 'vertical',
+        vertical: true,
       }),
     });
     expect(wrapper.find('.f-tab').element.style.display).to.eq('flex');
