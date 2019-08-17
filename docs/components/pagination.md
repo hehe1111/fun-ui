@@ -6,32 +6,42 @@
 
 - `total`：总页码。必选
 
-<demo-pagination-1 />
+<ClientOnly>
+  <demo-pagination-1 />
+</ClientOnly>
 
 ### 当前被选中项
 
 - `current`：传入一开始要显示的当前页码。可选，默认值为 1
 - 可以通过监听 `update:current` 事件获取最新页码。可以使用简写 `.sync` 语法： `:current.sync="current"`
 
-<demo-pagination-2 />
+<ClientOnly>
+  <demo-pagination-2 />
+</ClientOnly>
 
 ### 隐藏单页分页器
 
 - `hide-on-single-page`：是否在只有一页时隐藏分页器。默认值 `false`
 
-<demo-pagination-3 />
+<ClientOnly>
+  <demo-pagination-3 />
+</ClientOnly>
 
 ### 紧凑型
 
 - `no-gutter`：页码按钮之间是否有空隙。默认值 `false`
 
-<demo-pagination-4 />
+<ClientOnly>
+  <demo-pagination-4 />
+</ClientOnly>
 
 ### 获取最新页码
 
 - `on-page-change`：在页码发生改变时调用的回调。可以获取到一个参数：改变后的最新页码
 
-<demo-pagination-5 />
+<ClientOnly>
+  <demo-pagination-5 />
+</ClientOnly>
 
 ## API
 

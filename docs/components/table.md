@@ -4,58 +4,80 @@
 
 ### 基础用法
 
-<demo-table-1 />
+<ClientOnly>
+  <demo-table-1 />
+</ClientOnly>
 
 - [tableData](https://github.com/hehe1111/fun-ui/blob/master/docs/.vuepress/assets/js/table-data.js)
 - 如果传入的数据中存在 `collapsibleContent` 字段，则表格会在**该行**最左边显示一个向右的箭头图标，点击图标即可看到折叠内容（`collapsibleContent` 字段的值）
 
 ### 固定表头
 
-<demo-table-2 />
+<ClientOnly>
+  <demo-table-2 />
+</ClientOnly>
 
 ### 边框
 
-<demo-table-3 />
+<ClientOnly>
+  <demo-table-3 />
+</ClientOnly>
 
 ### 条纹
 
 - 默认带条纹
 - 不带条纹 `:striped="false"`
 
-<demo-table-4 />
+<ClientOnly>
+  <demo-table-4 />
+</ClientOnly>
 
 ### 紧凑型
 
-<demo-table-5 />
+<ClientOnly>
+  <demo-table-5 />
+</ClientOnly>
 
 ### 显示 id
 
-<demo-table-6 />
+<ClientOnly>
+  <demo-table-6 />
+</ClientOnly>
 
 ### 显示复选框
 
-<demo-table-7 />
+<ClientOnly>
+  <demo-table-7 />
+</ClientOnly>
 
 ### 当前被选中项
 
 - 某一项被选中时，组件会触发 `update:selectedIds` 事件
 
-<demo-table-8 />
+<ClientOnly>
+  <demo-table-8 />
+</ClientOnly>
 
 ### 列对齐
 
-<demo-table-9 />
+<ClientOnly>
+  <demo-table-9 />
+</ClientOnly>
 
 ### 自定义列模板
 
 - 将自定义列模板包在一个 `<template>` 标签里
 - 通过 `slot-scope` 可以拿到组件传出来的**当前行当前列**的值（value）以及**当前行所有列**的数据（`item`）
 
-<demo-table-10 />
+<ClientOnly>
+  <demo-table-10 />
+</ClientOnly>
 
 ### 排序
 
-<demo-table-11 />
+<ClientOnly>
+  <demo-table-11 />
+</ClientOnly>
 
 ## API
 

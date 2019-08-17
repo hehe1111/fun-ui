@@ -4,4 +4,6 @@
 
 ### 基础用法
 
-<demo-layout-1 />
+<ClientOnly>
+  <demo-layout-1 />
+</ClientOnly>

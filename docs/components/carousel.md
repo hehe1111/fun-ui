@@ -6,21 +6,29 @@
 
 ### 自动播放
 
-<demo-carousel-1 />
+<ClientOnly>
+  <demo-carousel-1 />
+</ClientOnly>
 
 ### 禁止自动播放
 
-<demo-carousel-2 />
+<ClientOnly>
+  <demo-carousel-2 />
+</ClientOnly>
 
 ### 允许用箭头指示器切换
 
-<demo-carousel-3 />
+<ClientOnly>
+  <demo-carousel-3 />
+</ClientOnly>
 
 ### 允许配置圆点的位置
 
 - `left`/`right` 时 `enableArrow` 无效
 
-<demo-carousel-4 />
+<ClientOnly>
+  <demo-carousel-4 />
+</ClientOnly>
 
 ## API
 

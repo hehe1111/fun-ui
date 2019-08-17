@@ -4,15 +4,21 @@
 
 ### 基础用法
 
-<demo-grid-1 />
+<ClientOnly>
+  <demo-grid-1 />
+</ClientOnly>
 
 ### gutter
 
-<demo-grid-2 />
+<ClientOnly>
+  <demo-grid-2 />
+</ClientOnly>
 
 ### offset
 
-<demo-grid-3 />
+<ClientOnly>
+  <demo-grid-3 />
+</ClientOnly>
 
 ### 响应式
 
@@ -23,7 +29,9 @@
 - largePc：1200 -
 - 参考自 [Ant Design](https://ant.design/components/grid-cn/#Col)
 
-<demo-grid-4 />
+<ClientOnly>
+  <demo-grid-4 />
+</ClientOnly>
 
 ## Row API
 

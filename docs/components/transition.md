@@ -4,7 +4,9 @@
 
 ### 基础用法
 
-<demo-transition-1 />
+<ClientOnly>
+  <demo-transition-1 />
+</ClientOnly>
 
 ## API
 

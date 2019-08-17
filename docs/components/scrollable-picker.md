@@ -4,17 +4,23 @@
 
 ### 基础用法
 
-<demo-scrollable-picker-1 />
+<ClientOnly>
+  <demo-scrollable-picker-1 />
+</ClientOnly>
 
 ### 横向
 
 - 纵向（默认）
 
-<demo-scrollable-picker-2 />
+<ClientOnly>
+  <demo-scrollable-picker-2 />
+</ClientOnly>
 
 ### 循环
 
-<demo-scrollable-picker-3 />
+<ClientOnly>
+  <demo-scrollable-picker-3 />
+</ClientOnly>
 
 ## API
 

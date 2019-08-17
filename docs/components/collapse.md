@@ -6,15 +6,21 @@
 
 - 默认多选
 
+<ClientOnly>
 <demo-collapse-1 />
+</ClientOnly>
 
 ### 单选
 
-<demo-collapse-2 />
+<ClientOnly>
+  <demo-collapse-2 />
+</ClientOnly>
 
 ### 监听 `update:opened` 事件
 
-<demo-collapse-3 />
+<ClientOnly>
+  <demo-collapse-3 />
+</ClientOnly>
 
 ## API
 

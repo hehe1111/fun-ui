@@ -6,46 +6,64 @@
 
 - `this.$toast()` 的使用请参考 [Toast](./toast.md) 组件
 
-<demo-upload-1 />
+<ClientOnly>
+  <demo-upload-1 />
+</ClientOnly>
 
 ### 限制上传文件的大小
 
-<demo-upload-2 />
+<ClientOnly>
+  <demo-upload-2 />
+</ClientOnly>
 
 ### 限制上传文件的类型
 
 - `accept` 可能的值请参考 [accept - MDN](https://developer.mozilla.org/en-US/docs/Web/HTML/Element/input/file#accept)
 
-<demo-upload-3 />
+<ClientOnly>
+  <demo-upload-3 />
+</ClientOnly>
 
 ### 通过 fileList 属性获取被上传的文件信息
 
-<demo-upload-4 />
+<ClientOnly>
+  <demo-upload-4 />
+</ClientOnly>
 
 ### `listType: picture` 图片加文字
 
 - `listType` 属性共有三种可选值，`text`（默认）、`picture`、`picture-card`
 
-<demo-upload-5 />
+<ClientOnly>
+  <demo-upload-5 />
+</ClientOnly>
 
 ### `listType: picture-card` 仅图片
 
-<demo-upload-6 />
+<ClientOnly>
+  <demo-upload-6 />
+</ClientOnly>
 
 ### 多文件上传
 
-<demo-upload-7 />
+<ClientOnly>
+  <demo-upload-7 />
+</ClientOnly>
 
 ### 拖曳上传
 
-<demo-upload-8 />
+<ClientOnly>
+  <demo-upload-8 />
+</ClientOnly>
 
 ### 手动上传
 
 1. 设置 `:autoUpload="false"`
 2. 必须向名为 'submit' 的插槽传入一个标签（任何标签均可），如：`<div slot="submit">确认上传</div>`，点击该标签即可手动上传
 
-<demo-upload-9 />
+<ClientOnly>
+  <demo-upload-9 />
+</ClientOnly>
 
 ## API
 

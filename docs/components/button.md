@@ -8,19 +8,27 @@
 - round
 - small
 
-<demo-button-1 />
+<ClientOnly>
+  <demo-button-1 />
+</ClientOnly>
 
 ### 禁用状态
 
-<demo-button-2 />
+<ClientOnly>
+  <demo-button-2 />
+</ClientOnly>
 
 ### 带图标的按钮
 
-<demo-button-3 />
+<ClientOnly>
+  <demo-button-3 />
+</ClientOnly>
 
 ### 按钮组
 
-<demo-button-group />
+<ClientOnly>
+  <demo-button-group />
+</ClientOnly>
 
 ## API
 

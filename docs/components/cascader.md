@@ -6,11 +6,15 @@
 
 ### 静态加载数据
 
-<demo-cascader-1 />
+<ClientOnly>
+  <demo-cascader-1 />
+</ClientOnly>
 
 ### 动态加载数据
 
-<demo-cascader-2 />
+<ClientOnly>
+  <demo-cascader-2 />
+</ClientOnly>
 
 - [db](https://github.com/hehe1111/fun-ui/blob/master/tests/fixture/db.js)
 - [db 数据来源](https://github.com/eduosi/district/blob/master/district-full.csv)
