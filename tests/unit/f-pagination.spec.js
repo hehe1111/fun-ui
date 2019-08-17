@@ -41,12 +41,12 @@ describe('FPagination.vue', () => {
       const prevButton = wrapper.findAll('.f-button').at(0);
 
       expect(wrapper.find(selector).classes()).to.include('high-light');
-      expect(prevButton.classes()).to.include('disabled');
+      expect(prevButton.classes()).to.include('f-button-disabled');
       prevButton.trigger('click');
       wrapper.vm.$nextTick().then(() => {
         expect(fake).to.not.have.been.called;
         expect(wrapper.find(selector).classes()).to.include('high-light');
-        expect(prevButton.classes()).to.include('disabled');
+        expect(prevButton.classes()).to.include('f-button-disabled');
         wrapper.destroy();
       });
     });
@@ -61,7 +61,7 @@ describe('FPagination.vue', () => {
 
       expect(wrapper.find(oldSelector).classes()).to.include('high-light');
       expect(wrapper.find(newSelector).classes()).to.not.include('high-light');
-      expect(prevButton.classes()).to.not.include('disabled');
+      expect(prevButton.classes()).to.not.include('f-button-disabled');
       prevButton.trigger('click');
       wrapper.vm.$nextTick().then(() => {
         expect(fake).to.have.been.calledOnceWith(current - 1);
@@ -69,7 +69,7 @@ describe('FPagination.vue', () => {
           'high-light'
         );
         expect(wrapper.find(newSelector).classes()).to.include('high-light');
-        expect(prevButton.classes()).to.include('disabled');
+        expect(prevButton.classes()).to.include('f-button-disabled');
         wrapper.destroy();
       });
     });
@@ -83,12 +83,12 @@ describe('FPagination.vue', () => {
       const nextButton = buttons[buttons.length - 1];
 
       expect(wrapper.find(selector).classes()).to.include('high-light');
-      expect(nextButton.classes()).to.include('disabled');
+      expect(nextButton.classes()).to.include('f-button-disabled');
       nextButton.trigger('click');
       wrapper.vm.$nextTick().then(() => {
         expect(fake).to.not.have.been.called;
         expect(wrapper.find(selector).classes()).to.include('high-light');
-        expect(nextButton.classes()).to.include('disabled');
+        expect(nextButton.classes()).to.include('f-button-disabled');
         wrapper.destroy();
       });
     });
@@ -104,7 +104,7 @@ describe('FPagination.vue', () => {
 
       expect(wrapper.find(oldSelector).classes()).to.include('high-light');
       expect(wrapper.find(newSelector).classes()).to.not.include('high-light');
-      expect(nextButton.classes()).to.not.include('disabled');
+      expect(nextButton.classes()).to.not.include('f-button-disabled');
       nextButton.trigger('click');
       wrapper.vm.$nextTick().then(() => {
         expect(fake).to.have.been.calledOnceWith(current + 1);
