@@ -72,6 +72,7 @@ export default {
   align-items: center;
   padding: 0.5em 1em;
   cursor: pointer;
+  user-select: none;
   transition: all $duration;
 
   &-active {
