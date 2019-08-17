@@ -1,6 +1,6 @@
 <template>
-  <div class="demo-table-1 extra-margin">
-    <f-table :data-source="dataSource">
+  <div class="demo-table-2 extra-margin">
+    <f-table :data-source="dataSource" :height="200">
       <f-table-column text="Name" field="name" />
       <f-table-column text="Score" field="score" />
       <f-table-column text="Class" field="class" />
@@ -17,14 +17,14 @@ import FTableColumn from '../../../src/components/table/FTableColumn.vue';
 import tableData from '../assets/js/table-data.js';
 
 export default {
-  name: 'demo-table-a',
+  name: 'demo-table-2',
   components: { FTable, FTableColumn },
   data() {
     return {
       dataSource: tableData,
 
       htmlCode: `
-        <f-table :data-source="dataSource">
+        <f-table :data-source="dataSource" :height="200">
           <f-table-column text="Name" field="name" />
           <f-table-column text="Score" field="score" />
           <f-table-column text="Class" field="class" />

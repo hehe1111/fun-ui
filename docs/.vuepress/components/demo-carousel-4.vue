@@ -3,8 +3,12 @@
     <div class="demo-carousel-4">
       <div class="demo-button-group-and-carousel">
         <f-button-group class="demo-button-group">
-          <f-button @click="dotPosition1 = 'left'">left</f-button>
-          <f-button @click="dotPosition1 = 'right'">right</f-button>
+          <f-button
+            v-for="p in ['left', 'right']"
+            :key="p"
+            :type="dotPosition1 === p ? 'primary' : 'default'"
+            @click="onClickToChangeDotPosition1(p)"
+          >{{ p }}</f-button>
         </f-button-group>
         <f-carousel class="demo-carousel" :dot-position="dotPosition1" :enable-arrow="true">
           <f-carousel-item name="x1">
@@ -24,8 +28,12 @@
 
       <div class="demo-button-group-and-carousel">
         <f-button-group class="demo-button-group">
-          <f-button @click="dotPosition2 = 'top'">top</f-button>
-          <f-button @click="dotPosition2 = 'bottom'">bottom（默认值）</f-button>
+          <f-button
+            v-for="p in ['top', 'bottom']"
+            :key="p"
+            :type="dotPosition2 === p ? 'primary' : 'default'"
+            @click="onClickToChangeDotPosition2(p)"
+          >{{ p }}</f-button>
         </f-button-group>
         <f-carousel class="demo-carousel" :dot-position="dotPosition2" :enable-arrow="true">
           <f-carousel-item name="x1">
@@ -63,7 +71,15 @@ export default {
       dotPosition2: 'top',
 
       htmlCode: `
-        <f-carousel :dot-position="dotPosition" :enable-arrow="true">
+        <f-button-group class="demo-button-group">
+          <f-button
+            v-for="p in ['left', 'right']"
+            :key="p"
+            :type="dotPosition1 === p ? 'primary' : 'default'"
+            @click="onClickToChangeDotPosition1(p)"
+          >{{ p }}</f-button>
+        </f-button-group>
+        <f-carousel class="demo-carousel" :dot-position="dotPosition1" :enable-arrow="true">
           <f-carousel-item name="x1">
             <div class="image">1</div>
           </f-carousel-item>
@@ -78,6 +94,14 @@ export default {
           </f-carousel-item>
         </f-carousel>
 
+        <f-button-group class="demo-button-group">
+          <f-button
+            v-for="p in ['top', 'bottom']"
+            :key="p"
+            :type="dotPosition2 === p ? 'primary' : 'default'"
+            @click="onClickToChangeDotPosition2(p)"
+          >{{ p }}</f-button>
+        </f-button-group>
         <f-carousel class="demo-carousel" :dot-position="dotPosition2" :enable-arrow="true">
           <f-carousel-item name="x1">
             <div class="image">1</div>
@@ -96,12 +120,28 @@ export default {
       javascriptCode: `
         data() {
           return {
-            dotPosition: "left",
+            dotPosition1: "left",
             dotPosition2: 'top',
           }
-        }
+        },
+        methods: {
+          onClickToChangeDotPosition1(position) {
+            this.dotPosition1 = position;
+          },
+          onClickToChangeDotPosition2(position) {
+            this.dotPosition2 = position;
+          },
+        },
       `,
     };
+  },
+  methods: {
+    onClickToChangeDotPosition1(position) {
+      this.dotPosition1 = position;
+    },
+    onClickToChangeDotPosition2(position) {
+      this.dotPosition2 = position;
+    },
   },
 };
 </script>

@@ -136,6 +136,7 @@ export default {
   props: {
     dataSource: {
       type: Array,
+      required: true,
       validator: array => {
         return array.every(n => typeof n.id === 'string');
       },
@@ -167,8 +168,8 @@ export default {
     align: {
       type: String,
       default: 'left',
-      validator: value => {
-        return ['left', 'center', 'centre', 'right'].indexOf(value) >= 0;
+      validator: prop => {
+        return ['left', 'center', 'centre', 'right'].indexOf(prop) >= 0;
       },
     },
   },

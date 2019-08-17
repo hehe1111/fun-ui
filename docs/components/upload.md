@@ -4,7 +4,7 @@
 
 ### 基础用法
 
-- `this.$toast()` 的使用请参考 Toast 组件
+- `this.$toast()` 的使用请参考 [Toast](./toast.md) 组件
 
 <ClientOnly>
   <demo-upload-1 />
