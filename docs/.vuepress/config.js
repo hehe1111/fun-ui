@@ -48,6 +48,7 @@ module.exports = {
           '/components/tab',
           '/components/table',
           '/components/toast',
+          '/components/transition',
           '/components/upload',
         ],
       },

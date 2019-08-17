@@ -9,21 +9,15 @@
 
 - 鼠标悬浮打开/关闭子菜单（默认触发方式）
 
-<ClientOnly>
-  <demo-nav-1 />
-</ClientOnly>
+<demo-nav-1 />
 
 - 鼠标单击打开/关闭子菜单
 
-<ClientOnly>
-  <demo-nav-2 />
-</ClientOnly>
+<demo-nav-2 />
 
 ### 纵向
 
-<ClientOnly>
-  <demo-nav-3 />
-</ClientOnly>
+<demo-nav-3 />
 
 ## API
 

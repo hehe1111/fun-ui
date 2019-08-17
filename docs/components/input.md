@@ -4,9 +4,7 @@
 
 ### 基础用法
 
-<ClientOnly>
-  <demo-input-1 />
-</ClientOnly>
+<demo-input-1 />
 
 ## API
 

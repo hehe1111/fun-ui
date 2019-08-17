@@ -6,15 +6,11 @@
 
 - 默认横向
 
-<ClientOnly>
-  <demo-tab-1 />
-</ClientOnly>
+<demo-tab-1 />
 
 ### 纵向
 
-<ClientOnly>
-  <demo-tab-2 />
-</ClientOnly>
+<demo-tab-2 />
 
 ## Tab API
 

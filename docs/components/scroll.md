@@ -12,25 +12,19 @@
 - 默认纵向
 - 需要指定 height 属性
 
-<ClientOnly>
-  <demo-scroll-1 />
-</ClientOnly>
+<demo-scroll-1 />
 
 ### 横向
 
 - 需要指定 width 属性
 
-<ClientOnly>
-  <demo-scroll-2 />
-</ClientOnly>
+<demo-scroll-2 />
 
 ### 无限滚动
 
 - 只有 FScrollVertical 组件支持无限滚动
 
-<ClientOnly>
-  <demo-scroll-3 />
-</ClientOnly>
+<demo-scroll-3 />
 
 ## API
 

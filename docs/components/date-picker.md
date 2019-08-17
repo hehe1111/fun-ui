@@ -4,17 +4,13 @@
 
 ### 基础用法
 
-<ClientOnly>
-  <demo-date-picker-1 />
-</ClientOnly>
+<demo-date-picker-1 />
 
 ### 从周日开始
 
 - 默认从周一开始
 
-<ClientOnly>
-  <demo-date-picker-2 />
-</ClientOnly>
+<demo-date-picker-2 />
 
 ## API
 

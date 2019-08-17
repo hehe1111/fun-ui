@@ -10,39 +10,27 @@ Vue.use(FToast);
 
 ### 基础用法
 
-<ClientOnly>
-  <demo-toast-1 />
-</ClientOnly>
+<demo-toast-1 />
 
 ### 可手动关闭
 
-<ClientOnly>
-  <demo-toast-2 />
-</ClientOnly>
+<demo-toast-2 />
 
 ### 关闭后调用回调
 
-<ClientOnly>
-  <demo-toast-3 />
-</ClientOnly>
+<demo-toast-3 />
 
 ### 自定义多久后关闭
 
-<ClientOnly>
-  <demo-toast-4 />
-</ClientOnly>
+<demo-toast-4 />
 
 ### 允许传入 HTML
 
-<ClientOnly>
-  <demo-toast-5 />
-</ClientOnly>
+<demo-toast-5 />
 
 ### state
 
-<ClientOnly>
-  <demo-toast-6 />
-</ClientOnly>
+<demo-toast-6 />
 
 ## API
 

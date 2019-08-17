@@ -8,21 +8,15 @@
 
 ### 基础用法
 
-<ClientOnly>
-  <demo-icon-1 />
-</ClientOnly>
+<demo-icon-1 />
 
 ### 自定义图标大小
 
-<ClientOnly>
-  <demo-icon-2 />
-</ClientOnly>
+<demo-icon-2 />
 
 ### 自定义图标颜色
 
-<ClientOnly>
-  <demo-icon-3 />
-</ClientOnly>
+<demo-icon-3 />
 
 ## API
 

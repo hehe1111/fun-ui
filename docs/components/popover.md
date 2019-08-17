@@ -4,29 +4,21 @@
 
 ### 基础用法
 
-<ClientOnly>
-  <demo-popover-1 />
-</ClientOnly>
+<demo-popover-1 />
 
 ### 自定义弹出位置
 
-<ClientOnly>
-  <demo-popover-2 />
-</ClientOnly>
+<demo-popover-2 />
 
 ### 从气泡内部关闭气泡
 
 - `close` 函数是组件内置提供的，直接通过 `slot-scope` 特性直接解构使用即可
 
-<ClientOnly>
-  <demo-popover-3 />
-</ClientOnly>
+<demo-popover-3 />
 
 ### 鼠标悬浮触发弹出层
 
-<ClientOnly>
-  <demo-popover-4 />
-</ClientOnly>
+<demo-popover-4 />
 
 ## API
 
