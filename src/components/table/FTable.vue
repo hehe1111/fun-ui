@@ -12,7 +12,7 @@
               <span class="cell-inner">
                 <f-icon
                   name="right"
-                  class="icon-exist-to-keep-align right-icon"
+                  class="icon-exist-to-keep-align collapse-icon"
                 />
               </span>
             </th>
@@ -53,11 +53,15 @@
         <tbody>
           <template v-for="item in dataSource">
             <tr :key="item.id" :class="highlightClass(item)">
-              <td @click="toggleRow(item)" v-if="isCollapseIconsColumnVisible">
+              <td
+                class="collapse-icon-container"
+                @click="toggleRow(item)"
+                v-if="isCollapseIconsColumnVisible"
+              >
                 <span class="cell-inner">
                   <f-icon
                     name="right"
-                    class="right-icon"
+                    class="collapse-icon"
                     :class="downIconClass(item)"
                     v-if="item.collapsibleContent"
                   />
@@ -450,10 +454,9 @@ export default {
   opacity: 0;
 }
 
-.cell-inner {
-  @extend .inline-flex-center;
-
-  > .right-icon {
+.collapse-icon-container {
+  cursor: pointer;
+  .collapse-icon {
     // collapsible row icon transition
     transform: scale(0.8);
     transition: transform $duration linear;
@@ -463,6 +466,11 @@ export default {
   }
 }
 
+.cell-inner {
+  @extend .inline-flex-center;
+}
+
+// column alignment
 .f-table {
   &.align-left {
     th,
