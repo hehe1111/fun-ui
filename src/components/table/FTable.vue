@@ -159,10 +159,9 @@ export default {
     loading: { type: Boolean, default: false },
     bordered: { type: Boolean, default: false },
     striped: { type: Boolean, default: true },
-    size: {
-      type: String,
-      default: undefined,
-      validator: value => [undefined, 'small'].indexOf(value) >= 0,
+    small: {
+      type: Boolean,
+      default: false,
     },
     height: Number,
     align: {
@@ -196,7 +195,7 @@ export default {
       return {
         bordered: this.bordered,
         striped: this.striped,
-        small: this.size,
+        small: this.small,
         [`align-${this.align}`]: this.align,
       };
     },
@@ -204,7 +203,7 @@ export default {
       return this.dataSource.some(n => !!n.collapsibleContent);
     },
     collapsibleRowClass() {
-      return { small: this.size };
+      return { small: this.small };
     },
     colspan() {
       return (
