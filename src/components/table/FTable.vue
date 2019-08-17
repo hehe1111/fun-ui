@@ -465,8 +465,14 @@ export default {
   }
 }
 
+.collapse-icon-container,
+input[type='checkbox'] {
+  cursor: pointer;
+}
+
 .cell-inner {
-  @extend .inline-flex-center;
+  display: flex;
+  align-items: center;
 }
 
 // column alignment
