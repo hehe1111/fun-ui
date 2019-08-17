@@ -15,16 +15,6 @@ describe('FTabNavItem.vue', () => {
   });
 
   it('可以接受 name 属性', () => {
-    /**
-     * ERROR: '[Vue warn]: Injection "eventBus" not found
-     * 解决：可选注入
-     * inject: {
-     *   eventBus: {
-     *     from: 'eventBus',
-     *     default: () => ({}), // 注意加括号
-     *   },
-     * },
-     */
     const name = 'hahaha';
     const wrapper = mount(FTabNavItem, {
       propsData: { name },
@@ -42,7 +32,7 @@ describe('FTabNavItem.vue', () => {
       },
       listeners: { click: fake },
     });
-    expect(wrapper.classes()).include('disabled');
+    expect(wrapper.classes()).include('f-tab-nav-item-disabled');
     wrapper.trigger('click');
     expect(fake).to.not.have.been.called;
     wrapper.destroy();

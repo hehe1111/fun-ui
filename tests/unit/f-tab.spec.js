@@ -36,13 +36,10 @@ describe('FTab.vue', () => {
 
   it('可以接受 selected 属性', () => {
     const wrapper = mount(FTab, returnOptionsObj({ selected: '11' }));
-
-    wrapper.vm.$nextTick().then(() => {
-      expect(wrapper.find('.tab-nav-item[data-name="11"]').classes()).include(
-        'active'
-      );
-      wrapper.destroy();
-    });
+    expect(wrapper.find('[data-name="11"]').classes()).include(
+      'f-tab-nav-item-active'
+    );
+    wrapper.destroy();
   });
 
   it('可以接受 direction 属性', () => {
@@ -53,12 +50,12 @@ describe('FTab.vue', () => {
         direction: 'vertical',
       }),
     });
-    expect(wrapper.find('.tab').element.style.display).to.eq('flex');
-    expect(wrapper.find('.tab-nav').classes()).include('vertical');
+    expect(wrapper.find('.f-tab').element.style.display).to.eq('flex');
+    expect(wrapper.find('.f-tab-nav').classes()).include('vertical');
     expect(
-      window.getComputedStyle(wrapper.find('.tab-nav').element).display
+      window.getComputedStyle(wrapper.find('.f-tab-nav').element).display
     ).to.eq('block');
-    expect(wrapper.find('.tab-body').classes()).include('vertical');
+    expect(wrapper.find('.f-tab-body').classes()).include('vertical');
     wrapper.destroy();
   });
 });
