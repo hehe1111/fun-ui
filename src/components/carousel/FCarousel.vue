@@ -262,18 +262,17 @@ export default {
     height: 2em;
     border-radius: 50%;
     background-color: $grey;
-    display: flex;
-    justify-content: center;
-    align-items: center;
+    @extend .flex-center;
     position: absolute;
     top: 50%;
+    transform: translateY(-50%);
     user-select: none;
     transition: scale $duration linear;
     &:hover {
       background-color: lighten($grey, 10%);
     }
     &:active {
-      transform: scale(0.9);
+      transform: translateY(-50%) scale(0.9);
     }
 
     > .icon {
