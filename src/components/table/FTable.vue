@@ -245,15 +245,16 @@ export default {
         });
     },
     getElements() {
-      this.ths = Array.from(document.querySelectorAll('thead > tr > th'));
+      const { outerContainerRef: ref } = this.$refs;
+      this.ths = Array.from(ref.querySelectorAll('thead > tr > th'));
       this.thCellInners = Array.from(
-        document.querySelectorAll('thead > tr > th > .cell-inner')
+        ref.querySelectorAll('thead > tr > th > .cell-inner')
       );
       this.tds = Array.from(
-        document.querySelectorAll('tbody > tr:first-child > td')
+        ref.querySelectorAll('tbody > tr:first-child > td')
       );
       this.tdCellInners = Array.from(
-        document.querySelectorAll('tbody > tr:first-child > td > .cell-inner')
+        ref.querySelectorAll('tbody > tr:first-child > td > .cell-inner')
       );
     },
     findResponsiveColumn() {
@@ -264,7 +265,7 @@ export default {
         target = 1;
       }
       Array.from(
-        document.querySelectorAll(
+        this.$refs.outerContainerRef.querySelectorAll(
           `[data-index="${this.columns.length - target}"]`
         )
       ).map(el => el.classList.add('responsive-column'));
