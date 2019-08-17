@@ -6,6 +6,7 @@
     @leave="leave"
     @after-leave="afterLeave"
     :css="false"
+    appear
   >
     <slot />
   </transition>
