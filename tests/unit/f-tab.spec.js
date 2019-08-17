@@ -36,10 +36,12 @@ describe('FTab.vue', () => {
 
   it('可以接受 selected 属性', () => {
     const wrapper = mount(FTab, returnOptionsObj({ selected: '11' }));
-    expect(wrapper.find('[data-name="11"]').classes()).include(
-      'f-tab-nav-item-active'
-    );
-    wrapper.destroy();
+    wrapper.vm.$nextTick().then(() => {
+      expect(wrapper.find('[data-name="11"]').classes()).include(
+        'f-tab-nav-item-active'
+      );
+      wrapper.destroy();
+    });
   });
 
   it('可以接受 direction 属性', () => {
