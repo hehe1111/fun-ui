@@ -45,6 +45,7 @@ module.exports = {
           '/components/popover',
           '/components/scroll',
           '/components/scrollable-picker',
+          '/components/sticky',
           '/components/tab',
           '/components/table',
           '/components/toast',

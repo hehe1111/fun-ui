@@ -28,10 +28,10 @@ export default {
     return {
       isFixed: false,
       initContainerTop: 0,
-      containerHeight: undefined,
-      stickyLeft: undefined,
-      stickyTop: undefined,
-      stickyWidth: undefined,
+      containerHeight: null,
+      stickyLeft: null,
+      stickyTop: null,
+      stickyWidth: null,
     };
   },
   computed: {
@@ -59,10 +59,10 @@ export default {
     updateStyle() {
       if (window.getComputedStyle(this.$refs.stickyRef).position === 'static') {
         // restore style property
-        this.stickyLeft = undefined;
-        this.stickyTop = undefined;
-        this.stickyWidth = undefined;
-        this.containerHeight = undefined;
+        this.stickyLeft = null;
+        this.stickyTop = null;
+        this.stickyWidth = null;
+        this.containerHeight = null;
       }
       const { containerRef } = this.$refs;
       const { left, width, height } = containerRef.getBoundingClientRect();
