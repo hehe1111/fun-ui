@@ -157,6 +157,7 @@ export default {
   &-arrow {
     margin: 1em 0;
     user-select: none;
+    cursor: pointer;
   }
 
   &-inner {
