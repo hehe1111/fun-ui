@@ -74,6 +74,14 @@ export default {
   cursor: pointer;
   user-select: none;
   transition: all $duration;
+  border: 2px solid transparent;
+  border-bottom: none;
+
+  &:hover {
+    border-color: $borderColorLight;
+    border-top-right-radius: 4px;
+    border-top-left-radius: 4px;
+  }
 
   &-active {
     color: $blue;
@@ -82,6 +90,10 @@ export default {
   &-disabled {
     color: lightGrey;
     cursor: not-allowed;
+    &:hover {
+      border: 2px solid transparent;
+      border-bottom: none;
+    }
   }
 }
 </style>

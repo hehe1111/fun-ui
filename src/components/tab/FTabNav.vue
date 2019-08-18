@@ -141,6 +141,25 @@ export default {
       position: absolute;
       left: 100%;
     }
+
+    // style for FTabNavItem
+    /deep/ .f-tab-nav-item {
+      border: 2px solid transparent;
+      border-right: none;
+      &:hover {
+        border-color: $borderColorLight;
+        border-top-left-radius: 4px;
+        border-top-right-radius: 0;
+        border-bottom-left-radius: 4px;
+      }
+
+      &-disabled {
+        &:hover {
+          border: 2px solid transparent;
+          border-right: none;
+        }
+      }
+    }
   }
 }
 </style>
