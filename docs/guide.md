@@ -16,22 +16,26 @@ yarn add fun-ui
 
 - 样式文件需要单独引入
 
-```vue
-<template>
-  <div id="app">
-    <f-button>Click me</f-button>
-  </div>
-</template>
+### 引入所有组件
 
-<script>
+```js
+import Vue from "vue";
+import funUI from "fun-ui";
+import "fun-ui/dist/fun-ui.css";
+Vue.use(funUI);
+```
+
+### 按需引入
+
+```js
 import { FButton } from "fun-ui";
 import "fun-ui/dist/fun-ui.css";
 
-export default {
-  name: "app",
-  components: { FButton },
-};
-</script>
+new Vue({
+  components: {
+    FButton,
+  },
+});
 ```
 
 ## 完整组件列表以及引入方式
@@ -40,47 +44,81 @@ export default {
 <script>
 import {
   FButton,
+  FButtonGroup,
   FCarousel,
+  FCarouselItem,
   FCascader,
+  FCol,
   FCollapse,
-  FDate-picker,
-  FGrid,
+  FCollapseItem,
+  FContent,
+  FDatePicker,
+  FFooter,
+  FHeader,
   FIcon,
   FInput,
   FLayout,
   FNav,
-  FNagination,
+  FNavItem,
+  FPagination,
   FPopover,
-  FScroll,
-  FScrollable-picker,
+  FRow,
+  FScrollablePicker,
+  FScrollHorizontal,
+  FScrollVertical,
+  FSidebar,
+  FSticky,
+  FSubNav,
   FTab,
+  FTabBody,
+  FTabBodyItem,
   FTable,
-  FToast,
-  FUpload
+  FTableColumn,
+  FTabNav,
+  FTabNavItem,
+  FTransition,
+  FUpload,
 } from "fun-ui";
 
 export default {
   components: {
     FButton,
+    FButtonGroup,
     FCarousel,
+    FCarouselItem,
     FCascader,
+    FCol,
     FCollapse,
-    FDate-picker,
-    FGrid,
+    FCollapseItem,
+    FContent,
+    FDatePicker,
+    FFooter,
+    FHeader,
     FIcon,
     FInput,
     FLayout,
     FNav,
-    FNagination,
+    FNavItem,
+    FPagination,
     FPopover,
-    FScroll,
-    FScrollable-picker,
+    FRow,
+    FScrollablePicker,
+    FScrollHorizontal,
+    FScrollVertical,
+    FSidebar,
+    FSticky,
+    FSubNav,
     FTab,
+    FTabBody,
+    FTabBodyItem,
     FTable,
-    FToast,
-    FUpload
-  }
-}
+    FTableColumn,
+    FTabNav,
+    FTabNavItem,
+    FTransition,
+    FUpload,
+  },
+};
 </script>
 ```
 
@@ -95,8 +133,8 @@ export default {
  * @param {number} end
  */
 const range = (start, end) => {
-  if (getTypeOf(start) !== 'number' || getTypeOf(end) !== 'number') {
-    throw new Error('Param should be a number.');
+  if (getTypeOf(start) !== "number" || getTypeOf(end) !== "number") {
+    throw new Error("Param should be a number.");
   }
   const result = [];
   if (start < end) {

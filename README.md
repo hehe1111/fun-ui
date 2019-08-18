@@ -21,22 +21,26 @@ yarn add fun-ui
 
 ## Quick Start
 
-```vue
-<template>
-  <div id="app">
-    <f-button>Click me</f-button>
-  </div>
-</template>
+### Fully Import
 
-<script>
+```js
+import Vue from "vue";
+import funUI from "fun-ui";
+import "fun-ui/dist/fun-ui.css";
+Vue.use(funUI);
+```
+
+### On Demand
+
+```js
 import { FButton } from "fun-ui";
 import "fun-ui/dist/fun-ui.css";
 
-export default {
-  name: "app",
-  components: { FButton },
-};
-</script>
+new Vue({
+  components: {
+    FButton,
+  },
+});
 ```
 
 ## LICENSE
