@@ -87,13 +87,11 @@ export default {
     this.mutableAutoUpload = this.autoUpload;
   },
   mounted() {
-    this.draggable && this.dragAndDropToSelectFile();
-  },
-  beforeDestroy() {
-    const { triggerAreaRef } = this.$refs;
-    triggerAreaRef.removeEventListener('dragenter', this.onDragEnter);
-    triggerAreaRef.removeEventListener('dragover', this.onDragOver);
-    triggerAreaRef.removeEventListener('drop', this.onDrop);
+    this.draggable && this._handleDragAndDropListener('addEventListener');
+
+    this.$once('hook:beforeDestroy', () => {
+      this._handleDragAndDropListener('removeEventListener');
+    });
   },
   methods: {
     liClasses(status) {
@@ -107,12 +105,12 @@ export default {
       this.$refs.inputRef.value = null;
       this.$refs.inputRef.click();
     },
-    dragAndDropToSelectFile() {
+    _handleDragAndDropListener(method) {
       // https://developer.mozilla.org/en-US/docs/Web/API/File/Using_files_from_web_applications#Selecting_files_using_drag_and_drop
       const { triggerAreaRef } = this.$refs;
-      triggerAreaRef.addEventListener('dragenter', this.onDragEnter);
-      triggerAreaRef.addEventListener('dragover', this.onDragOver);
-      triggerAreaRef.addEventListener('drop', this.onDrop);
+      triggerAreaRef[method]('dragenter', this.onDragEnter);
+      triggerAreaRef[method]('dragover', this.onDragOver);
+      triggerAreaRef[method]('drop', this.onDrop);
     },
     onDragEnter(event) {
       event.stopPropagation();

@@ -45,9 +45,10 @@ export default {
     this.initContainerTop =
       this.$refs.containerRef.getBoundingClientRect().top + window.scrollY;
     window.addEventListener('scroll', this.updateValueOfIsFixed);
-  },
-  beforeDestroy() {
-    window.removeEventListener('scroll', this.updateValueOfIsFixed);
+
+    this.$once('hook:beforeDestroy', () => {
+      window.removeEventListener('scroll', this.updateValueOfIsFixed);
+    });
   },
   methods: {
     updateValueOfIsFixed(event) {

@@ -86,17 +86,14 @@ export default {
   },
   mounted() {
     this.getScope();
-    document.addEventListener('mousemove', this.onMouseMove);
-    document.addEventListener('mouseup', this.onMouseUp);
-    document.addEventListener('keydown', this.onKeyDown);
+    this._handleDocumentListener('addEventListener');
+
+    this.$once('hook:beforeDestroy', () => {
+      this._handleDocumentListener('removeEventListener');
+    });
   },
   updated() {
     this.getScope();
-  },
-  beforeDestroy() {
-    document.removeEventListener('mousemove', this.onMouseMove);
-    document.removeEventListener('mouseup', this.onMouseUp);
-    document.removeEventListener('keydown', this.onKeyDown);
   },
   methods: {
     getScope() {
@@ -131,6 +128,11 @@ export default {
         pB2 = p(style.borderRightWidth);
       }
       return [pP1, pP2, pB1, pB2];
+    },
+    _handleDocumentListener(method) {
+      document[method]('mousemove', this.onMouseMove);
+      document[method]('mouseup', this.onMouseUp);
+      document[method]('keydown', this.onKeyDown);
     },
     onWheel($event) {
       if (!this.hasScrollbar) return;

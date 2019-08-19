@@ -77,10 +77,6 @@ export default {
   mounted() {
     this.addTriggerMouseListener();
   },
-  beforeDestroy() {
-    this.removeTriggerMouseListener();
-    this.$refs.contentContainerRef && this.$refs.contentContainerRef.remove();
-  },
   methods: {
     onClickTrigger() {
       this.visible ? this.close() : this.open();
@@ -89,22 +85,19 @@ export default {
       clearTimeout(this.timer);
       this.visible = true;
       this.$nextTick(() => {
-        this.handleContent();
+        this.relocateContent();
+        this._handleContentHoverListener('addEventListener');
         document.addEventListener('click', this.onClickDocument);
       });
     },
     close() {
       // remove listener before set this.visible to false
-      this.removeContentMouseListener();
+      this._handleContentHoverListener('removeEventListener');
       this.visible = false;
       document.removeEventListener('click', this.onClickDocument);
     },
     closeAfterDelay() {
       this.timer = setTimeout(() => this.close(), 200);
-    },
-    handleContent() {
-      this.relocateContent();
-      this.addContentMouseListener();
     },
     _checkMethod(method) {
       if (!oneOf(method, ['addEventListener', 'removeEventListener'])) {
@@ -124,14 +117,18 @@ export default {
     },
     addTriggerMouseListener() {
       this._handleTriggerMouseListener('addEventListener');
-    },
-    removeTriggerMouseListener() {
-      this._handleTriggerMouseListener('removeEventListener');
+
+      // https://cn.vuejs.org/v2/guide/components-edge-cases.html#程序化的事件侦听器
+      this.$once('hook:beforeDestroy', () => {
+        this._handleTriggerMouseListener('removeEventListener');
+        this.$refs.contentContainerRef &&
+          this.$refs.contentContainerRef.remove();
+      });
     },
     enterContent() {
       clearTimeout(this.timer);
     },
-    _handleContentMouseListener(method) {
+    _handleContentHoverListener(method) {
       this._checkMethod(method);
       if (this.trigger === 'hover') {
         const { contentContainerRef } = this.$refs;
@@ -139,12 +136,6 @@ export default {
         contentContainerRef[method]('mouseenter', this.enterContent);
         contentContainerRef[method]('mouseleave', this.closeAfterDelay);
       }
-    },
-    addContentMouseListener() {
-      this._handleContentMouseListener('addEventListener');
-    },
-    removeContentMouseListener() {
-      this._handleContentMouseListener('removeEventListener');
     },
     relocateContent() {
       const { contentContainerRef, triggerAreaRef } = this.$refs;
