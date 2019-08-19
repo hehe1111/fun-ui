@@ -5,7 +5,7 @@
     <f-pagination :current.sync="current2" :total="total" class="extra-margin" />
     <div>第三个分页器当前页码：{{ current2 }}</div>
 
-    <code-box :htmlCode="htmlCode" :javascriptCode="javascriptCode" :scssCode="scssCode" />
+    <code-box :htmlCode="htmlCode" :javascriptCode="javascriptCode" />
   </div>
 </template>
 
@@ -36,11 +36,6 @@ export default {
           }
         }
       `,
-      scssCode: `
-        .extra-margin {
-          margin: 1em 0;
-        }
-      `,
     };
   },
 };
@@ -48,8 +43,4 @@ export default {
 
 <style lang="scss" scoped>
 @import '../assets/style/_var.scss';
-
-.extra-margin {
-  margin: 1em 0;
-}
 </style>

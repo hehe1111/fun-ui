@@ -14,7 +14,7 @@
       <f-button icon="upload" slot="submit" class="extra-margin">确认上传</f-button>
     </f-upload>
 
-    <code-box :htmlCode="htmlCode" :javascriptCode="javascriptCode" :scssCode="scssCode" />
+    <code-box :htmlCode="htmlCode" :javascriptCode="javascriptCode" />
   </div>
 </template>
 
@@ -65,11 +65,6 @@ export default {
             $event.isExceeded && this.$toast('文件太大', { state: 'error' });
           },
         },
-      `,
-      scssCode: `
-        .extra-margin {
-          margin: 1em 0;
-        }
       `,
     };
   },

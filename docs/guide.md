@@ -156,6 +156,11 @@ const range = (start, end) => {
 $blue: #1890ff;
 $duration: 0.4s;
 $borderRadius: 4px;
+$borderColor: #999;
+
+.extra-margin {
+  margin: 1em 0;
+}
 
 .flex-center {
   display: flex;

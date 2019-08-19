@@ -46,8 +46,4 @@ export default {
 
 <style lang="scss" scoped>
 @import '../assets/style/_var.scss';
-
-.extra-margin {
-  margin: 1em 0;
-}
 </style>
