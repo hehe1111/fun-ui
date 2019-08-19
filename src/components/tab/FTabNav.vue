@@ -99,6 +99,7 @@ export default {
 
 <style lang="scss" scoped>
 @import '../../assets/_var.scss';
+@import './_common.scss';
 
 .f-tab-nav {
   position: relative;
@@ -144,20 +145,10 @@ export default {
 
     // style for FTabNavItem
     /deep/ .f-tab-nav-item {
-      border: 2px solid transparent;
-      border-right: none;
-      &:hover {
-        border-color: $borderColorLight;
-        border-top-left-radius: 4px;
-        border-top-right-radius: 0;
-        border-bottom-left-radius: 4px;
-      }
+      @extend .item-style-winthin-tab-nav;
 
       &-disabled {
-        &:hover {
-          border: 2px solid transparent;
-          border-right: none;
-        }
+        @extend .none-border;
       }
     }
   }

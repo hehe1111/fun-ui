@@ -1,0 +1,41 @@
+@import "../../assets/_var.scss";
+
+.transparent-border {
+  border: 2px solid transparent;
+  border-top-left-radius: $borderRadius;
+}
+
+.show-border-color {
+  border-color: $borderColorLight;
+}
+
+.none-border-bottom {
+  @extend .transparent-border;
+  border-bottom: none;
+}
+
+.none-border-right {
+  @extend .transparent-border;
+  border-right: none;
+}
+
+.none-border {
+  border: none;
+}
+
+.item-style-winthin-tab-nav-item {
+  @extend .none-border-bottom;
+  &:hover {
+    @extend .show-border-color;
+    border-top-right-radius: $borderRadius;
+  }
+}
+
+.item-style-winthin-tab-nav {
+  @extend .none-border-right;
+  &:hover {
+    @extend .show-border-color;
+    border-top-right-radius: 0;
+    border-bottom-left-radius: $borderRadius;
+  }
+}

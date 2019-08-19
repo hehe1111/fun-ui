@@ -64,6 +64,7 @@ export default {
 
 <style lang="scss" scoped>
 @import '../../assets/_var.scss';
+@import './_common.scss';
 
 .f-tab-nav-item {
   flex-shrink: 0;
@@ -74,14 +75,7 @@ export default {
   cursor: pointer;
   user-select: none;
   transition: all $duration;
-  border: 2px solid transparent;
-  border-bottom: none;
-
-  &:hover {
-    border-color: $borderColorLight;
-    border-top-right-radius: 4px;
-    border-top-left-radius: 4px;
-  }
+  @extend .item-style-winthin-tab-nav-item;
 
   &-active {
     color: $blue;
@@ -90,10 +84,7 @@ export default {
   &-disabled {
     color: lightGrey;
     cursor: not-allowed;
-    &:hover {
-      border: 2px solid transparent;
-      border-bottom: none;
-    }
+    @extend .none-border;
   }
 }
 </style>
