@@ -2,7 +2,7 @@
   <div :class="n2c()">
     <f-popover
       position="bottom"
-      :content-style="{ width: '', 'margin-left': 0 }"
+      :content-container-style="{ width: '', 'margin-left': 0 }"
     >
       <f-input
         :value="selectedDateString"

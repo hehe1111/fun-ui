@@ -2,13 +2,13 @@
   <div :class="n2c()" ref="popoverRef">
     <f-transition>
       <div
-        :class="contentClasses"
+        :class="contentContainerClasses"
         v-if="visible"
         ref="contentContainerRef"
-        :style="contentStyle"
+        :style="contentContainerStyle"
       >
         <!-- for smoother transition -->
-        <div style="padding: 0.5em 1em;">
+        <div :style="contentStyle">
           <!-- slot-scope 把组件内部的东西暴露给插槽，从而可以在父组件作用域中调用 -->
           <slot name="content" :close="close" />
         </div>
@@ -50,10 +50,16 @@ export default {
     triggerStyle: {
       type: Object,
     },
-    contentStyle: {
+    contentContainerStyle: {
       type: Object,
       default: () => {
         return { maxWidth: '20em' };
+      },
+    },
+    contentStyle: {
+      type: Object,
+      default: () => {
+        return { padding: '0.5em 1em' };
       },
     },
   },
@@ -61,7 +67,7 @@ export default {
     n2c() {
       return optionsName2ClassPrefix(this.$options.name);
     },
-    contentClasses() {
+    contentContainerClasses() {
       return [
         this.n2c('content-container'),
         { [this.n2c(`position-${this.position}`)]: true },
