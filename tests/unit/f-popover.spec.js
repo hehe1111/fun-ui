@@ -20,8 +20,8 @@ describe('FPopover.vue', () => {
     expect(wrapper.find('.popover-content-1').element).to.not.exist;
     wrapper.find('button').trigger('click');
     expect(wrapper.find('.popover-content-1').element).to.exist;
-    expect(wrapper.find('.content-container').classes()).include(
-      'position-bottom'
+    expect(wrapper.find('.f-popover-content-container').classes()).include(
+      'f-popover-position-bottom'
     );
     wrapper.destroy();
   });
@@ -36,7 +36,7 @@ describe('FPopover.vue', () => {
     });
 
     expect(wrapper.find('.popover-content-2').element).to.not.exist;
-    wrapper.find('.popover').trigger('mouseenter');
+    wrapper.find('.f-popover').trigger('mouseenter');
     expect(wrapper.find('.popover-content-2').element).to.exist;
     wrapper.destroy();
   });

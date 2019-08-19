@@ -1,11 +1,10 @@
 <template>
-  <div class="popover" ref="popover">
+  <div :class="n2c()" ref="popoverRef">
     <f-transition>
       <div
-        class="content-container"
-        :class="classes"
+        :class="contentClasses"
         v-if="visible"
-        ref="contentContainer"
+        ref="contentContainerRef"
         :style="contentStyle"
       >
         <!-- for smoother transition -->
@@ -15,7 +14,7 @@
         </div>
       </div>
     </f-transition>
-    <div class="trigger-container" ref="triggerContainer" :style="triggerStyle">
+    <div ref="triggerAreaRef" :style="triggerStyle">
       <slot />
     </div>
   </div>
@@ -23,6 +22,7 @@
 
 <script>
 import FTransition from './FTransition.vue';
+import { optionsName2ClassPrefix, oneOf } from '../assets/utils.js';
 
 export default {
   name: 'FunUIPopover',
@@ -57,19 +57,23 @@ export default {
       },
     },
   },
+  computed: {
+    n2c() {
+      return optionsName2ClassPrefix(this.$options.name);
+    },
+    contentClasses() {
+      return [
+        this.n2c('content-container'),
+        { [this.n2c(`position-${this.position}`)]: true },
+      ];
+    },
+  },
   mounted() {
     this.addTriggerMouseListener();
   },
   beforeDestroy() {
     this.removeTriggerMouseListener();
-    this.$refs.contentContainer && this.$refs.contentContainer.remove();
-  },
-  computed: {
-    classes() {
-      return {
-        [`position-${this.position}`]: true,
-      };
-    },
+    this.$refs.contentContainerRef && this.$refs.contentContainerRef.remove();
   },
   methods: {
     onClickTrigger() {
@@ -96,78 +100,76 @@ export default {
       this.relocateContent();
       this.addContentMouseListener();
     },
-    addTriggerMouseListener() {
-      if (!this.$refs.popover) return;
-      if (this.trigger === 'click') {
-        this.$refs.popover.addEventListener('click', this.onClickTrigger);
-      } else {
-        this.$refs.popover.addEventListener('mouseenter', this.open);
-        this.$refs.popover.addEventListener('mouseleave', this.closeAfterDelay);
+    _checkMethod(method) {
+      if (!oneOf(method, ['addEventListener', 'removeEventListener'])) {
+        throw new Error('Invalid param.');
       }
     },
-    removeTriggerMouseListener() {
+    _handleTriggerMouseListener(method) {
+      this._checkMethod(method);
+      const { popoverRef } = this.$refs;
+      if (!popoverRef) return;
       if (this.trigger === 'click') {
-        this.$refs.popover.removeEventListener('click', this.onClickTrigger);
+        popoverRef[method]('click', this.onClickTrigger);
       } else {
-        this.$refs.popover.removeEventListener('mouseenter', this.open);
-        this.$refs.popover.removeEventListener(
-          'mouseleave',
-          this.closeAfterDelay
-        );
+        popoverRef[method]('mouseenter', this.open);
+        popoverRef[method]('mouseleave', this.closeAfterDelay);
       }
+    },
+    addTriggerMouseListener() {
+      this._handleTriggerMouseListener('addEventListener');
+    },
+    removeTriggerMouseListener() {
+      this._handleTriggerMouseListener('removeEventListener');
     },
     enterContent() {
       clearTimeout(this.timer);
     },
-    addContentMouseListener() {
+    _handleContentMouseListener(method) {
+      this._checkMethod(method);
       if (this.trigger === 'hover') {
-        const { contentContainer } = this.$refs;
-        if (!contentContainer) return;
-        contentContainer.addEventListener('mouseenter', this.enterContent);
-        contentContainer.addEventListener('mouseleave', this.closeAfterDelay);
+        const { contentContainerRef } = this.$refs;
+        if (!contentContainerRef) return;
+        contentContainerRef[method]('mouseenter', this.enterContent);
+        contentContainerRef[method]('mouseleave', this.closeAfterDelay);
       }
+    },
+    addContentMouseListener() {
+      this._handleContentMouseListener('addEventListener');
     },
     removeContentMouseListener() {
-      if (this.trigger === 'hover') {
-        const { contentContainer } = this.$refs;
-        contentContainer.removeEventListener('mouseenter', this.enterContent);
-        contentContainer.removeEventListener(
-          'mouseleave',
-          this.closeAfterDelay
-        );
-      }
+      this._handleContentMouseListener('removeEventListener');
     },
     relocateContent() {
-      const { contentContainer, triggerContainer } = this.$refs;
-      if (!contentContainer || !triggerContainer) return;
-      document.body.appendChild(contentContainer);
+      const { contentContainerRef, triggerAreaRef } = this.$refs;
+      if (!contentContainerRef || !triggerAreaRef) return;
+      document.body.appendChild(contentContainerRef);
       const {
         width,
         height,
         top,
         left,
-      } = triggerContainer.getBoundingClientRect();
+      } = triggerAreaRef.getBoundingClientRect();
       const locationParams = {
         top: { top, left },
         bottom: { top: top + height, left },
         left: { top: top + 0.5 * height, left },
         right: { top: top + 0.5 * height, left: left + width },
       };
-      const { style } = contentContainer;
+      const { style } = contentContainerRef;
       style.top = `${locationParams[this.position].top + window.scrollY}px`;
       style.left = `${locationParams[this.position].left + window.scrollX}px`;
     },
     onClickDocument(event) {
-      // stop click event bubble up to document when click trigger-container
-      if (this.$refs.popover && this.$refs.popover.contains(event.target)) {
-        return;
-      }
+      const { popoverRef, contentContainerRef } = this.$refs;
+      // stop click event bubble up to document when click trigger area
+      if (popoverRef && popoverRef.contains(event.target)) return;
 
       // when click content-container, it should remain visible
       if (
         this.visible &&
-        this.$refs.contentContainer &&
-        this.$refs.contentContainer.contains(event.target)
+        contentContainerRef &&
+        contentContainerRef.contains(event.target)
       ) {
         return;
       }
@@ -180,33 +182,33 @@ export default {
 <style lang="scss" scoped>
 @import '../assets/_var.scss';
 
-.popover {
+.f-popover {
   display: inline-block;
   vertical-align: top;
   position: relative;
-}
-.content-container {
-  @extend .flex-center;
-  line-height: 1.4;
-  border: 1px solid $borderColor;
-  border-radius: $borderRadius;
-  margin-left: 4px;
-  position: absolute;
-  word-break: break-all;
-  // box-shadow: 0 0 3px $boxShadowColor;
-  filter: drop-shadow(0 0 3px $boxShadowColor);
-  background-color: #fff;
-
-  &::before,
-  &::after {
-    content: '';
-    border: 10px solid transparent;
+  &-content-container {
+    @extend .flex-center;
+    line-height: 1.4;
+    border: 1px solid $borderColor;
+    border-radius: $borderRadius;
+    margin-left: 4px;
     position: absolute;
+    word-break: break-all;
+    // box-shadow: 0 0 3px $boxShadowColor;
+    filter: drop-shadow(0 0 3px $boxShadowColor);
+    background-color: #fff;
+
+    &::before,
+    &::after {
+      content: '';
+      border: 10px solid transparent;
+      position: absolute;
+    }
   }
 
   /* transform: translate(X, Y); 相对于 content-container 自身 */
   /* top bottom left right: 百分比 相对于 content-container */
-  &.position-top {
+  &-position-top {
     transform: translateY(-100%);
     margin-top: -10px;
     &::before,
@@ -221,7 +223,7 @@ export default {
       border-top-color: #fff;
     }
   }
-  &.position-bottom {
+  &-position-bottom {
     margin-top: 10px;
     &::before,
     &::after {
@@ -235,7 +237,7 @@ export default {
       border-bottom-color: #fff;
     }
   }
-  &.position-left {
+  &-position-left {
     transform: translate(-100%, -50%);
     margin-left: -10px;
     &::before,
@@ -251,7 +253,7 @@ export default {
       border-left-color: #fff;
     }
   }
-  &.position-right {
+  &-position-right {
     transform: translateY(-50%);
     margin-left: 10px;
     &::before,
