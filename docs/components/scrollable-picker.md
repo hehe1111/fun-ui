@@ -4,6 +4,8 @@
 
 ### 基础用法
 
+- 获取当前被选中项：监听 `update:selected` 事件，也可使用 `.sync` 语法
+
 <ClientOnly>
   <demo-scrollable-picker-1 />
 </ClientOnly>
@@ -32,3 +34,9 @@
 | direction        | 方向                      | string                                  | vertical | vertical / horizontal | 否       |
 | loop             | 循环                      | boolean                                 | false    | false / true          | 否       |
 | errorMessage     | 用于提示用户已经到顶/底了 | string                                  | 没有了   | -                     | 否       |
+
+## 事件
+
+| 事件名          | 说明             |
+| --------------- | ---------------- |
+| update:selected | 选中某一项时触发 |

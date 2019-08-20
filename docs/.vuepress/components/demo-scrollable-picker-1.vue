@@ -1,5 +1,6 @@
 <template>
   <div class="demo-scrollable-picker-1 extra-margin">
+    <div>当前被选中项：{{ selected }}</div>
     <f-scrollable-picker
       :width-and-height="{ width: '4em', height: '14em' }"
       :selected.sync="selected"
