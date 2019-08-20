@@ -5,6 +5,7 @@
       :content-container-style="{ padding: '4px 0' }"
       :content-style="{ padding: 0 }"
       ref="drownDownPopoverRef"
+      :trigger="trigger"
     >
       <template slot="content">
         <slot name="dropdown" />
@@ -19,6 +20,7 @@
 <script>
 import Vue from 'vue';
 import FPopover from '../FPopover.vue';
+import { oneOf } from '../../assets/utils.js';
 
 export default {
   name: 'FunUIDropdown',
@@ -27,6 +29,13 @@ export default {
     hideOnClick: {
       type: Boolean,
       default: false,
+    },
+    trigger: {
+      type: String,
+      default: 'hover',
+      validator(prop) {
+        return oneOf(prop, ['click', 'hover']);
+      },
     },
   },
   data() {
