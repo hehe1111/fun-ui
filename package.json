@@ -6,8 +6,9 @@
   "author": "hehe1111 <2908749709@qq.com>",
   "license": "MIT",
   "scripts": {
+    "index": "node build-utils/generateComponentsIndex.js",
     "serve": "vue-cli-service serve",
-    "build": "vue-cli-service build --target lib --name fun-ui src/entry.js",
+    "build": "yarn index && vue-cli-service build --target lib --name fun-ui src/entry.js",
     "lint": "vue-cli-service lint",
     "test": "cross-env BABEL_ENV=test karma start --single-run",
     "test:karma": "karma start --watch",
