@@ -113,6 +113,11 @@
       "parser": "babel-eslint"
     }
   },
+  "eslintIgnore": [
+    "/dist/",
+    "/coverage/",
+    "/tests/fixture/db.js"
+  ],
   "postcss": {
     "plugins": {
       "autoprefixer": {}
