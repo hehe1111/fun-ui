@@ -28,7 +28,7 @@ export default {
   props: {
     hideOnClick: {
       type: Boolean,
-      default: false,
+      default: true,
     },
     trigger: {
       type: String,
@@ -45,11 +45,11 @@ export default {
     return { eventBus: this.eventBus };
   },
   mounted() {
-    this.checkContentSlots();
+    this.checkDropdownSlots();
     this.listenToItems();
   },
   methods: {
-    checkContentSlots() {
+    checkDropdownSlots() {
       const validity = this.$slots.dropdown.every(vnode => {
         return vnode.componentOptions.tag === 'f-dropdown-item';
       });

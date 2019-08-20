@@ -1,0 +1,10 @@
+@import './_var.scss';
+
+.item {
+  @extend .flex-center;
+  transition: all $duration ease-in-out;
+  &:hover {
+    background-color: $blue;
+    color: #fff;
+  }
+}

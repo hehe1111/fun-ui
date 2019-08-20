@@ -36,6 +36,7 @@ module.exports = {
           '/components/cascader',
           '/components/collapse',
           '/components/date-picker',
+          '/components/dropdown',
           '/components/grid',
           '/components/icon',
           '/components/input',
