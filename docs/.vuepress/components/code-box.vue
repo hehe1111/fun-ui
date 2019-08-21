@@ -45,7 +45,9 @@ export default {
       type: Object,
       validator(prop) {
         return Object.keys(prop).every(
-          key => ['html', 'scss', 'javascript'].indexOf(key) >= 0
+          key =>
+            ['html', 'scss', 'javascript'].indexOf(key) >= 0 &&
+            typeof prop[key] === 'string'
         );
       },
     },
