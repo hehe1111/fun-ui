@@ -8,7 +8,7 @@
       <f-table-column text="Moto" field="moto" />
     </f-table>
 
-    <code-box :htmlCode="htmlCode" :javascriptCode="javascriptCode" />
+    <code-box :code="{ html, javascript }" />
   </div>
 </template>
 
@@ -25,7 +25,7 @@ export default {
       dataSource: tableData,
       selectedIds: ['3'],
 
-      htmlCode: `
+      html: `
         当前被选中项：{{ selectedIds }}
         <f-table :data-source="dataSource" :selected-ids.sync="selectedIds" is-id-visible is-checkbox-visible :height="200">
           <f-table-column text="Name" field="name" />
@@ -34,7 +34,7 @@ export default {
           <f-table-column text="Moto" field="moto" />
         </f-table>
       `,
-      javascriptCode: `
+      javascript: `
         data() {
           return {
             dataSource: tableData,

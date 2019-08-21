@@ -27,7 +27,7 @@
       </f-transition>
     </div>
 
-    <code-box :htmlCode="htmlCode" :scssCode="scssCode" />
+    <code-box :code="{ html, scss }" />
   </div>
 </template>
 
@@ -44,7 +44,7 @@ export default {
       y: true,
       z: true,
 
-      htmlCode: `
+      html: `
         <div>
           <f-button @click="x = !x">Vertical {{ x ? 'Show' : 'Hide' }}</f-button>
           <f-transition>
@@ -72,7 +72,7 @@ export default {
           </f-transition>
         </div>
       `,
-      scssCode: `
+      scss: `
         .demo-transition-1 {
           &-block {
             width: 200px;

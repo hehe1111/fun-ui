@@ -13,7 +13,7 @@
       <f-table-column text="Moto" field="moto" />
     </f-table>
 
-    <code-box :htmlCode="htmlCode" :javascriptCode="javascriptCode" />
+    <code-box :code="{ html, javascript }" />
   </div>
 </template>
 
@@ -31,7 +31,7 @@ export default {
       sortRules: { name: 'ascend', score: 'descend', class: true },
       loading: false,
 
-      htmlCode: `
+      html: `
         <f-table
           :data-source="dataSource"
           :sort-rules="sortRules"
@@ -45,7 +45,7 @@ export default {
           <f-table-column text="Moto" field="moto" />
         </f-table>
       `,
-      javascriptCode: `
+      javascript: `
         data() {
           return {
             dataSource: tableData,

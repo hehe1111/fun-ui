@@ -5,7 +5,7 @@
     <f-pagination :current.sync="current2" :total="total" class="extra-margin" />
     <div>第三个分页器当前页码：{{ current2 }}</div>
 
-    <code-box :htmlCode="htmlCode" :javascriptCode="javascriptCode" />
+    <code-box :code="{ html, javascript }" />
   </div>
 </template>
 
@@ -21,13 +21,13 @@ export default {
       current2: 5,
       total: 10,
 
-      htmlCode: `
+      html: `
         <f-pagination :total="total" class="extra-margin" />
         <f-pagination :current="current1" :total="total" class="extra-margin" />
         <f-pagination :current.sync="current2" :total="total" class="extra-margin" />
         <div>第三个分页器当前页码：{{ current2 }}</div>
       `,
-      javascriptCode: `
+      javascript: `
         data() {
           return {
             current1: 5,

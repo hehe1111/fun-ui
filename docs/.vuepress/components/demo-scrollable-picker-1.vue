@@ -7,7 +7,7 @@
       :values="range(1, 20)"
     />
 
-    <code-box :htmlCode="htmlCode" :javascriptCode="javascriptCode" />
+    <code-box :code="{ html, javascript }" />
   </div>
 </template>
 
@@ -23,14 +23,14 @@ export default {
       selected: 10,
       range,
 
-      htmlCode: `
+      html: `
         <f-scrollable-picker
           :width-and-height="{ width: '4em', height: '14em' }"
           :selected.sync="selected"
           :values="range(1, 20)"
         />
       `,
-      javascriptCode: `
+      javascript: `
         data() {
           return {
             selected: 10,

@@ -2,7 +2,7 @@
   <div class="demo-button-2 extra-margin">
     <f-button disabled>禁用按钮</f-button>
 
-    <code-box :htmlCode="htmlCode" />
+    <code-box :code="{ html }" />
   </div>
 </template>
 
@@ -14,7 +14,7 @@ export default {
   components: { FButton },
   data() {
     return {
-      htmlCode: `
+      html: `
         <f-button disabled>禁用按钮</f-button>
       `,
     };

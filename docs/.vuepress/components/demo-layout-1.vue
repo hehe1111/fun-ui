@@ -75,7 +75,7 @@
       <f-footer class="demo footer">footer</f-footer>
     </f-layout>-->
 
-    <code-box :htmlCode="htmlCode" :scssCode="scssCode" />
+    <code-box :code="{ html, scss }" />
   </div>
 </template>
 
@@ -91,7 +91,7 @@ export default {
   components: { FLayout, FHeader, FSidebar, FContent, FFooter },
   data() {
     return {
-      htmlCode: `
+      html: `
         <h3>上中下</h3>
         <f-layout class="layout">
           <f-header class="demo header">header</f-header>
@@ -151,7 +151,7 @@ export default {
           </f-layout>
         </f-layout>
       `,
-      scssCode: `
+      scss: `
         .demo-layout-1 {
           .layout {
             margin: 1em 0;

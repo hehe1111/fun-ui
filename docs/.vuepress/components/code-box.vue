@@ -3,9 +3,9 @@
     <f-transition :duration="400">
       <div class="code-box" v-show="isCodeVisible" v-highlight>
         <pre>
-          <code v-if="htmlCode" class="html">{{htmlCodeFormatted}}</code>
-          <code v-if="javascriptCode" class="javascript">{{javascriptCodeFormatted}}</code>
-          <code v-if="scssCode" class="scss">{{scssCodeFormatted}}</code>
+          <code v-if="code.html" class="html">{{htmlCodeFormatted}}</code>
+          <code v-if="code.javascript" class="javascript">{{javascriptCodeFormatted}}</code>
+          <code v-if="code.scss" class="scss">{{scssCodeFormatted}}</code>
         </pre>
       </div>
     </f-transition>
@@ -41,25 +41,24 @@ export default {
       type: Boolean,
       default: false,
     },
-    htmlCode: {
-      type: String,
-    },
-    javascriptCode: {
-      type: String,
-    },
-    scssCode: {
-      type: String,
+    code: {
+      type: Object,
+      validator(prop) {
+        return Object.keys(prop).every(
+          key => ['html', 'scss', 'javascript'].indexOf(key) >= 0
+        );
+      },
     },
   },
   computed: {
     htmlCodeFormatted() {
-      return this.htmlCode && removePrefixSpace(this.htmlCode);
+      return this.code.html && removePrefixSpace(this.code.html);
     },
     javascriptCodeFormatted() {
-      return this.javascriptCode && removePrefixSpace(this.javascriptCode);
+      return this.code.javascript && removePrefixSpace(this.code.javascript);
     },
     scssCodeFormatted() {
-      return this.scssCode && removePrefixSpace(this.scssCode);
+      return this.code.scss && removePrefixSpace(this.code.scss);
     },
   },
   created() {

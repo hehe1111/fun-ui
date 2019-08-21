@@ -12,7 +12,7 @@
       </f-button>
     </f-dropdown>
 
-    <code-box :htmlCode="htmlCode" :javascriptCode="javascriptCode" />
+    <code-box :code="{ html, javascript }" />
   </div>
 </template>
 
@@ -29,7 +29,7 @@ export default {
     return {
       dataSource: ['海贼王', '进击的巨人', '我的英雄学院', '火影忍者', '死神'],
 
-      htmlCode: `
+      html: `
         <f-dropdown :hide-on-click="false">
           <template slot="dropdown">
             <f-dropdown-item v-for="n in dataSource" :key="n" class="item">
@@ -42,7 +42,7 @@ export default {
           </f-button>
         </f-dropdown>
       `,
-      javascriptCode: `
+      javascript: `
         data() {
           return {
             dataSource: ['海贼王', '进击的巨人', '我的英雄学院', '火影忍者', '死神'],

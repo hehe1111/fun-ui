@@ -7,7 +7,7 @@
       <f-collapse-item title="标题3" name="c3">内容3</f-collapse-item>
     </f-collapse>
 
-    <code-box :htmlCode="htmlCode" :javascriptCode="javascriptCode" />
+    <code-box :code="{ html, javascript }" />
   </div>
 </template>
 
@@ -22,7 +22,7 @@ export default {
     return {
       opened: ['c2'],
 
-      htmlCode: `
+      html: `
         <div style="margin-bottom: 1em;">当前被打开的 item：{{ opened }}</div>
         <f-collapse :opened.sync="opened">
           <f-collapse-item title="标题1" name="c1">内容1</f-collapse-item>
@@ -30,7 +30,7 @@ export default {
           <f-collapse-item title="标题3" name="c3">内容3</f-collapse-item>
         </f-collapse>
       `,
-      javascriptCode: `
+      javascript: `
         data() {
           return {
             opened: ['c2'],

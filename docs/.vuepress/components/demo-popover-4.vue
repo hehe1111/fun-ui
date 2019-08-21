@@ -18,7 +18,7 @@
       <f-button>气泡内含有关闭按钮</f-button>
     </f-popover>
 
-    <code-box :htmlCode="htmlCode" />
+    <code-box :code="{ html }" />
   </div>
 </template>
 
@@ -31,7 +31,7 @@ export default {
   components: { FPopover, FButton },
   data() {
     return {
-      htmlCode: `
+      html: `
         <f-popover trigger="hover">
           <template slot="content">弹出内容</template>
           <f-button>鼠标悬浮弹出</f-button>

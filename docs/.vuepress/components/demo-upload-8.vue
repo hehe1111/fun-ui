@@ -13,7 +13,7 @@
       <div class="dump-site">请将文件拖曳到此区域</div>
     </f-upload>
 
-    <code-box :htmlCode="htmlCode" :javascriptCode="javascriptCode" :scssCode="scssCode" />
+    <code-box :code="{ html, javascript, scss }" />
   </div>
 </template>
 
@@ -30,7 +30,7 @@ export default {
   components: { FUpload, FButton },
   data() {
     return {
-      htmlCode: `
+      html: `
         <f-upload
           action="https://upload-file-demo-on-heroku.herokuapp.com/upload/"
           name="myFile"
@@ -44,7 +44,7 @@ export default {
           <div class="dump-site">请将文件拖曳到此区域</div>
         </f-upload>
       `,
-      javascriptCode: `
+      javascript: `
         methods: {
           parseResponse(response) {
             const fileInfo = JSON.parse(response);
@@ -64,7 +64,7 @@ export default {
           },
         },
       `,
-      scssCode: `
+      scss: `
         .dump-site {
           border: 4px dashed #ddd;
           border-radius: 6px;

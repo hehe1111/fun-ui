@@ -2,7 +2,7 @@
   <div class="demo-date-picker-1 extra-margin">
     <f-date-picker v-model="value" />
 
-    <code-box :htmlCode="htmlCode" :javascriptCode="javascriptCode" />
+    <code-box :code="{ html, javascript }" />
   </div>
 </template>
 
@@ -16,10 +16,10 @@ export default {
     return {
       value: new Date(),
 
-      htmlCode: `
+      html: `
         <f-date-picker v-model="value" />
       `,
-      javascriptCode: `
+      javascript: `
         data() {
           return {
             value: new Date(),

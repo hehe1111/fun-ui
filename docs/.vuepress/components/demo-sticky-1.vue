@@ -41,7 +41,7 @@
       <div>35</div>
     </div>
 
-    <code-box :htmlCode="htmlCode" :javascriptCode="javascriptCode" :scssCode="scssCode" />
+    <code-box :code="{ html, javascript, scss }" />
   </div>
 </template>
 
@@ -55,7 +55,7 @@ export default {
     return {
       distance: 100,
 
-      htmlCode: `
+      html: `
         <div>1</div>
         <div>2</div>
         <div>3</div>
@@ -95,14 +95,14 @@ export default {
         <div>34</div>
         <div>35</div>
       `,
-      javascriptCode: `
+      javascript: `
         data() {
           return {
             distance: 100,
           }
         },
       `,
-      scssCode: `
+      scss: `
         .sticky-block {
           @extend .flex-center;
           height: 100px;

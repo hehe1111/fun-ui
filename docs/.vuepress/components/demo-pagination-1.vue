@@ -2,7 +2,7 @@
   <div class="demo-pagination-1 extra-margin">
     <f-pagination :total="total" />
 
-    <code-box :htmlCode="htmlCode" :javascriptCode="javascriptCode" />
+    <code-box :code="{ html, javascript }" />
   </div>
 </template>
 
@@ -16,10 +16,10 @@ export default {
     return {
       total: 10,
 
-      htmlCode: `
+      html: `
         <f-pagination :total="total" />
       `,
-      javascriptCode: `
+      javascript: `
         data() {
           return {
             total: 10,

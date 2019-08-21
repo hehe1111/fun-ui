@@ -7,7 +7,7 @@
       </li>
     </ul>
 
-    <code-box :htmlCode="htmlCode" />
+    <code-box :code="{ html }" />
   </div>
 </template>
 
@@ -21,7 +21,7 @@ export default {
   data() {
     return {
       iconNames,
-      htmlCode: `
+      html: `
         <f-icon :name="name" />
       `,
     };

@@ -2,7 +2,7 @@
   <div class="demo-toast-3 extra-margin">
     <f-button @click="showToast">关闭后调用回调</f-button>
 
-    <code-box :htmlCode="htmlCode" :javascriptCode="javascriptCode" />
+    <code-box :code="{ html, javascript }" />
   </div>
 </template>
 
@@ -18,10 +18,10 @@ export default {
   components: { FButton },
   data() {
     return {
-      htmlCode: `
+      html: `
           <f-button @click="showToast">关闭后调用回调</f-button>
       `,
-      javascriptCode: `
+      javascript: `
         methods: {
           showToast() {
             this.$toast('Alert when closed.', {

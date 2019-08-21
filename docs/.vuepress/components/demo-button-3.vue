@@ -4,7 +4,7 @@
     <f-button icon="setting">默认图标位于左边</f-button>
     <f-button icon="setting" icon-position="right">图标可以位于右边</f-button>
 
-    <code-box :htmlCode="htmlCode" />
+    <code-box :code="{ html }" />
   </div>
 </template>
 
@@ -16,7 +16,7 @@ export default {
   components: { FButton },
   data() {
     return {
-      htmlCode: `
+      html: `
         <f-button icon="setting" />
         <f-button icon="setting">默认图标位于左边</f-button>
         <f-button icon="setting" icon-position="right">图标可以位于右边</f-button>

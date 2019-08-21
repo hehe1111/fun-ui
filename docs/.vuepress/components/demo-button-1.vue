@@ -12,7 +12,7 @@
 
     <f-button small>small</f-button>
 
-    <code-box :htmlCode="htmlCode" />
+    <code-box :code="{ html }" />
   </div>
 </template>
 
@@ -24,7 +24,7 @@ export default {
   components: { FButton },
   data() {
     return {
-      htmlCode: `
+      html: `
         <f-button>default</f-button>
 
         <f-button type="primary">primary</f-button>

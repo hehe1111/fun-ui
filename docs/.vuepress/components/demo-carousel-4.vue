@@ -52,7 +52,7 @@
       </div>
     </div>
 
-    <code-box :htmlCode="htmlCode" :javascriptCode="javascriptCode" />
+    <code-box :code="{ html, javascript }" />
   </div>
 </template>
 
@@ -70,7 +70,7 @@ export default {
       dotPosition1: 'left',
       dotPosition2: 'top',
 
-      htmlCode: `
+      html: `
         <f-button-group class="demo-button-group">
           <f-button
             v-for="p in ['left', 'right']"
@@ -117,7 +117,7 @@ export default {
           </f-carousel-item>
         </f-carousel>
       `,
-      javascriptCode: `
+      javascript: `
         data() {
           return {
             dotPosition1: "left",

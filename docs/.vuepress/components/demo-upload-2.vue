@@ -13,7 +13,7 @@
       <template slot="tips">文件大小不能超过 300 kb.</template>
     </f-upload>
 
-    <code-box :htmlCode="htmlCode" :javascriptCode="javascriptCode" />
+    <code-box :code="{ html, javascript }" />
   </div>
 </template>
 
@@ -30,7 +30,7 @@ export default {
   components: { FUpload, FButton },
   data() {
     return {
-      htmlCode: `
+      html: `
         <f-upload
           action="https://upload-file-demo-on-heroku.herokuapp.com/upload/"
           name="myFile"
@@ -44,7 +44,7 @@ export default {
           <template slot="tips">文件大小不能超过 300 kb.</template>
         </f-upload>
       `,
-      javascriptCode: `
+      javascript: `
         methods: {
           parseResponse(response) {
             const fileInfo = JSON.parse(response);

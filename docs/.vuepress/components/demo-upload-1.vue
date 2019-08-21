@@ -1,6 +1,6 @@
 <template>
   <div class="demo-upload-1 extra-margin">
-    <code-box :htmlCode="htmlCode" :javascriptCode="javascriptCode" show-code />
+    <code-box :code="{ html, javascript }" show-code />
   </div>
 </template>
 
@@ -17,7 +17,7 @@ export default {
   components: { FUpload, FButton },
   data() {
     return {
-      htmlCode: `
+      html: `
         <f-upload
           action="https://upload-file-demo-on-heroku.herokuapp.com/upload/"
           name="myFile"
@@ -29,7 +29,7 @@ export default {
           <f-button icon="upload">上传</f-button>
         </f-upload>
       `,
-      javascriptCode: `
+      javascript: `
         methods: {
           parseResponse(response) {
             const fileInfo = JSON.parse(response);

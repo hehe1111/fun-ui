@@ -15,7 +15,7 @@
       </f-carousel-item>
     </f-carousel>
 
-    <code-box :htmlCode="htmlCode" :scssCode="scssCode" />
+    <code-box :code="{ html, scss }" />
   </div>
 </template>
 
@@ -28,7 +28,7 @@ export default {
   components: { FCarousel, FCarouselItem },
   data() {
     return {
-      htmlCode: `
+      html: `
         <f-carousel>
           <f-carousel-item name="x1">
             <div class="image">1</div>
@@ -44,7 +44,7 @@ export default {
           </f-carousel-item>
         </f-carousel>
       `,
-      scssCode: `
+      scss: `
         .image {
           @extend .flex-center;
           width: 300px;

@@ -2,7 +2,7 @@
   <div class="demo-toast-2 extra-margin">
     <f-button @click="showToast">允许传入 HTML</f-button>
 
-    <code-box :htmlCode="htmlCode" :javascriptCode="javascriptCode" />
+    <code-box :code="{ html, javascript }" />
   </div>
 </template>
 
@@ -18,10 +18,10 @@ export default {
   components: { FButton },
   data() {
     return {
-      htmlCode: `
+      html: `
         <f-button @click="showToast">允许传入 HTML</f-button>
       `,
-      javascriptCode: `
+      javascript: `
         methods: {
           showToast() {
             const colorfulMessage = '<p style="background: linear-gradient(to right, red, orange, yellow, green, blue, indigo, violet);">I am Colorful.</p>';

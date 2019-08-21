@@ -2,7 +2,7 @@
   <div class="demo-cascader-2 extra-margin">
     <f-cascader :source.sync="source" :selected.sync="selected" :load-data="loadData" />
 
-    <code-box :htmlCode="htmlCode" :javascriptCode="javascriptCode" />
+    <code-box :code="{ html, javascript }" />
   </div>
 </template>
 
@@ -33,10 +33,10 @@ export default {
       selected: [],
       source: [],
 
-      htmlCode: `
+      html: `
         <f-cascader :source.sync="source" :selected.sync="selected" :load-data="loadData" />
       `,
-      javascriptCode: `
+      javascript: `
         const ajax = (id = 0) => {
           return new Promise((resolve, reject) => {
             setTimeout(() => {

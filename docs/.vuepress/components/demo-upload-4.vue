@@ -14,7 +14,7 @@
       <f-button icon="upload">上传</f-button>
     </f-upload>
 
-    <code-box :htmlCode="htmlCode" :javascriptCode="javascriptCode" />
+    <code-box :code="{ html, javascript }" />
   </div>
 </template>
 
@@ -33,7 +33,7 @@ export default {
     return {
       fileList: [],
 
-      htmlCode: `
+      html: `
         <f-upload
           action="https://upload-file-demo-on-heroku.herokuapp.com/upload/"
           name="myFile"
@@ -47,7 +47,7 @@ export default {
           <f-button icon="upload">上传</f-button>
         </f-upload>
       `,
-      javascriptCode: `
+      javascript: `
         data() {
           return {
             fileList: [],

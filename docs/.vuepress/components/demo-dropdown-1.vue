@@ -26,7 +26,7 @@
       </f-dropdown>
     </div>
 
-    <code-box :htmlCode="htmlCode" :javascriptCode="javascriptCode" :scssCode="scssCode" />
+    <code-box :code="{ html, javascript, scss }" />
   </div>
 </template>
 
@@ -43,7 +43,7 @@ export default {
     return {
       dataSource: ['海贼王', '进击的巨人', '我的英雄学院', '火影忍者', '死神'],
 
-      htmlCode: `
+      html: `
         <div class="demo-dropdown-1-dropdowns">
           <f-dropdown>
             <template slot="dropdown">
@@ -70,14 +70,14 @@ export default {
           </f-dropdown>
         </div>
       `,
-      javascriptCode: `
+      javascript: `
         data() {
           return {
             dataSource: ['海贼王', '进击的巨人', '我的英雄学院', '火影忍者', '死神'],
           };
         },
       `,
-      scssCode: `
+      scss: `
         .demo-dropdown-1 {
           &-dropdowns {
             display: flex;

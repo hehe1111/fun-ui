@@ -7,7 +7,7 @@
       <f-table-column text="Moto" field="moto" />
     </f-table>
 
-    <code-box :htmlCode="htmlCode" :javascriptCode="javascriptCode" />
+    <code-box :code="{ html, javascript }" />
   </div>
 </template>
 
@@ -23,7 +23,7 @@ export default {
     return {
       dataSource: tableData,
 
-      htmlCode: `
+      html: `
         <f-table :data-source="dataSource">
           <f-table-column text="Name" field="name" />
           <f-table-column text="Score" field="score" />
@@ -31,7 +31,7 @@ export default {
           <f-table-column text="Moto" field="moto" />
         </f-table>
       `,
-      javascriptCode: `
+      javascript: `
         data() {
           return {
             dataSource: tableData,

@@ -14,7 +14,7 @@
       </f-col>
     </f-row>
 
-    <code-box :htmlCode="htmlCode" />
+    <code-box :code="{ html }" />
   </div>
 </template>
 
@@ -27,7 +27,7 @@ export default {
   components: { FRow, FCol },
   data() {
     return {
-      htmlCode: `
+      html: `
         <f-row>
           <f-col span="8">
             <div class="item"></div>

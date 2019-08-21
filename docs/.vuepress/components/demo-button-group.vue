@@ -6,7 +6,7 @@
       <f-button>按钮 3</f-button>
     </f-button-group>
 
-    <code-box :htmlCode="htmlCode" />
+    <code-box :code="{ html }" />
   </div>
 </template>
 
@@ -19,7 +19,7 @@ export default {
   components: { FButton, FButtonGroup },
   data() {
     return {
-      htmlCode: `
+      html: `
         <f-button-group>
           <f-button>按钮 1</f-button>
           <f-button>按钮 2</f-button>

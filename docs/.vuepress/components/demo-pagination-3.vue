@@ -13,7 +13,7 @@
       </template>
     </div>
 
-    <code-box :htmlCode="htmlCode" :javascriptCode="javascriptCode" />
+    <code-box :code="{ html, javascript }" />
   </div>
 </template>
 
@@ -29,10 +29,10 @@ export default {
       total: 1,
       hideOnSinglePage: false,
 
-      htmlCode: `
+      html: `
         <f-pagination :total="total" hide-on-single-page />
       `,
-      javascriptCode: `
+      javascript: `
         data() {
           return {
             total: 1,

@@ -4,7 +4,7 @@
     <br />
     <span>当前页码：{{ newPage }}</span>
 
-    <code-box :htmlCode="htmlCode" :javascriptCode="javascriptCode" />
+    <code-box :code="{ html, javascript }" />
   </div>
 </template>
 
@@ -19,12 +19,12 @@ export default {
       total: 10,
       newPage: 1,
 
-      htmlCode: `
+      html: `
         <f-pagination :total="total" :on-page-change="onPageChange" />
         <br />
         <span>当前页码：{{ newPage }}</span>
       `,
-      javascriptCode: `
+      javascript: `
         data() {
           return {
             total: 10,

@@ -2,7 +2,7 @@
   <div class="demo-toast-3 extra-margin">
     <f-button @click="showToast">{{n}}s 后关闭</f-button>
 
-    <code-box :htmlCode="htmlCode" :javascriptCode="javascriptCode" />
+    <code-box :code="{ html, javascript }" />
   </div>
 </template>
 
@@ -21,10 +21,10 @@ export default {
       n: 10,
       counting: false,
 
-      htmlCode: `
+      html: `
         <f-button @click="showToast">{{n}}s 后关闭</f-button>
       `,
-      javascriptCode: `
+      javascript: `
         data() {
           return {
             n: 10,

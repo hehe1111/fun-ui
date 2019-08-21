@@ -15,7 +15,7 @@
       <f-table-column text="Moto" field="moto" />
     </f-table>
 
-    <code-box :htmlCode="htmlCode" :javascriptCode="javascriptCode" />
+    <code-box :code="{ html, javascript }" />
   </div>
 </template>
 
@@ -35,7 +35,7 @@ export default {
       alignArray: ['left', 'center', 'right'],
       align: 'right',
 
-      htmlCode: `
+      html: `
         <f-button-group>
           <f-button
             v-for="a in alignArray"
@@ -51,7 +51,7 @@ export default {
           <f-table-column text="Moto" field="moto" />
         </f-table>
       `,
-      javascriptCode: `
+      javascript: `
         data() {
           return {
             dataSource: tableData,

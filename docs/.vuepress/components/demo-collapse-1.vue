@@ -6,7 +6,7 @@
       <f-collapse-item title="标题3" name="c3">内容3</f-collapse-item>
     </f-collapse>
 
-    <code-box :htmlCode="htmlCode" />
+    <code-box :code="{ html }" />
   </div>
 </template>
 
@@ -19,7 +19,7 @@ export default {
   components: { FCollapse, FCollapseItem },
   data() {
     return {
-      htmlCode: `
+      html: `
         <f-collapse>
           <f-collapse-item title="标题1" name="c1">内容1</f-collapse-item>
           <f-collapse-item title="标题2" name="c2">内容2</f-collapse-item>

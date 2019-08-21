@@ -6,7 +6,7 @@
     <f-button @click="showToastError">Error</f-button>
     <f-button @click="showToastPrimary">Primary</f-button>
 
-    <code-box :htmlCode="htmlCode" :javascriptCode="javascriptCode" />
+    <code-box :code="{ html, javascript }" />
   </div>
 </template>
 
@@ -22,14 +22,14 @@ export default {
   components: { FButton },
   data() {
     return {
-      htmlCode: `
+      html: `
         <f-button @click="showToastDefault">Default</f-button>
         <f-button @click="showToastSuccess">Success</f-button>
         <f-button @click="showToastWarning">Warning</f-button>
         <f-button @click="showToastError">Error</f-button>
         <f-button @click="showToastPrimary">Primary</f-button>
       `,
-      javascriptCode: `
+      javascript: `
         methods: {
           showToastDefault() {
             this.$toast('I am Default.');

@@ -2,7 +2,7 @@
   <div class="demo-cascader-1 extra-margin">
     <f-cascader :source.sync="source" :selected.sync="selected" />
 
-    <code-box :htmlCode="htmlCode" :javascriptCode="javascriptCode" />
+    <code-box :code="{ html, javascript }" />
   </div>
 </template>
 
@@ -51,10 +51,10 @@ export default {
       selected: [],
       source: db,
 
-      htmlCode: `
+      html: `
         <f-cascader :source.sync="source" :selected.sync="selected" />
       `,
-      javascriptCode: `
+      javascript: `
         const db = [
           {
             name: '浙江',

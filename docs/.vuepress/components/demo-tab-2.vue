@@ -13,7 +13,7 @@
       </f-tab-body>
     </f-tab>
 
-    <code-box :htmlCode="htmlCode" :javascriptCode="javascriptCode" />
+    <code-box :code="{ html, javascript }" />
   </div>
 </template>
 
@@ -31,7 +31,7 @@ export default {
     return {
       selectedTab: '1',
 
-      htmlCode: `
+      html: `
         <f-tab :selected.sync="selectedTab" vertical>
           <f-tab-nav>
             <f-tab-nav-item name="1">1</f-tab-nav-item>
@@ -45,7 +45,7 @@ export default {
           </f-tab-body>
         </f-tab>
       `,
-      javascriptCode: `
+      javascript: `
         data() {
           return {
             selectedTab: '1',

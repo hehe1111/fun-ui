@@ -39,7 +39,7 @@
       </f-tab-body>
     </f-tab>
 
-    <code-box :htmlCode="htmlCode" :javascriptCode="javascriptCode" />
+    <code-box :code="{ html, javascript }" />
   </div>
 </template>
 
@@ -61,7 +61,7 @@ export default {
       action2: [{ callback: this.alert2, text: 'action' }],
       action3: [{ callback: this.alert3, text: 'action-small', small: true }],
 
-      htmlCode: `
+      html: `
         <f-tab :selected.sync="selectedTab1">
           <f-tab-nav>
             <f-tab-nav-item name="1">1</f-tab-nav-item>
@@ -101,7 +101,7 @@ export default {
           </f-tab-body>
         </f-tab>
       `,
-      javascriptCode: `
+      javascript: `
         data() {
           return {
             selectedTab1: '1',

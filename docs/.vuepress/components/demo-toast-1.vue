@@ -4,7 +4,7 @@
     <f-button @click="showToastMiddle">Middle</f-button>
     <f-button @click="showToastBottom">Bottom</f-button>
 
-    <code-box :htmlCode="htmlCode" :javascriptCode="javascriptCode" />
+    <code-box :code="{ html, javascript }" />
   </div>
 </template>
 
@@ -20,12 +20,12 @@ export default {
   components: { FButton },
   data() {
     return {
-      htmlCode: `
+      html: `
         <f-button @click="showToastTop">Top(default)</f-button>
         <f-button @click="showToastMiddle">Middle</f-button>
         <f-button @click="showToastBottom">Bottom</f-button>
       `,
-      javascriptCode: `
+      javascript: `
         methods: {
           showToastTop() {
             this.$toast('I am Top.');

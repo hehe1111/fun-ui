@@ -6,7 +6,7 @@
       </f-col>
     </f-row>
 
-    <code-box :htmlCode="htmlCode" :scssCode="scssCode" />
+    <code-box :code="{ html, scss }" />
   </div>
 </template>
 
@@ -19,14 +19,14 @@ export default {
   components: { FRow, FCol },
   data() {
     return {
-      htmlCode: `
+      html: `
         <f-row>
           <f-col :span="8" v-for="n in 3" :key="n">
             <div class="item"></div>
           </f-col>
         </f-row>
       `,
-      scssCode: `
+      scss: `
         .item {
           height: 2em;
           border: 1px solid $blue;

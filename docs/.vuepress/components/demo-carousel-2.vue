@@ -15,7 +15,7 @@
       </f-carousel-item>
     </f-carousel>
 
-    <code-box :htmlCode="htmlCode" />
+    <code-box :code="{ html }" />
   </div>
 </template>
 
@@ -28,7 +28,7 @@ export default {
   components: { FCarousel, FCarouselItem },
   data() {
     return {
-      htmlCode: `
+      html: `
         <f-carousel :auto-play="false">
           <f-carousel-item name="x1">
             <div class="image">1</div>

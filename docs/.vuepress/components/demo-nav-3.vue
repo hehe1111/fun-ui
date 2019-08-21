@@ -26,7 +26,7 @@
       <f-nav-item name="novel">小说</f-nav-item>
     </f-nav>
 
-    <code-box :htmlCode="htmlCode" :javascriptCode="javascriptCode" />
+    <code-box :code="{ html, javascript }" />
   </div>
 </template>
 
@@ -42,7 +42,7 @@ export default {
     return {
       selected: 'movie',
 
-      htmlCode: `
+      html: `
         <f-nav :selected="selected" vertical>
           <f-nav-item name="movie">电影</f-nav-item>
           <f-sub-nav name="acg">
@@ -69,7 +69,7 @@ export default {
           <f-nav-item name="novel">小说</f-nav-item>
         </f-nav>
       `,
-      javascriptCode: `
+      javascript: `
         data() {
           return {
             selected: 'movie',

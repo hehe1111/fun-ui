@@ -2,7 +2,7 @@
   <div class="demo-icon-3 extra-margin">
     <f-icon name="setting" color="red" />
 
-    <code-box :htmlCode="htmlCode" />
+    <code-box :code="{ html }" />
   </div>
 </template>
 
@@ -14,7 +14,7 @@ export default {
   components: { FIcon },
   data() {
     return {
-      htmlCode: `
+      html: `
         <f-icon name="setting" color="red" />
       `,
     };

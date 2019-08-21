@@ -7,7 +7,7 @@
       direction="horizontal"
     />
 
-    <code-box :htmlCode="htmlCode" :javascriptCode="javascriptCode" />
+    <code-box :code="{ html, javascript }" />
   </div>
 </template>
 
@@ -23,7 +23,7 @@ export default {
       selected: 10,
       range,
 
-      htmlCode: `
+      html: `
         <f-scrollable-picker
           :width-and-height="{ width: '14em', height: '2em' }"
           :selected.sync="selected"
@@ -31,7 +31,7 @@ export default {
           direction="horizontal"
         />
       `,
-      javascriptCode: `
+      javascript: `
         data() {
           return {
             selected: 10,

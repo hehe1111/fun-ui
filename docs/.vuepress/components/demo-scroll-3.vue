@@ -4,7 +4,7 @@
       <div class="item" v-for="div in divs" :key="div">{{ div }}</div>
     </f-scroll-vertical>
 
-    <code-box :htmlCode="htmlCode" :javascriptCode="javascriptCode" :scssCode="scssCode" />
+    <code-box :code="{ html, javascript, scss }" />
   </div>
 </template>
 
@@ -19,7 +19,7 @@ export default {
     return {
       divs: [],
 
-      htmlCode: `
+      html: `
         <f-scroll-vertical
           class="scroll"
           :load-data="loadData"
@@ -28,7 +28,7 @@ export default {
           <div class="item" v-for="div in divs" :key="div">{{ div }}</div>
         </f-scroll-vertical>
       `,
-      javascriptCode: `
+      javascript: `
         data() {
           return {
             divs: [],
@@ -43,7 +43,7 @@ export default {
           },
         }
       `,
-      scssCode: `
+      scss: `
         .scroll {
           height: 400px;
           border: 1px solid $blue;
