@@ -25,33 +25,34 @@ module.exports = {
     // 侧边栏的每个子组默认是可折叠的
     // 可以设置 collapsable: false 来让一个组永远都是展开状态。
     sidebar: [
-      // / 基于 /docs/，而非 /docs/.vuepress/
-      ['/guide', '指南'],
+      // https://vuepress.vuejs.org/zh/guide/assets.html#相对路径
+      // ./ 基于 /docs/，而非 /docs/.vuepress/
+      ['./guide', '指南'],
       {
         title: '组件',
         collapsable: false,
         children: [
-          '/components/button',
-          '/components/carousel',
-          '/components/cascader',
-          '/components/collapse',
-          '/components/date-picker',
-          '/components/dropdown',
-          '/components/grid',
-          '/components/icon',
-          '/components/input',
-          '/components/layout',
-          '/components/nav',
-          '/components/pagination',
-          '/components/popover',
-          '/components/scroll',
-          '/components/scrollable-picker',
-          '/components/sticky',
-          '/components/tab',
-          '/components/table',
-          '/components/toast',
-          '/components/transition',
-          '/components/upload',
+          './components/button',
+          './components/carousel',
+          './components/cascader',
+          './components/collapse',
+          './components/date-picker',
+          './components/dropdown',
+          './components/grid',
+          './components/icon',
+          './components/input',
+          './components/layout',
+          './components/nav',
+          './components/pagination',
+          './components/popover',
+          './components/scroll',
+          './components/scrollable-picker',
+          './components/sticky',
+          './components/tab',
+          './components/table',
+          './components/toast',
+          './components/transition',
+          './components/upload',
         ],
       },
     ],
@@ -64,5 +65,19 @@ module.exports = {
 
     // 最后更新时间 基于 git
     lastUpdated: 'Last Updated',
+
+    // add favicon.ico
+    // https://segmentfault.com/q/1010000014666139
+    // https://github.com/vuejs/vuepress/issues/1653
+    head: [
+      [
+        'link',
+        {
+          rel: 'shortcut icon',
+          type: 'image/x-icon',
+          href: `./public/favicon.ico`,
+        },
+      ],
+    ],
   },
 };
