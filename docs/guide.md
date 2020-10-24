@@ -16,8 +16,6 @@ yarn add fun-ui
 
 - 样式文件需要单独引入
 
-### 引入所有组件
-
 ```js
 import Vue from "vue";
 import funUI from "fun-ui";
@@ -25,102 +23,43 @@ import "fun-ui/dist/fun-ui.css";
 Vue.use(funUI);
 ```
 
-### 按需引入
+## 所有组件
 
-```js
-import { FButton } from "fun-ui";
-import "fun-ui/dist/fun-ui.css";
-
-new Vue({
-  components: {
-    FButton,
-  },
-});
-```
-
-## 完整组件列表以及引入方式
-
-```vue
-<script>
-import {
-  FButton,
-  FButtonGroup,
-  FCarousel,
-  FCarouselItem,
-  FCascader,
-  FCol,
-  FCollapse,
-  FCollapseItem,
-  FContent,
-  FDatePicker,
-  FFooter,
-  FHeader,
-  FIcon,
-  FInput,
-  FLayout,
-  FNav,
-  FNavItem,
-  FPagination,
-  FPopover,
-  FRow,
-  FScrollablePicker,
-  FScrollHorizontal,
-  FScrollVertical,
-  FSidebar,
-  FSticky,
-  FSubNav,
-  FTab,
-  FTabBody,
-  FTabBodyItem,
-  FTable,
-  FTableColumn,
-  FTabNav,
-  FTabNavItem,
-  FTransition,
-  FUpload,
-} from "fun-ui";
-
-export default {
-  components: {
-    FButton,
-    FButtonGroup,
-    FCarousel,
-    FCarouselItem,
-    FCascader,
-    FCol,
-    FCollapse,
-    FCollapseItem,
-    FContent,
-    FDatePicker,
-    FFooter,
-    FHeader,
-    FIcon,
-    FInput,
-    FLayout,
-    FNav,
-    FNavItem,
-    FPagination,
-    FPopover,
-    FRow,
-    FScrollablePicker,
-    FScrollHorizontal,
-    FScrollVertical,
-    FSidebar,
-    FSticky,
-    FSubNav,
-    FTab,
-    FTabBody,
-    FTabBodyItem,
-    FTable,
-    FTableColumn,
-    FTabNav,
-    FTabNavItem,
-    FTransition,
-    FUpload,
-  },
-};
-</script>
-```
+- `FButton`
+- `FButtonGroup`
+- `FCarousel`
+- `FCarouselItem`
+- `FCascader`
+- `FCol`
+- `FCollapse`
+- `FCollapseItem`
+- `FContent`
+- `FDatePicker`
+- `FFooter`
+- `FHeader`
+- `FIcon`
+- `FInput`
+- `FLayout`
+- `FNav`
+- `FNavItem`
+- `FPagination`
+- `FPopover`
+- `FRow`
+- `FScrollablePicker`
+- `FScrollHorizontal`
+- `FScrollVertical`
+- `FSidebar`
+- `FSticky`
+- `FSubNav`
+- `FTab`
+- `FTabBody`
+- `FTabBodyItem`
+- `FTable`
+- `FTableColumn`
+- `FTabNav`
+- `FTabNavItem`
+- `FTransition`
+- `FUpload`
 
 ## 文档中代码演示相关
 

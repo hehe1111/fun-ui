@@ -21,26 +21,11 @@ yarn add fun-ui
 
 ## Quick Start
 
-### Fully Import
-
 ```js
 import Vue from "vue";
 import funUI from "fun-ui";
 import "fun-ui/dist/fun-ui.css";
 Vue.use(funUI);
-```
-
-### On Demand
-
-```js
-import { FButton } from "fun-ui";
-import "fun-ui/dist/fun-ui.css";
-
-new Vue({
-  components: {
-    FButton,
-  },
-});
 ```
 
 ## LICENSE
