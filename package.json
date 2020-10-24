@@ -14,7 +14,8 @@
     "test:karma": "karma start --watch",
     "test:vue-test-utils": "vue-cli-service test:unit",
     "docs:dev": "vuepress dev docs",
-    "docs:build": "vuepress build docs"
+    "docs:build": "vuepress build docs",
+    "docs:deploy": "sh ./deploy.sh"
   },
   "dependencies": {
     "vue": "^2.6.10"
