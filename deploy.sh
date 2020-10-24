@@ -14,6 +14,8 @@ cd docs/.vuepress/dist
 
 git init
 
+# git config user.name 'hehe1111'
+# git config user.email '2908749709@qq.com'
 git config user.name 'hehe2222'
 git config user.email 'hehe2222@foxmail.com'
 
