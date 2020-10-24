@@ -11,7 +11,7 @@
 
 ## Install
 
-```shell
+```bash
 npm install fun-ui
 
 # or

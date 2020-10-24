@@ -2,13 +2,11 @@
 
 ## 安装
 
-```shell
+```bash
 npm install fun-ui
-```
 
-或
+# 或
 
-```shell
 yarn add fun-ui
 ```
 
